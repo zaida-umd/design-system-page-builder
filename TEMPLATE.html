@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PAGE_TITLE}} — {{SITE_NAME}} | University of Maryland</title>
+
+  <!-- ============================================================
+       UMD Critical CSS — MUST precede cdn.js
+       If cdn.js loads first, elements upgrade before :defined rules
+       exist and container-type never gets set.
+       Load order: inline <style> → <script> cdn.js → </head>
+       See REQUIRED-CSS.md for what each rule does and why.
+  ============================================================ -->
+  <style>
+    /* ====================
+       GROUP 1: container-type: normal
+       These components use grid-auto-flow / internal layout that
+       breaks under inline-size containment. Do NOT move to GROUP 2.
+    ==================== */
+    umd-element-utility-header:not(:defined),
+    umd-element-navigation-header:not(:defined),
+    umd-element-nav-item:not(:defined),
+    umd-element-call-to-action:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-utility-header,
+    umd-element-navigation-header,
+    umd-element-nav-item,
+    umd-element-call-to-action {
+      display: block;
+      container-type: normal;
+    }
+
+    /* ====================
+       GROUP 2: container-type: inline-size
+       These components use shadow DOM @container queries that fire
+       against the host element. Without inline-size on the host,
+       two-column layouts collapse to stacked.
+    ==================== */
+    umd-element-hero:not(:defined),
+    umd-element-hero-minimal:not(:defined),
+    umd-element-hero-expand:not(:defined),
+    umd-element-hero-logo:not(:defined),
+    umd-element-hero-grid:not(:defined),
+    umd-element-hero-brand-video:not(:defined),
+    umd-element-pathway:not(:defined),
+    umd-element-pathway-highlight:not(:defined),
+    umd-element-section-intro:not(:defined),
+    umd-element-section-intro-wide:not(:defined),
+    umd-element-card:not(:defined),
+    umd-element-card-overlay:not(:defined),
+    umd-element-card-icon:not(:defined),
+    umd-element-card-video:not(:defined),
+    umd-element-quote:not(:defined),
+    umd-element-stat:not(:defined),
+    umd-element-person-bio:not(:defined),
+    umd-element-accordion-item:not(:defined),
+    umd-element-footer:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-hero,
+    umd-element-hero-minimal,
+    umd-element-hero-expand,
+    umd-element-hero-logo,
+    umd-element-hero-grid,
+    umd-element-hero-brand-video,
+    umd-element-pathway,
+    umd-element-pathway-highlight,
+    umd-element-section-intro,
+    umd-element-section-intro-wide,
+    umd-element-card,
+    umd-element-card-overlay,
+    umd-element-card-icon,
+    umd-element-card-video,
+    umd-element-quote,
+    umd-element-stat,
+    umd-element-person-bio,
+    umd-element-accordion-item,
+    umd-element-footer {
+      display: block;
+      container-type: inline-size;
+    }
+
+    /* ====================
+       GROUP 3: Full-bleed components
+       umd-layout-image-expand collapses to content width without
+       explicit width: 100%. Do NOT wrap in a horizontal spacing class.
+    ==================== */
+    umd-layout-image-expand:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-layout-image-expand {
+      display: block;
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    /* ====================
+       FONTS
+       Interstate is licensed. These declarations set the stack but
+       do NOT embed the font. Without @font-face, falls back to
+       Helvetica/Arial. Layouts and sizing are unaffected.
+    ==================== */
+    :root {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+    p, li, label, input, textarea, select {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+
+    /* ====================
+       VERTICAL SPACING — between sections and items
+    ==================== */
+
+    /* Landing page — between sections */
+    .umd-layout-vertical-landing           { margin-bottom: 56px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+    /* Landing page — between items within a section */
+    .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+    /* Interior page — page content area margins */
+    .umd-layout-vertical-interior          { margin-bottom: 56px; }
+    @media (min-width: 1024px) { .umd-layout-vertical-interior { margin-bottom: 80px; } }
+
+    /* Interior page — between items within a section */
+    .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
+
+    /* ====================
+       HORIZONTAL SPACING — page-lock classes
+    ==================== */
+    [class^="umd-layout-space-horizontal-"] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1200px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+    .umd-layout-space-horizontal-full     { max-width: 100%;   }
+    .umd-layout-space-horizontal-larger   { max-width: 1600px; }
+    .umd-layout-space-horizontal-large    { max-width: 1400px; }
+    .umd-layout-space-horizontal-normal   { max-width: 1280px; }
+    .umd-layout-space-horizontal-small    { max-width: 992px;  }
+    .umd-layout-space-horizontal-smallest { max-width: 800px;  }
+
+    /* ====================
+       WATERMARK DECORATION
+    ==================== */
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      color: #f1f1f1;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: min(calc(44px + 13vw), 240px);
+      line-height: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    :is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+      opacity: 0.6;
+      z-index: -1;
+    }
+    .umd-watermark-dark > * {
+      opacity: 0.12;
+      z-index: inherit;
+    }
+    @keyframes slide-in-from-left {
+      from { transform: translate(-15vw); }
+      to   { transform: translate(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+          animation: slide-in-from-left forwards;
+          animation-timeline: view();
+          animation-range-start: 0;
+          animation-range-end: 100vh;
+          transform: translate(-15vw);
+        }
+      }
+    }
+
+    /* ====================
+       SECTION-INTRO-WIDE WRAPPER
+       Required when .umd-layout-space-horizontal-larger wraps
+       umd-element-section-intro-wide
+    ==================== */
+    .umd-layout-space-horizontal-larger {
+      position: relative;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    /* ====================
+       GRID UTILITIES
+    ==================== */
+    .umd-layout-grid-child-fill-height {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-grid-child-fill-height > * {
+      flex: 1;
+    }
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
+</head>
+<body>
+
+  <!-- ========================================
+       1. GLOBAL UNIVERSITY HEADER
+       Hardcoded. Never modified. Zero config.
+  ======================================== -->
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <!-- ========================================
+       2. SITE NAVIGATION HEADER
+       Replace logo, nav items, and utility links.
+  ======================================== -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="{{SITE_URL}}">
+      <img src="{{LOGO_URL}}" alt="{{SITE_NAME}}" />
+    </a>
+    <nav slot="main-navigation">
+      <!-- Repeat umd-element-nav-item for each top-level link -->
+      <umd-element-nav-item>
+        <a slot="primary-link" href="{{NAV_HREF}}">{{NAV_LABEL}}</a>
+        <!-- Optional dropdown: add <a slot="sub-link"> children -->
+      </umd-element-nav-item>
+    </nav>
+    <!-- Optional utility nav -->
+    <!--
+    <div slot="utility-navigation">
+      <a href="/give">Give</a>
+    </div>
+    -->
+  </umd-element-navigation-header>
+
+  <!-- ========================================
+       3. PAGE CONTENT
+       Replace the sections below with actual content.
+       Use umd-layout-vertical-landing on each <section>.
+       Use umd-layout-space-horizontal-* wrappers for content width.
+  ======================================== -->
+
+  <!-- HERO SECTION (if needed) -->
+  <!--
+  <section class="umd-layout-vertical-landing">
+    <umd-element-hero data-display="stacked">
+      <h1 slot="headline">{{HEADLINE}}</h1>
+      <p slot="text">{{SUBHEAD}}</p>
+      <img slot="image" src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" />
+      <umd-element-call-to-action data-display="primary" slot="actions">
+        <a href="{{CTA_URL}}">{{CTA_TEXT}}</a>
+      </umd-element-call-to-action>
+    </umd-element-hero>
+  </section>
+  -->
+
+  <!-- CONTENT SECTION EXAMPLE -->
+  <!--
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <umd-element-section-intro-wide>
+        <h2 slot="headline">{{SECTION_TITLE}}</h2>
+        <umd-element-call-to-action data-display="secondary" slot="actions">
+          <a href="{{LINK}}">{{LINK_TEXT}}</a>
+        </umd-element-call-to-action>
+      </umd-element-section-intro-wide>
+    </div>
+  </section>
+  -->
+
+  <!-- PATHWAY EXAMPLE (standard — requires dark wrapper) -->
+  <!--
+  <section class="umd-layout-vertical-landing" style="background: #000;">
+    <umd-element-pathway data-theme="dark">
+      <h2 slot="headline">{{HEADLINE}}</h2>
+      <p slot="text">{{BODY_TEXT}}</p>
+      <img slot="image" src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" />
+      <umd-element-call-to-action data-display="primary" data-theme="dark" slot="actions">
+        <a href="{{CTA_URL}}">{{CTA_TEXT}}</a>
+      </umd-element-call-to-action>
+    </umd-element-pathway>
+  </section>
+  -->
+
+  <!-- ========================================
+       4. FOOTER
+       Replace contact info, links, and social.
+  ======================================== -->
+  <umd-element-footer>
+    <a slot="logo" href="{{SITE_URL}}">
+      <img src="{{LOGO_URL}}" alt="{{SITE_NAME}}" />
+    </a>
+    <p slot="contact-headline">{{DEPARTMENT_NAME}}</p>
+    <address slot="address">
+      {{ADDRESS_LINE_1}}<br />
+      {{ADDRESS_LINE_2}}
+    </address>
+    <div slot="contact-links">
+      <a href="tel:{{PHONE}}">{{PHONE_DISPLAY}}</a>
+      <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+    </div>
+    <div slot="social-links">
+      <a href="{{FACEBOOK_URL}}">Facebook</a>
+      <a href="{{TWITTER_URL}}">Twitter</a>
+      <a href="{{INSTAGRAM_URL}}">Instagram</a>
+    </div>
+  </umd-element-footer>
+
+</body>
+</html>

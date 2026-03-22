@@ -1,141 +1,120 @@
-# UMD Page Builder — Required CSS Reference
-
-Every CSS rule in `TEMPLATE.html` exists for a specific reason. This document explains what each block does and what breaks without it.
+# UMD Design System — Required CSS Reference
 
 Verified against `@universityofmaryland/web-components-library@1.17.18`.
 
----
-
-## 1. Component `:not(:defined)` rules
-
-```css
-umd-element-pathway:not(:defined) {
-  content-visibility: hidden;
-}
-```
-
-**What it does:** Hides the component's raw slotted content (unstyled HTML) during the brief window between page parse and `cdn.js` registering the custom element.
-
-**What breaks without it:** Users see a flash of unstyled content (FOUC) — raw headings, paragraphs, and images appear briefly before the shadow DOM takes over.
+This file documents **every CSS rule** that must be present in your `<style>` block for UMD web components to function correctly. The complete CSS is already assembled in `TEMPLATE.html` — use that as your starting point. This file exists as a reference for understanding what each rule does and why it's needed.
 
 ---
 
-## 2. Component `:defined` rules — `display: block`
+## 1. Critical Component Registration
+
+**Why:** Every UMD web component uses shadow DOM with `@container` queries for responsive layout. These queries only fire if the host element has `container-type: inline-size` set. The `cdn.js` script registers the custom elements but does **not** inject these styles. If they're missing, all two-column layouts collapse to single-column.
+
+**When it breaks:** `cdn.js` loads before the CSS → elements upgrade before `:defined` rules exist → `container-type` never gets set → `@container` queries never fire.
 
 ```css
-umd-element-pathway {
+/* Every component tag that uses container queries */
+umd-element-hero:defined,
+umd-element-hero-minimal:defined,
+umd-element-hero-expand:defined,
+umd-element-hero-logo:defined,
+umd-element-hero-grid:defined,
+umd-element-hero-brand-video:defined,
+umd-element-card:defined,
+umd-element-card-overlay:defined,
+umd-element-card-icon:defined,
+umd-element-card-video:defined,
+umd-element-pathway:defined,
+umd-element-pathway-highlight:defined,
+umd-element-section-intro:defined,
+umd-element-section-intro-wide:defined,
+umd-element-stat:defined,
+umd-element-quote:defined,
+umd-element-call-to-action:defined,
+umd-element-footer:defined,
+umd-element-navigation-header:defined,
+umd-element-utility-header:defined {
   display: block;
   container-type: inline-size;
 }
-```
 
-**What it does:** Custom elements default to `display: inline` per the HTML spec. The UMD components don't set `:host { display: block }` in their shadow styles. Without an explicit `display: block` from outside the shadow boundary, the host element has no block-level width for container queries to measure.
-
-**What breaks without it:** Every component that uses `@container` queries internally (pathways, cards, heroes, section-intros) collapses to a single-column stacked layout because the container query threshold (e.g., `@container (min-width: 800px)`) never fires against a zero-width inline box.
-
----
-
-## 3. `container-type` split — `normal` vs `inline-size`
-
-This is the most critical distinction in the CSS.
-
-### GROUP 1: `container-type: normal`
-
-```css
-umd-element-navigation-header,
-umd-element-nav-item,
-umd-element-call-to-action,
-umd-element-utility-header {
-  display: block;
+/* EXCEPTION: nav-item must use container-type: normal.
+   inline-size containment breaks the grid-auto-flow: column layout
+   inside the nav header shadow DOM — nav items collapse and overlap. */
+umd-element-nav-item:defined {
+  content-visibility: visible;
   container-type: normal;
-}
-```
-
-**What it does:** These components use internal layout mechanisms (e.g., `grid-auto-flow: column` in the nav header) that are **broken by size containment**. Setting `container-type: normal` gives them a block box without imposing size containment.
-
-**What breaks with `inline-size`:**
-- **Nav header:** Nav items collapse to zero width and stack/overlap. The header's internal grid layout fails because `inline-size` containment prevents the grid children from contributing to the container's intrinsic size.
-- **Nav items:** Dropdown menus and link text collapse.
-- **CTAs:** Button text may collapse or overflow.
-
-### GROUP 2: `container-type: inline-size`
-
-```css
-umd-element-pathway,
-umd-element-card,
-umd-element-hero,
-/* ... all layout components ... */
-umd-element-footer {
   display: block;
-  container-type: inline-size;
 }
-```
 
-**What it does:** Enables `@container` queries inside the shadow DOM to fire based on the host element's inline size (width). This is what triggers two-column layouts at breakpoints like `@container (min-width: 800px)`.
-
-**What breaks without it:** All multi-column layouts collapse to single-column stacked. Only `data-display="hero"` pathways are immune (they use padding-based layout, not container queries).
-
-### GROUP 3: Full-bleed — `umd-layout-image-expand`
-
-```css
-umd-layout-image-expand {
+/* image-expand needs explicit width: 100% — without it, the host
+   collapses to the width of its content slot (e.g. a narrow quote)
+   and the full-bleed image animation breaks */
+umd-layout-image-expand:defined {
   display: block;
   container-type: inline-size;
   width: 100%;
 }
 ```
 
-**What it does:** In addition to the standard `display: block` + `container-type: inline-size`, this component needs explicit `width: 100%` because it's meant to span the full viewport.
-
-**What breaks without `width: 100%`:** The component collapses to the intrinsic width of its content slot, which may be much narrower than the viewport.
-
-**Do not wrap** this component in a `umd-layout-space-horizontal-*` class — it manages its own full-bleed width.
+**Load order:** Always inline this CSS as a `<style>` block in `<head>`, before the `<script>` tag for `cdn.js`. A `<link>` to a relative CSS file will fail when opening HTML directly from disk.
 
 ---
 
-## 4. Font stack
+## 2. Font Stack
+
+**Why:** UMD uses Interstate as its primary typeface. The font is licensed — `@font-face` declarations with embedded font data live in UMD's production build pipeline. This CSS sets the font-family stack so Interstate renders when available, with clean fallbacks when it's not.
 
 ```css
 :root {
-  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+  --umd-font-sans:     "Interstate", Helvetica, Arial, Verdana, sans-serif;
+  --umd-font-serif:    "Crimson Pro", Georgia, serif;
+  --umd-font-campaign: "Barlow Condensed", Arial Narrow, sans-serif;
 }
-p, li, label, input, textarea, select {
-  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+body, p, li, dd, dt, input, select, textarea, button {
+  font-family: var(--umd-font-sans);
 }
 ```
 
-**What it does:** Sets the Interstate font family on all body text and form elements. Interstate is a licensed typeface — these rules set the *stack* but do not embed the font. Without separate `@font-face` declarations (from UMD's production build), the browser falls back to Helvetica/Arial.
-
-**What breaks without it:** Body text renders in the browser's default sans-serif (usually Times New Roman or system default). Layouts and sizing are unaffected — only the typeface changes.
+**To render Interstate:** Either link UMD's production `critical.css` from the CMS build, or self-host the font files with your own `@font-face` declarations. Without the font loaded, layouts render correctly — only the typeface changes.
 
 ---
 
-## 5. Vertical spacing classes
+## 3. Vertical Spacing
+
+**Why:** Consistent spacing between page sections and between items within sections. The design system defines these tokens but `cdn.js` does not inject them.
+
+### Landing pages
 
 ```css
+/* Between top-level sections */
 .umd-layout-vertical-landing           { margin-bottom: 56px; }
 @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
 @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+/* Between items within a section */
+.umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+@media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+@media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
 ```
 
-**What it does:** Provides consistent responsive spacing between page sections (landing pages) and between items within sections. Four classes are available:
+### Interior pages
 
-| Class | Use for | Mobile | Tablet | Desktop |
-|---|---|---|---|---|
-| `umd-layout-vertical-landing` | Between sections (landing pages) | 56px | 80px | 120px |
-| `umd-layout-vertical-landing-child` | Between items in a section (landing) | 32px | 40px | 48px |
-| `umd-layout-vertical-interior` | Page content area (interior pages) | 56px | 56px | 80px |
-| `umd-layout-vertical-interior-child` | Between items (interior pages) | 32px | 32px | 32px |
+```css
+.umd-layout-vertical-interior          { margin-bottom: 56px; }
+@media (min-width: 1024px) { .umd-layout-vertical-interior { margin-bottom: 80px; } }
 
-**What breaks without it:** Sections butt up against each other with no vertical rhythm. The page looks cramped and loses the deliberate spacing hierarchy.
-
-**Source:** `@universityofmaryland/web-styles-library` → `layout/vertical.js`
+.umd-layout-vertical-interior-child    { margin-bottom: 32px; }
+```
 
 ---
 
-## 6. Horizontal spacing classes (page-lock)
+## 4. Horizontal Spacing (Page Locks)
+
+**Why:** Centers content and applies responsive side padding. Different `max-width` values create content width tiers.
 
 ```css
+/* Shared padding — all variants */
 [class^="umd-layout-space-horizontal-"] {
   display: block;
   margin-left: auto;
@@ -143,87 +122,101 @@ p, li, label, input, textarea, select {
   padding-left: 24px;
   padding-right: 24px;
 }
+@media (min-width: 768px) {
+  [class^="umd-layout-space-horizontal-"] {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+@media (min-width: 1200px) {
+  [class^="umd-layout-space-horizontal-"] {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+
+/* Per-class max-width */
+.umd-layout-space-horizontal-full     { max-width: 100%;   }
+.umd-layout-space-horizontal-larger   { max-width: 1600px; }
+.umd-layout-space-horizontal-large    { max-width: 1400px; }
+.umd-layout-space-horizontal-normal   { max-width: 1280px; }
+.umd-layout-space-horizontal-small    { max-width: 992px;  }
+.umd-layout-space-horizontal-smallest { max-width: 800px;  }
 ```
 
-**What it does:** Centers content with responsive side padding and a max-width cap. Six width tiers are available:
+### Class usage guide
 
 | Class | max-width | Use for |
 |---|---|---|
 | `umd-layout-space-horizontal-full` | 100% | Navigation header, full-bleed sections |
-| `umd-layout-space-horizontal-larger` | 1600px | Wide landing page content |
+| `umd-layout-space-horizontal-larger` | 1600px | Wide landing page content, card grids |
 | `umd-layout-space-horizontal-large` | 1400px | Standard landing page content |
 | `umd-layout-space-horizontal-normal` | 1280px | Body content, interior pages |
 | `umd-layout-space-horizontal-small` | 992px | Narrow content columns |
 | `umd-layout-space-horizontal-smallest` | 800px | Article body, forms |
 
-**What breaks without it:** Content spans the full viewport with no padding, or has no max-width constraint. On wide screens, text lines become unreadably long.
+### Extra properties for section-intro-wide wrapper
 
-**Note:** Pathway, hero, and `umd-layout-image-expand` manage their own horizontal spacing internally — do not wrap them in these classes.
-
-**Source:** `@universityofmaryland/web-styles-library` → `layout/space/horizontal.js`
-
----
-
-## 7. Section-intro-wide wrapper properties
+When `.umd-layout-space-horizontal-larger` wraps `umd-element-section-intro-wide`, three additional properties are required:
 
 ```css
 .umd-layout-space-horizontal-larger {
-  position: relative;
-  container-type: inline-size;
-  isolation: isolate;
+  position: relative;         /* watermark span is position:absolute */
+  container-type: inline-size; /* fires component's internal @container query */
+  isolation: isolate;         /* local stacking context for watermark z-index */
 }
 ```
 
-**What it does:** Three properties required when `.umd-layout-space-horizontal-larger` wraps `umd-element-section-intro-wide`:
-
-- **`position: relative`** — The watermark `<span>` is `position: absolute` and needs an anchor.
-- **`container-type: inline-size`** — Fires the section-intro-wide's internal container query that puts headline and CTA in a flex row at 500px+.
-- **`isolation: isolate`** — Creates a local stacking context so `z-index: -1` on the watermark goes behind the headline text, not behind the page background.
-
-**What breaks without it:**
-- Without `position: relative`: Watermark floats to the nearest ancestor or viewport edge.
-- Without `container-type: inline-size`: Section intro stays stacked (headline above CTA) even on wide screens.
-- Without `isolation: isolate`: Watermark disappears behind the page background.
-
 ---
 
-## 8. Watermark decoration
+## 5. Watermark (Optional Decorative Pattern)
+
+**Why:** Large, faded text behind section headers. Purely decorative (`aria-hidden`). Uses scroll-driven animation where supported.
 
 ```css
+/* Base positioning and font — all three class names */
 :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
   position: absolute;
   top: 20px;
   left: -2%;
-  /* ... */
+  color: #f1f1f1;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: min(calc(44px + 13vw), 240px);
+  line-height: 0;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Light variant */
+:is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+  opacity: 0.6;
+  z-index: -1;
+}
+
+/* Dark variant */
+.umd-watermark-dark > * {
+  opacity: 0.12;
+  z-index: inherit;
+}
+
+/* Scroll-driven entrance animation */
+@keyframes slide-in-from-left {
+  from { transform: translate(-15vw); }
+  to   { transform: translate(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      animation: slide-in-from-left forwards;
+      animation-timeline: view();
+      animation-range-start: 0;
+      animation-range-end: 100vh;
+      transform: translate(-15vw);
+    }
+  }
 }
 ```
 
-**What it does:** Positions and styles the large decorative background text used on section intros. Three class names are supported (all must appear in the base `:is()` selector):
-
-- `.umd-text-decoration-watermark` — light variant (60% opacity, z-index: -1)
-- `.umd-watermark` — alias for the light variant
-- `.umd-watermark-dark` — dark variant (12% opacity, z-index: inherit)
-
-The scroll-driven animation (`animation-timeline: view()`) is progressive enhancement — browsers that don't support it get a static watermark.
-
-**What breaks without it:** The watermark text renders as normal-sized paragraph text in the document flow, pushing content down.
-
-**Critical:** All three class names must be in the base `:is()` selector. Omitting `.umd-watermark-dark` means the dark variant gets no positioning or font styling at all.
-
----
-
-## 9. Grid utilities
-
-```css
-.umd-layout-grid-child-fill-height {
-  display: flex;
-  flex-direction: column;
-}
-.umd-layout-grid-child-fill-height > * {
-  flex: 1;
-}
-```
-
-**What it does:** Makes grid children stretch to equal heights within a row. Used primarily with block-style stats (`data-display="block"`) and card grids.
-
-**What breaks without it:** Cards/stats in a row have uneven heights based on their content length, creating a ragged grid.
+**Critical:** All three class names (`.umd-text-decoration-watermark`, `.umd-watermark`, `.umd-watermark-dark`) must be in the `:is()` selector. Omitting one means that variant gets no positioning or font styles.

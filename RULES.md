@@ -1,182 +1,301 @@
-# UMD Page Builder — Implementation Rules
+# UMD Page Builder — Rules
 
-Verified against `@universityofmaryland/web-components-library@1.17.18`.
-
-**Companion files:**
-- `TEMPLATE.html` — complete page skeleton with all required CSS already assembled
-- `REQUIRED-CSS.md` — explains what each CSS rule does and why
-- `umd-component-registry.json` — component API reference (slots, attrs, aliases)
-
-This file contains **only implementation rules and gotchas** — things that will silently break if done wrong.
+Verified against `@universityofmaryland/web-components-library@1.17.18`.  
+Source: NPM package analysis + `beta.umd-staging.com` inspection.
 
 ---
 
-## 1. CSS must load before cdn.js
+## 1. Required files — every page needs both
 
-The critical CSS `<style>` block must be parsed before `cdn.js` runs. If the script loads first, elements upgrade before `:defined` rules exist and `container-type` never gets set. All two-column layouts (pathways, card grids) collapse to stacked. The complete CSS is in `TEMPLATE.html` — use it as-is.
-
-Inline the CSS as a `<style>` block, not a `<link>` — relative `<link>` paths fail when opening HTML directly from disk.
-
-**Exception:** `umd-element-nav-item` must use `container-type: normal` — not `inline-size`. See §3 for details.
-
----
-
-## 2. Page structure — required element order
-
-Every page follows this skeleton:
-
-1. `<umd-element-utility-header>` — global UMD bar, zero-config, never modify
-2. `<umd-element-navigation-header>` — site nav, configured per department
-3. Page content (heroes, sections, cards, pathways, etc.)
-4. `<umd-element-footer>` — site footer
-
----
-
-## 3. Navigation header
-
-Nav items go inside a `<nav slot="main-navigation">` wrapper — not slotted directly onto the header:
+Every standalone UMD HTML page must load these two files in `<head>`:
 
 ```html
-<!-- ✓ Correct -->
-<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
-  <a slot="logo" href="/">Logo</a>
+<!-- CORRECT order: critical CSS first, then cdn.js -->
+<style>
+  /* contents of umd-critical.css inlined here */
+</style>
+<script src="design-system/cdn.js"></script>
+```
+
+**Critical:** the CSS rules must be parsed before `cdn.js` runs and registers the custom elements. If `cdn.js` loads first, elements upgrade before `:defined` rules exist and `container-type` never gets set. Always inline the critical CSS as a `<style>` block (not a `<link>`) when serving standalone HTML files — a `<link>` to a relative path will fail if the file is opened directly from disk.
+- All two-column layouts (pathway standard/overlay/sticky, card grids, etc.) collapse to stacked. Only `data-display="hero"` pathway variants are immune — they use padding-based internal layout rather than container queries.
+- Body copy (`p`, `li`) falls back to the browser default sans-serif instead of Interstate.
+
+`umd-critical.css` is derived from the UMD build pipeline's `critical.css`. It provides:
+1. `component:defined { container-type: inline-size }` for every element tag — required for shadow DOM `@container` queries to fire.
+2. `font-family: "Interstate"` on `:root`, `p`, `li`, and form elements.
+
+---
+
+## 2. Interstate font
+
+Interstate is a **licensed typeface**. The `@font-face` declarations with base64-encoded font data live in UMD's production `critical.css` (build artifact). `umd-critical.css` sets the font-family stack but does not embed the font.
+
+For the font to actually render as Interstate you must either:
+- Link UMD's production `critical.css` from your CMS or build output, OR  
+- Self-host the Interstate font files and add `@font-face` declarations yourself.
+
+Without the font loaded, the stack falls back to `Helvetica, Arial, Verdana, sans-serif`. All layouts and sizing will still be correct — only the typeface changes.
+
+Font stacks (for reference):
+```css
+--umd-font-sans:     "Interstate", Helvetica, Arial, Verdana, sans-serif;
+--umd-font-serif:    "Crimson Pro", Georgia, serif;
+--umd-font-campaign: "Barlow Condensed", Arial Narrow, sans-serif;
+```
+
+---
+
+## 3. Page structure — required element order
+
+```html
+<!-- 1. Global university header — hardcoded, never modified -->
+<umd-element-utility-header></umd-element-utility-header>
+
+<!-- 2. Site navigation header — configurable per department -->
+<umd-element-navigation-header sticky>
+  <a slot="logo" href="/">...</a>
   <nav slot="main-navigation">
     <umd-element-nav-item>
       <a slot="primary-link" href="/about">About</a>
     </umd-element-nav-item>
   </nav>
 </umd-element-navigation-header>
+
+<!-- 3. Page content -->
+...
+
+<!-- 4. Footer -->
+<umd-element-footer>...</umd-element-footer>
 ```
 
-- `sticky` is a boolean attribute — use `sticky` not `sticky="true"`
-- Always add `class="umd-layout-space-horizontal-full"` to the header element
-- **Critical CSS exception:** `umd-element-nav-item` must use `container-type: normal`, not `inline-size`. The nav header uses `grid-auto-flow: column` internally — `inline-size` containment prevents the grid from sizing nav items correctly, causing them to collapse and overlap. The override is already in `TEMPLATE.html`:
-
-```css
-umd-element-nav-item:defined {
-  content-visibility: visible;
-  container-type: normal;
-  display: block;
-}
-```
+`umd-element-utility-header` is self-contained and zero-configurable. Hardcode it on every page. Never modify it.
 
 ---
 
-## 4. Pathway wrapper rules
+## 4. Navigation header — slot structure
 
-### Standard pathway needs a dark section wrapper
-
-The standard pathway (no `data-display`) only themes the **text column** — the image column is always transparent. Without a containing dark background, the image column floats on white.
+Nav items must be placed inside a `<nav slot="main-navigation">` wrapper, not slotted directly onto the header:
 
 ```html
-<!-- ✓ Correct — dark wrapper contains both columns -->
+<!-- ✓ Correct -->
+<umd-element-navigation-header sticky>
+  <a slot="logo" href="/">Logo</a>
+  <nav slot="main-navigation">
+    <umd-element-nav-item>
+      <a slot="primary-link" href="/research">Research</a>
+    </umd-element-nav-item>
+    <umd-element-nav-item>
+      <a slot="primary-link" href="/about">About</a>
+    </umd-element-nav-item>
+  </nav>
+</umd-element-navigation-header>
+
+<!-- ✗ Wrong — slot="nav-item-0" is not a valid slot -->
+<umd-element-nav-item slot="nav-item-0">...</umd-element-nav-item>
+```
+
+`sticky` is a boolean attribute — use `sticky` not `sticky="true"`.
+
+---
+
+## 5. Pathway usage rules
+
+### Background context is required for non-overlay variants
+
+The standard pathway (`umd-element-pathway` with no `data-display`) renders a two-column layout where only the **text column** gets a theme background. The image column is always transparent. This means:
+
+| Theme | Text column background | Image column background | Page context needed? |
+|---|---|---|---|
+| (none) | white | transparent | ⚠ Both float on white — broken |
+| `dark` | black | transparent | ✓ Wrap in `background: #000` section |
+| `maryland` | red (#e21833) | transparent | ✓ Wrap in `background: #000` section |
+
+**Rule:** Standard pathway must only be used when a dark section wrapper (`background: #000` or similar) contains the entire component — so both columns sit within a contained dark field.
+
+```html
+<!-- ✓ Correct — dark theme inside dark section -->
 <section style="background: #000;">
   <umd-element-pathway data-theme="dark">...</umd-element-pathway>
 </section>
 
-<!-- ✗ Wrong — image column floats on white -->
+<!-- ✗ Wrong — text column floats on white page -->
 <umd-element-pathway data-theme="dark">...</umd-element-pathway>
 ```
 
 ### Overlay pathway is self-contained
 
-`data-display="overlay"` fills full width with the image as background. Text panel gets an opaque background from the theme. No wrapper needed.
+`data-display="overlay"` fills the full component width with the image as background. The text panel gets an opaque background from the theme. No wrapper needed.
+
+Background panel color by theme:
+- No theme → white panel
+- `data-theme="dark"` → black panel (recommended for photography)  
+- `data-theme="maryland"` → red panel
+- `data-theme="light"` → light gray panel
 
 ### Hero pathway exception
 
-`data-display="hero"` uses padding-based layout (not container queries). Works even without the critical CSS.
+`data-display="hero"` uses a padding-based internal two-column layout instead of container queries. It renders correctly even **without** `umd-critical.css` — this is why it was the only variant working before the critical CSS was identified.
 
-### Quick reference
+### Summary
 
-| Variant | Dark wrapper? | Critical CSS? |
+| Variant | Requires wrapper? | Requires critical CSS? |
 |---|---|---|
-| Standard (no data-display) | ✓ Required | ✓ Required |
-| `data-display="overlay"` | No | ✓ Required |
-| `data-display="hero"` | No | Not required |
-| `data-display="sticky"` | No | ✓ Required |
+| Standard (no data-display) | ✓ Dark section wrapper | ✓ |
+| `data-display="overlay"` | No | ✓ |
+| `data-display="hero"` | No | No (padding-based) |
+| `data-display="sticky"` | No | ✓ |
 
 ---
 
-## 5. CTA button — direct child rule
+## 6. CTA button
 
-The link or button must be a **direct child** of `umd-element-call-to-action` — no wrapper divs:
+`umd-element-call-to-action` wraps an `<a>` or `<button>`. The link must be a direct child:
 
 ```html
-<!-- ✓ Correct -->
 <umd-element-call-to-action data-display="primary">
   <a href="/apply">Apply Now</a>
 </umd-element-call-to-action>
-
-<!-- ✗ Wrong -->
-<umd-element-call-to-action data-display="primary">
-  <div><a href="/apply">Apply Now</a></div>
-</umd-element-call-to-action>
 ```
 
-When placing CTAs inside an `actions` slot, wrap the CTA(s) in a `<div slot="actions">`:
+Valid `data-display` values: `primary`, `secondary`. Omit for default style.
+
+---
+
+## 7. Slots — general rules
+
+- Slot content must be **direct children** of the component element, not nested wrappers (unless the slot description explicitly says to wrap).
+- Use the correct element type per slot. Most headline slots expect heading elements (`h1`–`h6`). Most image slots expect `img` (not a `div` wrapping an `img`).
+- The `logo` slot in headers and footers must be an `<a>` wrapping an `<img>` — not just an `<img>` or text.
+
+---
+
+## 8. Registry is the source of truth
+
+Do not re-derive known components from NPM source or Storybook. Use the registry JSON. The registry has been verified directly from NPM package source for version `1.17.18`. Only add new components to the registry after verification — never guess slots or attribute names.
+
+---
+
+## 9. Stats layout rules
+
+### Large stats (data-visual-size="large") — max 4 per row
+
+Large stats are wide enough that rows of more than 4 become cramped. The rules are:
+
+| Count | Layout |
+|---|---|
+| 1–4 | Single grid row, `repeat(N, 1fr)` |
+| 5 | Row of 3, then row of 2 centered beneath |
+| 6 | Two rows of 3 |
+| 7 | Row of 4, then row of 3 |
+| 8 | Two rows of 4 |
+
+For the 3+2 case (5 stats), center the second row by constraining its max-width:
 
 ```html
-<div slot="actions">
-  <umd-element-call-to-action data-display="primary">
-    <a href="/apply">Apply Now</a>
-  </umd-element-call-to-action>
+<!-- Row 1: 3 stats -->
+<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:48px 32px;">
+  <umd-element-stat data-visual-size="large" data-decoration-line>...</umd-element-stat>
+  <umd-element-stat data-visual-size="large" data-decoration-line>...</umd-element-stat>
+  <umd-element-stat data-visual-size="large" data-decoration-line>...</umd-element-stat>
+</div>
+<!-- Row 2: 2 stats centered (max-width matches 2 of 3 columns) -->
+<div style="display:grid; grid-template-columns:repeat(2,1fr); gap:48px 32px; max-width:calc(66.66% + 16px); margin:48px auto 0;">
+  <umd-element-stat data-visual-size="large" data-decoration-line>...</umd-element-stat>
+  <umd-element-stat data-visual-size="large" data-decoration-line>...</umd-element-stat>
 </div>
 ```
 
----
-
-## 6. Slot rules
-
-- Slot content must be **direct children** of the component element
-- Headline slots expect heading elements (`h1`–`h6`)
-- Image slots expect `<img>` (not a div wrapping an img)
-- The `logo` slot (header + footer) must be `<a>` wrapping `<img>` — not just `<img>`
+Block stats (`data-display="block"`) follow the same row-count rule but use `umd-layout-grid-child-fill-height` on each stat for equal card heights.
 
 ---
 
-## 7. `data-theme` does NOT cascade
+## 10. Vertical spacing
 
-Each component that needs dark theme must have `data-theme` set **individually**. A parent's theme does not cross shadow DOM boundaries into child components.
+The design system provides CSS utility classes for consistent spacing between sections and between items within sections. These classes must be applied in your own `<style>` block — they are not injected by `cdn.js`.
 
-```html
-<!-- ✓ Correct — each component themed independently -->
-<umd-element-section-intro-wide data-theme="dark">
-  <h2 slot="headline">Our Research</h2>
-  <umd-element-call-to-action data-display="secondary" data-theme="dark" slot="actions">
-    <a href="/research">Explore All</a>
-  </umd-element-call-to-action>
-</umd-element-section-intro-wide>
+### Landing / full-width pages
 
-<!-- ✗ Wrong — CTA renders with light styles -->
-<umd-element-section-intro-wide data-theme="dark">
-  <h2 slot="headline">Our Research</h2>
-  <umd-element-call-to-action data-display="secondary" slot="actions">
-    <a href="/research">Explore All</a>
-  </umd-element-call-to-action>
-</umd-element-section-intro-wide>
+**Between sections** — add `umd-layout-vertical-landing` to each `<section>`:
+
+| Breakpoint | Spacing |
+|---|---|
+| Mobile (default) | 56px `margin-bottom` |
+| Tablet (≥768px) | 80px |
+| Desktop (≥1024px) | 120px |
+
+**Between items within a section** — add `umd-layout-vertical-landing-child` to child containers:
+
+| Breakpoint | Spacing |
+|---|---|
+| Mobile (default) | 32px `margin-bottom` |
+| Tablet (≥768px) | 40px |
+| Desktop (≥1024px) | 48px |
+
+### Interior pages
+
+**Page content area** — add `umd-layout-vertical-interior` for top/bottom page margins:
+
+| Breakpoint | Spacing |
+|---|---|
+| Mobile + Tablet (default) | 56px `margin-bottom` |
+| Desktop (≥1024px) | 80px |
+
+**Between items within a section** — add `umd-layout-vertical-interior-child`:
+
+| All breakpoints | 32px `margin-bottom` |
+|---|---|
+
+### CSS to include in your `<style>` block
+
+```css
+/* Landing page — between sections */
+.umd-layout-vertical-landing           { margin-bottom: 56px; }
+@media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+@media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+/* Landing page — between items within a section */
+.umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+@media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+@media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+/* Interior page — page content area margins */
+.umd-layout-vertical-interior          { margin-bottom: 56px; }
+@media (min-width: 1024px) { .umd-layout-vertical-interior { margin-bottom: 80px; } }
+
+/* Interior page — between items within a section */
+.umd-layout-vertical-interior-child    { margin-bottom: 32px; }
 ```
 
-Always audit every child component when applying a dark theme.
-
----
-
-## 8. Don't invent eyebrows
-
-The `eyebrow` slot is optional on heroes, pathways, cards, and section intros. Only populate it when the source content explicitly provides a label. Never fabricate one to fill space.
+### Usage pattern
 
 ```html
-<!-- ✓ Correct — no eyebrow in source, don't add one -->
-<umd-element-pathway data-theme="dark">
-  <h2 slot="headline">Choose Maryland</h2>
-  ...
-</umd-element-pathway>
+<!-- Landing page: each top-level section gets umd-layout-vertical-landing -->
+<section class="umd-layout-vertical-landing" style="background:#000;">
+  <umd-element-pathway data-theme="dark">...</umd-element-pathway>
+</section>
+
+<section class="umd-layout-vertical-landing">
+  <div class="page-lock">
+    <!-- section intro gets umd-layout-vertical-landing-child -->
+    <umd-element-section-intro class="umd-layout-vertical-landing-child">...</umd-element-section-intro>
+    <!-- card grid follows -->
+    <div class="news-grid">...</div>
+  </div>
+</section>
 ```
+
+### Note on pathway sections
+
+Pathway and hero components manage their own internal spacing. When wrapping a pathway in a dark `<section>`, apply `umd-layout-vertical-landing` to the `<section>` element, not to the component itself. The section's `margin-bottom` creates the gap to the next section.
 
 ---
 
-## 9. Stat component — `slot="text"` gotcha
+## 11. Stat component — slot="text" gotcha
 
-The descriptive label **requires** `slot="text"`. Despite documentation calling it the "default slot", bare unslotted children are silently ignored. Always wrap in a div:
+The official documentation describes the descriptive label as the "default slot", implying children with no `slot` attribute. **This is wrong.** The component reads it as a named slot and bare unslotted children are silently ignored.
+
+Always use `slot="text"` for the descriptive label:
 
 ```html
 <!-- ✓ Correct -->
@@ -185,110 +304,260 @@ The descriptive label **requires** `slot="text"`. Despite documentation calling 
   <div slot="text"><p>Doctoral degrees conferred annually</p></div>
 </umd-element-stat>
 
-<!-- ✗ Wrong — text silently dropped, no error -->
+<!-- ✗ Wrong — text silently dropped -->
 <umd-element-stat data-visual-size="large" data-decoration-line>
   <span slot="stat">600+</span>
   <p>Doctoral degrees conferred annually</p>
 </umd-element-stat>
 ```
 
+All three slots:
+- `slot="stat"` — the number/value (max 6 chars)
+- `slot="text"` — the descriptive label (wrap in a `div`)
+- `slot="sub-text"` — attribution/context
+
 ---
 
-## 10. Stats layout — max 4 large per row
+## 12. Horizontal spacing
 
-| Count | Layout |
-|---|---|
-| 1–4 | Single grid row, `repeat(N, 1fr)` |
-| 5 | Row of 3, then row of 2 centered |
-| 6 | Two rows of 3 |
-| 7 | Row of 4, then row of 3 |
-| 8 | Two rows of 4 |
+The design system provides CSS utility classes for consistent horizontal padding and max-width constraints. These are layout "lock" classes — they center content and apply responsive side padding. They must be defined in your own `<style>` block and applied to host or wrapper elements.
 
-For 5 stats (3+2), center the second row:
+Source: `@universityofmaryland/web-styles-library` → `layout/space/horizontal.js`  
+Breakpoints: `tablet.min` = 768px, `highDef.min` = 1200px  
+Padding scale: `spacing.md` (24px) → `spacing.2xl` (48px) → `spacing.4xl` (64px)
+
+### Available classes
+
+| Class | max-width | Use for |
+|---|---|---|
+| `umd-layout-space-horizontal-full` | 100% | Navigation header, full-bleed sections |
+| `umd-layout-space-horizontal-larger` | 1600px | Wide landing page content |
+| `umd-layout-space-horizontal-large` | 1400px | Standard landing page content |
+| `umd-layout-space-horizontal-normal` | 1280px | Body content, interior pages |
+| `umd-layout-space-horizontal-small` | 992px | Narrow content columns |
+| `umd-layout-space-horizontal-smallest` | 800px | Article body, forms |
+
+### CSS to include in your `<style>` block
+
+All classes share the same padding scale — only `max-width` differs:
+
+```css
+/* Shared padding behaviour — apply to all variants */
+[class^="umd-layout-space-horizontal-"] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+@media (min-width: 768px) {
+  [class^="umd-layout-space-horizontal-"] {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+@media (min-width: 1200px) {
+  [class^="umd-layout-space-horizontal-"] {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+
+/* Per-class max-width */
+.umd-layout-space-horizontal-full    { max-width: 100%;    }
+.umd-layout-space-horizontal-larger  { max-width: 1600px;  }
+.umd-layout-space-horizontal-large   { max-width: 1400px;  }
+.umd-layout-space-horizontal-normal  { max-width: 1280px;  }
+.umd-layout-space-horizontal-small   { max-width: 992px;   }
+.umd-layout-space-horizontal-smallest{ max-width: 800px;   }
+```
+
+### Navigation header requires `umd-layout-space-horizontal-full`
+
+The navigation header must carry this class on its host element so its internal lock spans the full viewport width with consistent side padding:
+
 ```html
-<div style="display:grid; grid-template-columns:repeat(3,1fr); gap:48px 32px;">
-  <!-- 3 stats -->
-</div>
-<div style="display:grid; grid-template-columns:repeat(2,1fr); gap:48px 32px; max-width:calc(66.66% + 16px); margin:48px auto 0;">
-  <!-- 2 stats centered -->
+<!-- ✓ Correct -->
+<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+  ...
+</umd-element-navigation-header>
+
+<!-- ✗ Wrong — header ignores page horizontal rhythm -->
+<umd-element-navigation-header sticky>
+  ...
+</umd-element-navigation-header>
+```
+
+### Content grids and page-lock wrappers
+
+For card grids and body content that should not span full viewport width, apply the appropriate class to a wrapper `<div>` rather than the component itself:
+
+```html
+<div class="umd-layout-space-horizontal-larger">
+  <umd-element-section-intro-wide>...</umd-element-section-intro-wide>
+  <div class="news-grid">
+    <umd-element-card-overlay>...</umd-element-card-overlay>
+    <umd-element-card-overlay>...</umd-element-card-overlay>
+    <umd-element-card-overlay>...</umd-element-card-overlay>
+  </div>
 </div>
 ```
 
-Block stats (`data-display="block"`) use `umd-layout-grid-child-fill-height` on each stat for equal card heights.
+Pathway and hero components manage their own internal horizontal spacing — do not wrap them in a horizontal spacing class.
+
+### Extra properties required when wrapping `umd-element-section-intro-wide`
+
+When `.umd-layout-space-horizontal-larger` wraps `umd-element-section-intro-wide`, two additional properties are required beyond the standard padding/max-width:
+
+```css
+.umd-layout-space-horizontal-larger {
+  /* ...standard padding rules... */
+  position: relative;       /* required — watermark span is position:absolute */
+  container-type: inline-size; /* required — fires the component's internal container
+                                  query that puts headline and CTA in a flex row at 500px+ */
+  isolation: isolate;       /* required when watermark is present — creates a local
+                                  stacking context so z-index:-1 on the watermark goes
+                                  behind the headline text, not behind the page background */
+}
+```
+
+`section-intro` (centered variant, `umd-element-section-intro`) constrains its own width internally and does not need a horizontal spacing wrapper.
 
 ---
 
-## 11. Horizontal spacing — which components get wrapped
+## 13. Don't invent eyebrows
 
-**Do NOT wrap** in a horizontal spacing class (these are full-bleed):
-- `umd-element-pathway` (all variants)
-- `umd-element-hero` (all variants)
-- `umd-element-hero-minimal`, `hero-expand`, `hero-logo`, `hero-grid`, `hero-brand-video`
-- `umd-layout-image-expand`
-
-**DO wrap** in `.umd-layout-space-horizontal-larger` (or appropriate tier):
-- Card grids
-- `umd-element-section-intro-wide`
-- Stat groups
-- Body content blocks
-
-**Navigation header** always gets `class="umd-layout-space-horizontal-full"` on the element itself.
-
-**`umd-element-section-intro`** (centered) constrains its own width — no wrapper needed.
-
----
-
-## 12. Watermark pattern
-
-The watermark is a CSS utility class on a sibling `div` placed **before** `umd-element-section-intro-wide`, inside a `.umd-layout-space-horizontal-larger` wrapper. Not a component attribute.
+The `eyebrow` slot is optional on pathways, heroes, cards, and section intros. Only populate it when the source content explicitly includes a label or category above the headline. Do not invent one to fill the space or add context — an empty eyebrow slot is correct and intentional.
 
 ```html
-<!-- Light watermark -->
+<!-- ✓ Correct — no eyebrow in source, don't add one -->
+<umd-element-pathway data-theme="dark">
+  <h2 slot="headline">Choose Maryland</h2>
+  ...
+</umd-element-pathway>
+
+<!-- ✗ Wrong — eyebrow fabricated to add context -->
+<umd-element-pathway data-theme="dark">
+  <p slot="eyebrow">Graduate Studies at Maryland</p>
+  <h2 slot="headline">Choose Maryland</h2>
+  ...
+</umd-element-pathway>
+```
+
+---
+
+## 14. `data-theme` does not cascade
+
+Each component that needs dark (or any) theme styling must have `data-theme` set on it **individually**. A parent component's theme does not cascade into child components — even when a child is slotted inside a parent that has `data-theme="dark"`.
+
+```html
+<!-- ✓ Correct — each component gets its own data-theme -->
+<umd-element-section-intro-wide data-theme="dark">
+  <h2 slot="headline">Our Research</h2>
+  <umd-element-call-to-action data-display="secondary" data-theme="dark" slot="actions">
+    <a href="/research">Explore All</a>
+  </umd-element-call-to-action>
+</umd-element-section-intro-wide>
+
+<!-- ✗ Wrong — CTA still renders with light styles -->
+<umd-element-section-intro-wide data-theme="dark">
+  <h2 slot="headline">Our Research</h2>
+  <umd-element-call-to-action data-display="secondary" slot="actions">
+    <a href="/research">Explore All</a>
+  </umd-element-call-to-action>
+</umd-element-section-intro-wide>
+```
+
+This applies to all nested component combinations: pathway + CTA, section-intro + CTA, card + CTA, etc. Always audit every child component when applying a dark theme.
+
+---
+
+## 15. Watermark pattern (`umd-text-decoration-watermark`)
+
+The watermark is **not a component attribute** — it is a CSS utility class applied to a sibling `div` placed immediately before `umd-element-section-intro-wide`, inside the `.umd-layout-space-horizontal-larger` wrapper.
+
+The span text should echo the headline. It is `aria-hidden="true"` and `role="presentation"` — purely decorative. The scroll-driven entrance animation fires automatically from the class.
+
+### Light variant — `.umd-text-decoration-watermark`
+
+```html
 <div class="umd-layout-space-horizontal-larger">
   <div class="umd-text-decoration-watermark">
     <span aria-hidden="true" role="presentation">Featured Stories</span>
   </div>
   <umd-element-section-intro-wide>
     <h2 slot="headline">Featured Stories</h2>
+    <umd-element-call-to-action data-display="secondary" slot="actions">
+      <a href="/news">View All News</a>
+    </umd-element-call-to-action>
   </umd-element-section-intro-wide>
 </div>
+```
 
-<!-- Dark watermark -->
+### Dark variant — `.umd-watermark-dark`
+
+```html
 <div class="umd-layout-space-horizontal-larger">
   <div class="umd-watermark-dark">
     <span aria-hidden="true" role="presentation">Our Research</span>
   </div>
   <umd-element-section-intro-wide data-theme="dark">
     <h2 slot="headline">Our Research</h2>
+    <umd-element-call-to-action data-display="secondary" data-theme="dark" slot="actions">
+      <a href="/research">Explore All</a>
+    </umd-element-call-to-action>
   </umd-element-section-intro-wide>
 </div>
 ```
 
-The span text should echo the headline. It is `aria-hidden="true"` and `role="presentation"` — purely decorative.
+Note: `umd-element-call-to-action` requires its own `data-theme="dark"` — see rule 14.
 
----
+### Required CSS (add to your `<style>` block)
 
-## 13. Image-expand is full-bleed
+```css
+/* Base styles — all three classes */
+:is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+  position: absolute;
+  top: 20px;
+  left: -2%;
+  color: #f1f1f1;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: min(calc(44px + 13vw), 240px);
+  line-height: 0;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
 
-`umd-layout-image-expand` requires `width: 100%` in critical CSS. Without it, the host collapses to the width of its content slot. Do not wrap in a horizontal spacing class. Use a wrapping `<section>` with `umd-layout-vertical-landing` for spacing:
+/* Light variant */
+:is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+  opacity: 0.6;
+  z-index: -1;
+}
 
-```html
-<section class="umd-layout-vertical-landing">
-  <umd-layout-image-expand>
-    <div slot="content">...</div>
-    <img slot="image" src="/photo.jpg" alt="" />
-  </umd-layout-image-expand>
-</section>
+/* Dark variant */
+.umd-watermark-dark > * {
+  opacity: 0.12;
+  z-index: inherit;
+}
+
+/* Scroll-driven entrance animation */
+@keyframes slide-in-from-left {
+  from { transform: translate(-15vw); }
+  to   { transform: translate(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      animation: slide-in-from-left forwards;
+      animation-timeline: view();
+      animation-range-start: 0;
+      animation-range-end: 100vh;
+      transform: translate(-15vw);
+    }
+  }
+}
 ```
 
----
-
-## 14. `data-theme="maryland"` behavior
-
-Maryland theme applies a solid red background (#e21833) with white text to the **text column only** (on pathways) or the component body. It does not add any other styling. Avoid for quote/spotlight content where a dark theme is more appropriate.
-
----
-
-## 15. Registry is the source of truth
-
-Do not re-derive known components from NPM source or Storybook. Use `umd-component-registry.json`. It has been verified directly from NPM package source for version `1.17.18`. Only add new components after source verification — never guess slot or attribute names.
+**Critical:** All three watermark classes (`.umd-text-decoration-watermark`, `.umd-watermark`, `.umd-watermark-dark`) must be included in the base `:is()` selector. Omitting `.umd-watermark-dark` from the base selector means the dark variant span gets none of the positioning or font styles.

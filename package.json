@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@universityofmaryland/web-components-library": "^1.17.18"
+  }
+}

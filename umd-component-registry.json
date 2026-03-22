@@ -3,25 +3,28 @@
     "version": "1.0.0",
     "components_version": "1.17.18",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-03-18",
-    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
-    "notes": "All slots and attributes verified from NPM package source. Cleaned for generation: batch/priority/source fields removed. Use aliases for variant attr presets.",
-    "component_count": 22,
-    "last_updated": "2026-03-18"
+    "last_verified": "2026-03-02",
+    "cdn_base": "design-system",
+    "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
+    "component_count": 18,
+    "last_updated": "2026-03-03",
+    "batch_4": "section-intro, section-intro-wide, footer"
   },
   "header-utility": {
     "tag": "umd-element-utility-header",
     "label": "Global University Header",
-    "category": "global",
     "slots": [],
     "attrs": [],
-    "notes": "Fixed UMD global bar — identical on every page. Self-contained: renders UMD flag, 'A Top 20 Public Research University', and utility nav. No slots, no attrs needed. Hardcode in every template. Never touch during page updates.",
-    "usage": "<umd-element-utility-header></umd-element-utility-header>"
+    "configurable": false,
+    "usage": "<umd-element-utility-header></umd-element-utility-header>",
+    "notes": "Fixed UMD global bar \u2014 identical on every page. Self-contained: renders UMD flag, 'A Top 20 Public Research University', and utility nav. No slots, no attrs needed. Hardcode in every template. Never touch during page updates.",
+    "source": "npm",
+    "priority": 1,
+    "batch": 1
   },
   "header-site": {
     "tag": "umd-element-navigation-header",
     "label": "Site Navigation Header",
-    "category": "navigation",
     "slots": [
       {
         "name": "logo",
@@ -51,12 +54,12 @@
       {
         "name": "cta-url",
         "type": "string",
-        "description": "CTA button URL — requires cta-text to activate"
+        "description": "CTA button URL \u2014 requires cta-text to activate"
       },
       {
         "name": "cta-text",
         "type": "string",
-        "description": "CTA button label — requires cta-url to activate"
+        "description": "CTA button label \u2014 requires cta-url to activate"
       },
       {
         "name": "sticky",
@@ -64,15 +67,18 @@
         "description": "Triggers sticky behavior when set to 'true'"
       }
     ],
-    "notes": "Site-level header — logo and nav links change per site. The component auto-registers umd-element-nav-item children from the main-navigation slot. CTA button only appears when both cta-url and cta-text are present.",
+    "configurable": true,
     "variants": {
       "sticky": "Add sticky attribute for fixed positioning on scroll"
-    }
+    },
+    "notes": "Site-level header \u2014 logo and nav links change per site. The component auto-registers umd-element-nav-item children from the main-navigation slot. CTA button only appears when both cta-url and cta-text are present.",
+    "source": "npm",
+    "priority": 1,
+    "batch": 1
   },
   "nav-item": {
     "tag": "umd-element-nav-item",
     "label": "Navigation Item",
-    "category": "navigation",
     "slots": [
       {
         "name": "primary-link",
@@ -88,15 +94,15 @@
       }
     ],
     "attrs": [],
+    "configurable": true,
     "notes": "Used inside the main-navigation slot of umd-element-navigation-header. Each nav link = one umd-element-nav-item.",
-    "gotchas": [
-      "Critical CSS: must use container-type: normal (NOT inline-size). inline-size breaks the grid-auto-flow: column layout inside the nav header shadow DOM, causing items to collapse and overlap."
-    ]
+    "source": "npm",
+    "priority": 1,
+    "batch": 1
   },
   "hero-standard": {
     "tag": "umd-element-hero",
     "label": "Hero",
-    "category": "hero",
     "slots": [
       {
         "name": "eyebrow",
@@ -198,6 +204,27 @@
         "description": "Expands horizontal spacing for wider text container."
       }
     ],
+    "configurable": true,
+    "themes": [
+      "dark",
+      "light",
+      "maryland",
+      "gold"
+    ],
+    "variants": {
+      "default": "Standard hero \u2014 text left, image optional",
+      "overlay": "Full-bleed background image with text over it",
+      "stacked": "Image above, text below (two-column layout on desktop)",
+      "stacked-interior": "Shorter stacked variant for interior pages",
+      "default-centered": "Centered text layout",
+      "default-interior": "Shorter height for interior pages",
+      "default-interior-centered": "Interior page + centered text"
+    },
+    "notes": "Most versatile hero. The README's example uses data-theme='dark' data-display='overlay' for a typical background image hero. For a dark overlay hero with a background image: add both data-theme='dark' and data-display='overlay' and slot an image.",
+    "example_dark_overlay": "<umd-element-hero data-display=\"overlay\" data-theme=\"dark\">\n  <img slot=\"image\" src=\"hero.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Clark School of Engineering</p>\n  <h1 slot=\"headline\">Advancing the Future</h1>\n  <div slot=\"text\"><p>World-class research and education.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Learn More</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero>",
+    "source": "npm",
+    "priority": 1,
+    "batch": 1,
     "aliases": {
       "background hero": {
         "description": "Same as standard hero. Image fills the background behind text. No data-display attribute.",
@@ -265,7 +292,7 @@
         }
       },
       "standard hero": {
-        "description": "Default hero — image renders as full background behind text. No data-display needed.",
+        "description": "Default hero \u2014 image renders as full background behind text. No data-display needed.",
         "attrs": {}
       },
       "overlay hero": {
@@ -280,14 +307,11 @@
           "data-theme": "dark"
         }
       }
-    },
-    "notes": "Most versatile hero. The README's example uses data-theme='dark' data-display='overlay' for a typical background image hero. For a dark overlay hero with a background image: add both data-theme='dark' and data-display='overlay' and slot an image.",
-    "example_dark_overlay": "<umd-element-hero data-display=\"overlay\" data-theme=\"dark\">\n  <img slot=\"image\" src=\"hero.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Clark School of Engineering</p>\n  <h1 slot=\"headline\">Advancing the Future</h1>\n  <div slot=\"text\"><p>World-class research and education.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Learn More</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero>"
+    }
   },
   "card-standard": {
     "tag": "umd-element-card",
     "label": "Card",
-    "category": "card",
     "description": "General content card. Supports image, eyebrow, headline, text, date, and actions. Renders as a block (stacked) or list (horizontal) depending on data-display.",
     "slots": [
       {
@@ -338,7 +362,7 @@
         ],
         "description": "Layout variant. Omit for default block/stacked layout.",
         "notes": {
-          "list": "Horizontal list layout — image right, text left",
+          "list": "Horizontal list layout \u2014 image right, text left",
           "feature": "Larger card with eyebrow ribbon",
           "promo": "Dark overlay promo style with background image"
         }
@@ -392,12 +416,14 @@
       }
     },
     "example": "<umd-element-card>\n  <a slot=\"image\" href=\"/article\"><img src=\"/image.jpg\" alt=\"\" /></a>\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description of the article content.</p>\n  <time slot=\"date\" datetime=\"2025-03-01\">March 1, 2025</time>\n</umd-element-card>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 2,
     "notes": " Use data-aligned for card grids so all images crop to the same height."
   },
   "card-overlay": {
     "tag": "umd-element-card-overlay",
     "label": "Card Overlay",
-    "category": "card",
     "description": "Card with text overlaid on a background image. Without an image, renders as a text-only dark card. Supports a custom CTA icon link.",
     "slots": [
       {
@@ -481,12 +507,14 @@
         }
       }
     },
-    "example": "<umd-element-card-overlay>\n  <img slot=\"image\" src=\"/image.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description.</p>\n  <div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/article\">Learn More</a></umd-element-call-to-action></div>\n</umd-element-card-overlay>"
+    "example": "<umd-element-card-overlay>\n  <img slot=\"image\" src=\"/image.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description.</p>\n  <div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/article\">Learn More</a></umd-element-call-to-action></div>\n</umd-element-card-overlay>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 2
   },
   "card-icon": {
     "tag": "umd-element-card-icon",
     "label": "Card Icon",
-    "category": "card",
     "description": "Compact card designed for icon + headline + text combinations. Useful for feature lists, service grids, and program overviews.",
     "slots": [
       {
@@ -530,18 +558,20 @@
         }
       }
     },
-    "example": "<umd-element-card-icon>\n  <img slot=\"image\" src=\"/icon.svg\" alt=\"\" />\n  <h3 slot=\"headline\">Research Excellence</h3>\n  <p slot=\"text\">Supporting description of this area.</p>\n</umd-element-card-icon>"
+    "example": "<umd-element-card-icon>\n  <img slot=\"image\" src=\"/icon.svg\" alt=\"\" />\n  <h3 slot=\"headline\">Research Excellence</h3>\n  <p slot=\"text\">Supporting description of this area.</p>\n</umd-element-card-icon>",
+    "source": "npm",
+    "priority": 3,
+    "batch": 2
   },
   "card-video": {
     "tag": "umd-element-card-video",
     "label": "Card Video",
-    "category": "card",
     "description": "Video card that embeds a video element with play controls. Supports full or short height variants.",
     "slots": [
       {
         "name": "video",
         "required": true,
-        "description": "A video element. Required — component will log an error without it.",
+        "description": "A video element. Required \u2014 component will log an error without it.",
         "example": "<video slot=\"video\" src=\"/video.mp4\" poster=\"/poster.jpg\"></video>"
       }
     ],
@@ -572,12 +602,14 @@
         }
       }
     },
-    "example": "<umd-element-card-video>\n  <video slot=\"video\" src=\"/video.mp4\" poster=\"/poster.jpg\"></video>\n</umd-element-card-video>"
+    "example": "<umd-element-card-video>\n  <video slot=\"video\" src=\"/video.mp4\" poster=\"/poster.jpg\"></video>\n</umd-element-card-video>",
+    "source": "npm",
+    "priority": 3,
+    "batch": 2
   },
   "pathway": {
     "tag": "umd-element-pathway",
     "label": "Pathway",
-    "category": "content",
     "description": "Two-column promo section: image on one side, text content on the other. The most versatile promotional section component. Supports standard, hero, overlay, and sticky display modes.",
     "slots": [
       {
@@ -636,7 +668,7 @@
         "notes": {
           "hero": "Full-bleed hero-style pathway",
           "overlay": "Text overlaid on image (similar to hero overlay)",
-          "sticky": "Sticky scroll layout — text sticks while image scrolls"
+          "sticky": "Sticky scroll layout \u2014 text sticks while image scrolls"
         }
       },
       {
@@ -684,7 +716,7 @@
         }
       },
       "pathway maryland": {
-        "description": "Standard pathway, Maryland red theme — sets the text column background to solid red (#e21833) with white text. No other styling differences. Avoid for quote/feature content; prefer dark theme instead.",
+        "description": "Standard pathway, Maryland red theme \u2014 sets the text column background to solid red (#e21833) with white text. No other styling differences. Avoid for quote/feature content; prefer dark theme instead.",
         "attrs": {
           "data-theme": "maryland"
         }
@@ -702,7 +734,7 @@
         }
       },
       "pathway overlay": {
-        "description": "Overlay pathway — text on top of image",
+        "description": "Overlay pathway \u2014 text on top of image",
         "attrs": {
           "data-display": "overlay"
         }
@@ -721,13 +753,15 @@
         }
       }
     },
-    "example": "<umd-element-pathway>\n  <img slot=\"image\" src=\"/feature.jpg\" alt=\"Featured research\" />\n  <p slot=\"eyebrow\">Featured Research</p>\n  <h2 slot=\"headline\">Advancing the Future of Engineering</h2>\n  <div slot=\"text\"><p>Our researchers are tackling the defining challenges of our time.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/research\">Explore Research</a></umd-element-call-to-action>\n  </div>\n</umd-element-pathway>"
+    "example": "<umd-element-pathway>\n  <img slot=\"image\" src=\"/feature.jpg\" alt=\"Featured research\" />\n  <p slot=\"eyebrow\">Featured Research</p>\n  <h2 slot=\"headline\">Advancing the Future of Engineering</h2>\n  <div slot=\"text\"><p>Our researchers are tackling the defining challenges of our time.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/research\">Explore Research</a></umd-element-call-to-action>\n  </div>\n</umd-element-pathway>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 2
   },
   "pathway-highlight": {
     "tag": "umd-element-pathway-highlight",
     "label": "Pathway Highlight",
-    "category": "content",
-    "description": "Two-column pathway variant that pairs content text with a pull quote or highlighted statement on the right. No image — designed for quote-forward editorial sections.",
+    "description": "Two-column pathway variant that pairs content text with a pull quote or highlighted statement on the right. No image \u2014 designed for quote-forward editorial sections.",
     "slots": [
       {
         "name": "eyebrow",
@@ -763,7 +797,7 @@
         "name": "highlight-attribution",
         "required": false,
         "description": "Attribution for the pull quote.",
-        "example": "<p slot=\"highlight-attribution\">— Dean John Smith</p>"
+        "example": "<p slot=\"highlight-attribution\">\u2014 Dean John Smith</p>"
       }
     ],
     "attrs": [
@@ -788,12 +822,14 @@
         }
       }
     },
-    "example": "<umd-element-pathway-highlight>\n  <p slot=\"eyebrow\">From Our Dean</p>\n  <h2 slot=\"headline\">A Message of Excellence</h2>\n  <div slot=\"text\"><p>Supporting body content on the left side of the section.</p></div>\n  <p slot=\"highlight\">The work happening here will define the next generation of engineers.</p>\n  <p slot=\"highlight-attribution\">— Dean John Smith</p>\n</umd-element-pathway-highlight>"
+    "example": "<umd-element-pathway-highlight>\n  <p slot=\"eyebrow\">From Our Dean</p>\n  <h2 slot=\"headline\">A Message of Excellence</h2>\n  <div slot=\"text\"><p>Supporting body content on the left side of the section.</p></div>\n  <p slot=\"highlight\">The work happening here will define the next generation of engineers.</p>\n  <p slot=\"highlight-attribution\">\u2014 Dean John Smith</p>\n</umd-element-pathway-highlight>",
+    "source": "npm",
+    "priority": 3,
+    "batch": 2
   },
   "hero-minimal": {
     "tag": "umd-element-hero-minimal",
     "label": "Hero Minimal",
-    "category": "hero",
     "description": "Compact, short-height hero. No background image required. Designed for interior pages, section headers, or anywhere a full-height hero would be too heavy. Supports dark, light, and maryland themes.",
     "slots": [
       {
@@ -858,12 +894,14 @@
       }
     },
     "example": "<umd-element-hero-minimal>\n  <p slot=\"eyebrow\">The Graduate School</p>\n  <h1 slot=\"headline\">Graduate Admissions</h1>\n  <div slot=\"text\"><p>Join one of the world's premier public research universities.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply Now</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-minimal>",
-    "notes": "Best for interior pages and section intros. Host height is ~30vh. Use hero-standard for full-height landing heroes."
+    "notes": "Best for interior pages and section intros. Host height is ~30vh. Use hero-standard for full-height landing heroes.",
+    "source": "npm",
+    "priority": 2,
+    "batch": 3
   },
   "hero-expand": {
     "tag": "umd-element-hero-expand",
     "label": "Hero Expand",
-    "category": "hero",
     "description": "Full-viewport sticky hero that reveals/expands as the user scrolls. Designed for immersive landing page experiences. Supports both a background image and a background video.",
     "slots": [
       {
@@ -921,12 +959,14 @@
       }
     },
     "example": "<umd-element-hero-expand>\n  <video slot=\"video\" src=\"/campus.mp4\" autoplay muted loop></video>\n  <p slot=\"eyebrow\">University of Maryland</p>\n  <h1 slot=\"headline\">Fearless Ideas Start Here</h1>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Discover UMD</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-expand>",
-    "notes": "Full 100vh height. Sticky scroll behavior is built in. Pair with data-layout-top-position if a sticky navigation header is present."
+    "notes": "Full 100vh height. Sticky scroll behavior is built in. Pair with data-layout-top-position if a sticky navigation header is present.",
+    "source": "npm",
+    "priority": 3,
+    "batch": 3
   },
   "hero-logo": {
     "tag": "umd-element-hero-logo",
     "label": "Hero Logo",
-    "category": "hero",
     "description": "Hero variant featuring a prominent image/logo lockup alongside headline and text. Designed for department or unit landing pages where the visual identity (logo or image) is front and center.",
     "slots": [
       {
@@ -990,13 +1030,15 @@
         }
       }
     },
-    "example": "<umd-element-hero-logo>\n  <img slot=\"image\" src=\"/unit-logo.svg\" alt=\"Clark School of Engineering\" />\n  <p slot=\"eyebrow\">Clark School of Engineering</p>\n  <h1 slot=\"headline\">Engineering the Future</h1>\n  <div slot=\"text\"><p>World-class research and education in engineering and technology.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Learn More</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-logo>"
+    "example": "<umd-element-hero-logo>\n  <img slot=\"image\" src=\"/unit-logo.svg\" alt=\"Clark School of Engineering\" />\n  <p slot=\"eyebrow\">Clark School of Engineering</p>\n  <h1 slot=\"headline\">Engineering the Future</h1>\n  <div slot=\"text\"><p>World-class research and education in engineering and technology.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Learn More</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-logo>",
+    "source": "npm",
+    "priority": 3,
+    "batch": 3
   },
   "hero-grid": {
     "tag": "umd-element-hero-grid",
     "label": "Hero Grid",
-    "category": "hero",
-    "description": "Full-viewport hero with a multi-image grid layout — two corner image columns flanking a center column that holds images and/or a video. The headline, text, and actions are overlaid or adjacent to the grid. Designed for visually immersive brand moments.",
+    "description": "Full-viewport hero with a multi-image grid layout \u2014 two corner image columns flanking a center column that holds images and/or a video. The headline, text, and actions are overlaid or adjacent to the grid. Designed for visually immersive brand moments.",
     "slots": [
       {
         "name": "column-left",
@@ -1058,13 +1100,15 @@
       }
     },
     "example": "<umd-element-hero-grid>\n  <div slot=\"column-left\">\n    <img src=\"/img1.jpg\" alt=\"\" />\n    <img src=\"/img2.jpg\" alt=\"\" />\n  </div>\n  <div slot=\"column-center\">\n    <img src=\"/img3.jpg\" alt=\"\" />\n    <video src=\"/hero.mp4\" autoplay muted loop></video>\n  </div>\n  <div slot=\"column-right\">\n    <img src=\"/img4.jpg\" alt=\"\" />\n    <img src=\"/img5.jpg\" alt=\"\" />\n  </div>\n  <h1 slot=\"headline\">Fearless Ideas</h1>\n  <div slot=\"text\"><p>World-class research at the University of Maryland.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Explore UMD</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-grid>",
-    "notes": "Full 100vh height. All three column slots are required for layout to render correctly. Center column can include both images and a video."
+    "notes": "Full 100vh height. All three column slots are required for layout to render correctly. Center column can include both images and a video.",
+    "source": "npm",
+    "priority": 3,
+    "batch": 3
   },
   "hero-brand-video": {
     "tag": "umd-element-hero-brand-video",
     "label": "Hero Brand Video",
-    "category": "hero",
-    "description": "Full-viewport brand video hero. The video plays as a full-bleed background with headline and text overlaid. Supports an optional load-triggered entrance animation. No image fallback — video is required.",
+    "description": "Full-viewport brand video hero. The video plays as a full-bleed background with headline and text overlaid. Supports an optional load-triggered entrance animation. No image fallback \u2014 video is required.",
     "slots": [
       {
         "name": "video",
@@ -1107,13 +1151,15 @@
         }
       }
     },
-    "example": "<umd-element-hero-brand-video animation-trigger=\"load\">\n  <video src=\"/brand.mp4\" autoplay muted loop poster=\"/poster.jpg\"></video>\n  <h1 slot=\"headline\">Fearless Ideas Start Here</h1>\n  <div slot=\"text\"><p>The University of Maryland — a Top 20 public research university.</p></div>\n</umd-element-hero-brand-video>",
-    "notes": "Video is a direct child element, NOT slotted with slot= attribute. Headline and text use slot= as normal. Full 100vh height."
+    "example": "<umd-element-hero-brand-video animation-trigger=\"load\">\n  <video src=\"/brand.mp4\" autoplay muted loop poster=\"/poster.jpg\"></video>\n  <h1 slot=\"headline\">Fearless Ideas Start Here</h1>\n  <div slot=\"text\"><p>The University of Maryland \u2014 a Top 20 public research university.</p></div>\n</umd-element-hero-brand-video>",
+    "notes": "Video is a direct child element, NOT slotted with slot= attribute. Headline and text use slot= as normal. Full 100vh height.",
+    "source": "npm",
+    "priority": 3,
+    "batch": 3
   },
   "section-intro": {
     "tag": "umd-element-section-intro",
     "label": "Section Intro",
-    "category": "content",
     "description": "Centered section header block with headline, optional body text, and optional actions. Displays at a constrained max-width with center-aligned text. Supports a decorative red vertical line above the headline via the include-separator attribute. Use to introduce a content section on landing pages.",
     "slots": [
       {
@@ -1142,12 +1188,12 @@
         "values": [
           "dark"
         ],
-        "description": "Dark theme — white text on dark backgrounds."
+        "description": "Dark theme \u2014 white text on dark backgrounds."
       },
       {
         "name": "include-separator",
         "type": "boolean",
-        "description": "Adds a decorative red vertical line above the headline (adds top padding). Boolean attribute — presence enables it."
+        "description": "Adds a decorative red vertical line above the headline (adds top padding). Boolean attribute \u2014 presence enables it."
       }
     ],
     "aliases": {
@@ -1170,13 +1216,15 @@
         "attrs": {}
       }
     },
+    "notes": "Text aligns center. Max-width constrains content to roughly 640px. When no headline is provided, text renders larger. If only text (no headline), text gets largest/bold treatment.",
     "example": "<umd-element-section-intro>\n  <h2 slot=\"headline\">Our Research Areas</h2>\n  <div slot=\"text\"><p>Discover the cutting-edge work happening across our departments.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action><a href=\"/research\">Explore Research</a></umd-element-call-to-action>\n  </div>\n</umd-element-section-intro>",
-    "notes": "Text aligns center. Max-width constrains content to roughly 640px. When no headline is provided, text renders larger. If only text (no headline), text gets largest/bold treatment."
+    "source": "npm",
+    "priority": 1,
+    "batch": 4
   },
   "section-intro-wide": {
     "tag": "umd-element-section-intro-wide",
     "label": "Section Intro Wide",
-    "category": "content",
     "description": "Full-width section header with headline on the left and an optional CTA on the right. At desktop (500px+ container), headline and actions display as a flex row. Use to label a content grid or list with a prominent 'View All' link.",
     "slots": [
       {
@@ -1199,7 +1247,7 @@
         "values": [
           "dark"
         ],
-        "description": "Dark theme — white text on dark backgrounds."
+        "description": "Dark theme \u2014 white text on dark backgrounds."
       }
     ],
     "aliases": {
@@ -1218,13 +1266,15 @@
         "attrs": {}
       }
     },
+    "notes": "No text slot \u2014 wide variant is headline + optional CTA only. Layout switches to flex row at container width 500px+. Uses container-type: inline-size on host (same pattern as pathway).",
     "example": "<umd-element-section-intro-wide>\n  <h2 slot=\"headline\">Featured Stories</h2>\n  <div slot=\"actions\">\n    <umd-element-call-to-action><a href=\"/news\">View All News</a></umd-element-call-to-action>\n  </div>\n</umd-element-section-intro-wide>",
-    "notes": "No text slot — wide variant is headline + optional CTA only. Layout switches to flex row at container width 500px+. Uses container-type: inline-size on host (same pattern as pathway)."
+    "source": "npm",
+    "priority": 1,
+    "batch": 4
   },
   "footer": {
     "tag": "umd-element-footer",
     "label": "Footer",
-    "category": "global",
     "description": "University-branded site footer. Three display variants: simple (default), mega (three nav columns), and visual (image background). Automatically sets role='contentinfo' and aria-label='site footer'. The global utility header (umd-element-utility-header) is always at the top of the page; this footer closes the page.",
     "slots": [
       {
@@ -1307,7 +1357,7 @@
         "notes": {
           "simple": "Default single-column footer with contact info and social links",
           "mega": "Full footer with up to three nav link columns, contact, and social",
-          "visual": "Image-backed footer — set slot='image' for background"
+          "visual": "Image-backed footer \u2014 set slot='image' for background"
         }
       },
       {
@@ -1316,7 +1366,7 @@
         "values": [
           "light"
         ],
-        "description": "Light theme — dark text on light gray background instead of dark footer."
+        "description": "Light theme \u2014 dark text on light gray background instead of dark footer."
       }
     ],
     "aliases": {
@@ -1349,355 +1399,10 @@
         }
       }
     },
+    "notes": "role='contentinfo' and aria-label='site footer' are auto-applied if absent. Logo slot must be an <a> wrapping an <img>. Link columns only render if they have child nodes. Simple is default if neither mega nor visual is set.",
     "example": "<umd-element-footer>\n  <a slot=\"logo\" href=\"/\"><img src=\"/dept-logo.png\" alt=\"College of Engineering\" /></a>\n  <p slot=\"contact-headline\">College of Engineering</p>\n  <address slot=\"address\">1101 Engineering Building<br>College Park, MD 20742</address>\n  <div slot=\"contact-links\">\n    <a href=\"mailto:eng@umd.edu\">eng@umd.edu</a>\n    <a href=\"tel:3014051000\">(301) 405-1000</a>\n  </div>\n  <ul slot=\"social-links\">\n    <li><a href=\"https://twitter.com/umdengineer\">Twitter</a></li>\n    <li><a href=\"https://facebook.com/umdengineer\">Facebook</a></li>\n  </ul>\n  <div slot=\"utility-links\">\n    <ul>\n      <li><a href=\"/privacy\">Privacy Policy</a></li>\n      <li><a href=\"/accessibility\">Web Accessibility</a></li>\n    </ul>\n  </div>\n</umd-element-footer>",
-    "notes": "role='contentinfo' and aria-label='site footer' are auto-applied if absent. Logo slot must be an <a> wrapping an <img>. Link columns only render if they have child nodes. Simple is default if neither mega nor visual is set."
-  },
-  "cta": {
-    "tag": "umd-element-call-to-action",
-    "label": "Call to Action Button",
-    "category": "utility",
-    "description": "Button/link wrapper. The anchor or button must be a direct child — not nested inside a div or span. Used inside actions slots of heroes, pathways, cards, section intros, and footers.",
-    "slots": [
-      {
-        "name": "(direct-child)",
-        "required": true,
-        "description": "A single <a> or <button> element as a direct child. No slot attribute needed — it is the only child.",
-        "example": "<a href=\"/apply\">Apply Now</a>"
-      }
-    ],
-    "attrs": [
-      {
-        "name": "data-display",
-        "type": "enum",
-        "values": [
-          "primary",
-          "secondary"
-        ],
-        "description": "Button style. primary = solid red fill. secondary = outlined/text style. Omit for default.",
-        "notes": {
-          "primary": "Solid red background, white text — use for main page CTA",
-          "secondary": "Outlined or text-link style — use for supporting actions"
-        }
-      },
-      {
-        "name": "data-theme",
-        "type": "enum",
-        "values": [
-          "dark"
-        ],
-        "description": "Dark theme — adjusts colors for dark backgrounds. Must be set independently on the CTA even if the parent has data-theme='dark' (theme does not cascade across shadow DOM boundaries)."
-      }
-    ],
-    "aliases": {
-      "cta": {
-        "description": "Default CTA button",
-        "attrs": {}
-      },
-      "cta primary": {
-        "description": "Solid red CTA button",
-        "attrs": {
-          "data-display": "primary"
-        }
-      },
-      "cta secondary": {
-        "description": "Outlined/text CTA",
-        "attrs": {
-          "data-display": "secondary"
-        }
-      },
-      "cta primary dark": {
-        "description": "Primary CTA for dark backgrounds",
-        "attrs": {
-          "data-display": "primary",
-          "data-theme": "dark"
-        }
-      },
-      "cta secondary dark": {
-        "description": "Secondary CTA for dark backgrounds",
-        "attrs": {
-          "data-display": "secondary",
-          "data-theme": "dark"
-        }
-      }
-    },
-    "example": "<umd-element-call-to-action data-display=\"primary\">\n  <a href=\"/apply\">Apply Now</a>\n</umd-element-call-to-action>",
-    "notes": "The link/button MUST be a direct child — no wrapper divs. When placing inside an actions slot, wrap the CTA in a <div slot=\"actions\">. Theme does NOT cascade from parent components — if the parent is dark-themed, the CTA needs its own data-theme=\"dark\".",
-    "gotchas": [
-      "Link must be direct child, not wrapped in a div",
-      "data-theme does not cascade — set independently on each CTA (see RULES.md §14)"
-    ]
-  },
-  "stat": {
-    "tag": "umd-element-stat",
-    "label": "Statistic",
-    "category": "content",
-    "description": "Statistic display — a number/value with a descriptive label. Two display modes: inline (default, text-only) and block (card with red top border, light gray background, decorative texture). Used standalone or grouped in grid layouts.",
-    "slots": [
-      {
-        "name": "stat",
-        "required": true,
-        "description": "The statistic value or number. Max 6 characters — component truncates and logs console error if exceeded. Accepts: span, strong, em, b.",
-        "example": "<span slot=\"stat\">40,000+</span>"
-      },
-      {
-        "name": "text",
-        "required": true,
-        "description": "Descriptive label. MUST use slot=\"text\" — bare unslotted children are silently ignored despite what official docs say. Wrap in a div.",
-        "example": "<div slot=\"text\"><p>Students Enrolled</p></div>"
-      },
-      {
-        "name": "sub-text",
-        "required": false,
-        "description": "Additional context or attribution shown below the label. Rendered smaller, in gray.",
-        "example": "<p slot=\"sub-text\">According to U.S. News & World Report</p>"
-      }
-    ],
-    "attrs": [
-      {
-        "name": "data-display",
-        "type": "enum",
-        "values": [
-          "block"
-        ],
-        "description": "Block display: red top border, light gray background, decorative SVG texture. Also forces large sizing automatically."
-      },
-      {
-        "name": "data-visual-size",
-        "type": "enum",
-        "values": [
-          "large"
-        ],
-        "description": "Enlarges stat and label text. Automatically applied with data-display='block'. Only needed for large sizing without block display."
-      },
-      {
-        "name": "data-theme",
-        "type": "enum",
-        "values": [
-          "dark"
-        ],
-        "description": "Dark theme — white text on dark background."
-      },
-      {
-        "name": "data-decoration-line",
-        "type": "boolean",
-        "description": "Adds a gold left accent bar (2px solid gold border-left). Boolean — presence enables it."
-      },
-      {
-        "name": "data-animation",
-        "type": "enum",
-        "values": [
-          "offset"
-        ],
-        "description": "Staggered entrance animation. Used with umd-animation-grid wrapper class on parent grid."
-      }
-    ],
-    "aliases": {
-      "stat": {
-        "description": "Inline stat — number with label",
-        "attrs": {}
-      },
-      "stat dark": {
-        "description": "Inline stat, dark theme",
-        "attrs": {
-          "data-theme": "dark"
-        }
-      },
-      "stat with line": {
-        "description": "Inline stat with gold accent bar",
-        "attrs": {
-          "data-decoration-line": ""
-        }
-      },
-      "stat large": {
-        "description": "Large inline stat",
-        "attrs": {
-          "data-visual-size": "large"
-        }
-      },
-      "stat large dark": {
-        "description": "Large stat, dark theme, gold accent",
-        "attrs": {
-          "data-visual-size": "large",
-          "data-theme": "dark",
-          "data-decoration-line": ""
-        }
-      },
-      "stat block": {
-        "description": "Card-style stat with red top border",
-        "attrs": {
-          "data-display": "block"
-        }
-      },
-      "stat block dark": {
-        "description": "Card-style stat, dark theme",
-        "attrs": {
-          "data-display": "block",
-          "data-theme": "dark"
-        }
-      }
-    },
-    "example": "<umd-element-stat data-visual-size=\"large\" data-decoration-line>\n  <span slot=\"stat\">600+</span>\n  <div slot=\"text\"><p>Doctoral degrees conferred annually</p></div>\n</umd-element-stat>",
-    "notes": "Stats are almost always grouped. Use CSS grid or UMD layout utility classes: umd-layout-grid-gap-three (3-col). Add umd-layout-grid-child-fill-height to each stat for equal heights in block display. Max 4 large stats per row — see RULES.md §9.",
-    "gotchas": [
-      "slot=\"text\" is REQUIRED — bare unslotted children are silently dropped (RULES.md §11)",
-      "Max 6 chars in stat slot — truncated with console error if exceeded",
-      "data-display='block' auto-sets large size — don't add data-visual-size separately"
-    ]
-  },
-  "quote": {
-    "tag": "umd-element-quote",
-    "label": "Quote",
-    "category": "content",
-    "description": "Pull quote component. Two display variants: simple (default) and featured. Supports dark and maryland themes, large size treatment, optional image and attribution.",
-    "slots": [
-      {
-        "name": "quote",
-        "required": true,
-        "description": "The quote text. Component will not render correctly without it.",
-        "example": "<p slot=\"quote\">The work happening here will define the next generation of engineers.</p>"
-      },
-      {
-        "name": "attribution",
-        "required": false,
-        "description": "Primary attribution — name or credit for the quote.",
-        "example": "<p slot=\"attribution\">Dean John Smith</p>"
-      },
-      {
-        "name": "attribution-sub-text",
-        "required": false,
-        "description": "Secondary attribution — title, role, or additional context.",
-        "example": "<p slot=\"attribution-sub-text\">Dean, Clark School of Engineering</p>"
-      },
-      {
-        "name": "image",
-        "required": false,
-        "description": "Optional image — headshot or decorative.",
-        "example": "<img slot=\"image\" src=\"/headshot.jpg\" alt=\"Dean John Smith\" />"
-      },
-      {
-        "name": "actions",
-        "required": false,
-        "description": "CTA button(s).",
-        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"secondary\"><a href=\"/about\">Learn More</a></umd-element-call-to-action></div>"
-      }
-    ],
-    "attrs": [
-      {
-        "name": "data-display",
-        "type": "enum",
-        "values": [
-          "featured"
-        ],
-        "description": "Layout variant. Omit for default simple layout.",
-        "notes": {
-          "featured": "Prominent layout — image and quote side by side with larger visual weight"
-        }
-      },
-      {
-        "name": "data-visual-size",
-        "type": "enum",
-        "values": [
-          "large"
-        ],
-        "description": "Larger size treatment for the quote text."
-      },
-      {
-        "name": "data-theme",
-        "type": "enum",
-        "values": [
-          "dark",
-          "maryland"
-        ],
-        "description": "Color theme. Omit for default light."
-      },
-      {
-        "name": "data-visual-transparent",
-        "type": "boolean",
-        "description": "Removes background, making component transparent against its container."
-      },
-      {
-        "name": "data-animation",
-        "type": "boolean",
-        "description": "Enables scroll-triggered entrance animation."
-      }
-    ],
-    "aliases": {
-      "quote": {
-        "description": "Default simple quote",
-        "attrs": {}
-      },
-      "quote dark": {
-        "description": "Simple quote, dark theme",
-        "attrs": {
-          "data-theme": "dark"
-        }
-      },
-      "quote maryland": {
-        "description": "Simple quote, Maryland red theme",
-        "attrs": {
-          "data-theme": "maryland"
-        }
-      },
-      "featured quote": {
-        "description": "Featured quote — prominent side-by-side layout",
-        "attrs": {
-          "data-display": "featured"
-        }
-      },
-      "featured quote dark": {
-        "description": "Featured quote, dark theme",
-        "attrs": {
-          "data-display": "featured",
-          "data-theme": "dark"
-        }
-      },
-      "featured quote maryland": {
-        "description": "Featured quote, Maryland red theme",
-        "attrs": {
-          "data-display": "featured",
-          "data-theme": "maryland"
-        }
-      }
-    },
-    "example": "<umd-element-quote>\n  <p slot=\"quote\">The work happening here will define the next generation of engineers.</p>\n  <p slot=\"attribution\">Dean John Smith</p>\n  <p slot=\"attribution-sub-text\">Dean, Clark School of Engineering</p>\n</umd-element-quote>",
-    "notes": "Simple variant is vertically stacked, centered. Featured variant places image and quote side by side. data-visual-transparent is useful when nesting inside another themed component."
-  },
-  "image-expand": {
-    "tag": "umd-layout-image-expand",
-    "label": "Image Expand",
-    "category": "layout",
-    "description": "Full-viewport scroll-driven image reveal. Content slot renders above a full-bleed image that expands from a cropped strip to full height as the user scrolls. Designed for immersive editorial sections.",
-    "slots": [
-      {
-        "name": "content",
-        "required": true,
-        "description": "Content displayed above the expanding image. Can contain any component (quote, text, etc).",
-        "example": "<div slot=\"content\"><umd-element-quote>...</umd-element-quote></div>"
-      },
-      {
-        "name": "image",
-        "required": true,
-        "description": "The full-bleed image that expands on scroll.",
-        "example": "<img slot=\"image\" src=\"/campus-aerial.jpg\" alt=\"Campus aerial view\" />"
-      }
-    ],
-    "attrs": [],
-    "aliases": {
-      "image expand": {
-        "description": "Scroll-driven expanding image section",
-        "attrs": {}
-      },
-      "expanding image": {
-        "description": "Alias for image expand",
-        "attrs": {}
-      }
-    },
-    "example": "<umd-layout-image-expand>\n  <div slot=\"content\">\n    <umd-element-quote>\n      <p slot=\"quote\">Fearless Ideas Start Here.</p>\n      <p slot=\"attribution\">President Darryll J. Pines</p>\n    </umd-element-quote>\n  </div>\n  <img slot=\"image\" src=\"/campus.jpg\" alt=\"Campus aerial\" />\n</umd-layout-image-expand>",
-    "notes": "No data-theme or data-display attributes. Both slots required. Scroll animation requires animation-timeline: scroll() support (Chrome 115+, Firefox 110+). Falls back to static full-height image. FULL-BLEED: host requires width: 100% in critical CSS — do not apply horizontal spacing class (same as pathway/hero). Wrap in a <section> with umd-layout-vertical-landing for inter-section spacing.",
-    "gotchas": [
-      "Host needs explicit width: 100% in critical CSS or it collapses to content width",
-      "Do NOT wrap in a horizontal spacing class — full-bleed component",
-      "Both slots are required — layout breaks with only one"
-    ]
+    "source": "npm",
+    "priority": 1,
+    "batch": 4
   }
 }

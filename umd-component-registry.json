@@ -471,6 +471,14 @@
     ],
     "attrs": [
       {
+        "name": "type",
+        "type": "enum",
+        "values": [
+          "image"
+        ],
+        "description": "Render variant. 'image' renders the slotted image as a full background with text overlaid at the bottom (card-overlay-image). Without this attribute, the component renders a solid-color card (card-overlay-color) and the slotted image is ignored. Uses the deprecated 'type' attribute (not 'data-type')."
+      },
+      {
         "name": "data-theme",
         "type": "enum",
         "values": [
@@ -491,11 +499,24 @@
     ],
     "aliases": {
       "overlay card": {
-        "description": "Card with image background and text overlay",
+        "description": "Solid-color overlay card (no background image)",
         "attrs": {}
       },
+      "overlay card image": {
+        "description": "Card with image background and text overlay at bottom",
+        "attrs": {
+          "type": "image"
+        }
+      },
+      "overlay card image dark": {
+        "description": "Image overlay card with dark theme",
+        "attrs": {
+          "type": "image",
+          "data-theme": "dark"
+        }
+      },
       "overlay card dark": {
-        "description": "Overlay card with dark theme",
+        "description": "Solid-color overlay card with dark theme",
         "attrs": {
           "data-theme": "dark"
         }
@@ -507,10 +528,11 @@
         }
       }
     },
-    "example": "<umd-element-card-overlay>\n  <img slot=\"image\" src=\"/image.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description.</p>\n  <div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/article\">Learn More</a></umd-element-call-to-action></div>\n</umd-element-card-overlay>",
+    "example": "<umd-element-card-overlay type=\"image\">\n  <img slot=\"image\" src=\"/image.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description.</p>\n</umd-element-card-overlay>",
     "source": "npm",
     "priority": 2,
-    "batch": 2
+    "batch": 2,
+    "notes": "CRITICAL: type=\"image\" is REQUIRED for the image background variant. Without it, the component renders card-overlay-color (solid background) and the slotted image is silently ignored. This uses the deprecated \"type\" attribute pattern (not \"data-type\"). The image variant renders text overlaid at the bottom of the card with a dark gradient over the background image. The color variant renders text on a solid gray (or themed) background. cdn.js check: he.image = vA(x.deprecated.type.TYPE, J.display.image)."
   },
   "card-icon": {
     "tag": "umd-element-card-icon",

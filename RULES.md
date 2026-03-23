@@ -14,7 +14,7 @@ Every standalone UMD HTML page must load these two files in `<head>`:
 <style>
   /* contents of umd-critical.css inlined here */
 </style>
-<script src="design-system/cdn.js"></script>
+<script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
 ```
 
 **Critical:** the CSS rules must be parsed before `cdn.js` runs and registers the custom elements. If `cdn.js` loads first, elements upgrade before `:defined` rules exist and `container-type` never gets set. Always inline the critical CSS as a `<style>` block (not a `<link>`) when serving standalone HTML files — a `<link>` to a relative path will fail if the file is opened directly from disk.
@@ -561,3 +561,34 @@ Note: `umd-element-call-to-action` requires its own `data-theme="dark"` — see 
 ```
 
 **Critical:** All three watermark classes (`.umd-text-decoration-watermark`, `.umd-watermark`, `.umd-watermark-dark`) must be included in the base `:is()` selector. Omitting `.umd-watermark-dark` from the base selector means the dark variant span gets none of the positioning or font styles.
+
+---
+
+## 16. Card overlay — `type="image"` is required for background images
+
+`umd-element-card-overlay` has two completely different render paths controlled by the `type` attribute:
+
+| Attribute | Shadow DOM class | Behavior |
+|---|---|---|
+| (none) | `.card-overlay-color` | Solid-color card. `slot="image"` is **silently ignored**. |
+| `type="image"` | `.card-overlay-image` | Image fills background, text overlaid at bottom with dark gradient. |
+
+**This is the most common card-overlay mistake.** Providing `<img slot="image">` without `type="image"` on the host produces a solid gray card with no image — no error, no warning.
+
+```html
+<!-- ✓ Correct — image renders as full background -->
+<umd-element-card-overlay type="image">
+  <img slot="image" src="/photo.jpg" alt="" />
+  <h3 slot="headline"><a href="/article">Article Title</a></h3>
+  <p slot="text">Brief description.</p>
+</umd-element-card-overlay>
+
+<!-- ✗ Wrong — image silently dropped, renders solid gray card -->
+<umd-element-card-overlay>
+  <img slot="image" src="/photo.jpg" alt="" />
+  <h3 slot="headline"><a href="/article">Article Title</a></h3>
+  <p slot="text">Brief description.</p>
+</umd-element-card-overlay>
+```
+
+**Note:** This uses the deprecated `type` attribute pattern (not `data-type`). The cdn.js source checks `he.image = vA(x.deprecated.type.TYPE, J.display.image)`, which reads the literal `type` attribute and compares to `"image"`.

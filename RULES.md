@@ -564,31 +564,99 @@ Note: `umd-element-call-to-action` requires its own `data-theme="dark"` — see 
 
 ---
 
-## 16. Card overlay — `type="image"` is required for background images
+## 16. Card overlay — `type="image"` is required for image backgrounds
 
-`umd-element-card-overlay` has two completely different render paths controlled by the `type` attribute:
-
-| Attribute | Shadow DOM class | Behavior |
-|---|---|---|
-| (none) | `.card-overlay-color` | Solid-color card. `slot="image"` is **silently ignored**. |
-| `type="image"` | `.card-overlay-image` | Image fills background, text overlaid at bottom with dark gradient. |
-
-**This is the most common card-overlay mistake.** Providing `<img slot="image">` without `type="image"` on the host produces a solid gray card with no image — no error, no warning.
+`umd-element-card-overlay` has two visual modes: solid-color background (default) and image background. The image background variant requires the deprecated `type="image"` attribute — without it, `slot="image"` is silently ignored and the component renders as a solid-color card.
 
 ```html
-<!-- ✓ Correct — image renders as full background -->
+<!-- ✓ Correct — image variant with type="image" -->
 <umd-element-card-overlay type="image">
-  <img slot="image" src="/photo.jpg" alt="" />
-  <h3 slot="headline"><a href="/article">Article Title</a></h3>
-  <p slot="text">Brief description.</p>
+  <img slot="image" src="/news.jpg" alt="" />
+  <h3 slot="headline"><a href="/news/story">Headline</a></h3>
+  <p slot="eyebrow">Category</p>
 </umd-element-card-overlay>
 
-<!-- ✗ Wrong — image silently dropped, renders solid gray card -->
+<!-- ✗ Wrong — image silently ignored, renders as solid-color card -->
 <umd-element-card-overlay>
-  <img slot="image" src="/photo.jpg" alt="" />
-  <h3 slot="headline"><a href="/article">Article Title</a></h3>
-  <p slot="text">Brief description.</p>
+  <img slot="image" src="/news.jpg" alt="" />
+  <h3 slot="headline"><a href="/news/story">Headline</a></h3>
 </umd-element-card-overlay>
 ```
 
-**Note:** This uses the deprecated `type` attribute pattern (not `data-type`). The cdn.js source checks `he.image = vA(x.deprecated.type.TYPE, J.display.image)`, which reads the literal `type` attribute and compares to `"image"`.
+Note: This uses the deprecated `type` attribute, not `data-type`. The attribute name is confirmed from cdn.js source.
+
+---
+
+## 17. Image expand (`umd-layout-image-expand`)
+
+### Text must be explicitly white
+
+The image-expand component does **not** support `data-theme`. It has no internal text color styling — the shadow DOM text-lock container defaults to `color: rgb(0, 0, 0)` (black). Since content overlays the image with a dark semi-transparent overlay (`rgba(0,0,0,0.65)`), black text is invisible.
+
+**All text in the `content` slot must be explicitly set to white**, either via inline styles or utility classes:
+
+```html
+<!-- ✓ Correct — explicit white text -->
+<umd-layout-image-expand>
+  <div slot="content">
+    <div>
+      <h2 style="color: white;">Section Heading</h2>
+      <p style="color: white;">Supporting text for this section.</p>
+    </div>
+  </div>
+  <img slot="image" src="/feature.jpg" alt="" />
+</umd-layout-image-expand>
+
+<!-- ✗ Wrong — text renders black, invisible on dark overlay -->
+<umd-layout-image-expand>
+  <div slot="content">
+    <div>
+      <h2>Section Heading</h2>
+      <p>Supporting text.</p>
+    </div>
+  </div>
+  <img slot="image" src="/feature.jpg" alt="" />
+</umd-layout-image-expand>
+```
+
+### Dark section wrapper required
+
+Always wrap `umd-layout-image-expand` in a section with `background: #000` (or use the `umd-layout-background-full-dark` class). The image starts small and expands — the black background fills the gaps around the image during the scroll animation.
+
+```html
+<!-- ✓ Correct — dark wrapper provides visual continuity -->
+<section style="background: #000;">
+  <umd-layout-image-expand>
+    ...
+  </umd-layout-image-expand>
+</section>
+```
+
+### Full-bleed — no horizontal spacing, no max-width on host
+
+The component is full-bleed (same rule as pathway and hero — see §12). Do **not** wrap in a horizontal spacing class. The shadow DOM applies its own internal `max-width: 1600px` on the text-lock container, with `margin: 0 auto` and responsive padding (`24px` → `48px` → `64px`). Setting `max-width` on the host will break the full-bleed image animation.
+
+### Critical CSS for the host
+
+The host element requires `width: 100%` in critical CSS. Without it, the host collapses to content width and the 100vw image animation breaks.
+
+```css
+umd-layout-image-expand:not(:defined) {
+  content-visibility: hidden;
+}
+umd-layout-image-expand {
+  display: block;
+  container-type: inline-size;
+  width: 100%;
+}
+```
+
+### Summary of gotchas
+
+| Issue | Symptom | Fix |
+|---|---|---|
+| No `color: white` on text | Text invisible (black on dark overlay) | Add `style="color:white"` to every text element in content slot |
+| No dark section wrapper | White gaps around image during scroll | Wrap in `<section style="background:#000;">` |
+| Missing `width: 100%` | Component collapses to narrow strip | Add to critical CSS (see GROUP 3 in TEMPLATE.html) |
+| `max-width` on host | Image animation clipped | Remove — shadow DOM handles text-lock max-width internally |
+| No `data-theme` attribute | (N/A — attribute does not exist) | Use inline `color: white` instead |

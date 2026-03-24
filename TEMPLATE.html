@@ -86,6 +86,9 @@
        GROUP 3: Full-bleed components
        umd-layout-image-expand collapses to content width without
        explicit width: 100%. Do NOT wrap in a horizontal spacing class.
+       Do NOT set max-width on host — shadow DOM applies 1600px internally.
+       Content slot text must be explicitly white (color:white) —
+       the component has no data-theme support. See RULES.md §17.
     ==================== */
     umd-layout-image-expand:not(:defined) {
       content-visibility: hidden;
@@ -114,21 +117,21 @@
     ==================== */
 
     /* Landing page — between sections */
-    .umd-layout-space-vertical-landing           { margin-bottom: 56px; }
-    @media (min-width: 768px)  { .umd-layout-space-vertical-landing  { margin-bottom: 80px; } }
-    @media (min-width: 1024px) { .umd-layout-space-vertical-landing  { margin-bottom: 120px; } }
+    .umd-layout-vertical-landing           { margin-bottom: 56px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
 
     /* Landing page — between items within a section */
-    .umd-layout-space-vertical-landing-child     { margin-bottom: 32px; }
-    @media (min-width: 768px)  { .umd-layout-space-vertical-landing-child { margin-bottom: 40px; } }
-    @media (min-width: 1024px) { .umd-layout-space-vertical-landing-child { margin-bottom: 48px; } }
+    .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
 
     /* Interior page — page content area margins */
-    .umd-layout-space-vertical-interior          { margin-bottom: 56px; }
-    @media (min-width: 1024px) { .umd-layout-space-vertical-interior { margin-bottom: 80px; } }
+    .umd-layout-vertical-interior          { margin-bottom: 56px; }
+    @media (min-width: 1024px) { .umd-layout-vertical-interior { margin-bottom: 80px; } }
 
     /* Interior page — between items within a section */
-    .umd-layout-space-vertical-interior-child    { margin-bottom: 32px; }
+    .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
 
     /* ====================
        HORIZONTAL SPACING — page-lock classes
@@ -200,101 +203,25 @@
     }
 
     /* ====================
-       GRID LAYOUTS — responsive card/content grids
-       Source: web-styles-library → layout/grid/gap
-       Columns collapse to 1 on mobile, expand at breakpoints.
+       SECTION-INTRO-WIDE WRAPPER
+       Required when .umd-layout-space-horizontal-larger wraps
+       umd-element-section-intro-wide
     ==================== */
-    .umd-layout-grid-gap-four {
-      display: grid;
-      grid-gap: 32px;
-    }
-    @media (min-width: 650px) {
-      .umd-layout-grid-gap-four {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-    @media (min-width: 650px) {
-      .umd-layout-grid-gap-four > p:not(:last-child) { margin-bottom: 0; }
-    }
-    @media (min-width: 1024px) {
-      .umd-layout-grid-gap-four {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    .umd-layout-grid-gap-three {
-      display: grid;
-      grid-gap: 32px;
-    }
-    @media (min-width: 768px) {
-      .umd-layout-grid-gap-three {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    .umd-layout-grid-gap-two {
-      display: grid;
-      grid-gap: 32px;
-    }
-    @media (min-width: 650px) {
-      .umd-layout-grid-gap-two {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .umd-layout-grid-gap-two > p:not(:last-child) { margin-bottom: 0; }
-    }
-    @media (min-width: 1024px) {
-      .umd-layout-grid-gap-two {
-        grid-gap: 40px;
-      }
-    }
-
-    .umd-layout-grid-gap-stacked {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-gap: 24px;
-    }
-    @media (min-width: 1024px) {
-      .umd-layout-grid-gap-stacked {
-        grid-gap: 40px;
-      }
-    }
-
-    .umd-layout-grid-masonry {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-gap: 24px;
-    }
-    @media (min-width: 768px) {
-      .umd-layout-grid-masonry {
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 32px;
-      }
-    }
-    @media (min-width: 1024px) {
-      .umd-layout-grid-masonry {
-        grid-gap: 40px;
-      }
-    }
-
-    /* ====================
-       GRID CHILD UTILITIES
-    ==================== */
-    .umd-layout-grid-child-fill-height,
-    .umd-layout-grid-child-fill-height > * {
-      height: 100%;
-    }
-    .umd-layout-grid-child-size-double {
-      grid-column: span 2;
-    }
-
-    /* ====================
-       WATERMARK CONTAINER OVERRIDES
-       position:relative and isolation only needed on the
-       watermark wrapper div, NOT on every horizontal-larger element.
-    ==================== */
-    .umd-text-decoration-watermark {
+    .umd-layout-space-horizontal-larger {
       position: relative;
+      container-type: inline-size;
       isolation: isolate;
+    }
+
+    /* ====================
+       GRID UTILITIES
+    ==================== */
+    .umd-layout-grid-child-fill-height {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-grid-child-fill-height > * {
+      flex: 1;
     }
   </style>
 
@@ -334,13 +261,13 @@
   <!-- ========================================
        3. PAGE CONTENT
        Replace the sections below with actual content.
-       Use umd-layout-space-vertical-landing on each <section>.
+       Use umd-layout-vertical-landing on each <section>.
        Use umd-layout-space-horizontal-* wrappers for content width.
   ======================================== -->
 
   <!-- HERO SECTION (if needed) -->
   <!--
-  <section class="umd-layout-space-vertical-landing">
+  <section class="umd-layout-vertical-landing">
     <umd-element-hero data-display="stacked">
       <h1 slot="headline">{{HEADLINE}}</h1>
       <p slot="text">{{SUBHEAD}}</p>
@@ -352,62 +279,23 @@
   </section>
   -->
 
-  <!-- CONTENT SECTION WITH CARDS EXAMPLE -->
+  <!-- CONTENT SECTION EXAMPLE -->
   <!--
-  <section class="umd-layout-space-vertical-landing">
-    <umd-element-section-intro-wide
-      class="umd-layout-space-vertical-landing-child umd-layout-space-horizontal-larger">
-      <h2 slot="headline">{{SECTION_TITLE}}</h2>
-      <div slot="actions">
-        <umd-element-call-to-action data-display="secondary">
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <umd-element-section-intro-wide>
+        <h2 slot="headline">{{SECTION_TITLE}}</h2>
+        <umd-element-call-to-action data-display="secondary" slot="actions">
           <a href="{{LINK}}">{{LINK_TEXT}}</a>
         </umd-element-call-to-action>
-      </div>
-    </umd-element-section-intro-wide>
-    <div class="umd-layout-space-horizontal-larger">
-      <div class="umd-layout-grid-gap-four">
-        <umd-element-card data-aligned>...</umd-element-card>
-        <umd-element-card data-aligned>...</umd-element-card>
-        <umd-element-card data-aligned>...</umd-element-card>
-        <umd-element-card data-aligned>...</umd-element-card>
-      </div>
+      </umd-element-section-intro-wide>
     </div>
-  </section>
-  -->
-
-  <!-- CONTENT SECTION WITH WATERMARK EXAMPLE -->
-  <!--
-  <section class="umd-layout-space-vertical-landing">
-    <div class="umd-layout-space-horizontal-larger umd-text-decoration-watermark">
-      <span aria-hidden="true">{{WATERMARK}}</span>
-    </div>
-    <umd-element-section-intro-wide
-      class="umd-layout-space-vertical-landing-child umd-layout-space-horizontal-larger">
-      <h2 slot="headline">{{SECTION_TITLE}}</h2>
-    </umd-element-section-intro-wide>
-    <div class="umd-layout-space-horizontal-larger">
-      <div class="umd-layout-grid-gap-four">
-        <umd-element-card-overlay>...</umd-element-card-overlay>
-        <umd-element-card-overlay>...</umd-element-card-overlay>
-        <umd-element-card-overlay>...</umd-element-card-overlay>
-        <umd-element-card-overlay>...</umd-element-card-overlay>
-      </div>
-    </div>
-  </section>
-  -->
-
-  <!-- NARROW CONTENT SECTION EXAMPLE (section-intro, not wide) -->
-  <!--
-  <section class="umd-layout-space-vertical-landing">
-    <umd-element-section-intro class="umd-layout-space-horizontal-small">
-      <h2 slot="headline">{{SECTION_TITLE}}</h2>
-    </umd-element-section-intro>
   </section>
   -->
 
   <!-- PATHWAY EXAMPLE (standard — requires dark wrapper) -->
   <!--
-  <section class="umd-layout-space-vertical-landing" style="background: #000;">
+  <section class="umd-layout-vertical-landing" style="background: #000;">
     <umd-element-pathway data-theme="dark">
       <h2 slot="headline">{{HEADLINE}}</h2>
       <p slot="text">{{BODY_TEXT}}</p>

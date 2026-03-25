@@ -589,11 +589,11 @@ Note: This uses the deprecated `type` attribute, not `data-type`. The attribute 
 
 ## 17. Image expand (`umd-layout-image-expand`)
 
-### Text must be explicitly white
+### Text must be explicitly white (raw HTML content)
 
 The image-expand component does **not** support `data-theme`. It has no internal text color styling — the shadow DOM text-lock container defaults to `color: rgb(0, 0, 0)` (black). Since content overlays the image with a dark semi-transparent overlay (`rgba(0,0,0,0.65)`), black text is invisible.
 
-**All text in the `content` slot must be explicitly set to white**, either via inline styles or utility classes:
+**When placing raw HTML in the `content` slot, all text must be explicitly set to white**, either via inline styles or utility classes:
 
 ```html
 <!-- ✓ Correct — explicit white text -->
@@ -617,6 +617,32 @@ The image-expand component does **not** support `data-theme`. It has no internal
   </div>
   <img slot="image" src="/feature.jpg" alt="" />
 </umd-layout-image-expand>
+```
+
+### Placing a quote inside image-expand — use `data-visual-transparent="true"`
+
+When `umd-element-quote` is placed in the `content` slot, add `data-visual-transparent="true"` to the quote component. This removes the quote's opaque background card so the image shows through. The quote's `data-theme="dark"` then handles all text color internally — no `color: white` inline styles needed on the slot content.
+
+Also constrain the quote panel width and align it using inline styles on the `div[slot="content"]` wrapper — the shadow DOM's text-lock is full-width by default.
+
+```html
+<!-- ✓ Correct — transparent quote, constrained and right-aligned -->
+<umd-layout-image-expand>
+  <div slot="content" style="display: block; width: 100%; max-width: 480px; margin-left: auto;">
+    <umd-element-quote data-display="featured" data-theme="dark" data-visual-transparent="true">
+      <p slot="quote">Quote text here.</p>
+      <p slot="attribution">Person Name</p>
+      <p slot="attribution-sub-text">Title, Department</p>
+    </umd-element-quote>
+  </div>
+  <img slot="image" src="/feature.jpg" alt="" />
+</umd-layout-image-expand>
+
+<!-- Left-aligned variant: use margin-right: auto instead -->
+<div slot="content" style="display: block; width: 100%; max-width: 480px; margin-right: auto;">
+
+<!-- ✗ Wrong — opaque card blocks the image -->
+<umd-element-quote data-display="featured" data-theme="dark">...</umd-element-quote>
 ```
 
 ### Dark section wrapper required
@@ -655,8 +681,10 @@ umd-layout-image-expand {
 
 | Issue | Symptom | Fix |
 |---|---|---|
-| No `color: white` on text | Text invisible (black on dark overlay) | Add `style="color:white"` to every text element in content slot |
+| No `color: white` on raw text | Text invisible (black on dark overlay) | Add `style="color:white"` to every text element in content slot |
+| Quote has opaque background | Background card blocks image | Add `data-visual-transparent="true"` to `umd-element-quote` |
+| Quote fills full width | Quote panel too wide, poor composition | Add `max-width: 480px` + `margin-left/right: auto` on `div[slot="content"]` |
 | No dark section wrapper | White gaps around image during scroll | Wrap in `<section style="background:#000;">` |
 | Missing `width: 100%` | Component collapses to narrow strip | Add to critical CSS (see GROUP 3 in TEMPLATE.html) |
 | `max-width` on host | Image animation clipped | Remove — shadow DOM handles text-lock max-width internally |
-| No `data-theme` attribute | (N/A — attribute does not exist) | Use inline `color: white` instead |
+| No `data-theme` attribute | (N/A — attribute does not exist) | Use `data-visual-transparent="true"` + `data-theme="dark"` on quote instead |

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nav Slider Test — Design System | University of Maryland</title>
+
+  <!-- ============================================================
+       UMD Critical CSS — MUST precede cdn.js
+  ============================================================ -->
+  <style>
+    /* ====================
+       GROUP 1: container-type: normal
+    ==================== */
+    umd-element-utility-header:not(:defined),
+    umd-element-navigation-header:not(:defined),
+    umd-element-nav-item:not(:defined),
+    umd-element-call-to-action:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-utility-header,
+    umd-element-navigation-header,
+    umd-element-nav-item,
+    umd-element-call-to-action {
+      display: block;
+      container-type: normal;
+    }
+
+    /* ====================
+       GROUP 2: container-type: inline-size
+    ==================== */
+    umd-element-hero-minimal:not(:defined),
+    umd-element-nav-slider:not(:defined),
+    umd-element-footer:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-hero-minimal,
+    umd-element-nav-slider,
+    umd-element-footer {
+      display: block;
+      container-type: inline-size;
+    }
+
+    /* ====================
+       FONTS
+    ==================== */
+    :root {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+    p, li, label, input, textarea, select {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+
+    /* ====================
+       HORIZONTAL SPACING — page-lock classes
+    ==================== */
+    [class^="umd-layout-space-horizontal-"] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1200px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+    .umd-layout-space-horizontal-full   { max-width: 100%;   }
+    .umd-layout-space-horizontal-larger { max-width: 1600px; }
+    .umd-layout-space-horizontal-normal { max-width: 1280px; }
+
+    /* ====================
+       INTERIOR LAYOUT — nav-slider + content side by side
+    ==================== */
+    .interior-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      align-items: start;
+    }
+    @media (min-width: 1024px) {
+      .interior-layout {
+        grid-template-columns: 280px 1fr;
+        gap: 48px;
+      }
+    }
+
+    /* ====================
+       RICH TEXT CONTENT AREA
+    ==================== */
+    .rich-text {
+      padding: 40px 0;
+    }
+    .rich-text h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 0 16px;
+      color: #1a1a1a;
+      line-height: 1.2;
+    }
+    .rich-text h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 32px 0 12px;
+      color: #1a1a1a;
+    }
+    .rich-text p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #333;
+      margin: 0 0 16px;
+    }
+    .rich-text ul {
+      margin: 0 0 16px;
+      padding-left: 24px;
+    }
+    .rich-text ul li {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    .rich-text blockquote {
+      border-left: 4px solid #e21833;
+      margin: 24px 0;
+      padding: 12px 24px;
+      background: #f9f9f9;
+    }
+    .rich-text blockquote p {
+      font-style: italic;
+      color: #555;
+      margin: 0;
+    }
+    .rich-text hr {
+      border: none;
+      border-top: 1px solid #e0e0e0;
+      margin: 32px 0;
+    }
+    .rich-text a {
+      color: #e21833;
+      text-decoration: underline;
+    }
+  </style>
+
+  <script src="../design-system/cdn.js"></script>
+</head>
+<body>
+
+  <!-- ========================================
+       1. GLOBAL UNIVERSITY HEADER
+  ======================================== -->
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <!-- ========================================
+       2. SITE NAVIGATION HEADER
+  ======================================== -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="/">
+      <img src="https://umd.edu/sites/umd.edu/files/UMD-lockup-white.png" alt="University of Maryland" />
+    </a>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">About</a>
+        <a slot="sub-link" href="#">Mission &amp; Vision</a>
+        <a slot="sub-link" href="#">Leadership</a>
+        <a slot="sub-link" href="#">History</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Academics</a>
+        <a slot="sub-link" href="#">Programs</a>
+        <a slot="sub-link" href="#">Research Centers</a>
+        <a slot="sub-link" href="#">Faculty</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Admissions</a>
+        <a slot="sub-link" href="#">Undergraduate</a>
+        <a slot="sub-link" href="#">Graduate</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">News</a>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+
+  <!-- ========================================
+       3. HERO — minimal
+  ======================================== -->
+  <umd-element-hero-minimal data-theme="maryland">
+    <p slot="eyebrow">Clark School of Engineering</p>
+    <h1 slot="headline">Computer Science</h1>
+    <div slot="text"><p>Advancing research and education at the intersection of theory, systems, and human impact.</p></div>
+  </umd-element-hero-minimal>
+
+  <!-- ========================================
+       4. INTERIOR — nav-slider + rich text
+  ======================================== -->
+  <div class="umd-layout-space-horizontal-larger">
+    <div class="interior-layout">
+
+      <!-- Left nav slider -->
+      <umd-element-nav-slider>
+        <nav slot="primary-slide-links">
+          <a href="#">Overview</a>
+          <a href="#">Undergraduate Programs</a>
+          <a href="#">Graduate Programs</a>
+          <a href="#">Research Areas</a>
+          <a href="#">Faculty &amp; Staff</a>
+          <a href="#">News &amp; Events</a>
+          <a href="#">Contact Us</a>
+        </nav>
+        <div slot="primary-slide-secondary-links">
+          <a href="#">Apply Now</a>
+          <a href="#">Request Info</a>
+        </div>
+      </umd-element-nav-slider>
+
+      <!-- Rich text content area -->
+      <main class="rich-text">
+        <h2>About the Department</h2>
+        <p>
+          The Department of Computer Science at the University of Maryland is one of the top-ranked programs in the nation, with a long tradition of excellence in research, education, and innovation. Our faculty are leaders in fields ranging from artificial intelligence and machine learning to cybersecurity, programming languages, and human-computer interaction.
+        </p>
+        <p>
+          We offer a dynamic and rigorous curriculum designed to prepare students for careers in industry, academia, and government — as well as for the challenges and opportunities that don't yet exist.
+        </p>
+
+        <blockquote>
+          <p>"Computer science is not just about programming — it is about solving the hardest problems humanity faces, with creativity, rigor, and purpose."</p>
+        </blockquote>
+
+        <hr />
+
+        <h3>Research Strengths</h3>
+        <p>Our faculty conduct cutting-edge research across a broad range of areas. Current focus areas include:</p>
+        <ul>
+          <li>Artificial Intelligence &amp; Machine Learning</li>
+          <li>Cybersecurity &amp; Privacy</li>
+          <li>Human-Computer Interaction</li>
+          <li>Programming Languages &amp; Software Engineering</li>
+          <li>Quantum Computing &amp; Algorithms</li>
+          <li>Computer Vision &amp; Robotics</li>
+        </ul>
+
+        <h3>Programs Offered</h3>
+        <p>
+          We offer bachelor's, master's, and doctoral programs, as well as a variety of specializations and joint degree options with other departments. Our <a href="#">undergraduate program</a> is consistently ranked among the top 10 public university CS programs in the country.
+        </p>
+        <p>
+          Graduate students benefit from close collaboration with faculty on funded research projects, strong industry partnerships, and access to the broader university research ecosystem including the <a href="#">Institute for Advanced Computer Studies (UMIACS)</a>.
+        </p>
+
+        <h3>Student Opportunities</h3>
+        <p>
+          Beyond the classroom, students have access to a rich network of clubs, research labs, hackathons, and internship pipelines with leading technology companies. The department regularly hosts industry speakers, career fairs, and open-source contribution events.
+        </p>
+        <ul>
+          <li>Undergraduate Research Assistantships</li>
+          <li>Graduate Teaching &amp; Research Fellowships</li>
+          <li>ACM Student Chapter &amp; hackathons</li>
+          <li>Women in CS and diversity-in-tech initiatives</li>
+        </ul>
+      </main>
+
+    </div>
+  </div>
+
+  <!-- ========================================
+       5. FOOTER
+  ======================================== -->
+  <umd-element-footer>
+    <a slot="logo" href="/">
+      <img src="https://umd.edu/sites/umd.edu/files/UMD-lockup-white.png" alt="University of Maryland" />
+    </a>
+    <p slot="contact-headline">Clark School of Engineering</p>
+    <address slot="address">
+      College Park, MD 20742
+    </address>
+    <div slot="contact-links">
+      <a href="tel:+13014051000">301-405-1000</a>
+      <a href="mailto:info@cs.umd.edu">info@cs.umd.edu</a>
+    </div>
+    <div slot="social-links">
+      <a href="https://www.facebook.com/umarylandCE">Facebook</a>
+      <a href="https://twitter.com/UofMaryland">Twitter</a>
+      <a href="https://www.instagram.com/universityofmaryland/">Instagram</a>
+    </div>
+    <div slot="utility-links">
+      <ul>
+        <li><a href="https://umd.edu">umd.edu</a></li>
+        <li><a href="https://www.umd.edu/web-accessibility">Web Accessibility</a></li>
+        <li><a href="https://www.umd.edu/privacy-notice">Privacy Notice</a></li>
+      </ul>
+    </div>
+  </umd-element-footer>
+
+</body>
+</html>

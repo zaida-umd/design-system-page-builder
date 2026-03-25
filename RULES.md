@@ -765,3 +765,91 @@ Do not place `umd-element-call-to-action` directly in the rich text div without 
 ```
 
 This applies to any dark-to-dark transition: hero → dark section, dark section → dark section, dark pathway → dark section, etc. The section that provides spacing is always the one that comes **before** the next non-dark section — keep `umd-layout-vertical-landing` on that one.
+
+---
+
+## 20. Sticky columns — slot content patterns
+
+`umd-element-sticky-columns` is a layout container. The component itself has no opinions about how slot content is styled — you are responsible for applying the correct UMD typography and layout classes inside each slot.
+
+### Sticky column (left — sticks while user scrolls)
+
+Use the following pattern, verified against umd.edu production markup:
+
+```html
+<div slot="sticky-column">
+  <h2 class="umd-sans-largest-uppercase mb-md">Section Heading</h2>
+  <div class="umd-text-rich-advanced mb-sm">
+    <p>Supporting body copy at 18px with 1.5em line height.</p>
+  </div>
+  <div class="umd-layout-grid-inline-tablet-rows">
+    <umd-element-call-to-action data-display="secondary">
+      <a href="/page">Learn More</a>
+    </umd-element-call-to-action>
+  </div>
+</div>
+```
+
+- `umd-sans-largest-uppercase` — 800-weight uppercase heading, scales from 32px → 44px
+- `mb-md` — 24px bottom margin between heading and body copy
+- `umd-text-rich-advanced` — 18px body copy with animated red underline links
+- `mb-sm` — 16px bottom margin between body copy and CTA
+- `umd-layout-grid-inline-tablet-rows` — stacks CTA(s) on mobile, inline flex at 650px+
+
+### Static column (right — scrolls normally)
+
+Wrap content in `umd-layout-grid-gap-stacked` — a single-column grid with 24px gap. Do **not** use a custom CSS grid. For stats, use `data-animation="offset"` on each `umd-element-stat`:
+
+```html
+<div slot="static-column">
+  <div class="umd-layout-grid-gap-stacked">
+    <umd-element-stat data-visual-size="large" data-decoration-line data-animation="offset">
+      <span slot="stat">44k</span>
+      <div slot="text"><p>Combined graduates and undergraduates</p></div>
+    </umd-element-stat>
+    <umd-element-stat data-visual-size="large" data-decoration-line data-animation="offset">
+      <span slot="stat">400k</span>
+      <div slot="text"><p>Alumni around the world</p></div>
+    </umd-element-stat>
+  </div>
+</div>
+```
+
+- `umd-layout-grid-gap-stacked` — `display: grid; grid-template-columns: 1fr; gap: 24px` — items stack vertically
+- `data-animation="offset"` — scroll-triggered entrance animation on each stat
+
+### Required CSS
+
+These utility classes are **not** injected by `cdn.js`. Define them in your page `<style>` block. Full CSS definitions are in LAYOUT-PATTERNS.md (for `umd-text-rich-advanced`, `umd-layout-grid-inline-tablet-rows`) and must be added for `umd-sans-largest-uppercase`, `umd-layout-grid-gap-stacked`, `mb-md`, and `mb-sm`:
+
+```css
+.umd-layout-grid-gap-stacked {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+.umd-sans-largest-uppercase {
+  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 32px;
+  line-height: 1.1em;
+}
+@media (min-width: 768px)  { .umd-sans-largest-uppercase { font-size: 40px; } }
+@media (min-width: 1024px) { .umd-sans-largest-uppercase { font-size: 44px; } }
+.mb-md { margin-bottom: 24px; }
+.mb-sm { margin-bottom: 16px; }
+```
+
+### Host attributes
+
+Always apply the horizontal spacing class and sticky offset on the host element:
+
+```html
+<umd-element-sticky-columns
+  class="umd-layout-space-horizontal-larger"
+  data-layout-position="100px">
+```
+
+- `class="umd-layout-space-horizontal-larger"` — page gutters (1600px max-width)
+- `data-layout-position="100px"` — sticky top offset; set to match your sticky nav height so the sticky column clears it when scrolling

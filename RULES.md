@@ -688,3 +688,80 @@ umd-layout-image-expand {
 | Missing `width: 100%` | Component collapses to narrow strip | Add to critical CSS (see GROUP 3 in TEMPLATE.html) |
 | `max-width` on host | Image animation clipped | Remove — shadow DOM handles text-lock max-width internally |
 | No `data-theme` attribute | (N/A — attribute does not exist) | Use `data-visual-transparent="true"` + `data-theme="dark"` on quote instead |
+
+---
+
+## 18. Rich text advanced pattern (`umd-text-rich-advanced`)
+
+`umd-text-rich-advanced` is a **CSS class** (not a component). It creates a styled content area for editorial copy: 18px body text, 1.5em line height, and animated red-underline link hover. The dark variant is `umd-text-rich-advanced-dark` — a separate class, not an attribute.
+
+Full HTML examples, CSS definitions, and all supporting layout classes are in **LAYOUT-PATTERNS.md**.
+
+### Key gotchas
+
+**Dark backgrounds require the `-dark` class variant:**
+
+```html
+<!-- ✓ Correct on dark background -->
+<div class="umd-text-rich-advanced-dark">...</div>
+
+<!-- ✗ Wrong — links render black, invisible on dark -->
+<div class="umd-text-rich-advanced">...</div>
+```
+
+**Inline typography on dark backgrounds requires `text-white`:**
+
+Inline headline classes (`umd-sans-large`, `umd-sans-larger-bold`, `umd-sans-extralarge-bold`) output black text by default. On dark backgrounds, add `text-white` to force white. Define `.text-white { color: #ffffff; }` in your `<style>` block.
+
+```html
+<!-- ✓ Correct -->
+<p class="text-white umd-sans-larger-bold">Inline headline</p>
+
+<!-- ✗ Wrong — black text on black background -->
+<p class="umd-sans-larger-bold">Inline headline</p>
+```
+
+**Inline typography uses `<p>` not heading tags:**
+
+Inline headline elements inside `umd-text-rich-advanced` are styled `<p>` elements, not `<h2>` etc. Heading tags carry semantic weight and should only be used for the section headline above the grid.
+
+**The lock for these sections is `umd-layout-space-horizontal-small` (992px):**
+
+These rich text sections use the 992px lock, not the 1280px normal lock. See §12 for the full CSS.
+
+**CTAs inside rich text wrap in `umd-layout-grid-inline-tablet-rows`:**
+
+Do not place `umd-element-call-to-action` directly in the rich text div without a wrapper. The `umd-layout-grid-inline-tablet-rows` wrapper handles stacking on mobile and inline flex at tablet+. Each CTA still needs its own `data-theme="dark"` on dark backgrounds (theme does not cascade — see §14).
+
+---
+
+## 19. No vertical spacing between adjacent dark sections
+
+`umd-layout-vertical-landing` adds `margin-bottom` to create a gap to the next section. When the page background is white, this gap shows as white space. When two consecutive sections are both dark (e.g. a dark hero followed by a `umd-layout-background-full-dark` section), that white margin punches a visible gap between them.
+
+**Rule:** Remove `umd-layout-vertical-landing` from a section when the section immediately following it is dark.
+
+```html
+<!-- ✓ Correct — dark hero flows flush into dark rich text section -->
+<section>
+  <umd-element-hero data-display="overlay" data-theme="dark">...</umd-element-hero>
+</section>
+
+<section class="umd-layout-background-full-dark umd-layout-vertical-landing">
+  ...
+</section>
+
+<!-- The dark section itself keeps umd-layout-vertical-landing for the gap
+     after it, before the next (non-dark) section. -->
+
+<!-- ✗ Wrong — margin-bottom on hero section creates white gap -->
+<section class="umd-layout-vertical-landing">
+  <umd-element-hero data-display="overlay" data-theme="dark">...</umd-element-hero>
+</section>
+
+<section class="umd-layout-background-full-dark umd-layout-vertical-landing">
+  ...
+</section>
+```
+
+This applies to any dark-to-dark transition: hero → dark section, dark section → dark section, dark pathway → dark section, etc. The section that provides spacing is always the one that comes **before** the next non-dark section — keep `umd-layout-vertical-landing` on that one.

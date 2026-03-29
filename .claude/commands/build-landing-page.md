@@ -2,6 +2,25 @@
 
 Build a complete UMD landing page HTML file and save it to `/test/` in the main repo.
 
+## Phase 0 — Design evaluation (run before writing any HTML)
+
+Before touching a file, act as an objective design critic. This prevents generating mediocre output and self-approving it.
+
+1. Read `umd-component-registry.json` to know all available components and variants.
+2. For each required section below, state **why** you chose that component over alternatives, which attributes you'll use, and what content fills each slot.
+3. Score the proposed plan on four dimensions (0–10 each):
+   - **Component fitness** — best component for the content type, not just a safe default
+   - **Layout variety** — at least 3 distinct visual patterns; penalize if the same section type repeats more than twice
+   - **Content hierarchy** — clear path from hero → value → evidence → CTA
+   - **Design integrity** — RULES.md compliance (theme, spacing, slot names) in the plan
+4. If any dimension scores below 6, revise the plan before proceeding. State the revised score.
+5. List any known component-specific risks (e.g. slot name gotchas, required attributes, full-bleed constraints).
+6. Only proceed to HTML after the plan scores ≥ 24/40 with no dimension below 6.
+
+Output the evaluation as a brief design plan with scores before writing the first line of HTML.
+
+---
+
 ## Setup
 
 1. Read `TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. Do not rebuild it.

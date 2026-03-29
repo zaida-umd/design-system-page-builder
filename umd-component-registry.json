@@ -6,9 +6,10 @@
     "last_verified": "2026-03-02",
     "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
     "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
-    "component_count": 19,
-    "last_updated": "2026-03-03",
-    "batch_4": "section-intro, section-intro-wide, footer"
+    "component_count": 21,
+    "last_updated": "2026-03-29",
+    "batch_4": "section-intro, section-intro-wide, footer",
+    "batch_5": "sticky-columns, card-event, feed-events-list"
   },
   "header-utility": {
     "tag": "umd-element-utility-header",
@@ -606,6 +607,190 @@
     "source": "npm",
     "priority": 3,
     "batch": 2
+  },
+  "card-event": {
+    "tag": "umd-element-event",
+    "label": "Event Card",
+    "description": "Specialized card for displaying events with date, time, and location. Renders a date sign and event meta (time, location) automatically from ISO date slots. Supports block (default), feature, promo/overlay, and list display variants.",
+    "slots": [
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Event title. Use an anchor tag to make the card clickable.",
+        "example": "<h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>"
+      },
+      {
+        "name": "date-start-iso",
+        "required": true,
+        "description": "Event start date/time as a <time> element. The datetime attribute must be an ISO 8601 string — this drives the date sign and event meta display.",
+        "example": "<time slot=\"date-start-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025</time>"
+      },
+      {
+        "name": "date-end-iso",
+        "required": false,
+        "description": "Event end date/time as a <time> element with ISO 8601 datetime. Used to compute duration shown in event meta.",
+        "example": "<time slot=\"date-end-iso\" datetime=\"2025-04-15T17:00:00\">April 15, 2025 at 5:00 PM</time>"
+      },
+      {
+        "name": "location",
+        "required": false,
+        "description": "Event location text.",
+        "example": "<p slot=\"location\">Stamp Student Union</p>"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Event description.",
+        "example": "<p slot=\"text\">Join us for presentations from leading researchers across campus.</p>"
+      },
+      {
+        "name": "image",
+        "required": false,
+        "description": "Event image. Required for the promo (overlay) variant to render the background.",
+        "example": "<img slot=\"image\" src=\"/event.jpg\" alt=\"\" />"
+      },
+      {
+        "name": "eyebrow",
+        "required": false,
+        "description": "Category or type label. Displayed as a ribbon in the feature variant.",
+        "example": "<p slot=\"eyebrow\">Featured Event</p>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "Registration or info links.",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/register\">Register Now</a></umd-element-call-to-action></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-display",
+        "type": "enum",
+        "values": [
+          "feature",
+          "promo",
+          "list"
+        ],
+        "description": "Layout variant. Omit for default block layout.",
+        "notes": {
+          "feature": "Large date sign, eyebrow ribbon — use for highlighted/featured events",
+          "promo": "Text overlaid on background image (overlay card style) — requires image slot",
+          "list": "Horizontal list layout with large date sign"
+        }
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "dark"
+        ],
+        "description": "Dark color theme."
+      },
+      {
+        "name": "data-visual-transparent",
+        "type": "boolean",
+        "description": "Transparent background. Use when placing cards over a colored section background."
+      },
+      {
+        "name": "data-visual-time",
+        "type": "boolean",
+        "description": "Show time in the event meta display."
+      }
+    ],
+    "aliases": {
+      "event card": {
+        "description": "Default block event card with date sign and event meta",
+        "attrs": {}
+      },
+      "event overlay card": {
+        "description": "Event card with text overlaid on background image — requires image slot",
+        "attrs": {
+          "data-display": "promo"
+        }
+      },
+      "event card feature": {
+        "description": "Featured event card with large date sign and eyebrow ribbon",
+        "attrs": {
+          "data-display": "feature"
+        }
+      },
+      "event card list": {
+        "description": "Horizontal list event card with large date sign",
+        "attrs": {
+          "data-display": "list"
+        }
+      },
+      "event card dark": {
+        "description": "Default block event card, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      },
+      "event card list dark": {
+        "description": "Horizontal list event card, dark theme",
+        "attrs": {
+          "data-display": "list",
+          "data-theme": "dark"
+        }
+      }
+    },
+    "notes": "date-start-iso is required — the component will render an empty div if it is missing. Use a <time> element with a valid ISO 8601 datetime attribute (e.g. 2025-04-15T09:00:00). The date sign and event meta (time, location) are generated automatically from the date slots. For the promo (overlay) variant, always include an image — without one the overlay has no background.",
+    "example": "<umd-element-event>\n  <h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>\n  <p slot=\"text\">Join us for presentations from leading researchers.</p>\n  <time slot=\"date-start-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025 at 9:00 AM</time>\n  <time slot=\"date-end-iso\" datetime=\"2025-04-15T17:00:00\">April 15, 2025 at 5:00 PM</time>\n  <p slot=\"location\">Stamp Student Union</p>\n</umd-element-event>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 5
+  },
+  "feed-events-list": {
+    "tag": "umd-feed-events-list",
+    "label": "Events List Feed",
+    "description": "Dynamic vertical list of events fetched from the UMD events API. Self-populating — no content slots. Optimized for sidebar and sticky column layouts. Requires a data-token to render.",
+    "slots": [],
+    "attrs": [
+      {
+        "name": "data-token",
+        "type": "string",
+        "required": true,
+        "description": "API authentication token. The component will not render without this."
+      },
+      {
+        "name": "data-filter-group-ids",
+        "type": "string",
+        "description": "Comma-separated category IDs to filter events. Omit to show all events."
+      },
+      {
+        "name": "data-layout-row-count",
+        "type": "number",
+        "description": "Number of event rows to show initially. Accepts 1–10, defaults to 5."
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark color theme."
+      },
+      {
+        "name": "data-lazy-load",
+        "type": "boolean",
+        "description": "Enable a 'load more' button to fetch additional events beyond the initial row count."
+      }
+    ],
+    "aliases": {
+      "events list": {
+        "description": "Default events list feed",
+        "attrs": {}
+      },
+      "events list dark": {
+        "description": "Events list feed, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      }
+    },
+    "notes": "No content slots — events are fetched and rendered automatically from the API. data-token is required; the component renders an empty div and logs an error without it. Use data-filter-group-ids to scope to a specific category (e.g. arts, athletics). Pairs naturally with umd-element-sticky-columns as the static column content.",
+    "example": "<umd-feed-events-list\n  data-token=\"your-api-token\"\n  data-layout-row-count=\"5\"\n  data-lazy-load=\"true\">\n</umd-feed-events-list>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 5
   },
   "pathway": {
     "tag": "umd-element-pathway",

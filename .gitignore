@@ -1,0 +1,5 @@
+# macOS
+.DS_Store
+
+# Claude worktrees (ephemeral working directories)
+.claude/worktrees/

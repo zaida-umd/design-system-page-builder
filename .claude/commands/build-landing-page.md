@@ -6,7 +6,7 @@ Build a complete UMD landing page HTML file and save it to `/test/` in the main 
 
 Before touching a file, act as an objective design critic. This prevents generating mediocre output and self-approving it.
 
-1. Read `umd-component-registry.json` to know all available components and variants.
+1. Read all four registry category files to know all available components and variants: `registry/registry-navigation.json`, `registry/registry-heroes.json`, `registry/registry-cards.json`, `registry/registry-content.json`.
 2. For each required section below, state **why** you chose that component over alternatives, which attributes you'll use, and what content fills each slot.
 3. Score the proposed plan on four dimensions (0–10 each):
    - **Component fitness** — best component for the content type, not just a safe default
@@ -24,7 +24,7 @@ Output the evaluation as a brief design plan with scores before writing the firs
 ## Setup
 
 1. Read `TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. Do not rebuild it.
-2. Read `umd-component-registry.json` — use it as the source of truth for all slots and attributes.
+2. Registry files in `registry/` are the source of truth for all slots and attributes (already read above).
 3. Follow every rule in `RULES.md` exactly.
 
 ## Page identity

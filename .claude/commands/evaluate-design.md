@@ -12,7 +12,7 @@ If no concept is provided, ask the user to describe the page they want to build.
 
 ## Step 1 — Read context files
 
-1. Read `umd-component-registry.json` — this is the source of truth for all available components, slots, and attributes.
+1. Read all four registry category files — source of truth for all available components, slots, and attributes: `registry/registry-navigation.json`, `registry/registry-heroes.json`, `registry/registry-cards.json`, `registry/registry-content.json`.
 2. Read `RULES.md` sections 3, 5, 9, 11, 13, 14 — these govern layout, theming, and slot usage.
 3. If a specific page URL is mentioned, fetch it to understand the content.
 

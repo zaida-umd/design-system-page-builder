@@ -1,0 +1,562 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-03-02",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
+    "component_count": 21,
+    "last_updated": "2026-03-29",
+    "batch_4": "section-intro, section-intro-wide, footer",
+    "batch_5": "sticky-columns, card-event, feed-events-list",
+    "category": "heroes",
+    "components": [
+      "hero-standard",
+      "hero-minimal",
+      "hero-expand",
+      "hero-logo",
+      "hero-grid",
+      "hero-brand-video"
+    ]
+  },
+  "hero-standard": {
+    "tag": "umd-element-hero",
+    "label": "Hero",
+    "slots": [
+      {
+        "name": "eyebrow",
+        "required": false,
+        "description": "Small label above the headline.",
+        "example": "<p slot=\"eyebrow\">Department of Computer Science</p>"
+      },
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Main heading. Use h1 for page-level heroes.",
+        "example": "<h1 slot=\"headline\">Fearless Ideas Start Here</h1>"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Body copy below the headline.",
+        "example": "<div slot=\"text\"><p>Supporting description text.</p></div>"
+      },
+      {
+        "name": "image",
+        "required": false,
+        "description": "Background or featured image.",
+        "example": "<img slot=\"image\" src=\"/hero.jpg\" alt=\"Campus aerial view\" />"
+      },
+      {
+        "name": "video",
+        "required": false,
+        "description": "Background video (video element).",
+        "example": "<video slot=\"video\" src=\"/hero.mp4\" autoplay muted loop></video>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA buttons. Wrap in a div for multiple actions.",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply Now</a></umd-element-call-to-action></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-display",
+        "type": "enum",
+        "values": [
+          "overlay",
+          "stacked",
+          "stacked-interior",
+          "default-centered",
+          "default-interior",
+          "default-interior-centered"
+        ],
+        "description": "Sets hero layout variant. Omit for standard default layout.",
+        "notes": {
+          "overlay": "Full-bleed background image with text overlay",
+          "stacked": "Image stacked above text (two-column on desktop)",
+          "stacked-interior": "Stacked variant for interior pages (shorter)",
+          "default-centered": "Standard layout with centered text",
+          "default-interior": "Standard layout sized for interior pages",
+          "default-interior-centered": "Interior page with centered text"
+        }
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "dark",
+          "light",
+          "maryland",
+          "gold"
+        ],
+        "description": "Color theme. Omit for light default."
+      },
+      {
+        "name": "data-animation",
+        "type": "boolean",
+        "description": "Include attribute (no value) to enable entrance animations."
+      },
+      {
+        "name": "data-layout-height",
+        "type": "enum",
+        "values": [
+          "small"
+        ],
+        "description": "Reduces hero height. Use for interior page heroes."
+      },
+      {
+        "name": "data-layout-text",
+        "type": "enum",
+        "values": [
+          "center"
+        ],
+        "description": "Centers text alignment within the hero."
+      },
+      {
+        "name": "data-layout-space-horizontal",
+        "type": "enum",
+        "values": [
+          "large"
+        ],
+        "description": "Expands horizontal spacing for wider text container."
+      }
+    ],
+    "configurable": true,
+    "themes": [
+      "dark",
+      "light",
+      "maryland",
+      "gold"
+    ],
+    "variants": {
+      "default": "Standard hero \u2014 text left, image optional",
+      "overlay": "Full-bleed background image with text over it",
+      "stacked": "Image above, text below (two-column layout on desktop)",
+      "stacked-interior": "Shorter stacked variant for interior pages",
+      "default-centered": "Centered text layout",
+      "default-interior": "Shorter height for interior pages",
+      "default-interior-centered": "Interior page + centered text"
+    },
+    "notes": "Most versatile hero. The README's example uses data-theme='dark' data-display='overlay' for a typical background image hero. For a dark overlay hero with a background image: add both data-theme='dark' and data-display='overlay' and slot an image.",
+    "example_dark_overlay": "<umd-element-hero data-display=\"overlay\" data-theme=\"dark\">\n  <img slot=\"image\" src=\"hero.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Clark School of Engineering</p>\n  <h1 slot=\"headline\">Advancing the Future</h1>\n  <div slot=\"text\"><p>World-class research and education.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Learn More</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero>",
+    "source": "npm",
+    "priority": 1,
+    "batch": 1,
+    "aliases": {
+      "background hero": {
+        "description": "Same as standard hero. Image fills the background behind text. No data-display attribute.",
+        "attrs": {}
+      },
+      "background hero centered": {
+        "description": "Full-bleed background image, text centered",
+        "attrs": {
+          "data-display": "overlay",
+          "data-layout-text": "center"
+        }
+      },
+      "background hero small": {
+        "description": "Full-bleed background image, reduced height",
+        "attrs": {
+          "data-display": "overlay",
+          "data-layout-height": "small"
+        }
+      },
+      "background hero small centered": {
+        "description": "Full-bleed background image, reduced height, text centered",
+        "attrs": {
+          "data-display": "overlay",
+          "data-layout-height": "small",
+          "data-layout-text": "center"
+        }
+      },
+      "background hero small centered dark": {
+        "description": "Full-bleed background image, reduced height, text centered, dark theme",
+        "attrs": {
+          "data-display": "overlay",
+          "data-layout-height": "small",
+          "data-layout-text": "center",
+          "data-theme": "dark"
+        }
+      },
+      "hero centered": {
+        "description": "Standard hero, text centered, no background image required",
+        "attrs": {
+          "data-display": "default-centered"
+        }
+      },
+      "hero interior": {
+        "description": "Shorter hero for interior pages",
+        "attrs": {
+          "data-display": "default-interior"
+        }
+      },
+      "hero interior centered": {
+        "description": "Shorter hero for interior pages, text centered",
+        "attrs": {
+          "data-display": "default-interior-centered"
+        }
+      },
+      "stacked hero": {
+        "description": "Image above, text below (two-column on desktop)",
+        "attrs": {
+          "data-display": "stacked"
+        }
+      },
+      "stacked hero interior": {
+        "description": "Shorter stacked variant for interior pages",
+        "attrs": {
+          "data-display": "stacked-interior"
+        }
+      },
+      "standard hero": {
+        "description": "Default hero \u2014 image renders as full background behind text. No data-display needed.",
+        "attrs": {}
+      },
+      "overlay hero": {
+        "description": "Distinct overlay variant. Image is composited with a color overlay. Uses data-display=overlay.",
+        "attrs": {
+          "data-display": "overlay"
+        }
+      },
+      "standard hero dark": {
+        "description": "Standard/background hero, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      }
+    }
+  },
+  "hero-minimal": {
+    "tag": "umd-element-hero-minimal",
+    "label": "Hero Minimal",
+    "description": "Compact, short-height hero. No background image required. Designed for interior pages, section headers, or anywhere a full-height hero would be too heavy. Supports dark, light, and maryland themes.",
+    "slots": [
+      {
+        "name": "eyebrow",
+        "required": false,
+        "description": "Small label above headline.",
+        "example": "<p slot=\"eyebrow\">Department of Computer Science</p>"
+      },
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Page or section heading.",
+        "example": "<h1 slot=\"headline\">Graduate Admissions</h1>"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Supporting body copy.",
+        "example": "<div slot=\"text\"><p>Brief supporting description.</p></div>"
+      },
+      {
+        "name": "image",
+        "required": false,
+        "description": "Optional image.",
+        "example": "<img slot=\"image\" src=\"/image.jpg\" alt=\"\" />"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA button(s).",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply Now</a></umd-element-call-to-action></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "dark",
+          "light",
+          "maryland"
+        ],
+        "description": "Color theme. Omit for default (light)."
+      }
+    ],
+    "aliases": {
+      "minimal hero": {
+        "description": "Compact short-height hero",
+        "attrs": {}
+      },
+      "minimal hero dark": {
+        "description": "Compact hero, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      },
+      "minimal hero maryland": {
+        "description": "Compact hero, Maryland red theme",
+        "attrs": {
+          "data-theme": "maryland"
+        }
+      }
+    },
+    "example": "<umd-element-hero-minimal>\n  <p slot=\"eyebrow\">The Graduate School</p>\n  <h1 slot=\"headline\">Graduate Admissions</h1>\n  <div slot=\"text\"><p>Join one of the world's premier public research universities.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply Now</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-minimal>",
+    "notes": "Best for interior pages and section intros. Host height is ~30vh. Use hero-standard for full-height landing heroes.",
+    "source": "npm",
+    "priority": 2,
+    "batch": 3
+  },
+  "hero-expand": {
+    "tag": "umd-element-hero-expand",
+    "label": "Hero Expand",
+    "description": "Full-viewport sticky hero that reveals/expands as the user scrolls. Designed for immersive landing page experiences. Supports both a background image and a background video.",
+    "slots": [
+      {
+        "name": "eyebrow",
+        "required": false,
+        "description": "Small label above headline.",
+        "example": "<p slot=\"eyebrow\">University of Maryland</p>"
+      },
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Main heading.",
+        "example": "<h1 slot=\"headline\">Fearless Ideas Start Here</h1>"
+      },
+      {
+        "name": "image",
+        "required": false,
+        "description": "Background image. Used when no video is present.",
+        "example": "<img slot=\"image\" src=\"/hero.jpg\" alt=\"\" />"
+      },
+      {
+        "name": "video",
+        "required": false,
+        "description": "Background video. Takes precedence over image when present.",
+        "example": "<video slot=\"video\" src=\"/hero.mp4\" autoplay muted loop></video>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA button(s).",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/\">Learn More</a></umd-element-call-to-action></div>"
+      },
+      {
+        "name": "additional",
+        "required": false,
+        "description": "Additional content revealed on expand.",
+        "example": "<div slot=\"additional\"><p>Additional context shown after scroll.</p></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-layout-top-position",
+        "type": "string",
+        "description": "Pixel offset from top for sticky positioning (e.g. '60' to clear a sticky nav)."
+      }
+    ],
+    "aliases": {
+      "expand hero": {
+        "description": "Full-viewport sticky/expand hero",
+        "attrs": {}
+      },
+      "hero expand": {
+        "description": "Full-viewport sticky/expand hero",
+        "attrs": {}
+      }
+    },
+    "example": "<umd-element-hero-expand>\n  <video slot=\"video\" src=\"/campus.mp4\" autoplay muted loop></video>\n  <p slot=\"eyebrow\">University of Maryland</p>\n  <h1 slot=\"headline\">Fearless Ideas Start Here</h1>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Discover UMD</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-expand>",
+    "notes": "Full 100vh height. Sticky scroll behavior is built in. Pair with data-layout-top-position if a sticky navigation header is present.",
+    "source": "npm",
+    "priority": 3,
+    "batch": 3
+  },
+  "hero-logo": {
+    "tag": "umd-element-hero-logo",
+    "label": "Hero Logo",
+    "description": "Hero variant featuring a prominent image/logo lockup alongside headline and text. Designed for department or unit landing pages where the visual identity (logo or image) is front and center.",
+    "slots": [
+      {
+        "name": "eyebrow",
+        "required": false,
+        "description": "Small label above headline.",
+        "example": "<p slot=\"eyebrow\">Clark School of Engineering</p>"
+      },
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Main heading.",
+        "example": "<h1 slot=\"headline\">Engineering the Future</h1>"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Supporting body copy.",
+        "example": "<div slot=\"text\"><p>World-class research and education.</p></div>"
+      },
+      {
+        "name": "image",
+        "required": false,
+        "description": "Logo or featured image displayed prominently in the layout.",
+        "example": "<img slot=\"image\" src=\"/unit-logo.svg\" alt=\"Clark School of Engineering\" />"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA button(s).",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply Now</a></umd-element-call-to-action></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "dark",
+          "light",
+          "maryland"
+        ],
+        "description": "Color theme."
+      }
+    ],
+    "aliases": {
+      "logo hero": {
+        "description": "Hero with prominent logo/image lockup",
+        "attrs": {}
+      },
+      "logo hero dark": {
+        "description": "Logo hero, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      },
+      "logo hero maryland": {
+        "description": "Logo hero, Maryland red theme",
+        "attrs": {
+          "data-theme": "maryland"
+        }
+      }
+    },
+    "example": "<umd-element-hero-logo>\n  <img slot=\"image\" src=\"/unit-logo.svg\" alt=\"Clark School of Engineering\" />\n  <p slot=\"eyebrow\">Clark School of Engineering</p>\n  <h1 slot=\"headline\">Engineering the Future</h1>\n  <div slot=\"text\"><p>World-class research and education in engineering and technology.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Learn More</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-logo>",
+    "source": "npm",
+    "priority": 3,
+    "batch": 3
+  },
+  "hero-grid": {
+    "tag": "umd-element-hero-grid",
+    "label": "Hero Grid",
+    "description": "Full-viewport hero with a multi-image grid layout \u2014 two corner image columns flanking a center column that holds images and/or a video. The headline, text, and actions are overlaid or adjacent to the grid. Designed for visually immersive brand moments.",
+    "slots": [
+      {
+        "name": "column-left",
+        "required": true,
+        "description": "Left corner image column. Populate with img elements.",
+        "example": "<div slot=\"column-left\"><img src=\"/img1.jpg\" alt=\"\" /><img src=\"/img2.jpg\" alt=\"\" /></div>"
+      },
+      {
+        "name": "column-right",
+        "required": true,
+        "description": "Right corner image column. Populate with img elements.",
+        "example": "<div slot=\"column-right\"><img src=\"/img3.jpg\" alt=\"\" /><img src=\"/img4.jpg\" alt=\"\" /></div>"
+      },
+      {
+        "name": "column-center",
+        "required": true,
+        "description": "Center column. Accepts img elements and/or a single video element.",
+        "example": "<div slot=\"column-center\"><img src=\"/img5.jpg\" alt=\"\" /><video src=\"/hero.mp4\" autoplay muted loop></video></div>"
+      },
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Main heading.",
+        "example": "<h1 slot=\"headline\">Fearless Ideas</h1>"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Supporting body copy.",
+        "example": "<div slot=\"text\"><p>Supporting description.</p></div>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA button(s).",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/\">Explore</a></umd-element-call-to-action></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "dark"
+        ],
+        "description": "Dark color theme."
+      }
+    ],
+    "aliases": {
+      "grid hero": {
+        "description": "Multi-image grid hero",
+        "attrs": {}
+      },
+      "grid hero dark": {
+        "description": "Multi-image grid hero, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      }
+    },
+    "example": "<umd-element-hero-grid>\n  <div slot=\"column-left\">\n    <img src=\"/img1.jpg\" alt=\"\" />\n    <img src=\"/img2.jpg\" alt=\"\" />\n  </div>\n  <div slot=\"column-center\">\n    <img src=\"/img3.jpg\" alt=\"\" />\n    <video src=\"/hero.mp4\" autoplay muted loop></video>\n  </div>\n  <div slot=\"column-right\">\n    <img src=\"/img4.jpg\" alt=\"\" />\n    <img src=\"/img5.jpg\" alt=\"\" />\n  </div>\n  <h1 slot=\"headline\">Fearless Ideas</h1>\n  <div slot=\"text\"><p>World-class research at the University of Maryland.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Explore UMD</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-grid>",
+    "notes": "Full 100vh height. All three column slots are required for layout to render correctly. Center column can include both images and a video.",
+    "source": "npm",
+    "priority": 3,
+    "batch": 3
+  },
+  "hero-brand-video": {
+    "tag": "umd-element-hero-brand-video",
+    "label": "Hero Brand Video",
+    "description": "Full-viewport brand video hero. The video plays as a full-bleed background with headline and text overlaid. Supports an optional load-triggered entrance animation. No image fallback \u2014 video is required.",
+    "slots": [
+      {
+        "name": "video",
+        "required": true,
+        "description": "A video element placed as a direct child (not slotted with slot= attribute). Must be a plain <video> element.",
+        "example": "<video src=\"/brand.mp4\" autoplay muted loop poster=\"/poster.jpg\"></video>"
+      },
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Main heading overlaid on the video.",
+        "example": "<h1 slot=\"headline\">Fearless Ideas Start Here</h1>"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Supporting body copy overlaid on the video.",
+        "example": "<div slot=\"text\"><p>Supporting description.</p></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "animation-trigger",
+        "type": "enum",
+        "values": [
+          "load"
+        ],
+        "description": "Set to 'load' to trigger entrance animation when the component loads."
+      }
+    ],
+    "aliases": {
+      "brand video hero": {
+        "description": "Full-bleed brand video hero",
+        "attrs": {}
+      },
+      "brand video hero animated": {
+        "description": "Brand video hero with load animation",
+        "attrs": {
+          "animation-trigger": "load"
+        }
+      }
+    },
+    "example": "<umd-element-hero-brand-video animation-trigger=\"load\">\n  <video src=\"/brand.mp4\" autoplay muted loop poster=\"/poster.jpg\"></video>\n  <h1 slot=\"headline\">Fearless Ideas Start Here</h1>\n  <div slot=\"text\"><p>The University of Maryland \u2014 a Top 20 public research university.</p></div>\n</umd-element-hero-brand-video>",
+    "notes": "Video is a direct child element, NOT slotted with slot= attribute. Headline and text use slot= as normal. Full 100vh height.",
+    "source": "npm",
+    "priority": 3,
+    "batch": 3
+  }
+}

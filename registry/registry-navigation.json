@@ -1,0 +1,244 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-03-02",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
+    "component_count": 21,
+    "last_updated": "2026-03-29",
+    "batch_4": "section-intro, section-intro-wide, footer",
+    "batch_5": "sticky-columns, card-event, feed-events-list",
+    "category": "navigation",
+    "components": [
+      "header-utility",
+      "header-site",
+      "nav-item",
+      "footer"
+    ]
+  },
+  "header-utility": {
+    "tag": "umd-element-utility-header",
+    "label": "Global University Header",
+    "slots": [],
+    "attrs": [],
+    "configurable": false,
+    "usage": "<umd-element-utility-header></umd-element-utility-header>",
+    "notes": "Fixed UMD global bar \u2014 identical on every page. Self-contained: renders UMD flag, 'A Top 20 Public Research University', and utility nav. No slots, no attrs needed. Hardcode in every template. Never touch during page updates.",
+    "source": "npm",
+    "priority": 1,
+    "batch": 1
+  },
+  "header-site": {
+    "tag": "umd-element-navigation-header",
+    "label": "Site Navigation Header",
+    "slots": [
+      {
+        "name": "logo",
+        "required": true,
+        "description": "Anchor tag wrapping a logo image or text. Short text (<30 chars) triggers large logo sizing automatically.",
+        "example": "<a slot=\"logo\" href=\"https://eng.umd.edu\"><img src=\"/logo.svg\" alt=\"Clark School\" /></a>"
+      },
+      {
+        "name": "main-navigation",
+        "required": false,
+        "description": "Container holding umd-element-nav-item children. Component extracts nav items automatically.",
+        "example": "<nav slot=\"main-navigation\"><umd-element-nav-item>...</umd-element-nav-item></nav>"
+      },
+      {
+        "name": "utility-navigation",
+        "required": false,
+        "description": "Optional utility row shown above the nav row on desktop.",
+        "example": "<div slot=\"utility-navigation\"><a href=\"/give\">Give</a><a href=\"/myum\">myUMD</a></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "search-url",
+        "type": "string",
+        "description": "URL for search icon link"
+      },
+      {
+        "name": "cta-url",
+        "type": "string",
+        "description": "CTA button URL \u2014 requires cta-text to activate"
+      },
+      {
+        "name": "cta-text",
+        "type": "string",
+        "description": "CTA button label \u2014 requires cta-url to activate"
+      },
+      {
+        "name": "sticky",
+        "type": "boolean",
+        "description": "Triggers sticky behavior when set to 'true'"
+      }
+    ],
+    "configurable": true,
+    "variants": {
+      "sticky": "Add sticky attribute for fixed positioning on scroll"
+    },
+    "notes": "Site-level header \u2014 logo and nav links change per site. The component auto-registers umd-element-nav-item children from the main-navigation slot. CTA button only appears when both cta-url and cta-text are present.",
+    "source": "npm",
+    "priority": 1,
+    "batch": 1
+  },
+  "nav-item": {
+    "tag": "umd-element-nav-item",
+    "label": "Navigation Item",
+    "slots": [
+      {
+        "name": "primary-link",
+        "required": true,
+        "description": "The main anchor link for this nav item.",
+        "example": "<a slot=\"primary-link\" href=\"/about\">About</a>"
+      },
+      {
+        "name": "dropdown-callout",
+        "required": false,
+        "description": "Optional dropdown content panel.",
+        "example": "<div slot=\"dropdown-callout\">...</div>"
+      }
+    ],
+    "attrs": [],
+    "configurable": true,
+    "notes": "Used inside the main-navigation slot of umd-element-navigation-header. Each nav link = one umd-element-nav-item.",
+    "source": "npm",
+    "priority": 1,
+    "batch": 1
+  },
+  "footer": {
+    "tag": "umd-element-footer",
+    "label": "Footer",
+    "description": "University-branded site footer. Three display variants: simple (default), mega (three nav columns), and visual (image background). Automatically sets role='contentinfo' and aria-label='site footer'. The global utility header (umd-element-utility-header) is always at the top of the page; this footer closes the page.",
+    "slots": [
+      {
+        "name": "logo",
+        "required": false,
+        "description": "Department/unit logo. Must be an <a> element with an <img> inside.",
+        "example": "<a slot=\"logo\" href=\"/\"><img src=\"/logo.png\" alt=\"College of Engineering\" /></a>"
+      },
+      {
+        "name": "contact-headline",
+        "required": false,
+        "description": "Heading for the contact/address block.",
+        "example": "<p slot=\"contact-headline\">College of Engineering</p>"
+      },
+      {
+        "name": "address",
+        "required": false,
+        "description": "Mailing address block.",
+        "example": "<address slot=\"address\">1101 Engineering Building<br>College Park, MD 20742</address>"
+      },
+      {
+        "name": "contact-links",
+        "required": false,
+        "description": "Contact links (email, phone) as a list or inline links.",
+        "example": "<div slot=\"contact-links\"><a href=\"mailto:eng@umd.edu\">eng@umd.edu</a></div>"
+      },
+      {
+        "name": "social-links",
+        "required": false,
+        "description": "Social media links. Use a <ul> of <li><a> items.",
+        "example": "<ul slot=\"social-links\"><li><a href=\"https://twitter.com/umdengineer\">Twitter</a></li></ul>"
+      },
+      {
+        "name": "utility-links",
+        "required": false,
+        "description": "Utility/legal nav links (Privacy Policy, Web Accessibility, etc). Use a <ul>.",
+        "example": "<div slot=\"utility-links\"><ul><li><a href=\"/privacy\">Privacy Policy</a></li><li><a href=\"/accessibility\">Web Accessibility</a></li></ul></div>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "Primary CTA button displayed prominently in the footer.",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply Now</a></umd-element-call-to-action></div>"
+      },
+      {
+        "name": "link-column-one",
+        "required": false,
+        "description": "First nav column. Mega footer only. Use a <nav> with a <ul> of links.",
+        "example": "<nav slot=\"link-column-one\"><ul><li><a href=\"/about\">About</a></li></ul></nav>"
+      },
+      {
+        "name": "link-column-two",
+        "required": false,
+        "description": "Second nav column. Mega footer only.",
+        "example": "<nav slot=\"link-column-two\"><ul><li><a href=\"/research\">Research</a></li></ul></nav>"
+      },
+      {
+        "name": "link-column-three",
+        "required": false,
+        "description": "Third nav column. Mega footer only.",
+        "example": "<nav slot=\"link-column-three\"><ul><li><a href=\"/contact\">Contact</a></li></ul></nav>"
+      },
+      {
+        "name": "image",
+        "required": false,
+        "description": "Background image. Visual footer only.",
+        "example": "<img slot=\"image\" src=\"/footer-bg.jpg\" alt=\"\" />"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-display",
+        "type": "enum",
+        "values": [
+          "mega",
+          "visual",
+          "simple"
+        ],
+        "description": "Footer variant. Omit or use 'simple' for default. 'mega' enables three nav columns. 'visual' uses a background image.",
+        "notes": {
+          "simple": "Default single-column footer with contact info and social links",
+          "mega": "Full footer with up to three nav link columns, contact, and social",
+          "visual": "Image-backed footer \u2014 set slot='image' for background"
+        }
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "light"
+        ],
+        "description": "Light theme \u2014 dark text on light gray background instead of dark footer."
+      }
+    ],
+    "aliases": {
+      "footer": {
+        "description": "Default simple footer",
+        "attrs": {}
+      },
+      "footer simple": {
+        "description": "Simple footer (explicit)",
+        "attrs": {
+          "data-display": "simple"
+        }
+      },
+      "footer mega": {
+        "description": "Mega footer with three nav columns",
+        "attrs": {
+          "data-display": "mega"
+        }
+      },
+      "footer visual": {
+        "description": "Visual footer with background image",
+        "attrs": {
+          "data-display": "visual"
+        }
+      },
+      "footer light": {
+        "description": "Footer with light theme (dark text on light background)",
+        "attrs": {
+          "data-theme": "light"
+        }
+      }
+    },
+    "notes": "role='contentinfo' and aria-label='site footer' are auto-applied if absent. Logo slot must be an <a> wrapping an <img>. Link columns only render if they have child nodes. Simple is default if neither mega nor visual is set.",
+    "example": "<umd-element-footer>\n  <a slot=\"logo\" href=\"/\"><img src=\"/dept-logo.png\" alt=\"College of Engineering\" /></a>\n  <p slot=\"contact-headline\">College of Engineering</p>\n  <address slot=\"address\">1101 Engineering Building<br>College Park, MD 20742</address>\n  <div slot=\"contact-links\">\n    <a href=\"mailto:eng@umd.edu\">eng@umd.edu</a>\n    <a href=\"tel:3014051000\">(301) 405-1000</a>\n  </div>\n  <ul slot=\"social-links\">\n    <li><a href=\"https://twitter.com/umdengineer\">Twitter</a></li>\n    <li><a href=\"https://facebook.com/umdengineer\">Facebook</a></li>\n  </ul>\n  <div slot=\"utility-links\">\n    <ul>\n      <li><a href=\"/privacy\">Privacy Policy</a></li>\n      <li><a href=\"/accessibility\">Web Accessibility</a></li>\n    </ul>\n  </div>\n</umd-element-footer>",
+    "source": "npm",
+    "priority": 1,
+    "batch": 4
+  }
+}

@@ -1,0 +1,430 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-03-02",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
+    "component_count": 21,
+    "last_updated": "2026-03-29",
+    "batch_4": "section-intro, section-intro-wide, footer",
+    "batch_5": "sticky-columns, card-event, feed-events-list",
+    "category": "content",
+    "components": [
+      "pathway",
+      "pathway-highlight",
+      "section-intro",
+      "section-intro-wide",
+      "image-expand",
+      "sticky-columns"
+    ]
+  },
+  "pathway": {
+    "tag": "umd-element-pathway",
+    "label": "Pathway",
+    "description": "Two-column promo section: image on one side, text content on the other. The most versatile promotional section component. Supports standard, hero, overlay, and sticky display modes.",
+    "slots": [
+      {
+        "name": "eyebrow",
+        "required": false,
+        "description": "Small label above the headline.",
+        "example": "<p slot=\"eyebrow\">Featured Research</p>"
+      },
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Section heading.",
+        "example": "<h2 slot=\"headline\">Advancing the Future of Engineering</h2>"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Body copy. Wrap in a div for rich content.",
+        "example": "<div slot=\"text\"><p>Description text here.</p></div>"
+      },
+      {
+        "name": "image",
+        "required": false,
+        "description": "Feature image. Required for most variants to render meaningfully.",
+        "example": "<img slot=\"image\" src=\"/feature.jpg\" alt=\"\" />"
+      },
+      {
+        "name": "video",
+        "required": false,
+        "description": "Video element as alternative to image.",
+        "example": "<video slot=\"video\" src=\"/feature.mp4\" autoplay muted loop></video>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA button(s).",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/\">Learn More</a></umd-element-call-to-action></div>"
+      },
+      {
+        "name": "stats",
+        "required": false,
+        "description": "Stat/data callouts displayed within the text area.",
+        "example": "<div slot=\"stats\"><p>$50M in research funding</p></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-display",
+        "type": "enum",
+        "values": [
+          "hero",
+          "overlay",
+          "sticky"
+        ],
+        "description": "Layout variant. Omit for standard two-column layout.",
+        "notes": {
+          "hero": "Full-bleed hero-style pathway",
+          "overlay": "Text overlaid on image (similar to hero overlay)",
+          "sticky": "Sticky scroll layout \u2014 text sticks while image scrolls"
+        }
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "dark",
+          "light",
+          "maryland"
+        ],
+        "description": "Color theme."
+      },
+      {
+        "name": "data-layout-image-position",
+        "type": "enum",
+        "values": [
+          "left"
+        ],
+        "description": "Position the image on the left side. Default is right."
+      },
+      {
+        "name": "image-scaled",
+        "type": "enum",
+        "values": [
+          "true",
+          "false"
+        ],
+        "description": "Scale/crop image to fill container. Defaults to true."
+      },
+      {
+        "name": "data-animation",
+        "type": "boolean",
+        "description": "Enable scroll-triggered entrance animation."
+      }
+    ],
+    "aliases": {
+      "pathway": {
+        "description": "Standard two-column pathway",
+        "attrs": {}
+      },
+      "pathway dark": {
+        "description": "Standard pathway, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      },
+      "pathway maryland": {
+        "description": "Standard pathway, Maryland red theme \u2014 sets the text column background to solid red (#e21833) with white text. No other styling differences. Avoid for quote/feature content; prefer dark theme instead.",
+        "attrs": {
+          "data-theme": "maryland"
+        }
+      },
+      "pathway image left": {
+        "description": "Standard pathway with image on left",
+        "attrs": {
+          "data-layout-image-position": "left"
+        }
+      },
+      "pathway hero": {
+        "description": "Hero-style full-bleed pathway",
+        "attrs": {
+          "data-display": "hero"
+        }
+      },
+      "pathway overlay": {
+        "description": "Overlay pathway \u2014 text on top of image",
+        "attrs": {
+          "data-display": "overlay"
+        }
+      },
+      "pathway overlay dark": {
+        "description": "Overlay pathway, dark theme",
+        "attrs": {
+          "data-display": "overlay",
+          "data-theme": "dark"
+        }
+      },
+      "pathway sticky": {
+        "description": "Sticky scroll pathway",
+        "attrs": {
+          "data-display": "sticky"
+        }
+      }
+    },
+    "example": "<umd-element-pathway>\n  <img slot=\"image\" src=\"/feature.jpg\" alt=\"Featured research\" />\n  <p slot=\"eyebrow\">Featured Research</p>\n  <h2 slot=\"headline\">Advancing the Future of Engineering</h2>\n  <div slot=\"text\"><p>Our researchers are tackling the defining challenges of our time.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/research\">Explore Research</a></umd-element-call-to-action>\n  </div>\n</umd-element-pathway>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 2
+  },
+  "pathway-highlight": {
+    "tag": "umd-element-pathway-highlight",
+    "label": "Pathway Highlight",
+    "description": "Two-column pathway variant that pairs content text with a pull quote or highlighted statement on the right. No image \u2014 designed for quote-forward editorial sections.",
+    "slots": [
+      {
+        "name": "eyebrow",
+        "required": false,
+        "description": "Small label above headline.",
+        "example": "<p slot=\"eyebrow\">From Our Dean</p>"
+      },
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Section heading.",
+        "example": "<h2 slot=\"headline\">A Message of Excellence</h2>"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Body copy on the left side.",
+        "example": "<div slot=\"text\"><p>Supporting paragraph content.</p></div>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA button(s).",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"secondary\"><a href=\"/\">Learn More</a></umd-element-call-to-action></div>"
+      },
+      {
+        "name": "highlight",
+        "required": false,
+        "description": "Pull quote text displayed in the right column with a red accent bar.",
+        "example": "<p slot=\"highlight\">The work happening here will define the next generation of engineers.</p>"
+      },
+      {
+        "name": "highlight-attribution",
+        "required": false,
+        "description": "Attribution for the pull quote.",
+        "example": "<p slot=\"highlight-attribution\">\u2014 Dean John Smith</p>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "dark"
+        ],
+        "description": "Dark color theme."
+      }
+    ],
+    "aliases": {
+      "pathway highlight": {
+        "description": "Pathway with pull quote column",
+        "attrs": {}
+      },
+      "pathway highlight dark": {
+        "description": "Pathway highlight, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      }
+    },
+    "example": "<umd-element-pathway-highlight>\n  <p slot=\"eyebrow\">From Our Dean</p>\n  <h2 slot=\"headline\">A Message of Excellence</h2>\n  <div slot=\"text\"><p>Supporting body content on the left side of the section.</p></div>\n  <p slot=\"highlight\">The work happening here will define the next generation of engineers.</p>\n  <p slot=\"highlight-attribution\">\u2014 Dean John Smith</p>\n</umd-element-pathway-highlight>",
+    "source": "npm",
+    "priority": 3,
+    "batch": 2
+  },
+  "section-intro": {
+    "tag": "umd-element-section-intro",
+    "label": "Section Intro",
+    "description": "Centered section header block with headline, optional body text, and optional actions. Displays at a constrained max-width with center-aligned text. Supports a decorative red vertical line above the headline via the include-separator attribute. Use to introduce a content section on landing pages.",
+    "slots": [
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Section heading. Renders uppercase, bold, large sans-serif.",
+        "example": "<h2 slot=\"headline\">Our Research Areas</h2>"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Body copy paragraph(s) displayed below the headline.",
+        "example": "<div slot=\"text\"><p>Brief description of this section.</p></div>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA button(s) displayed below the text.",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action><a href=\"/\">View All</a></umd-element-call-to-action></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "dark"
+        ],
+        "description": "Dark theme \u2014 white text on dark backgrounds."
+      },
+      {
+        "name": "include-separator",
+        "type": "boolean",
+        "description": "Adds a decorative red vertical line above the headline (adds top padding). Boolean attribute \u2014 presence enables it."
+      }
+    ],
+    "aliases": {
+      "section intro": {
+        "description": "Default centered section header",
+        "attrs": {}
+      },
+      "section intro dark": {
+        "description": "Centered section header, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      },
+      "section intro separator": {
+        "description": "Centered section header with red separator line above",
+        "attrs": {}
+      },
+      "section header": {
+        "description": "Alias for section intro",
+        "attrs": {}
+      }
+    },
+    "notes": "Text aligns center. Max-width constrains content to roughly 640px. When no headline is provided, text renders larger. If only text (no headline), text gets largest/bold treatment.",
+    "example": "<umd-element-section-intro>\n  <h2 slot=\"headline\">Our Research Areas</h2>\n  <div slot=\"text\"><p>Discover the cutting-edge work happening across our departments.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action><a href=\"/research\">Explore Research</a></umd-element-call-to-action>\n  </div>\n</umd-element-section-intro>",
+    "source": "npm",
+    "priority": 1,
+    "batch": 4
+  },
+  "section-intro-wide": {
+    "tag": "umd-element-section-intro-wide",
+    "label": "Section Intro Wide",
+    "description": "Full-width section header with headline on the left and an optional CTA on the right. At desktop (500px+ container), headline and actions display as a flex row. Use to label a content grid or list with a prominent 'View All' link.",
+    "slots": [
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Section heading. Renders uppercase, bold, large sans-serif.",
+        "example": "<h2 slot=\"headline\">Featured Stories</h2>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA link or button displayed to the right of the headline at desktop.",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action><a href=\"/\">View All</a></umd-element-call-to-action></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "dark"
+        ],
+        "description": "Dark theme \u2014 white text on dark backgrounds."
+      }
+    ],
+    "aliases": {
+      "section intro wide": {
+        "description": "Wide section header, headline left, CTA right",
+        "attrs": {}
+      },
+      "section intro wide dark": {
+        "description": "Wide section header, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      },
+      "section header wide": {
+        "description": "Alias for section intro wide",
+        "attrs": {}
+      }
+    },
+    "notes": "No text slot \u2014 wide variant is headline + optional CTA only. Layout switches to flex row at container width 500px+. Uses container-type: inline-size on host (same pattern as pathway).",
+    "example": "<umd-element-section-intro-wide>\n  <h2 slot=\"headline\">Featured Stories</h2>\n  <div slot=\"actions\">\n    <umd-element-call-to-action><a href=\"/news\">View All News</a></umd-element-call-to-action>\n  </div>\n</umd-element-section-intro-wide>",
+    "source": "npm",
+    "priority": 1,
+    "batch": 4
+  },
+  "image-expand": {
+    "tag": "umd-layout-image-expand",
+    "label": "Layout Image Expand",
+    "category": "layout",
+    "description": "Scroll-driven layout component. The image starts small and expands to fill the full viewport as the user scrolls through it. Text content is stacked above the image section. Both slots are required. No theme or display variants \u2014 purely a layout/animation component. Degrades gracefully when scroll-driven animations are unsupported (image renders at full height statically).",
+    "slots": [
+      {
+        "name": "content",
+        "required": true,
+        "description": "Text and content panel displayed above the expanding image. Text must be explicitly styled white (color: white or utility classes) \u2014 the component does not set text color internally.",
+        "example": "<div slot=\"content\"><div><h2 style=\"color:white;\">Section Heading</h2><p style=\"color:white;\">Supporting text.</p></div></div>"
+      },
+      {
+        "name": "image",
+        "required": true,
+        "description": "The image that expands on scroll. Use an img element.",
+        "example": "<img slot=\"image\" src=\"/feature.jpg\" alt=\"\" />"
+      }
+    ],
+    "attrs": [],
+    "configurable": false,
+    "aliases": {
+      "image expand": {
+        "description": "Scroll-driven expanding image layout",
+        "attrs": {}
+      }
+    },
+    "example": "<section style=\"background:#000;\">\n  <umd-layout-image-expand>\n    <div slot=\"content\">\n      <div>\n        <h2 style=\"color:white;\">Our Research Impact</h2>\n        <p style=\"color:white;\">Supporting description of the section.</p>\n      </div>\n    </div>\n    <img slot=\"image\" src=\"/feature.jpg\" alt=\"Research at Maryland\" />\n  </umd-layout-image-expand>\n</section>",
+    "notes": "No data-theme or data-display attributes. Both slots are required for layout to render. Scroll animation requires animation-timeline: scroll() support (Chrome 115+, Firefox 110+). Falls back to static full-height image. FULL-BLEED: host requires explicit width: 100% in critical CSS \u2014 do not apply a horizontal spacing class (same rule as pathway/hero). The internal image animation uses 100vw; if the host collapses to content width (e.g. due to a narrow component in the content slot) the component will appear narrow. TEXT COLOR: the component does NOT support data-theme \u2014 text color is not set internally. Content slot children must use explicit color: white (via inline styles or utility classes) because the text overlays the image with a dark overlay (rgba(0,0,0,0.65)). SECTION WRAPPER: always wrap in a dark section (background: #000) for visual continuity with the overlay. INTERNAL MAX-WIDTH: the shadow DOM applies max-width: 1600px on the text-lock container internally \u2014 do NOT set max-width on the host element. See RULES.md section 17.",
+    "source": "npm",
+    "priority": 3,
+    "batch": 5
+  },
+  "sticky-columns": {
+    "tag": "umd-element-sticky-columns",
+    "label": "Sticky Columns",
+    "category": "layout",
+    "description": "Two-column layout where the left column sticks in place while the right column scrolls. Use to pair an intro heading or section label with a long list of scrollable content \u2014 feeds, cards, accordions, stats, or event lists. Both columns are required. Collapses to a single stacked column on mobile.",
+    "slots": [
+      {
+        "name": "sticky-column",
+        "required": true,
+        "description": "The column that sticks while the user scrolls. Typically contains a heading, eyebrow text, body copy, and/or a CTA.",
+        "example": "<div slot=\"sticky-column\"><h2>Our Values</h2><p>What drives everything we do.</p></div>"
+      },
+      {
+        "name": "static-column",
+        "required": true,
+        "description": "The column that scrolls normally. Typically contains cards, accordion items, a news/events feed, or a stat grid.",
+        "example": "<div slot=\"static-column\"><umd-element-accordion-item>...</umd-element-accordion-item></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-layout-position",
+        "type": "string",
+        "description": "Pixel offset from the top of the viewport for the sticky column (e.g. \"100px\"). Set this to match the height of any sticky navigation header so the sticky column clears the nav.",
+        "example": "data-layout-position=\"100px\""
+      }
+    ],
+    "aliases": {
+      "sticky columns": {
+        "description": "Two-column layout \u2014 left sticks, right scrolls",
+        "attrs": {}
+      }
+    },
+    "notes": "Both slots are required. Always set data-layout-position when a sticky nav header is present (use the nav height in px). The sticky column is always left on desktop; static column is always right. No theme or display variants. Apply a horizontal spacing class (e.g. umd-layout-space-horizontal-larger) on the host for consistent page gutters. SLOT CONTENT STYLING: the component has no opinions about slot content \u2014 apply UMD utility classes manually. Sticky column: use umd-sans-largest-uppercase + mb-md on the h2, umd-text-rich-advanced + mb-sm on body copy, umd-layout-grid-inline-tablet-rows on CTA wrapper. Static column: wrap items in umd-layout-grid-gap-stacked (single-column stacked grid, gap 24px) \u2014 do NOT use a custom CSS grid. These classes are not injected by cdn.js; define them in the page style block. See RULES.md \u00a720 for full CSS and canonical example.",
+    "example": "<umd-element-sticky-columns class=\"umd-layout-space-horizontal-larger\" data-layout-position=\"100px\">\n  <div slot=\"sticky-column\">\n    <h2 class=\"umd-sans-largest-uppercase mb-md\">Our Values</h2>\n    <div class=\"umd-text-rich-advanced mb-sm\">\n      <p>The principles behind everything we do at the University of Maryland.</p>\n    </div>\n    <div class=\"umd-layout-grid-inline-tablet-rows\">\n      <umd-element-call-to-action data-display=\"secondary\"><a href=\"/values\">Learn More</a></umd-element-call-to-action>\n    </div>\n  </div>\n  <div slot=\"static-column\">\n    <div class=\"umd-layout-grid-gap-stacked\">\n      <umd-element-accordion-item>\n        <p slot=\"headline\">United</p>\n        <div slot=\"text\"><p>We are stronger together.</p></div>\n      </umd-element-accordion-item>\n      <umd-element-accordion-item>\n        <p slot=\"headline\">Fearless</p>\n        <div slot=\"text\"><p>We pursue bold ideas.</p></div>\n      </umd-element-accordion-item>\n    </div>\n  </div>\n</umd-element-sticky-columns>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 5
+  }
+}

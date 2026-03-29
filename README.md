@@ -13,12 +13,17 @@ Feed page content or a site URL into a Claude project and get back a complete, s
 ```
 design-system-page-builder/
 ├── README.md                        ← you are here
-├── umd-component-registry.json      ← canonical component reference (slots, attrs, variants)
+├── registry/                        ← component registry split by category
+│   ├── registry-index.json          ← lightweight index of all categories
+│   ├── registry-navigation.json     ← header-utility, header-site, nav-item, footer
+│   ├── registry-heroes.json         ← hero-standard, hero-minimal, hero-expand, hero-logo, hero-grid, hero-brand-video
+│   ├── registry-cards.json          ← card-standard, card-overlay, card-icon, card-video, card-event, feed-events-list
+│   └── registry-content.json        ← pathway, pathway-highlight, section-intro, section-intro-wide, image-expand, sticky-columns
+├── umd-component-registry.json      ← legacy monolithic registry (kept for reference)
 ├── RULES.md                         ← composition rules, gotchas, and required CSS patterns
 ├── TEMPLATE.html                    ← copy-paste page skeleton with all critical CSS
 ├── REQUIRED-CSS.md                  ← reference: what each CSS rule does and why
-├── pages/                           ← generated test/output pages
-│   └── (your pages go here)
+├── test/                            ← generated test/output pages
 └── design-system/                   ← git submodule → UMD-Digital/design-system
     ├── packages/components/         ← component source code
     └── ...
@@ -53,7 +58,7 @@ git commit -m "Update design-system submodule to latest"
 ### 3. Claude project setup
 
 Add these files as project knowledge in your Claude project:
-- `umd-component-registry.json`
+- `registry/registry-index.json` + individual category files (or `umd-component-registry.json` for the full monolith)
 - `RULES.md`
 - `TEMPLATE.html`
 - `REQUIRED-CSS.md`
@@ -62,7 +67,7 @@ The full `design-system/` directory is too large for project knowledge, but havi
 
 ## How it works
 
-1. **Registry** (`umd-component-registry.json`) — Every component's tag name, slots, attributes, variants, and known gotchas, verified directly from the npm package source.
+1. **Registry** (`registry/`) — Every component's tag name, slots, attributes, variants, and known gotchas, verified directly from the npm package source. Split into 4 category files (~10–22KB each) for token efficiency; the legacy `umd-component-registry.json` monolith is kept for reference.
 
 2. **Rules** (`RULES.md`) — Composition patterns, CSS requirements, spacing utilities, and hard-won lessons from testing. Covers critical CSS load order, `container-type` splits, pathway background requirements, theme cascade behavior, and more.
 

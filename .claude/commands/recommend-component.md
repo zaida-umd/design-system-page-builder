@@ -4,7 +4,13 @@ Help identify the right UMD design system component for a given piece of content
 
 ## Setup
 
-Read `umd-component-registry.json` in full before making any recommendation. This is the authoritative source — do not suggest components not in the registry.
+1. Read `registry/registry-index.json` to see available categories and which components are in each.
+2. Based on the content type, read only the relevant category file(s):
+   - Navigation/headers/footer → `registry/registry-navigation.json`
+   - Heroes → `registry/registry-heroes.json`
+   - Cards and feeds → `registry/registry-cards.json`
+   - Pathways, section intros, image expand, sticky columns → `registry/registry-content.json`
+3. If the content type is unclear, read all four files. Do not suggest components not in the registry.
 
 ## Process
 

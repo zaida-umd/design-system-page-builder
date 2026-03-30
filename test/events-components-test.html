@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events Components Test — University of Maryland</title>
+
+  <!-- ============================================================
+       UMD Critical CSS — MUST precede cdn.js
+  ============================================================ -->
+  <style>
+    /* GROUP 1: container-type: normal */
+    umd-element-utility-header:not(:defined),
+    umd-element-navigation-header:not(:defined),
+    umd-element-nav-item:not(:defined),
+    umd-element-call-to-action:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-utility-header,
+    umd-element-navigation-header,
+    umd-element-nav-item,
+    umd-element-call-to-action {
+      display: block;
+      container-type: normal;
+    }
+
+    /* GROUP 2: container-type: inline-size */
+    umd-element-event:not(:defined),
+    umd-element-events-date:not(:defined),
+    umd-element-slider-events:not(:defined),
+    umd-element-section-intro-wide:not(:defined),
+    umd-element-footer:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-event,
+    umd-element-events-date,
+    umd-element-slider-events,
+    umd-element-section-intro-wide,
+    umd-element-footer {
+      display: block;
+      container-type: inline-size;
+    }
+
+    /* FONTS */
+    :root {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+    p, li, label, input, textarea, select {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+
+    /* VERTICAL SPACING */
+    .umd-layout-vertical-landing           { margin-bottom: 56px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+    .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+    /* HORIZONTAL SPACING */
+    [class^="umd-layout-space-horizontal-"] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1200px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+    .umd-layout-space-horizontal-full     { max-width: 100%;   }
+    .umd-layout-space-horizontal-larger   { max-width: 1600px; position: relative; container-type: inline-size; isolation: isolate; }
+    .umd-layout-space-horizontal-large    { max-width: 1400px; }
+    .umd-layout-space-horizontal-normal   { max-width: 1280px; }
+    .umd-layout-space-horizontal-small    { max-width: 992px;  }
+
+    /* GRID UTILITIES */
+    .umd-layout-grid-child-fill-height {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-grid-child-fill-height > * {
+      flex: 1;
+    }
+
+    .umd-layout-grid-gap-three {
+      display: grid;
+      gap: 32px;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-gap-three {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* TEST PAGE LABELS */
+    .test-label {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #E21833;
+      margin: 0 0 8px;
+    }
+    .test-headline {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: clamp(24px, 3vw, 36px);
+      font-weight: 700;
+      margin: 0 0 32px;
+      color: #000;
+    }
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
+</head>
+<body>
+
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="https://umd.edu">
+      <img src="https://umd.edu/sites/umd.edu/files/styles/optimized/public/images/hero/UMD_Wordmark_White.png" alt="University of Maryland" />
+    </a>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://calendar.umd.edu">Events</a>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+
+
+  <!-- ============================================================
+       SECTION 1: BLOCK EVENT CARDS (default) — 3-column grid
+  ============================================================ -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <p class="test-label">Event Card — Block (default)</p>
+      <h2 class="test-headline">Block Event Cards</h2>
+
+      <div class="umd-layout-grid-gap-three">
+
+        <div class="umd-layout-grid-child-fill-height">
+          <umd-element-event data-visual-time>
+            <h3 slot="headline"><a href="https://calendar.umd.edu/how-to-search-for-an-internship-or-job-workshop">How to Search for an Internship or Job Workshop</a></h3>
+            <time slot="start-date-iso" datetime="2026-03-30T12:00:00">2026-03-30T12:00:00</time>
+            <time slot="end-date-iso" datetime="2026-03-30T13:00:00">2026-03-30T13:00:00</time>
+            <p slot="location">Hornbake Library, South Wing</p>
+            <p slot="text">Are you searching for an internship or job and not sure where to begin? Join the University Career Center for guidance on your search strategy.</p>
+            <img slot="image" src="https://picsum.photos/seed/umd1/800/600" alt="Hornbake Library" />
+          </umd-element-event>
+        </div>
+
+        <div class="umd-layout-grid-child-fill-height">
+          <umd-element-event data-visual-time>
+            <h3 slot="headline"><a href="https://calendar.umd.edu">Language Career Night</a></h3>
+            <time slot="start-date-iso" datetime="2026-03-30T18:00:00">2026-03-30T18:00:00</time>
+            <time slot="end-date-iso" datetime="2026-03-30T20:00:00">2026-03-30T20:00:00</time>
+            <p slot="location">Jimenez Hall</p>
+            <p slot="text">Join us to learn how your language skills can translate to a career. Meet UMD alums and network with professionals across fields.</p>
+            <img slot="image" src="https://picsum.photos/seed/umd2/800/600" alt="Jimenez Hall" />
+          </umd-element-event>
+        </div>
+
+        <div class="umd-layout-grid-child-fill-height">
+          <umd-element-event data-visual-time>
+            <h3 slot="headline"><a href="https://calendar.umd.edu">America Will Be! Exhibition</a></h3>
+            <time slot="start-date-iso" datetime="2026-02-09T00:00:00">2026-02-09T00:00:00</time>
+            <time slot="end-date-iso" datetime="2026-05-15T23:59:00">2026-05-15T23:59:00</time>
+            <p slot="location">Cole Student Activities Building</p>
+            <p slot="text">Visit the David C. Driskell Center's Spring 2026 Exhibition celebrating the legacy of artist and scholar David C. Driskell.</p>
+            <img slot="image" src="https://picsum.photos/seed/umd3/800/600" alt="Cole Student Activities Building" />
+          </umd-element-event>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SECTION 2: OVERLAY (PROMO) EVENT CARDS — 3-column grid
+  ============================================================ -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <p class="test-label">Event Card — Overlay (display="promo")</p>
+      <h2 class="test-headline">Overlay Event Cards</h2>
+
+      <div class="umd-layout-grid-gap-three">
+
+        <div class="umd-layout-grid-child-fill-height">
+          <umd-element-event display="promo" data-visual-time>
+            <h3 slot="headline"><a href="https://calendar.umd.edu">Spring Steps</a></h3>
+            <time slot="start-date-iso" datetime="2026-03-30T12:00:00">2026-03-30T12:00:00</time>
+            <time slot="end-date-iso" datetime="2026-03-30T13:00:00">2026-03-30T13:00:00</time>
+            <p slot="location">McKeldin Mall</p>
+            <img slot="image" src="https://picsum.photos/seed/umd4/800/600" alt="McKeldin Mall" />
+          </umd-element-event>
+        </div>
+
+        <div class="umd-layout-grid-child-fill-height">
+          <umd-element-event display="promo" data-visual-time>
+            <h3 slot="headline"><a href="https://calendar.umd.edu">STAMP Gallery: Then, Now, and Tomorrow</a></h3>
+            <time slot="start-date-iso" datetime="2026-02-16T00:00:00">2026-02-16T00:00:00</time>
+            <time slot="end-date-iso" datetime="2026-04-04T23:59:00">2026-04-04T23:59:00</time>
+            <p slot="location">Adele H. Stamp Student Union</p>
+            <img slot="image" src="https://picsum.photos/seed/umd5/800/600" alt="Stamp Student Union Gallery" />
+          </umd-element-event>
+        </div>
+
+        <div class="umd-layout-grid-child-fill-height">
+          <umd-element-event display="promo" data-visual-time>
+            <h3 slot="headline"><a href="https://calendar.umd.edu">Maryland Day 2026</a></h3>
+            <time slot="start-date-iso" datetime="2026-04-25T10:00:00">2026-04-25T10:00:00</time>
+            <time slot="end-date-iso" datetime="2026-04-25T17:00:00">2026-04-25T17:00:00</time>
+            <p slot="location">College Park Campus</p>
+            <img slot="image" src="https://picsum.photos/seed/umd6/800/600" alt="Maryland Day celebration" />
+          </umd-element-event>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SECTION 3: LIST EVENT CARDS — stacked
+  ============================================================ -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-normal">
+      <p class="test-label">Event Card — List (data-display="list")</p>
+      <h2 class="test-headline">List Event Cards</h2>
+
+      <umd-element-event data-display="list" data-visual-time>
+        <h3 slot="headline"><a href="https://calendar.umd.edu">Language House Language Chats</a></h3>
+        <time slot="start-date-iso" datetime="2026-03-30T16:00:00">2026-03-30T16:00:00</time>
+        <time slot="end-date-iso" datetime="2026-03-30T17:30:00">2026-03-30T17:30:00</time>
+        <p slot="location">St. Mary's Hall</p>
+        <p slot="text">Come practice, improve, or maintain language skills in a casual setting with drinks and snacks!</p>
+        <img slot="image" src="https://picsum.photos/seed/umd7/800/600" alt="Language House" />
+      </umd-element-event>
+
+      <umd-element-event data-display="list" data-visual-time>
+        <h3 slot="headline"><a href="https://calendar.umd.edu">Graduate School Commencement Rehearsal</a></h3>
+        <time slot="start-date-iso" datetime="2026-05-21T09:00:00">2026-05-21T09:00:00</time>
+        <time slot="end-date-iso" datetime="2026-05-21T11:00:00">2026-05-21T11:00:00</time>
+        <p slot="location">XFINITY Center</p>
+        <p slot="text">Mandatory rehearsal for all graduate degree candidates participating in the May 2026 commencement ceremony.</p>
+        <img slot="image" src="https://picsum.photos/seed/umd8/800/600" alt="XFINITY Center" />
+      </umd-element-event>
+
+      <umd-element-event data-display="list" data-visual-time>
+        <h3 slot="headline"><a href="https://calendar.umd.edu">Research Horizons Symposium</a></h3>
+        <time slot="start-date-iso" datetime="2026-04-15T09:00:00">2026-04-15T09:00:00</time>
+        <time slot="end-date-iso" datetime="2026-04-15T17:00:00">2026-04-15T17:00:00</time>
+        <p slot="location">Stamp Student Union, Grand Ballroom</p>
+        <p slot="text">Annual showcase of undergraduate and graduate research across all disciplines. Open to the campus community.</p>
+        <img slot="image" src="https://picsum.photos/seed/umd9/800/600" alt="Stamp Student Union" />
+      </umd-element-event>
+
+    </div>
+  </section>
+
+
+  <!-- ============================================================
+       SECTION 4: EVENTS DATE SLIDER
+  ============================================================ -->
+  <section class="umd-layout-vertical-landing">
+    <p class="test-label" style="padding: 0 24px; max-width: 1600px; margin-left: auto; margin-right: auto;">Event Slider — Date Slider (umd-element-slider-events)</p>
+
+    <umd-element-slider-events>
+      <h2 slot="headline">Upcoming Events</h2>
+      <umd-element-call-to-action data-display="secondary" slot="actions">
+        <a href="https://calendar.umd.edu">View All Events</a>
+      </umd-element-call-to-action>
+
+      <div slot="event-list">
+
+        <umd-element-events-date>
+          <h3 slot="headline"><a href="https://calendar.umd.edu/how-to-search-for-an-internship-or-job-workshop">How to Search for an Internship or Job Workshop</a></h3>
+          <time slot="start-date-iso" datetime="2026-03-30T12:00:00">2026-03-30T12:00:00</time>
+          <time slot="end-date-iso" datetime="2026-03-30T13:00:00">2026-03-30T13:00:00</time>
+        </umd-element-events-date>
+
+        <umd-element-events-date>
+          <h3 slot="headline"><a href="https://calendar.umd.edu">Language Career Night</a></h3>
+          <time slot="start-date-iso" datetime="2026-03-30T18:00:00">2026-03-30T18:00:00</time>
+          <time slot="end-date-iso" datetime="2026-03-30T20:00:00">2026-03-30T20:00:00</time>
+        </umd-element-events-date>
+
+        <umd-element-events-date>
+          <h3 slot="headline"><a href="https://calendar.umd.edu">America Will Be! Exhibition</a></h3>
+          <time slot="start-date-iso" datetime="2026-04-09T00:00:00">2026-04-09T00:00:00</time>
+          <time slot="end-date-iso" datetime="2026-05-15T23:59:00">2026-05-15T23:59:00</time>
+        </umd-element-events-date>
+
+        <umd-element-events-date>
+          <h3 slot="headline"><a href="https://calendar.umd.edu">Research Horizons Symposium</a></h3>
+          <time slot="start-date-iso" datetime="2026-04-15T09:00:00">2026-04-15T09:00:00</time>
+          <time slot="end-date-iso" datetime="2026-04-15T17:00:00">2026-04-15T17:00:00</time>
+        </umd-element-events-date>
+
+        <umd-element-events-date>
+          <h3 slot="headline"><a href="https://calendar.umd.edu">Maryland Day 2026</a></h3>
+          <time slot="start-date-iso" datetime="2026-04-25T10:00:00">2026-04-25T10:00:00</time>
+          <time slot="end-date-iso" datetime="2026-04-25T17:00:00">2026-04-25T17:00:00</time>
+        </umd-element-events-date>
+
+        <umd-element-events-date>
+          <h3 slot="headline"><a href="https://calendar.umd.edu">Graduate Commencement Ceremony</a></h3>
+          <time slot="start-date-iso" datetime="2026-05-22T10:00:00">2026-05-22T10:00:00</time>
+          <time slot="end-date-iso" datetime="2026-05-22T13:00:00">2026-05-22T13:00:00</time>
+        </umd-element-events-date>
+
+      </div>
+    </umd-element-slider-events>
+  </section>
+
+
+  <!-- FOOTER -->
+  <umd-element-footer>
+    <a slot="logo" href="https://umd.edu">
+      <img src="https://umd.edu/sites/umd.edu/files/styles/optimized/public/images/hero/UMD_Wordmark_White.png" alt="University of Maryland" />
+    </a>
+    <p slot="contact-headline">University of Maryland</p>
+    <address slot="address">College Park, MD 20742</address>
+    <div slot="contact-links">
+      <a href="tel:3014051000">(301) 405-1000</a>
+    </div>
+    <div slot="social-links">
+      <a href="https://facebook.com/UofMaryland">Facebook</a>
+      <a href="https://twitter.com/umd_edu">Twitter</a>
+      <a href="https://instagram.com/univofmaryland">Instagram</a>
+    </div>
+  </umd-element-footer>
+
+</body>
+</html>

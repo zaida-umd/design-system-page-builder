@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home — University of Maryland College Park Foundation | University of Maryland</title>
+
+  <!-- ============================================================
+       UMD Critical CSS — MUST precede cdn.js
+  ============================================================ -->
+  <style>
+    /* ====================
+       GROUP 1: container-type: normal
+    ==================== */
+    umd-element-utility-header:not(:defined),
+    umd-element-navigation-header:not(:defined),
+    umd-element-nav-item:not(:defined),
+    umd-element-call-to-action:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-utility-header,
+    umd-element-navigation-header,
+    umd-element-nav-item,
+    umd-element-call-to-action {
+      display: block;
+      container-type: normal;
+    }
+
+    /* ====================
+       GROUP 2: container-type: inline-size
+    ==================== */
+    umd-element-hero:not(:defined),
+    umd-element-hero-minimal:not(:defined),
+    umd-element-hero-expand:not(:defined),
+    umd-element-hero-logo:not(:defined),
+    umd-element-hero-grid:not(:defined),
+    umd-element-hero-brand-video:not(:defined),
+    umd-element-pathway:not(:defined),
+    umd-element-pathway-highlight:not(:defined),
+    umd-element-section-intro:not(:defined),
+    umd-element-section-intro-wide:not(:defined),
+    umd-element-card:not(:defined),
+    umd-element-card-overlay:not(:defined),
+    umd-element-card-icon:not(:defined),
+    umd-element-card-video:not(:defined),
+    umd-element-quote:not(:defined),
+    umd-element-stat:not(:defined),
+    umd-element-person-bio:not(:defined),
+    umd-element-accordion-item:not(:defined),
+    umd-element-footer:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-hero,
+    umd-element-hero-minimal,
+    umd-element-hero-expand,
+    umd-element-hero-logo,
+    umd-element-hero-grid,
+    umd-element-hero-brand-video,
+    umd-element-pathway,
+    umd-element-pathway-highlight,
+    umd-element-section-intro,
+    umd-element-section-intro-wide,
+    umd-element-card,
+    umd-element-card-overlay,
+    umd-element-card-icon,
+    umd-element-card-video,
+    umd-element-quote,
+    umd-element-stat,
+    umd-element-person-bio,
+    umd-element-accordion-item,
+    umd-element-footer {
+      display: block;
+      container-type: inline-size;
+    }
+
+    /* ====================
+       GROUP 3: Full-bleed components
+    ==================== */
+    umd-layout-image-expand:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-layout-image-expand {
+      display: block;
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    /* ====================
+       FONTS
+    ==================== */
+    :root {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+    p, li, label, input, textarea, select {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+
+    /* ====================
+       VERTICAL SPACING
+    ==================== */
+    .umd-layout-vertical-landing           { margin-bottom: 56px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+    .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+    .umd-layout-vertical-interior          { margin-bottom: 56px; }
+    @media (min-width: 1024px) { .umd-layout-vertical-interior { margin-bottom: 80px; } }
+
+    .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
+
+    /* ====================
+       HORIZONTAL SPACING
+    ==================== */
+    [class^="umd-layout-space-horizontal-"] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1200px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+    .umd-layout-space-horizontal-full     { max-width: 100%;   }
+    .umd-layout-space-horizontal-larger   { max-width: 1600px; }
+    .umd-layout-space-horizontal-large    { max-width: 1400px; }
+    .umd-layout-space-horizontal-normal   { max-width: 1280px; }
+    .umd-layout-space-horizontal-small    { max-width: 992px;  }
+    .umd-layout-space-horizontal-smallest { max-width: 800px;  }
+
+    /* ====================
+       WATERMARK DECORATION
+    ==================== */
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      color: #f1f1f1;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: min(calc(44px + 13vw), 240px);
+      line-height: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    :is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+      opacity: 0.6;
+      z-index: -1;
+    }
+    .umd-watermark-dark > * {
+      opacity: 0.12;
+      z-index: inherit;
+    }
+    @keyframes slide-in-from-left {
+      from { transform: translate(-15vw); }
+      to   { transform: translate(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+          animation: slide-in-from-left forwards;
+          animation-timeline: view();
+          animation-range-start: 0;
+          animation-range-end: 100vh;
+          transform: translate(-15vw);
+        }
+      }
+    }
+
+    /* ====================
+       SECTION-INTRO-WIDE WRAPPER
+    ==================== */
+    .umd-layout-space-horizontal-larger {
+      position: relative;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    /* ====================
+       GRID UTILITIES
+    ==================== */
+    .umd-layout-grid-child-fill-height {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-grid-child-fill-height > * {
+      flex: 1;
+    }
+
+    /* ====================
+       CARD GRID
+    ==================== */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+      margin-top: 40px;
+    }
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
+</head>
+<body>
+
+  <!-- ========================================
+       1. GLOBAL UNIVERSITY HEADER
+  ======================================== -->
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <!-- ========================================
+       2. SITE NAVIGATION HEADER
+  ======================================== -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full"
+    cta-url="https://giving.umd.edu/"
+    cta-text="Give to Maryland">
+    <a slot="logo" href="https://umcpf.umd.edu/">
+      <img src="https://micros-sites.transforms.svdcdn.com/production/images/umcpf/university-of-maryland-college-park-foundation.png?w=600&h=60&q=82&fm=png&fit=clip&dm=1671046545&s=2e5b48a2e0ad218fc7c416fe8606d223" alt="University of Maryland College Park Foundation" />
+    </a>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://umcpf.umd.edu/about">About the Foundation</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://umcpf.umd.edu/board-of-trustees">Board of Trustees</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://umcpf.umd.edu/resources">Resources</a>
+      </umd-element-nav-item>
+    </nav>
+    <div slot="utility-navigation">
+      <a href="https://umcpf.umd.edu/trustee-login">Trustee Login</a>
+    </div>
+  </umd-element-navigation-header>
+
+  <!-- ========================================
+       3. PAGE CONTENT
+  ======================================== -->
+
+  <!-- HERO: Full-bleed overlay hero with campus image -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-hero data-display="overlay" data-theme="dark">
+      <img slot="image" src="https://micros-sites.transforms.svdcdn.com/production/images/umcpf/HornbakePlaza_10242017_9204-1920x1080.jpg?w=1920&h=1080&auto=compress%2Cformat&fit=crop&crop=focalpoint&fp-x=0.5214&fp-y=0.3324&dm=1671037035&s=e78d85ce6c1554c5f9e1cecc70f5707a" alt="Hornbake Plaza at the University of Maryland" />
+      <h1 slot="headline">Welcome</h1>
+      <div slot="text">
+        <p>Join us in support of past, present and future Terps</p>
+      </div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary">
+          <a href="https://umcpf.umd.edu/about">About the Foundation</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-hero>
+  </section>
+
+  <!-- BOARD CHAIR MESSAGE: Pull quote -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-normal">
+      <umd-element-quote>
+        <p slot="quote">I invite you to support past, present and future Terps; honor our institution's traditions and help shape its future by joining us in support of the University of Maryland.</p>
+        <p slot="attribution">Albert P. Carey '74, Chair, Board of Trustees</p>
+      </umd-element-quote>
+    </div>
+  </section>
+
+  <!-- FUNDRAISING PRIORITIES: Section intro + card grid -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Fundraising Priorities</h2>
+      </umd-element-section-intro-wide>
+
+      <div class="card-grid">
+
+        <!-- Campus Pantry -->
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://giving.umd.edu/campaigns/ag-priorities-causes/urgent-needs/urgent-needs-campus-pantry">
+            <img src="https://micros-sites.transforms.svdcdn.com/production/images/umcpf/Testudo_11302017_9791.jpg?w=6144&h=4096&auto=compress%2Cformat&fit=crop&dm=1751478387&s=1759cef6a6b0c0a89f6e1b44fe246636" alt="Testudo at McKeldin Library" />
+          </a>
+          <p slot="eyebrow">Featured Initiative</p>
+          <h3 slot="headline">
+            <a href="https://giving.umd.edu/campaigns/ag-priorities-causes/urgent-needs/urgent-needs-campus-pantry">The Campus Pantry</a>
+          </h3>
+          <p slot="text">Your gift to the Campus Pantry can help alleviate food insecurity among the UMD campus community by providing access to healthy, nutritious food and other resources.</p>
+          <div slot="actions">
+            <umd-element-call-to-action data-display="secondary">
+              <a href="https://giving.umd.edu/campaigns/ag-priorities-causes/urgent-needs/urgent-needs-campus-pantry">Learn More</a>
+            </umd-element-call-to-action>
+          </div>
+        </umd-element-card>
+
+        <!-- Do Good Campus -->
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://giving.umd.edu/make-a-gift?kwoDCpreselect=KDC-PP23357">
+            <img src="https://micros-sites.transforms.svdcdn.com/production/images/umcpf/ThurgoodMarshallHall_DoGood_05222023_JC_9303.JPG?w=5184&h=3456&auto=compress%2Cformat&fit=crop&dm=1751478399&s=29f31bb0e7a45aa5ad3d219c59517e1a" alt="Thurgood Marshall Hall Do Good" />
+          </a>
+          <p slot="eyebrow">Featured Initiative</p>
+          <h3 slot="headline">
+            <a href="https://giving.umd.edu/make-a-gift?kwoDCpreselect=KDC-PP23357">Do Good Campus</a>
+          </h3>
+          <p slot="text">Your support can power innovative teams, passionate leaders and curious problem solvers who are tackling the world's most pressing challenges through the Do Good Campus Operating Fund.</p>
+          <div slot="actions">
+            <umd-element-call-to-action data-display="secondary">
+              <a href="https://giving.umd.edu/make-a-gift?kwoDCpreselect=KDC-PP23357">Make a Gift</a>
+            </umd-element-call-to-action>
+          </div>
+        </umd-element-card>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FUNDRAISING NEWS: Section intro + 3 news cards from Maryland Today -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Fundraising News | Maryland Today</h2>
+        <div slot="actions">
+          <umd-element-call-to-action>
+            <a href="https://today.umd.edu/search?categories=division-university-relations">View All Articles</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro-wide>
+
+      <div class="card-grid">
+
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://today.umd.edu/maryland-athletics-receives-1m-gift-for-football-scholarship-fund">
+            <img src="../images/small/default/colleges-schools.jpg" alt="University of Maryland colleges and schools" />
+          </a>
+          <h3 slot="headline">
+            <a href="https://today.umd.edu/maryland-athletics-receives-1m-gift-for-football-scholarship-fund">Maryland Athletics Receives $1M Gift for Football Scholarship Fund</a>
+          </h3>
+          <p slot="text">Alumni Kim and Alan Cason pledge support in honor of their late Terp son.</p>
+          <time slot="date" datetime="2026-04-02">April 2, 2026</time>
+        </umd-element-card>
+
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://today.umd.edu/first-term-senator-first-time-professor">
+            <img src="../images/small/people/2-female-students-in-booth-pathway1.jpg" alt="Two female students talking in a booth" />
+          </a>
+          <h3 slot="headline">
+            <a href="https://today.umd.edu/first-term-senator-first-time-professor">First-Term Senator, First-Time Professor</a>
+          </h3>
+          <p slot="text">U.S. Senator Angela Alsobrooks teaches a government and politics class on leadership alongside department chair Antoine Banks.</p>
+        </umd-element-card>
+
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://today.umd.edu/student-designed-tool-helps-kids-recovering-from-neck-surgery">
+            <img src="../images/small/people/scientist-engineer-computer.jpg" alt="Scientist or engineer working at a computer" />
+          </a>
+          <h3 slot="headline">
+            <a href="https://today.umd.edu/student-designed-tool-helps-kids-recovering-from-neck-surgery">Student-Designed Tool Helps Kids Recovering From Neck Surgery</a>
+          </h3>
+          <p slot="text">AI-enabled app created for Children's National Hospital by UMD App Development Club.</p>
+          <time slot="date" datetime="2026-04-01">April 1, 2026</time>
+        </umd-element-card>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       4. FOOTER
+  ======================================== -->
+  <umd-element-footer data-display="mega">
+    <a slot="logo" href="https://umcpf.umd.edu/">
+      <img src="https://micros-sites.transforms.svdcdn.com/production/images/umcpf/university-of-maryland-college-park-foundation.png?w=600&h=60&q=82&fm=png&fit=clip&dm=1671046545&s=2e5b48a2e0ad218fc7c416fe8606d223" alt="University of Maryland College Park Foundation" />
+    </a>
+    <p slot="contact-headline">University of Maryland College Park Foundation</p>
+    <address slot="address">
+      4603 Calvert Rd.<br />
+      College Park, MD 20740
+    </address>
+    <div slot="contact-links">
+      <a href="tel:3019551265">301-955-1265</a>
+      <a href="mailto:eayala@umd.edu">eayala@umd.edu</a>
+    </div>
+    <ul slot="social-links">
+      <li><a href="https://twitter.com/umdcp">Twitter</a></li>
+      <li><a href="https://www.facebook.com/UMDCollegePark">Facebook</a></li>
+      <li><a href="https://www.youtube.com/user/UMDCollegePark">YouTube</a></li>
+      <li><a href="https://www.instagram.com/umdcp/">Instagram</a></li>
+    </ul>
+    <nav slot="link-column-one">
+      <ul>
+        <li><a href="https://umcpf.umd.edu/about">About the Foundation</a></li>
+        <li><a href="https://umcpf.umd.edu/board-of-trustees">Board of Trustees</a></li>
+        <li><a href="https://umcpf.umd.edu/resources">Resources</a></li>
+        <li><a href="https://umcpf.umd.edu/trustee-login">Trustee Login</a></li>
+      </ul>
+    </nav>
+    <nav slot="link-column-two">
+      <ul>
+        <li><a href="https://giving.umd.edu/">Give to Maryland</a></li>
+        <li><a href="https://www.umalumni.com/">Alumni Association</a></li>
+        <li><a href="https://umd.edu/">UMD Home</a></li>
+      </ul>
+    </nav>
+    <div slot="utility-links">
+      <ul>
+        <li><a href="https://umcpf.umd.edu/tax-information">Tax Information</a></li>
+        <li><a href="https://umcpf.umd.edu/contact">Contact</a></li>
+      </ul>
+    </div>
+  </umd-element-footer>
+
+</body>
+</html>

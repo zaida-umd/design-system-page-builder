@@ -1,0 +1,101 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "notes": "Fallback image library. Use when a real image URL is unavailable (hotlink protection, dynamic/API-driven content, no source image). Match by size tier first, then tags. If no tag match, collect all entries marked default:true in the correct tier and pick one at random.",
+    "size_tiers": {
+      "large": "Heroes, pathways, image-expand. Minimum 1200px wide.",
+      "small": "Cards (standard, overlay, icon). Typically 600–800px wide."
+    },
+    "tags": {
+      "campus": "Outdoor campus scenes, buildings, quads, plazas",
+      "people": "Students, faculty, portraits, groups",
+      "events": "Lectures, ceremonies, performances, athletics",
+      "research": "Labs, equipment, fieldwork, data",
+      "default": "Generic UMD image — use when no tag matches"
+    }
+  },
+  "large": {
+    "large/campus/football-game-stands.jpg": {
+      "alt": "Fans filling the stands at a Maryland football game",
+      "tags": ["campus", "events", "athletics"],
+      "default": false
+    },
+    "large/campus/tltc-ESJLTC_Students.jpg": {
+      "alt": "Students collaborating in a modern learning space",
+      "tags": ["campus", "people", "students"],
+      "default": false
+    },
+    "large/campus/thurgood-marshall-hall-spring.webp": {
+      "alt": "Thurgood Marshall Hall in spring",
+      "tags": ["campus", "buildings"],
+      "default": false
+    },
+    "large/default/visit-m-lawn.jpg": {
+      "alt": "Students on the M lawn at the University of Maryland",
+      "tags": ["campus", "people", "students"],
+      "default": true
+    },
+    "large/default/CampusSpring-students.jpg": {
+      "alt": "Students walking across campus in spring",
+      "tags": ["campus", "people", "students"],
+      "default": true
+    },
+    "large/people/umd-smiling-graduates.jpg": {
+      "alt": "Smiling UMD graduates at commencement",
+      "tags": ["people", "students", "events"],
+      "default": false
+    }
+  },
+  "small": {
+    "small/campus/testudo-student.webp": {
+      "alt": "Student posing with the Testudo statue",
+      "tags": ["campus", "people", "students"],
+      "default": false
+    },
+    "small/default/testudo-square.jpg": {
+      "alt": "Testudo statue on the University of Maryland campus",
+      "tags": ["campus"],
+      "default": true
+    },
+    "small/default/colleges-schools.jpg": {
+      "alt": "University of Maryland colleges and schools",
+      "tags": ["campus"],
+      "default": true
+    },
+    "small/default/testudo-mckeldin.jpg": {
+      "alt": "Testudo statue in front of McKeldin Library",
+      "tags": ["campus", "buildings"],
+      "default": true
+    },
+    "small/people/2-female-students-in-booth-pathway1.jpg": {
+      "alt": "Two female students talking in a booth",
+      "tags": ["people", "students"],
+      "default": false
+    },
+    "small/people/climate-research-people.jpg": {
+      "alt": "Researchers working on a climate study",
+      "tags": ["people", "research"],
+      "default": false
+    },
+    "small/people/scientist-engineer-computer.jpg": {
+      "alt": "Scientist or engineer working at a computer",
+      "tags": ["people", "research"],
+      "default": false
+    },
+    "small/people/2-people-at-laptop.jpg": {
+      "alt": "Two people collaborating at a laptop",
+      "tags": ["people", "students"],
+      "default": false
+    },
+    "small/people/aerial-desk-laptops-paper.jpg": {
+      "alt": "Aerial view of a desk with laptops and papers",
+      "tags": ["people", "students", "research"],
+      "default": false
+    },
+    "small/people/student-group.jpg": {
+      "alt": "Group of UMD students together",
+      "tags": ["people", "students"],
+      "default": false
+    }
+  }
+}

@@ -146,6 +146,35 @@ Background panel color by theme:
 | `data-display="hero"` | No | No (padding-based) |
 | `data-display="sticky"` | No | ✓ |
 
+### `umd-element-pathway-highlight` requires substantive text content
+
+`umd-element-pathway-highlight` is a two-column component: a text column on the left and a pull-quote column on the right. The `text` slot must contain real, substantive body copy — not just a restatement of the quote. If the source content is only a quote with attribution and no accompanying text, use `umd-element-quote` instead.
+
+```html
+<!-- ✓ Correct — real body copy in text slot, quote supplements it -->
+<umd-element-pathway-highlight>
+  <h2 slot="headline">A Message from Our Board Chair</h2>
+  <div slot="text">
+    <p>Albert Carey has led the foundation for over a decade, guiding strategy and donor engagement across the university's most ambitious initiatives.</p>
+  </div>
+  <p slot="highlight">I invite you to support past, present and future Terps.</p>
+  <p slot="highlight-attribution">— Albert P. Carey '74</p>
+</umd-element-pathway-highlight>
+
+<!-- ✗ Wrong — no real text, quote is the only content -->
+<umd-element-pathway-highlight>
+  <h2 slot="headline">Albert P. Carey '74</h2>
+  <p slot="highlight">I invite you to support past, present and future Terps.</p>
+  <p slot="highlight-attribution">— Albert P. Carey '74</p>
+</umd-element-pathway-highlight>
+
+<!-- ✓ Correct fallback — quote-only content belongs here -->
+<umd-element-quote>
+  <p slot="quote">I invite you to support past, present and future Terps.</p>
+  <p slot="attribution">Albert P. Carey '74</p>
+</umd-element-quote>
+```
+
 ---
 
 ## 6. CTA button
@@ -404,6 +433,19 @@ For card grids and body content that should not span full viewport width, apply 
 ```
 
 Pathway and hero components manage their own internal horizontal spacing — do not wrap them in a horizontal spacing class.
+
+### Quote uses `umd-layout-space-horizontal-normal`
+
+`umd-element-quote` is not full-bleed. Wrap it in `.umd-layout-space-horizontal-normal` (1280px) to constrain its width and maintain consistent page gutters:
+
+```html
+<div class="umd-layout-space-horizontal-normal">
+  <umd-element-quote>
+    <p slot="quote">Quote text here.</p>
+    <p slot="attribution">Person Name, Title</p>
+  </umd-element-quote>
+</div>
+```
 
 ### Extra properties required when wrapping `umd-element-section-intro-wide`
 

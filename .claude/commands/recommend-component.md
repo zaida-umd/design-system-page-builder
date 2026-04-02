@@ -2,6 +2,7 @@
 
 Help identify the right UMD design system component for a given piece of content or use case.
 
+
 ## Setup
 
 1. Read `registry/registry-index.json` to see available categories and which components are in each.
@@ -41,7 +42,8 @@ Help identify the right UMD design system component for a given piece of content
 | Stats / metrics | `umd-element-stat` with grid wrapper |
 | News/story cards | `umd-element-card` (standard) or `umd-element-card-overlay` (type="image" for photo bg) |
 | Section heading + CTA | `umd-element-section-intro` (centered) or `umd-element-section-intro-wide` (with watermark) |
-| Pull quote / testimonial | `umd-element-quote` (standard) or `data-display="featured"` for large format |
+| Pull quote / testimonial | `umd-element-quote` wrapped in `umd-layout-space-horizontal-normal`; `data-display="featured"` for large format |
+| Quote + editorial body copy | `umd-element-pathway-highlight` — only when real body copy exists alongside the quote; quote-only → use `umd-element-quote` |
 | Full-bleed image scroll effect | `umd-layout-image-expand` |
 | FAQ / expandable content | `umd-element-accordion-item` |
 | Person profile | `umd-element-person-bio` |

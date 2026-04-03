@@ -33,8 +33,9 @@ Use a content and images from https://gradschool.umd.edu/ as the fictional clien
 
 ## Required sections — use this order
 
-1. **Utility header** — `<umd-element-utility-header>` (hardcoded, no config)
-2. **Navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo and nav items from https://gradschool.umd.edu/ 
+1. **Global university header** — `<umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>` (hardcoded, no config, never omit — this is the UMD-wide bar from umd.edu)
+2. **Site utility header** — `<umd-element-utility-header></umd-element-utility-header>` (hardcoded, no config)
+3. **Navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo and nav items from https://gradschool.umd.edu/
 3. **Hero** — `umd-element-hero` with `data-theme="dark" data-animation`. Include headline, subhead text and a primary CTA. Use assets - video or image - from https://gradschool.umd.edu/.
 4. **Section Intro** — `umd-element-section-intro` with `include-separator`. Include text only, no headline or CTA: "The University of Maryland is located just steps from the US capitol of Washington, DC - a global center of science, politics, business, and culture. This prime location gives students unparalleled access to national research and policy institutions, performing and visual arts, and national and international decision makers.".
 4. **Pathway (left image)** — `umd-element-pathway data-display="overlay" data-theme="light"` for the Choose Maryland content.
@@ -58,6 +59,15 @@ Use a content and images from https://gradschool.umd.edu/ as the fictional clien
 - Pathway and hero are full-bleed — do NOT wrap in a horizontal spacing class.
 - Card grids and section intros go inside a `umd-layout-space-horizontal-larger` wrapper.
 - `data-theme` does not cascade — set it on every child component that needs it (RULES.md §14).
+
+## Image fallback
+
+When a real image URL is unavailable (hotlink protection, dynamically loaded content, no source image):
+1. Read `/Users/zjocson/repos/design-system-page-builder/images/images-index.json`
+2. Determine the size tier: **large** for heroes, pathways, image-expand — **small** for cards
+3. Match the content context to the closest tag (`campus`, `people`, `events`, `research`)
+4. If no tag match, collect all entries with `"default": true` in the correct tier and pick one at random
+5. Reference the image as a repo-relative path: `../images/large/campus/filename.jpg`
 
 ## Output
 

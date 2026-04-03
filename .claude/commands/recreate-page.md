@@ -4,6 +4,14 @@ Build a complete UMD landing page HTML file based on an existing page and save i
 
 
 
+## Required page structure
+
+Every page must open with these three elements, in this order, before any content:
+
+1. **Global university header** — `<umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>` (hardcoded, no config, never omit — this is the UMD-wide bar from umd.edu)
+2. **Site utility header** — `<umd-element-utility-header></umd-element-utility-header>` (hardcoded, no config)
+3. **Site navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo and nav items from the source page
+
 ## Setup
 
 1. Read `/Users/zjocson/repos/design-system-page-builder/TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. Do not rebuild it.

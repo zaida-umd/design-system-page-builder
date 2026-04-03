@@ -40,8 +40,9 @@ Pick a college and subpage type that haven't been used recently. Name the file `
 
 ## Required sections — use this order
 
-1. **Utility header** — `<umd-element-utility-header>` (hardcoded)
-2. **Navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo + 4–5 nav items. Mark the current section active if the component supports it.
+1. **Global university header** — `<umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>` (hardcoded, no config, never omit — this is the UMD-wide bar from umd.edu)
+2. **Site utility header** — `<umd-element-utility-header></umd-element-utility-header>` (hardcoded, no config)
+3. **Navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo + 4–5 nav items. Mark the current section active if the component supports it.
 3. **Hero minimal** — `umd-element-hero-minimal`. Use `data-theme="maryland"` for a red branded header or `data-theme="dark"` for a photography-backed variant. Include headline and subhead text that orient the user to what this subpage is about.
 4. **Intro text block** — `<section class="umd-layout-vertical-interior">` with `umd-layout-space-horizontal-normal` wrapper. Use `umd-element-section-intro` (centered variant — no horizontal wrapper needed on the component itself) for a brief section overview.
 5. **Pathway highlight** — `umd-element-pathway-highlight` (if available in registry). If not, use `umd-element-pathway data-display="overlay" data-theme="dark"` for a featured callout. Tie this to the page topic.
@@ -66,6 +67,15 @@ Pick a college and subpage type that haven't been used recently. Name the file `
 - `umd-layout-space-horizontal-smallest` (800px) for article body text if used.
 - Hero-minimal and pathway are full-bleed — do NOT wrap in a horizontal spacing class.
 - `data-theme` does not cascade — set it individually on child components (RULES.md §14).
+
+## Image fallback
+
+When a real image URL is unavailable (hotlink protection, dynamically loaded content, no source image):
+1. Read `/Users/zjocson/repos/design-system-page-builder/images/images-index.json`
+2. Determine the size tier: **large** for heroes, pathways, image-expand — **small** for cards
+3. Match the content context to the closest tag (`campus`, `people`, `events`, `research`)
+4. If no tag match, collect all entries with `"default": true` in the correct tier and pick one at random
+5. Reference the image as a repo-relative path: `../images/large/campus/filename.jpg`
 
 ## Output
 

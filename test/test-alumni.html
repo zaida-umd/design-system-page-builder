@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alumni — University of Maryland Alumni Association</title>
+
+  <!-- ============================================================
+       UMD Critical CSS — MUST precede cdn.js
+  ============================================================ -->
+  <style>
+    /* ====================
+       GROUP 1: container-type: normal
+    ==================== */
+    umd-element-navigation-utility:not(:defined),
+    umd-element-utility-header:not(:defined),
+    umd-element-navigation-header:not(:defined),
+    umd-element-nav-item:not(:defined),
+    umd-element-call-to-action:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-navigation-utility,
+    umd-element-utility-header,
+    umd-element-navigation-header,
+    umd-element-nav-item,
+    umd-element-call-to-action {
+      display: block;
+      container-type: normal;
+    }
+
+    /* ====================
+       GROUP 2: container-type: inline-size
+    ==================== */
+    umd-element-hero:not(:defined),
+    umd-element-hero-minimal:not(:defined),
+    umd-element-hero-expand:not(:defined),
+    umd-element-hero-logo:not(:defined),
+    umd-element-hero-grid:not(:defined),
+    umd-element-hero-brand-video:not(:defined),
+    umd-element-pathway:not(:defined),
+    umd-element-pathway-highlight:not(:defined),
+    umd-element-section-intro:not(:defined),
+    umd-element-section-intro-wide:not(:defined),
+    umd-element-card:not(:defined),
+    umd-element-card-overlay:not(:defined),
+    umd-element-card-icon:not(:defined),
+    umd-element-card-video:not(:defined),
+    umd-element-quote:not(:defined),
+    umd-element-stat:not(:defined),
+    umd-element-person-bio:not(:defined),
+    umd-element-accordion-item:not(:defined),
+    umd-element-footer:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-hero,
+    umd-element-hero-minimal,
+    umd-element-hero-expand,
+    umd-element-hero-logo,
+    umd-element-hero-grid,
+    umd-element-hero-brand-video,
+    umd-element-pathway,
+    umd-element-pathway-highlight,
+    umd-element-section-intro,
+    umd-element-section-intro-wide,
+    umd-element-card,
+    umd-element-card-overlay,
+    umd-element-card-icon,
+    umd-element-card-video,
+    umd-element-quote,
+    umd-element-stat,
+    umd-element-person-bio,
+    umd-element-accordion-item,
+    umd-element-footer {
+      display: block;
+      container-type: inline-size;
+    }
+
+    /* ====================
+       GROUP 3: Full-bleed components
+    ==================== */
+    umd-layout-image-expand:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-layout-image-expand {
+      display: block;
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    /* ====================
+       FONTS
+    ==================== */
+    :root {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+    p, li, label, input, textarea, select {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+
+    /* ====================
+       VERTICAL SPACING
+    ==================== */
+    .umd-layout-vertical-landing           { margin-bottom: 56px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+    .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+    .umd-layout-vertical-interior          { margin-bottom: 56px; }
+    @media (min-width: 1024px) { .umd-layout-vertical-interior { margin-bottom: 80px; } }
+
+    .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
+
+    /* ====================
+       HORIZONTAL SPACING
+    ==================== */
+    [class^="umd-layout-space-horizontal-"] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1200px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+    .umd-layout-space-horizontal-full     { max-width: 100%;   }
+    .umd-layout-space-horizontal-larger   { max-width: 1600px; }
+    .umd-layout-space-horizontal-large    { max-width: 1400px; }
+    .umd-layout-space-horizontal-normal   { max-width: 1280px; }
+    .umd-layout-space-horizontal-small    { max-width: 992px;  }
+    .umd-layout-space-horizontal-smallest { max-width: 800px;  }
+
+    /* ====================
+       WATERMARK DECORATION
+    ==================== */
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      color: #f1f1f1;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: min(calc(44px + 13vw), 240px);
+      line-height: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    :is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+      opacity: 0.6;
+      z-index: -1;
+    }
+    .umd-watermark-dark > * {
+      opacity: 0.12;
+      z-index: inherit;
+    }
+    @keyframes slide-in-from-left {
+      from { transform: translate(-15vw); }
+      to   { transform: translate(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+          animation: slide-in-from-left forwards;
+          animation-timeline: view();
+          animation-range-start: 0;
+          animation-range-end: 100vh;
+          transform: translate(-15vw);
+        }
+      }
+    }
+
+    /* ====================
+       SECTION-INTRO-WIDE WRAPPER
+    ==================== */
+    .umd-layout-space-horizontal-larger {
+      position: relative;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    /* ====================
+       GRID UTILITIES
+    ==================== */
+    .umd-layout-grid-child-fill-height {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-grid-child-fill-height > * {
+      flex: 1;
+    }
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
+</head>
+<body>
+
+  <!-- ========================================
+       1. GLOBAL UNIVERSITY HEADER
+  ======================================== -->
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <!-- ========================================
+       2. SITE NAVIGATION HEADER
+  ======================================== -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="https://alumni.umd.edu/">
+      <img src="https://alumni.umd.edu/images/logo/aa-invert.svg" alt="UMD Alumni Association" />
+    </a>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://alumni.umd.edu/membership">Membership</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://alumni.umd.edu/events">Events &amp; Travel</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://alumni.umd.edu/networks">Networks &amp; Groups</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://alumni.umd.edu/career">Career Resources</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://alumni.umd.edu/volunteer">Volunteer</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://alumni.umd.edu/about">About Us</a>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+
+  <!-- ========================================
+       3. HERO — Membership campaign
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-hero data-theme="dark" data-animation>
+      <img slot="image" src="https://umd-alumni.transforms.svdcdn.com/production/files/26_AA_Membership-Spring_Digital_R1-hero.jpg?w=4000&h=2250&auto=compress%2Cformat&fit=crop&dm=1772807602&s=befee9dcc288ee204204fc70e9ab68d3" alt="University of Maryland Alumni membership campaign" />
+      <h1 slot="headline">Free Hat with Membership</h1>
+      <div slot="text">
+        <p>Renew or upgrade to show your Terp pride in classic Maryland style. Join a community of 400,000+ alumni making an impact around the world.</p>
+      </div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
+          <a href="https://alumni.umd.edu/membership/join">Join or Renew</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-hero>
+  </section>
+
+  <!-- ========================================
+       4. PATHWAY — Black Alumni Weekend
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-pathway data-display="overlay" data-theme="light">
+      <img slot="image" src="https://umd-alumni.transforms.svdcdn.com/production/rich-text/53671794694_466cfa5bac_o-1-Copy.jpg?w=4000&h=3200&auto=compress%2Cformat&fit=crop&dm=1772823163&s=4e07296f91bc77195cf58a1edf063c31" alt="Black Alumni Weekend celebration" />
+      <h2 slot="headline">Black Alumni Weekend is BACK!</h2>
+      <div slot="text">
+        <p>Join us April 10–12 for a weekend filled with inspiration, music, great food, and endless Terp Pride. Connect with fellow alumni and celebrate the vibrant legacy of Black excellence at the University of Maryland.</p>
+      </div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="light">
+          <a href="https://alumni.umd.edu/events/black-alumni-weekend">Register Now</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+  <!-- ========================================
+       5. EVENTS — Upcoming events (card-event-overlay)
+       TODO: Replace stubs with umd-element-card-event-overlay once
+       added to the registry. Slot structure TBD — see registry entry.
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Upcoming Events</h2>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://alumni.umd.edu/events">View All Events</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro-wide>
+      <!-- ↓ Swap these divs for umd-element-card-event-overlay once available -->
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:32px;">
+        <!-- Event 1 -->
+        <!-- umd-element-card-event-overlay
+          date: "Mar 30 – Apr 30"
+          category: "Career Development"
+          headline: "Terp Women Connect"
+          link: "https://alumni.umd.edu/events/terp-women-connect"
+        -->
+
+        <!-- Event 2 -->
+        <!-- umd-element-card-event-overlay
+          date: "Mar 31, 1:00–2:00 PM"
+          category: "Career Development"
+          headline: "Likeable Badass: The Science of Winning Power, Respect, and Influence"
+          attribution: "Alison Fragale, PhD"
+          link: "https://alumni.umd.edu/events/likeable-badass"
+        -->
+
+        <!-- Event 3 -->
+        <!-- umd-element-card-event-overlay
+          date: "Mar 31, 6:00–7:30 PM"
+          headline: "Creative Destruction or Construction: Disruptive Technologies and Business Models"
+          link: "https://alumni.umd.edu/events/creative-destruction"
+        -->
+
+        <!-- Event 4 -->
+        <!-- umd-element-card-event-overlay
+          date: "Mar 31, 6:00–8:00 PM"
+          headline: "2026 Philip Merrill College of Journalism Hall of Fame Induction Ceremony & Celebration"
+          link: "https://alumni.umd.edu/events/journalism-hall-of-fame"
+        -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       6. NEWS CARD GRID — Alumni stories (was 5)
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <div class="umd-text-decoration-watermark">
+        <span aria-hidden="true" role="presentation">Alumni</span>
+      </div>
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Alumni Excellence</h2>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://alumni.umd.edu/news">View All Stories</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro-wide>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:32px;">
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://alumni.umd.edu/news/jennifer-jenkins-alumni-excellence">
+            <img src="https://umd-alumni.transforms.svdcdn.com/production/articles/Jennifer-Jenkins-%E2%80%9916.png?w=1920&h=1080&auto=compress%2Cformat&fit=crop&dm=1774375480&s=000f227ee52495da3014de89ac04bf39" alt="Jennifer Jenkins '16" />
+          </a>
+          <p slot="eyebrow">Alumni Excellence Award</p>
+          <h3 slot="headline"><a href="https://alumni.umd.edu/news/jennifer-jenkins-alumni-excellence">Jennifer Jenkins '16: Making History Through Law</a></h3>
+          <p slot="text">Jennifer Jenkins '16 has distinguished herself as a leading voice in intellectual property and copyright law, bringing her Maryland education to landmark national cases.</p>
+        </umd-element-card>
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://alumni.umd.edu/news/amy-neugebauer-alumni-excellence">
+            <img src="https://umd-alumni.transforms.svdcdn.com/production/articles/Amy-Neugebauer-%E2%80%9906.png?w=1920&h=1080&auto=compress%2Cformat&fit=crop&dm=1774375629&s=3dceb70bb313e1f939b5ae6563737b53" alt="Amy Neugebauer '06" />
+          </a>
+          <p slot="eyebrow">Alumni Excellence Award</p>
+          <h3 slot="headline"><a href="https://alumni.umd.edu/news/amy-neugebauer-alumni-excellence">Amy Neugebauer '06: Giving Back Through The Giving Square</a></h3>
+          <p slot="text">Amy Neugebauer '06 founded The Giving Square in 2018 to teach children the joy of giving — a mission rooted in the values she developed as a Terp.</p>
+        </umd-element-card>
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://alumni.umd.edu/news/national-networking-night">
+            <img src="https://umd-alumni.transforms.svdcdn.com/production/articles/header_nationalnetworkingnight_03242026.png?w=1920&h=1080&auto=compress%2Cformat&fit=crop&dm=1774375861&s=a6aab94a373f23a32219fe9e09ace11f" alt="Terps Unite for National Networking Night" />
+          </a>
+          <p slot="eyebrow">Community</p>
+          <h3 slot="headline"><a href="https://alumni.umd.edu/news/national-networking-night">One Night, One Network: Terps Unite Nationwide</a></h3>
+          <p slot="text">More than 500 Terps across the country gathered for the first-ever nationwide alumni networking event, proving that the Maryland connection spans every city and industry.</p>
+        </umd-element-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       6. PATHWAY — We've Saved a Place for You
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-pathway data-display="overlay" data-theme="light" data-layout-image-position="left">
+      <img slot="image" src="https://umd-alumni.transforms.svdcdn.com/production/rich-text/AlumniBricks_07262021_SC_5531.jpg?w=4000&h=2667&auto=compress%2Cformat&fit=crop&dm=1772466116&s=f36900bc09c406419d76a5102fa08a83" alt="Alumni memorial bricks near SECU Stadium" />
+      <h2 slot="headline">We've Saved a Place for You</h2>
+      <div slot="text">
+        <p>Honor your Maryland story and preserve your connection to campus with a personalized brick or paver, just steps away from SECU Stadium. Your legacy — etched in stone, forever part of Maryland.</p>
+      </div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="light">
+          <a href="https://alumni.umd.edu/memorial-bricks">Get Your Brick</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+  <!-- ========================================
+       7. IMAGE EXPAND QUOTE — Stay Fearless
+  ======================================== -->
+  <section style="background:#000;" class="umd-layout-vertical-landing">
+    <umd-layout-image-expand>
+      <div slot="content" style="display: block; width: 100%; max-width: 480px; margin-left: auto;">
+        <umd-element-quote data-display="featured" data-theme="dark" data-visual-transparent="true">
+          <p slot="quote">The spark you found at the University of Maryland is still in you. It's time to reignite it. Come back to where it all began. Stay fearless.</p>
+          <p slot="attribution">University of Maryland Alumni Association</p>
+        </umd-element-quote>
+      </div>
+      <img slot="image" src="https://umd-alumni.transforms.svdcdn.com/production/rich-text/53671794694_466cfa5bac_o-1-Copy.jpg?w=4000&h=3200&auto=compress%2Cformat&fit=crop&dm=1772823163&s=4e07296f91bc77195cf58a1edf063c31" alt="Alumni celebrating at University of Maryland" />
+    </umd-layout-image-expand>
+  </section>
+
+  <!-- ========================================
+       8. FOOTER
+  ======================================== -->
+  <umd-element-footer>
+    <a slot="logo" href="https://alumni.umd.edu/">
+      <img src="https://alumni.umd.edu/images/logo/aa-invert.svg" alt="UMD Alumni Association" />
+    </a>
+    <p slot="contact-headline">University of Maryland Alumni Association</p>
+    <address slot="address">
+      Samuel Riggs IV Alumni Center<br />
+      7801 Alumni Drive<br />
+      College Park, MD 20742-1521
+    </address>
+    <div slot="contact-links">
+      <a href="tel:3014054678">(301) 405-4678</a>
+      <a href="tel:8003368627">(800) 336-8627</a>
+    </div>
+    <ul slot="social-links">
+      <li><a href="https://www.facebook.com/UMDAlumni">Facebook</a></li>
+      <li><a href="https://twitter.com/UMDAlumni">Twitter</a></li>
+      <li><a href="https://www.instagram.com/umdalumni">Instagram</a></li>
+      <li><a href="https://www.linkedin.com/school/university-of-maryland-alumni-association">LinkedIn</a></li>
+    </ul>
+  </umd-element-footer>
+
+</body>
+</html>

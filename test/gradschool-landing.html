@@ -16,12 +16,14 @@
        These components use grid-auto-flow / internal layout that
        breaks under inline-size containment.
     ==================== */
+    umd-element-navigation-utility:not(:defined),
     umd-element-utility-header:not(:defined),
     umd-element-navigation-header:not(:defined),
     umd-element-nav-item:not(:defined),
     umd-element-call-to-action:not(:defined) {
       content-visibility: hidden;
     }
+    umd-element-navigation-utility,
     umd-element-utility-header,
     umd-element-navigation-header,
     umd-element-nav-item,
@@ -252,6 +254,8 @@
   <!-- ========================================
        1. GLOBAL UNIVERSITY HEADER
   ======================================== -->
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+
   <umd-element-utility-header></umd-element-utility-header>
 
   <!-- ========================================

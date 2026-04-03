@@ -12,28 +12,46 @@ Every page must open with these three elements, in this order, before any conten
 2. **Site utility header** — `<umd-element-utility-header></umd-element-utility-header>` (hardcoded, no config)
 3. **Site navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo and nav items from the source page
 
-## Setup
+## Step 1: Download source assets (subagent)
+
+Before doing any analysis or building, spawn a subagent to download the source page assets into `/Users/zjocson/repos/design-system-page-builder/tmp/`. The subagent should:
+
+1. Create the directory `/Users/zjocson/repos/design-system-page-builder/tmp/` if it does not exist.
+2. Download the full HTML of the source URL and save it as `tmp/source.html`.
+3. Parse `tmp/source.html` and download all referenced assets:
+   - Images (`<img src>`, `srcset`, CSS `background-image` URLs, `<picture><source srcset>`)
+   - Videos (`<video src>`, `<source src>`)
+   - Linked CSS files (`<link rel="stylesheet" href>`)
+   - Inline and linked JavaScript files (`<script src>`)
+4. Save each asset into a mirrored subdirectory under `tmp/` (e.g. `tmp/assets/images/`, `tmp/assets/css/`, `tmp/assets/js/`, `tmp/assets/video/`).
+5. Use `curl` or `wget` for downloads. Skip assets that return non-200 status — log skipped URLs to `tmp/skipped-assets.txt`.
+6. Return a summary of what was downloaded.
+
+Wait for the subagent to complete before proceeding.
+
+## Step 2: Setup
 
 1. Read `/Users/zjocson/repos/design-system-page-builder/TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. Do not rebuild it.
 2. Read `/Users/zjocson/repos/design-system-page-builder/registry/registry-index.json` to see available categories and which components are in each.
-3. Based on the content types on the page, read only the relevant category file(s):
+3. **Read `tmp/source.html`** to understand the page structure, content, and asset references. Use the downloaded files in `tmp/` as the authoritative source — do not re-fetch the live URL.
+4. Based on the content types on the page, read only the relevant category file(s):
    - Navigation/headers/footer → `/Users/zjocson/repos/design-system-page-builder/registry/registry-navigation.json`
    - Heroes → `/Users/zjocson/repos/design-system-page-builder/registry/registry-heroes.json`
    - Cards and feeds → `/Users/zjocson/repos/design-system-page-builder/registry/registry-cards.json`
    - Pathways, section intros, image expand, sticky columns → `/Users/zjocson/repos/design-system-page-builder/registry/registry-content.json`
-3. If the content type of a component is unclear, read all four files. Do not suggest components not in the registry. If there is no equivalent, skip the content but message the user that there was no match for a piece of content.
-4. Follow every rule in `/Users/zjocson/repos/design-system-page-builder/RULES.md` exactly.
+5. If the content type of a component is unclear, read all four files. Do not suggest components not in the registry. If there is no equivalent, skip the content but message the user that there was no match for a piece of content.
+6. Follow every rule in `/Users/zjocson/repos/design-system-page-builder/RULES.md` exactly.
 
 ## Page identity
 
-Use content and images from the URL provided in the command as the fictional client. Shorten the page title used in the command and name the output file `examples/{title}.html`.
+Use content and images from the source page as the fictional client. Shorten the page title used in the command and name the output file `examples/{title}.html`.
 
-**Images:** Fetch the URL and extract actual `src` attribute values from the page's HTML — do not guess or construct image URLs. Use the exact URLs found in the source.
+**Images:** Extract actual image paths from `tmp/source.html` — do not guess or construct URLs. For the generated page, copy the downloaded images from `tmp/assets/images/` into `/Users/zjocson/repos/design-system-page-builder/images/` (preserving subdirectory structure where applicable) and reference them as repo-relative paths: `../images/filename.jpg`.
 
 
 ## Process
 
-1. **Understand the content** — ask (or infer from context) what the content is for each component on the page and what job it needs to do:
+1. **Understand the content** — read `tmp/source.html` and the downloaded assets to understand what each component on the page does:
    - What *type* of content is it? (headline + image, stats, quote, navigation, cards, hero, etc.)
    - What is its *purpose* on the page? (capture attention, orient the user, showcase data, provide navigation, feature a story, etc.)
    - Where does it appear? (top of page, mid-page section, sidebar, full-width band, etc.)
@@ -81,11 +99,9 @@ Use content and images from the URL provided in the command as the fictional cli
 
 ## Image fallback
 
-Always use real image URLs extracted from the source page. Only fall back to local images if a URL is confirmed broken — do not replace a working image.
+Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them to `/Users/zjocson/repos/design-system-page-builder/images/` and reference as repo-relative paths: `../images/filename.jpg`.
 
-To verify: attempt to fetch the image URL. If it returns a non-200 status (401, 403, 404, etc.) or fails to load, it is broken. If it returns image content, use it as-is regardless of the CDN or domain.
-
-When a URL is confirmed unavailable (hotlink protection, 401/403, dynamically loaded content, no source image):
+If an image was not downloaded (listed in `tmp/skipped-assets.txt` or absent from `tmp/assets/images/`):
 1. Read `/Users/zjocson/repos/design-system-page-builder/images/images-index.json`
 2. Determine the size tier: **large** for heroes, pathways, image-expand — **small** for cards
 3. Match the content context to the closest tag (`campus`, `people`, `events`, `research`)
@@ -95,3 +111,11 @@ When a URL is confirmed unavailable (hotlink protection, 401/403, dynamically lo
 ## Output
 
 Write the completed HTML file to `/Users/zjocson/repos/design-system-page-builder/examples/{title}.html`. Confirm the filename when done.
+
+## Cleanup
+
+After the output file is confirmed written, delete the `tmp/` directory:
+
+```bash
+rm -rf /Users/zjocson/repos/design-system-page-builder/tmp
+```

@@ -182,6 +182,14 @@
     ],
     "attrs": [
       {
+        "name": "type",
+        "type": "enum",
+        "values": [
+          "image"
+        ],
+        "description": "Required to render a background image. Without type=\"image\" the image slot is ignored and the card renders as text-only. Always set type=\"image\" when providing an image slot."
+      },
+      {
         "name": "data-theme",
         "type": "enum",
         "values": [
@@ -202,23 +210,27 @@
     ],
     "aliases": {
       "overlay card": {
-        "description": "Card with image background and text overlay",
-        "attrs": {}
+        "description": "Card with image background and text overlay — always include type=\"image\" when using an image slot",
+        "attrs": {
+          "type": "image"
+        }
       },
       "overlay card dark": {
         "description": "Overlay card with dark theme",
         "attrs": {
+          "type": "image",
           "data-theme": "dark"
         }
       },
       "overlay card light": {
         "description": "Overlay card with light theme",
         "attrs": {
+          "type": "image",
           "data-theme": "light"
         }
       }
     },
-    "example": "<umd-element-card-overlay>\n  <img slot=\"image\" src=\"/image.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description.</p>\n  <div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/article\">Learn More</a></umd-element-call-to-action></div>\n</umd-element-card-overlay>",
+    "example": "<umd-element-card-overlay type=\"image\">\n  <img slot=\"image\" src=\"/image.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description.</p>\n  <div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/article\">Learn More</a></umd-element-call-to-action></div>\n</umd-element-card-overlay>",
     "source": "npm",
     "priority": 2,
     "batch": 2

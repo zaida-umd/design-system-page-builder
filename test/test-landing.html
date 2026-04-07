@@ -273,7 +273,7 @@
        4. HERO — video background, dark theme
   ======================================== -->
   <section class="umd-layout-vertical-landing">
-    <umd-element-hero data-theme="dark" data-animation>
+    <umd-element-hero data-theme="dark" data-animation data-layout-text="center">
       <video slot="video" src="https://gradschool.umd.edu/sites/default/files/2023-02/Campus%20Beauties_Loop_1.mp4" autoplay muted loop playsinline></video>
       <h1 slot="headline">Advance Your Future at Maryland</h1>
       <div slot="text">
@@ -341,11 +341,6 @@
   ======================================== -->
   <section class="umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-larger">
-      <div class="umd-layout-vertical-landing-child">
-        <umd-element-section-intro include-separator>
-          <h2 slot="headline">Graduate Excellence at Maryland</h2>
-        </umd-element-section-intro>
-      </div>
       <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:48px 32px;">
         <umd-element-stat data-visual-size="large" data-decoration-line>
           <span slot="stat">600+</span>
@@ -379,20 +374,20 @@
         </umd-element-section-intro-wide>
       </div>
       <div class="gs-card-grid">
-        <umd-element-card-overlay>
-          <img slot="image" src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2025-12/SR_Headshot_McKeldin%20%281%29.png" alt="Smrithan Ravichandran, Chemical Physics Ph.D. Candidate" />
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/small/people/scientist-engineer-computer.jpg" alt="Scientist or engineer working at a computer" />
           <h3 slot="headline"><a href="https://gradschool.umd.edu/about-us/newsroom/harnessing-powerful-lasers-help-build-fish-tank-universe">Harnessing Powerful Lasers to Help Build a Fish Tank of the Universe</a></h3>
           <p slot="text">Chemical Physics Ph.D. candidate Smrithan Ravichandran competes in the Three Minute Thesis competition, explaining universe-scale science in three minutes.</p>
         </umd-element-card-overlay>
 
-        <umd-element-card-overlay>
-          <img slot="image" src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2024-07/Jordan%20Elay%20Headshot.png" alt="Jordan Elay, Rising Graduate Scholar" />
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/small/people/climate-research-people.jpg" alt="Researchers working on a study" />
           <h3 slot="headline"><a href="https://gradschool.umd.edu/about-us/newsroom/communicating-science-stars">Communicating the Science of the Stars</a></h3>
           <p slot="text">Rising Graduate Scholar Jordan Elay explores the science of small stars while building inclusive spaces in astronomy research.</p>
         </umd-element-card-overlay>
 
-        <umd-element-card-overlay>
-          <img slot="image" src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2024-07/Ann%20Ramirez%20Headshot_0.png" alt="Ann Ramirez, Rising Graduate Scholar" />
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/small/people/aerial-desk-laptops-paper.jpg" alt="Aerial view of a desk with laptops and papers" />
           <h3 slot="headline"><a href="https://gradschool.umd.edu/about-us/newsroom/driving-research">Driving the Research</a></h3>
           <p slot="text">Ann Ramirez applies biomedical engineering to unlock new insights into immune system function, pushing the boundaries of what research can reveal.</p>
         </umd-element-card-overlay>
@@ -403,7 +398,7 @@
   <!-- ========================================
        10. IMAGE EXPAND + QUOTE
   ======================================== -->
-  <section style="background:#000;" class="umd-layout-vertical-landing">
+  <section class="umd-layout-vertical-landing">
     <umd-layout-image-expand>
       <div slot="content" class="block max-w-[480px] w-full mr-auto">
         <umd-element-quote data-display="featured" data-theme="dark" data-visual-transparent="true">

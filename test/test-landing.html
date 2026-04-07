@@ -3,20 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Graduate School — University of Maryland</title>
+  <title>Home — The Graduate School | University of Maryland</title>
 
-  <!-- ============================================================
-       UMD Critical CSS — MUST precede cdn.js
-       If cdn.js loads first, elements upgrade before :defined rules
-       exist and container-type never gets set.
-       Load order: inline <style> → <script> cdn.js → </head>
-       See REQUIRED-CSS.md for what each rule does and why.
-  ============================================================ -->
   <style>
     /* ====================
        GROUP 1: container-type: normal
-       These components use grid-auto-flow / internal layout that
-       breaks under inline-size containment. Do NOT move to GROUP 2.
     ==================== */
     umd-element-navigation-utility:not(:defined),
     umd-element-utility-header:not(:defined),
@@ -36,9 +27,6 @@
 
     /* ====================
        GROUP 2: container-type: inline-size
-       These components use shadow DOM @container queries that fire
-       against the host element. Without inline-size on the host,
-       two-column layouts collapse to stacked.
     ==================== */
     umd-element-hero:not(:defined),
     umd-element-hero-minimal:not(:defined),
@@ -86,9 +74,6 @@
 
     /* ====================
        GROUP 3: Full-bleed components
-       umd-layout-image-expand collapses to content width without
-       explicit width: 100%. Do NOT wrap in a horizontal spacing class.
-       Do NOT set max-width on host — shadow DOM applies 1600px internally.
     ==================== */
     umd-layout-image-expand:not(:defined) {
       content-visibility: hidden;
@@ -110,7 +95,7 @@
     }
 
     /* ====================
-       VERTICAL SPACING — between sections and items
+       VERTICAL SPACING
     ==================== */
     .umd-layout-vertical-landing           { margin-bottom: 56px; }
     @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
@@ -126,7 +111,7 @@
     .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
 
     /* ====================
-       HORIZONTAL SPACING — page-lock classes
+       HORIZONTAL SPACING
     ==================== */
     [class^="umd-layout-space-horizontal-"] {
       display: block;
@@ -196,8 +181,6 @@
 
     /* ====================
        SECTION-INTRO-WIDE WRAPPER
-       Required when .umd-layout-space-horizontal-larger wraps
-       umd-element-section-intro-wide
     ==================== */
     .umd-layout-space-horizontal-larger {
       position: relative;
@@ -215,6 +198,29 @@
     .umd-layout-grid-child-fill-height > * {
       flex: 1;
     }
+
+    /* ====================
+       IMAGE EXPAND — content slot utility classes
+    ==================== */
+    .max-w-\[480px\] { max-width: 480px; }
+    .w-full          { width: 100%; }
+    .block           { display: block; }
+    .mr-auto         { margin-right: auto; }
+
+    /* ====================
+       CARD GRID — 3 columns
+    ==================== */
+    .gs-card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    @media (min-width: 600px) {
+      .gs-card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .gs-card-grid { grid-template-columns: repeat(3, 1fr); }
+    }
   </style>
 
   <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
@@ -223,217 +229,220 @@
 
   <!-- ========================================
        1. GLOBAL UNIVERSITY HEADER
-       Hardcoded. Never modified. Zero config.
   ======================================== -->
   <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
 
+  <!-- ========================================
+       2. SITE UTILITY HEADER
+  ======================================== -->
   <umd-element-utility-header></umd-element-utility-header>
 
   <!-- ========================================
-       2. SITE NAVIGATION HEADER
+       3. SITE NAVIGATION HEADER
   ======================================== -->
-  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
-    <a slot="logo" href="https://gradschool.umd.edu/">
-      <img src="https://gradschool.umd.edu/sites/default/files/Grad%20School%20logo%20-%20white%20text.png" alt="UMD Graduate School" />
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full"
+    search-url="https://gradschool.umd.edu/search"
+    cta-url="https://gradschool.umd.edu/admissions/application-process/apply-now"
+    cta-text="Apply Now">
+    <a slot="logo" href="https://gradschool.umd.edu">
+      <img src="https://umd-main.files.svdcdn.com/production/umd/logos/default/primary-logo-dark.svg?dm=1722455539" alt="University of Maryland" />
     </a>
     <nav slot="main-navigation">
       <umd-element-nav-item>
         <a slot="primary-link" href="https://gradschool.umd.edu/admissions">Admissions</a>
       </umd-element-nav-item>
       <umd-element-nav-item>
+        <a slot="primary-link" href="https://gradschool.umd.edu/students/academic-progress">Academics</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
         <a slot="primary-link" href="https://gradschool.umd.edu/funding">Funding</a>
       </umd-element-nav-item>
       <umd-element-nav-item>
-        <a slot="primary-link" href="https://gradschool.umd.edu/life-at-umd">Life at UMD</a>
+        <a slot="primary-link" href="https://gradschool.umd.edu/students">Student Support</a>
       </umd-element-nav-item>
       <umd-element-nav-item>
-        <a slot="primary-link" href="https://gradschool.umd.edu/research">Research</a>
+        <a slot="primary-link" href="https://gradschool.umd.edu/faculty-and-staff">Faculty &amp; Staff</a>
       </umd-element-nav-item>
       <umd-element-nav-item>
-        <a slot="primary-link" href="https://gradschool.umd.edu/about">About</a>
+        <a slot="primary-link" href="https://gradschool.umd.edu/about-us">About Us</a>
       </umd-element-nav-item>
     </nav>
   </umd-element-navigation-header>
 
   <!-- ========================================
-       3. HERO — dark video hero with animation
+       4. HERO — video background, dark theme
   ======================================== -->
   <section class="umd-layout-vertical-landing">
     <umd-element-hero data-theme="dark" data-animation>
       <video slot="video" src="https://gradschool.umd.edu/sites/default/files/2023-02/Campus%20Beauties_Loop_1.mp4" autoplay muted loop playsinline></video>
-      <h1 slot="headline">Advance Your Potential</h1>
+      <h1 slot="headline">Advance Your Future at Maryland</h1>
       <div slot="text">
-        <p>Join a community of bold thinkers, innovators, and scholars at the University of Maryland Graduate School — a Top 20 public research university steps from Washington, DC.</p>
+        <p>Join a community of more than 10,000 graduate scholars pursuing bold ideas at one of the nation's top public research universities.</p>
       </div>
       <div slot="actions">
-        <umd-element-call-to-action data-display="primary" data-theme="dark">
-          <a href="https://gradschool.umd.edu/admissions/how-apply">Apply Now</a>
+        <umd-element-call-to-action data-display="primary">
+          <a href="https://gradschool.umd.edu/admissions/application-process/apply-now">Apply Now</a>
         </umd-element-call-to-action>
       </div>
     </umd-element-hero>
   </section>
 
   <!-- ========================================
-       4. SECTION INTRO — location context (text only, no headline/CTA)
+       5. SECTION INTRO — text only, no headline or CTA
   ======================================== -->
   <section class="umd-layout-vertical-landing">
-    <umd-element-section-intro include-separator>
-      <div slot="text">
-        <p>The University of Maryland is located just steps from the US capitol of Washington, DC - a global center of science, politics, business, and culture. This prime location gives students unparalleled access to national research and policy institutions, performing and visual arts, and national and international decision makers.</p>
-      </div>
-    </umd-element-section-intro>
+    <div class="umd-layout-space-horizontal-normal">
+      <umd-element-section-intro include-separator>
+        <div slot="text">
+          <p>The University of Maryland is located just steps from the US capitol of Washington, DC - a global center of science, politics, business, and culture. This prime location gives students unparalleled access to national research and policy institutions, performing and visual arts, and national and international decision makers.</p>
+        </div>
+      </umd-element-section-intro>
+    </div>
   </section>
 
   <!-- ========================================
-       5. PATHWAY — Choose Maryland
-       data-display="overlay" is self-contained; no dark wrapper needed.
-       Default image position = right (no data-layout-image-position attr needed).
+       6. PATHWAY — "Choose Maryland" (right image / default)
   ======================================== -->
   <section class="umd-layout-vertical-landing">
     <umd-element-pathway data-display="overlay" data-theme="light">
-      <img slot="image" src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2020-02/Students_Mall_09192019_0726.jpg?itok=aKk8zo5O" alt="UMD students on McKeldin Mall" />
+      <img slot="image" src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2020-02/Students_Mall_09192019_0726.jpg" alt="Students on the mall at the University of Maryland" />
       <h2 slot="headline">Choose Maryland</h2>
       <div slot="text">
-        <p>With more than 200 graduate programs across disciplines — from engineering and public policy to arts and the sciences — the University of Maryland offers the depth, resources, and opportunity to transform your academic ambitions into real-world impact.</p>
+        <p>Maryland is a premier public research university with nationally ranked programs and a vibrant community of scholars from across the globe. Find your place among the best and brightest graduate students in the country.</p>
       </div>
       <div slot="actions">
         <umd-element-call-to-action data-display="primary" data-theme="light">
-          <a href="https://gradschool.umd.edu/admissions/explore-programs">Explore Programs</a>
+          <a href="https://gradschool.umd.edu/admissions/application-process/apply-now">Apply Today</a>
         </umd-element-call-to-action>
       </div>
     </umd-element-pathway>
   </section>
 
   <!-- ========================================
-       6. PATHWAY — Grand Challenges Graduate Communities
-       data-layout-image-position="left" moves image to left side.
+       7. PATHWAY — "Grand Challenges" (left image)
   ======================================== -->
   <section class="umd-layout-vertical-landing">
     <umd-element-pathway data-display="overlay" data-theme="light" data-layout-image-position="left">
-      <img slot="image" src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2026-02/Untitled%20design%20%2812%29.png?itok=pU70A1bG" alt="Grand Challenges Graduate Communities — Discovery House" />
-      <h2 slot="headline">Grand Challenges Graduate Communities</h2>
+      <img slot="image" src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2026-02/Untitled%20design%20%2812%29.png" alt="Grand Challenges Graduate Communities at the University of Maryland" />
+      <h2 slot="headline">Grand Challenges Graduate Communities (GC)²</h2>
       <div slot="text">
-        <p>Interdisciplinary graduate communities tackling society's most pressing problems — from climate change and health equity to artificial intelligence and democratic governance. Work alongside faculty and peers across departments to develop solutions that matter.</p>
+        <p>Discovery House opens August 2026 — a dedicated hub for interdisciplinary graduate research communities tackling the most pressing societal challenges of our time. Applications for Faculty Fellows are now open.</p>
       </div>
       <div slot="actions">
         <umd-element-call-to-action data-display="primary" data-theme="light">
-          <a href="https://gradschool.umd.edu/research/grand-challenges-graduate-communities">Discover Communities</a>
+          <a href="https://gradschool.umd.edu/grand-challenges-graduate-communities">Learn more about (GC)²</a>
         </umd-element-call-to-action>
       </div>
     </umd-element-pathway>
   </section>
 
   <!-- ========================================
-       7. STATS SECTION — 3 large stats, single row (RULES.md §9)
+       8. STATS — 3 large stats in a row
   ======================================== -->
   <section class="umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-larger">
-      <umd-element-section-intro class="umd-layout-vertical-landing-child">
-        <h2 slot="headline">Maryland by the Numbers</h2>
-        <div slot="text"><p>The University of Maryland consistently ranks among the nation's top public research universities, with unmatched resources for graduate students.</p></div>
-      </umd-element-section-intro>
+      <div class="umd-layout-vertical-landing-child">
+        <umd-element-section-intro include-separator>
+          <h2 slot="headline">Graduate Excellence at Maryland</h2>
+        </umd-element-section-intro>
+      </div>
       <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:48px 32px;">
         <umd-element-stat data-visual-size="large" data-decoration-line>
-          <span slot="stat">$900M+</span>
-          <div slot="text"><p>Annual research expenditures</p></div>
+          <span slot="stat">600+</span>
+          <div slot="text"><p>Doctoral degrees conferred annually</p></div>
         </umd-element-stat>
         <umd-element-stat data-visual-size="large" data-decoration-line>
-          <span slot="stat">10,000+</span>
-          <div slot="text"><p>Graduate students enrolled</p></div>
+          <span slot="stat">$12M+</span>
+          <div slot="text"><p>In student and faculty support provided annually</p></div>
         </umd-element-stat>
         <umd-element-stat data-visual-size="large" data-decoration-line>
           <span slot="stat">200+</span>
-          <div slot="text"><p>Graduate degree programs</p></div>
+          <div slot="text"><p>Graduate programs offered</p></div>
         </umd-element-stat>
       </div>
     </div>
   </section>
 
   <!-- ========================================
-       8. CARD GRID — News stories (3-column, umd-element-card data-aligned)
+       9. CARD GRID — news/story overlay cards
   ======================================== -->
   <section class="umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-larger">
-      <div class="umd-text-decoration-watermark">
-        <span aria-hidden="true" role="presentation">News</span>
+      <div class="umd-layout-vertical-landing-child">
+        <umd-element-section-intro-wide>
+          <h2 slot="headline">Graduate Stories</h2>
+          <div slot="actions">
+            <umd-element-call-to-action>
+              <a href="https://gradschool.umd.edu/about-us/newsroom">View All Stories</a>
+            </umd-element-call-to-action>
+          </div>
+        </umd-element-section-intro-wide>
       </div>
-      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
-        <h2 slot="headline">Graduate School News</h2>
-        <div slot="actions">
-          <umd-element-call-to-action data-display="secondary">
-            <a href="https://gradschool.umd.edu/news">View All News</a>
-          </umd-element-call-to-action>
-        </div>
-      </umd-element-section-intro-wide>
-      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:32px;">
-        <umd-element-card data-aligned>
-          <a slot="image" href="https://gradschool.umd.edu/about-us/newsroom/harnessing-powerful-lasers-help-build-fish-tank-universe">
-            <img src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2025-12/SR_Headshot_McKeldin%20%281%29.png?itok=5mfG4Tyr" alt="Smrithan Ravichandran, Chemical Physics Ph.D. candidate" />
-          </a>
-          <h3 slot="headline"><a href="https://gradschool.umd.edu/about-us/newsroom/harnessing-powerful-lasers-help-build-fish-tank-universe">3MT Research: Harnessing Powerful Lasers to Help Build a Fish Tank of the Universe</a></h3>
-          <p slot="text">Chemical Physics Ph.D. candidate Smrithan Ravichandran uses intense laser pulses to recreate the extreme conditions of deep space — right here in a Maryland lab.</p>
-        </umd-element-card>
-        <umd-element-card data-aligned>
-          <a slot="image" href="https://gradschool.umd.edu/about-us/newsroom/communicating-science-stars">
-            <img src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2024-07/Jordan%20Elay%20Headshot.png?itok=C7D5Ueew" alt="Jordan Elay, Rising Graduate Scholar in astronomy" />
-          </a>
+      <div class="gs-card-grid">
+        <umd-element-card-overlay>
+          <img slot="image" src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2025-12/SR_Headshot_McKeldin%20%281%29.png" alt="Smrithan Ravichandran, Chemical Physics Ph.D. Candidate" />
+          <h3 slot="headline"><a href="https://gradschool.umd.edu/about-us/newsroom/harnessing-powerful-lasers-help-build-fish-tank-universe">Harnessing Powerful Lasers to Help Build a Fish Tank of the Universe</a></h3>
+          <p slot="text">Chemical Physics Ph.D. candidate Smrithan Ravichandran competes in the Three Minute Thesis competition, explaining universe-scale science in three minutes.</p>
+        </umd-element-card-overlay>
+
+        <umd-element-card-overlay>
+          <img slot="image" src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2024-07/Jordan%20Elay%20Headshot.png" alt="Jordan Elay, Rising Graduate Scholar" />
           <h3 slot="headline"><a href="https://gradschool.umd.edu/about-us/newsroom/communicating-science-stars">Communicating the Science of the Stars</a></h3>
-          <p slot="text">Rising Graduate Scholar Jordan Elay is making astronomy accessible — translating complex research about stellar formation into stories that captivate scientists and the public alike.</p>
-        </umd-element-card>
-        <umd-element-card data-aligned>
-          <a slot="image" href="https://gradschool.umd.edu/about-us/newsroom/driving-research">
-            <img src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2024-07/Ann%20Ramirez%20Headshot_0.png?itok=xoIueZbU" alt="Ann Ramirez, Rising Graduate Scholar in biomedical engineering" />
-          </a>
+          <p slot="text">Rising Graduate Scholar Jordan Elay explores the science of small stars while building inclusive spaces in astronomy research.</p>
+        </umd-element-card-overlay>
+
+        <umd-element-card-overlay>
+          <img slot="image" src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2024-07/Ann%20Ramirez%20Headshot_0.png" alt="Ann Ramirez, Rising Graduate Scholar" />
           <h3 slot="headline"><a href="https://gradschool.umd.edu/about-us/newsroom/driving-research">Driving the Research</a></h3>
-          <p slot="text">Rising Graduate Scholar Ann Ramirez is engineering solutions at the intersection of medicine and technology, advancing biomedical devices that could transform patient care.</p>
-        </umd-element-card>
+          <p slot="text">Ann Ramirez applies biomedical engineering to unlock new insights into immune system function, pushing the boundaries of what research can reveal.</p>
+        </umd-element-card-overlay>
       </div>
     </div>
   </section>
 
   <!-- ========================================
-       9. IMAGE EXPAND QUOTE (RULES.md §17)
-       Dark section wrapper required for visual continuity.
-       data-visual-transparent="true" removes opaque card so image shows through.
-       data-theme="dark" handles text color — do NOT add color:white inline styles.
-       Constrained to 480px, right-aligned via margin-left:auto.
+       10. IMAGE EXPAND + QUOTE
   ======================================== -->
   <section style="background:#000;" class="umd-layout-vertical-landing">
     <umd-layout-image-expand>
-      <div slot="content" style="display: block; width: 100%; max-width: 480px; margin-left: auto;">
+      <div slot="content" class="block max-w-[480px] w-full mr-auto">
         <umd-element-quote data-display="featured" data-theme="dark" data-visual-transparent="true">
-          <p slot="quote">Our 10,000 GradTerps are part of a broad community of scholars, researchers, practitioners, and teachers who are among the best and the brightest from around the world. As you pursue your graduate degree, we want you to feel connected, engaged, and supported.</p>
-          <p slot="attribution">Dr. Stephen Roth</p>
-          <p slot="attribution-sub-text">Associate Provost and Dean, The Graduate School</p>
+          <p slot="quote">Our GradTerps are part of a broad community of scholars, researchers, practitioners, and teachers who are among the best and the brightest from around the world. As you pursue your graduate degree, we want you to feel connected, engaged, and supported.</p>
+          <p slot="attribution">Dr. Stephen Roth, Associate Provost and Dean, The Graduate School</p>
         </umd-element-quote>
       </div>
-      <img slot="image" src="https://gradschool.umd.edu/sites/default/files/styles/optimized/public/2023-07/Students%20Laughing%20at%20McKeldin%20Mall.jpeg?itok=9f2sLJA_" alt="Graduate students on McKeldin Mall" />
+      <img slot="image" src="../images/large/campus/tltc-ESJLTC_Students.jpg" alt="Students collaborating in a modern learning space" />
     </umd-layout-image-expand>
   </section>
 
   <!-- ========================================
-       10. FOOTER
+       11. FOOTER
   ======================================== -->
   <umd-element-footer>
-    <a slot="logo" href="https://gradschool.umd.edu/">
-      <img src="https://gradschool.umd.edu/sites/default/files/Grad%20School%20logo%20-%20white%20text.png" alt="UMD Graduate School" />
+    <a slot="logo" href="https://gradschool.umd.edu">
+      <img src="https://umd-main.files.svdcdn.com/production/umd/logos/default/primary-logo-dark.svg?dm=1722455539" alt="University of Maryland" />
     </a>
     <p slot="contact-headline">The Graduate School</p>
     <address slot="address">
-      2123 Lee Building<br />
-      7809 Regents Drive<br />
+      2123 Lee Building, 7809 Regents Drive<br />
       College Park, MD 20742
     </address>
     <div slot="contact-links">
-      <a href="tel:3014055252">(301) 405-5252</a>
+      <a href="tel:3014053644">(301) 405-3644</a>
       <a href="mailto:gradschool@umd.edu">gradschool@umd.edu</a>
     </div>
     <ul slot="social-links">
-      <li><a href="https://www.facebook.com/UMDGradSchool">Facebook</a></li>
-      <li><a href="https://twitter.com/UMDGradSchool">Twitter</a></li>
-      <li><a href="https://www.instagram.com/umdgradschool">Instagram</a></li>
-      <li><a href="https://www.linkedin.com/school/university-of-maryland-graduate-school">LinkedIn</a></li>
+      <li><a href="https://www.instagram.com/umdgradschool/">Instagram</a></li>
+      <li><a href="https://www.linkedin.com/school/university-of-maryland-the-graduate-school/">LinkedIn</a></li>
     </ul>
+    <div slot="utility-links">
+      <ul>
+        <li><a href="https://gradschool.umd.edu/admissions">Admissions</a></li>
+        <li><a href="https://gradschool.umd.edu/funding">Funding</a></li>
+        <li><a href="https://gradschool.umd.edu/about-us">About Us</a></li>
+        <li><a href="https://gradschool.umd.edu/admissions/application-process/apply-now">Apply Now</a></li>
+      </ul>
+    </div>
   </umd-element-footer>
 
 </body>

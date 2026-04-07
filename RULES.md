@@ -665,12 +665,20 @@ The image-expand component does **not** support `data-theme`. It has no internal
 
 When `umd-element-quote` is placed in the `content` slot, add `data-visual-transparent="true"` to the quote component. This removes the quote's opaque background card so the image shows through. The quote's `data-theme="dark"` then handles all text color internally — no `color: white` inline styles needed on the slot content.
 
-Also constrain the quote panel width and align it using inline styles on the `div[slot="content"]` wrapper — the shadow DOM's text-lock is full-width by default.
+Also constrain the quote panel width and align it using utility classes directly on `div[slot="content"]` — the shadow DOM's text-lock is full-width by default. Use these classes on the slot element itself (not a child wrapper):
+
+```css
+/* Required in your <style> block whenever image-expand is used */
+.max-w-\[480px\] { max-width: 480px; }
+.w-full          { width: 100%; }
+.block           { display: block; }
+.mr-auto         { margin-right: auto; }
+```
 
 ```html
-<!-- ✓ Correct — transparent quote, constrained and right-aligned -->
+<!-- ✓ Correct — transparent quote, constrained and left-aligned -->
 <umd-layout-image-expand>
-  <div slot="content" style="display: block; width: 100%; max-width: 480px; margin-left: auto;">
+  <div slot="content" class="block max-w-[480px] w-full mr-auto">
     <umd-element-quote data-display="featured" data-theme="dark" data-visual-transparent="true">
       <p slot="quote">Quote text here.</p>
       <p slot="attribution">Person Name</p>
@@ -680,8 +688,12 @@ Also constrain the quote panel width and align it using inline styles on the `di
   <img slot="image" src="/feature.jpg" alt="" />
 </umd-layout-image-expand>
 
-<!-- Left-aligned variant: use margin-right: auto instead -->
-<div slot="content" style="display: block; width: 100%; max-width: 480px; margin-right: auto;">
+<!-- ✗ Wrong — inline styles on a child wrapper div instead of the slot element -->
+<div slot="content">
+  <div style="display: block; width: 100%; max-width: 480px; margin-right: auto;">
+    ...
+  </div>
+</div>
 
 <!-- ✗ Wrong — opaque card blocks the image -->
 <umd-element-quote data-display="featured" data-theme="dark">...</umd-element-quote>

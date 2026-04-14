@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home — College of Computer, Mathematical, and Natural Sciences | University of Maryland</title>
+
+  <style>
+    /* ====================
+       GROUP 1: container-type: normal
+    ==================== */
+    umd-element-navigation-utility:not(:defined),
+    umd-element-utility-header:not(:defined),
+    umd-element-navigation-header:not(:defined),
+    umd-element-nav-item:not(:defined),
+    umd-element-call-to-action:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-navigation-utility,
+    umd-element-utility-header,
+    umd-element-navigation-header,
+    umd-element-nav-item,
+    umd-element-call-to-action {
+      display: block;
+      container-type: normal;
+    }
+
+    /* ====================
+       GROUP 2: container-type: inline-size
+    ==================== */
+    umd-element-hero:not(:defined),
+    umd-element-hero-minimal:not(:defined),
+    umd-element-pathway:not(:defined),
+    umd-element-pathway-highlight:not(:defined),
+    umd-element-section-intro:not(:defined),
+    umd-element-section-intro-wide:not(:defined),
+    umd-element-card:not(:defined),
+    umd-element-card-overlay:not(:defined),
+    umd-element-event:not(:defined),
+    umd-element-quote:not(:defined),
+    umd-element-stat:not(:defined),
+    umd-element-accordion-item:not(:defined),
+    umd-element-footer:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-hero,
+    umd-element-hero-minimal,
+    umd-element-pathway,
+    umd-element-pathway-highlight,
+    umd-element-section-intro,
+    umd-element-section-intro-wide,
+    umd-element-card,
+    umd-element-card-overlay,
+    umd-element-event,
+    umd-element-quote,
+    umd-element-stat,
+    umd-element-accordion-item,
+    umd-element-footer {
+      display: block;
+      container-type: inline-size;
+    }
+
+    /* ====================
+       GROUP 3: Full-bleed
+    ==================== */
+    umd-layout-image-expand:not(:defined) { content-visibility: hidden; }
+    umd-layout-image-expand {
+      display: block;
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    /* ====================
+       FONTS
+    ==================== */
+    :root { font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif; }
+    p, li, label, input, textarea, select {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+
+    /* ====================
+       VERTICAL SPACING — landing page
+    ==================== */
+    .umd-layout-vertical-landing           { margin-bottom: 56px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+    .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+    /* ====================
+       HORIZONTAL SPACING
+    ==================== */
+    [class^="umd-layout-space-horizontal-"] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1200px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+    .umd-layout-space-horizontal-full     { max-width: 100%;   }
+    .umd-layout-space-horizontal-larger   { max-width: 1600px; }
+    .umd-layout-space-horizontal-large    { max-width: 1400px; }
+    .umd-layout-space-horizontal-normal   { max-width: 1280px; }
+    .umd-layout-space-horizontal-small    { max-width: 992px;  }
+
+    /* ====================
+       SECTION-INTRO-WIDE WRAPPER
+    ==================== */
+    .umd-layout-space-horizontal-larger {
+      position: relative;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    /* ====================
+       WATERMARK
+    ==================== */
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      color: #f1f1f1;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: min(calc(44px + 13vw), 240px);
+      line-height: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    :is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+      opacity: 0.6;
+      z-index: -1;
+    }
+    .umd-watermark-dark > * {
+      opacity: 0.12;
+      z-index: inherit;
+    }
+    @keyframes slide-in-from-left {
+      from { transform: translate(-15vw); }
+      to   { transform: translate(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+          animation: slide-in-from-left forwards;
+          animation-timeline: view();
+          animation-range-start: 0;
+          animation-range-end: 100vh;
+          transform: translate(-15vw);
+        }
+      }
+    }
+
+    /* ====================
+       CARD GRIDS
+    ==================== */
+    .card-grid-three {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 650px) {
+      .card-grid-three { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .card-grid-three { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .card-grid-four {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    @media (min-width: 1024px) {
+      .card-grid-four { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* ====================
+       STAT GRID
+    ==================== */
+    .stat-grid-four {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 48px 32px;
+    }
+    @media (min-width: 768px) {
+      .stat-grid-four { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    /* ====================
+       BACKGROUND UTILITIES
+    ==================== */
+    .umd-layout-background-full-dark {
+      background-color: #000000;
+      padding: 48px 0;
+    }
+    @media (min-width: 768px)  { .umd-layout-background-full-dark { padding: 80px 0; } }
+    @media (min-width: 1200px) { .umd-layout-background-full-dark { padding: 104px 0; } }
+
+    /* ====================
+       SECTION HEADLINE SPACING
+    ==================== */
+    .umd-layout-space-vertical-headline-large { margin-bottom: 16px; }
+    @media (min-width: 1024px) {
+      .umd-layout-space-vertical-headline-large { margin-bottom: 24px; }
+    }
+
+    /* ====================
+       GRID UTILITIES
+    ==================== */
+    .umd-layout-grid-child-fill-height {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-grid-child-fill-height > * { flex: 1; }
+
+    .umd-layout-grid-inline-tablet-rows {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    @media (min-width: 650px) {
+      .umd-layout-grid-inline-tablet-rows {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+    }
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
+</head>
+<body>
+
+  <!-- =============================================
+       1. GLOBAL UNIVERSITY HEADER
+  ============================================= -->
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <!-- =============================================
+       2. SITE NAVIGATION HEADER
+  ============================================= -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="/">
+      <img src="https://umd.edu/sites/umd.edu/files/UMD-lockup-white.png" alt="CMNS — University of Maryland" />
+    </a>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">About</a>
+        <a slot="sub-link" href="#">Dean's Message</a>
+        <a slot="sub-link" href="#">Strategic Plan</a>
+        <a slot="sub-link" href="#">Facts &amp; Figures</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Departments</a>
+        <a slot="sub-link" href="#">Astronomy</a>
+        <a slot="sub-link" href="#">Biology</a>
+        <a slot="sub-link" href="#">Chemistry &amp; Biochemistry</a>
+        <a slot="sub-link" href="#">Computer Science</a>
+        <a slot="sub-link" href="#">Mathematics</a>
+        <a slot="sub-link" href="#">Physics</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Research</a>
+        <a slot="sub-link" href="#">Centers &amp; Institutes</a>
+        <a slot="sub-link" href="#">Core Facilities</a>
+        <a slot="sub-link" href="#">Industry Partnerships</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Academics</a>
+        <a slot="sub-link" href="#">Undergraduate</a>
+        <a slot="sub-link" href="#">Graduate</a>
+        <a slot="sub-link" href="#">Online Programs</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Give</a>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+
+  <!-- =============================================
+       3. HERO — background overlay, large, dark
+       No umd-layout-vertical-landing: dark hero flows
+       flush into the next dark section (RULES.md §19)
+  ============================================= -->
+  <section>
+    <umd-element-hero data-display="overlay" data-theme="dark" data-animation>
+      <img slot="image" src="https://picsum.photos/seed/cmns-hero/1600/900" alt="CMNS researchers at work" />
+      <p slot="eyebrow">College of Computer, Mathematical, and Natural Sciences</p>
+      <h1 slot="headline">Where Discovery Begins</h1>
+      <div slot="text"><p>Maryland's CMNS unites computing, mathematics, and the natural sciences to tackle the biggest questions in science and society.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary">
+          <a href="#">Explore CMNS</a>
+        </umd-element-call-to-action>
+        <umd-element-call-to-action data-display="secondary" data-theme="dark">
+          <a href="#">Undergraduate Admissions</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-hero>
+  </section>
+
+  <!-- =============================================
+       4. STATS — dark background, flush after hero
+  ============================================= -->
+  <section class="umd-layout-background-full-dark umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <div class="stat-grid-four">
+        <umd-element-stat data-visual-size="large" data-decoration-line data-theme="dark">
+          <span slot="stat">9</span>
+          <div slot="text"><p>Academic departments</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line data-theme="dark">
+          <span slot="stat">450+</span>
+          <div slot="text"><p>Full-time faculty</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line data-theme="dark">
+          <span slot="stat">$280M</span>
+          <div slot="text"><p>Annual research expenditures</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line data-theme="dark">
+          <span slot="stat">12k+</span>
+          <div slot="text"><p>Students enrolled</p></div>
+        </umd-element-stat>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       5. FEATURED RESEARCH — section-intro-wide + overlay cards
+  ============================================= -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <div class="umd-text-decoration-watermark">
+        <span aria-hidden="true" role="presentation">Research</span>
+      </div>
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Featured Research</h2>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary">
+            <a href="#">View All Research</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro-wide>
+      <div class="card-grid-three">
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="https://picsum.photos/seed/quantum/800/600" alt="Quantum computing research" />
+          <p slot="eyebrow">Physics</p>
+          <h3 slot="headline"><a href="#">Quantum Computing Breakthrough Enables New Error Correction Methods</a></h3>
+          <time slot="date" datetime="2026-04-01">April 1, 2026</time>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="https://picsum.photos/seed/climate/800/600" alt="Climate science research" />
+          <p slot="eyebrow">Atmospheric &amp; Oceanic Science</p>
+          <h3 slot="headline"><a href="#">New Model Improves Hurricane Track Predictions by 30 Percent</a></h3>
+          <time slot="date" datetime="2026-03-22">March 22, 2026</time>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="https://picsum.photos/seed/genomics/800/600" alt="Genomics research" />
+          <p slot="eyebrow">Biology</p>
+          <h3 slot="headline"><a href="#">Genomic Atlas Project Maps 2,000 Understudied Plant Species</a></h3>
+          <time slot="date" datetime="2026-03-10">March 10, 2026</time>
+        </umd-element-card-overlay>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       6. PATHWAY — dark, image left
+  ============================================= -->
+  <section class="umd-layout-vertical-landing" style="background: #000;">
+    <umd-element-pathway data-theme="dark" data-layout-image-position="left">
+      <img slot="image" src="https://picsum.photos/seed/iribe/800/600" alt="Brendan Iribe Center" />
+      <p slot="eyebrow">Computing Excellence</p>
+      <h2 slot="headline">World-Class Facilities for Next-Generation Research</h2>
+      <div slot="text"><p>The Brendan Iribe Center for Computer Science and Engineering houses state-of-the-art labs, collaborative spaces, and the home of Maryland's top-ranked computer science programs. Over 230,000 square feet of research and teaching space designed for discovery.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
+          <a href="#">Explore the Iribe Center</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+  <!-- =============================================
+       7. PATHWAY OVERLAY — second pathway, no wrapper needed
+  ============================================= -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-pathway data-display="overlay" data-theme="dark">
+      <img slot="image" src="https://picsum.photos/seed/lab-work/800/600" alt="Graduate students in a chemistry lab" />
+      <h2 slot="headline">Graduate Study at Maryland</h2>
+      <div slot="text"><p>More than 3,000 graduate students across CMNS pursue doctoral and master's degrees alongside faculty who are leaders in their fields. Join a community where your research shapes the future.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary">
+          <a href="#">Graduate Admissions</a>
+        </umd-element-call-to-action>
+        <umd-element-call-to-action data-display="secondary" data-theme="dark">
+          <a href="#">Funding Opportunities</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+  <!-- =============================================
+       8. NEWS — section-intro-wide + standard cards
+  ============================================= -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Latest News</h2>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary">
+            <a href="#">All News</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro-wide>
+      <div class="card-grid-three">
+        <umd-element-card data-aligned>
+          <a slot="image" href="#"><img src="https://picsum.photos/seed/news1/600/400" alt="" /></a>
+          <p slot="eyebrow">Award</p>
+          <h3 slot="headline"><a href="#">Three CMNS Faculty Named National Academy of Sciences Fellows</a></h3>
+          <p slot="text">The honor recognizes distinguished and continuing achievements in original research.</p>
+          <time slot="date" datetime="2026-04-08">April 8, 2026</time>
+        </umd-element-card>
+        <umd-element-card data-aligned>
+          <a slot="image" href="#"><img src="https://picsum.photos/seed/news2/600/400" alt="" /></a>
+          <p slot="eyebrow">Partnership</p>
+          <h3 slot="headline"><a href="#">CMNS and NIH Announce $45M Multi-Year Collaborative Research Initiative</a></h3>
+          <p slot="text">The partnership will focus on AI-driven genomics and precision medicine applications.</p>
+          <time slot="date" datetime="2026-04-03">April 3, 2026</time>
+        </umd-element-card>
+        <umd-element-card data-aligned>
+          <a slot="image" href="#"><img src="https://picsum.photos/seed/news3/600/400" alt="" /></a>
+          <p slot="eyebrow">Students</p>
+          <h3 slot="headline"><a href="#">Maryland Team Takes First Place at International Mathematics Olympiad</a></h3>
+          <p slot="text">The undergraduate team competed against 200 teams from 40 countries.</p>
+          <time slot="date" datetime="2026-03-28">March 28, 2026</time>
+        </umd-element-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       9. PATHWAY HIGHLIGHT — quote-forward editorial
+  ============================================= -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-pathway-highlight>
+      <p slot="eyebrow">From the Dean</p>
+      <h2 slot="headline">A Message of Purpose</h2>
+      <div slot="text"><p>Dean Amitabh Varshney joined CMNS in 2019 after a distinguished career at the intersection of computer science and visualization. Under his leadership the college has expanded interdisciplinary research, strengthened industry partnerships, and grown graduate enrollment by 18 percent.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="secondary">
+          <a href="#">Meet the Dean</a>
+        </umd-element-call-to-action>
+      </div>
+      <p slot="highlight">The sciences don't advance in isolation — every discovery at Maryland connects mathematics, computation, and the natural world in ways we could not have predicted.</p>
+      <p slot="highlight-attribution">— Dean Amitabh Varshney</p>
+    </umd-element-pathway-highlight>
+  </section>
+
+  <!-- =============================================
+       10. IMAGE EXPAND — dark section, quote inside
+  ============================================= -->
+  <section class="umd-layout-vertical-landing" style="background: #000;">
+    <umd-layout-image-expand>
+      <div slot="content" style="display: block; max-width: 480px; width: 100%; margin-right: auto;">
+        <umd-element-quote data-display="featured" data-theme="dark" data-visual-transparent="true">
+          <p slot="quote">We are not just training scientists — we are cultivating the next generation of people who will ask the questions that change the world.</p>
+          <p slot="attribution">Dr. Patricia Sheridan</p>
+          <p slot="attribution-sub-text">Professor, Department of Biology</p>
+        </umd-element-quote>
+      </div>
+      <img slot="image" src="https://picsum.photos/seed/research-lab/1600/900" alt="CMNS researchers in the field" />
+    </umd-layout-image-expand>
+  </section>
+
+  <!-- =============================================
+       11. EVENTS — section-intro + event cards
+  ============================================= -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <umd-element-section-intro class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Upcoming Events</h2>
+        <div slot="text"><p>Lectures, symposia, and open houses across CMNS departments.</p></div>
+        <div slot="actions">
+          <umd-element-call-to-action>
+            <a href="#">View Full Calendar</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro>
+      <div class="card-grid-three">
+        <umd-element-event>
+          <h3 slot="headline"><a href="#">CMNS Annual Research Symposium</a></h3>
+          <p slot="text">Faculty and graduate students present research highlights from across the college.</p>
+          <time slot="date-start-iso" datetime="2026-05-06T09:00:00">May 6, 2026</time>
+          <p slot="location">Stamp Student Union, Grand Ballroom</p>
+        </umd-element-event>
+        <umd-element-event>
+          <h3 slot="headline"><a href="#">Distinguished Scholar Lecture: Dr. Frances Arnold</a></h3>
+          <p slot="text">Nobel Laureate in Chemistry presents her work on directed evolution of proteins.</p>
+          <time slot="date-start-iso" datetime="2026-05-13T16:00:00">May 13, 2026</time>
+          <p slot="location">Physics Building, Room 1410</p>
+        </umd-element-event>
+        <umd-element-event>
+          <h3 slot="headline"><a href="#">CMNS Undergraduate Research Day</a></h3>
+          <p slot="text">Undergraduate students showcase their research projects in a poster and oral presentation format.</p>
+          <time slot="date-start-iso" datetime="2026-05-20T10:00:00">May 20, 2026</time>
+          <p slot="location">Cole Field House</p>
+        </umd-element-event>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============================================
+       12. FOOTER
+  ============================================= -->
+  <umd-element-footer data-display="mega">
+    <a slot="logo" href="/">
+      <img src="https://umd.edu/sites/umd.edu/files/UMD-lockup-white.png" alt="University of Maryland" />
+    </a>
+    <p slot="contact-headline">College of Computer, Mathematical, and Natural Sciences</p>
+    <address slot="address">
+      2300 Symons Hall<br />
+      University of Maryland<br />
+      College Park, MD 20742
+    </address>
+    <div slot="contact-links">
+      <a href="tel:3014051000">(301) 405-1699</a>
+      <a href="mailto:cmns@umd.edu">cmns@umd.edu</a>
+    </div>
+    <div slot="social-links">
+      <a href="#">Twitter</a>
+      <a href="#">Facebook</a>
+      <a href="#">Instagram</a>
+      <a href="#">LinkedIn</a>
+    </div>
+    <nav slot="link-column-one">
+      <ul>
+        <li><a href="#">About CMNS</a></li>
+        <li><a href="#">Dean's Office</a></li>
+        <li><a href="#">Strategic Plan</a></li>
+        <li><a href="#">Facts &amp; Figures</a></li>
+        <li><a href="#">Giving</a></li>
+      </ul>
+    </nav>
+    <nav slot="link-column-two">
+      <ul>
+        <li><a href="#">Departments</a></li>
+        <li><a href="#">Research Centers</a></li>
+        <li><a href="#">Core Facilities</a></li>
+        <li><a href="#">Industry Partners</a></li>
+        <li><a href="#">News &amp; Events</a></li>
+      </ul>
+    </nav>
+    <nav slot="link-column-three">
+      <ul>
+        <li><a href="#">Undergraduate Programs</a></li>
+        <li><a href="#">Graduate Programs</a></li>
+        <li><a href="#">Student Resources</a></li>
+        <li><a href="#">Alumni</a></li>
+        <li><a href="#">Careers</a></li>
+      </ul>
+    </nav>
+    <div slot="utility-links">
+      <ul>
+        <li><a href="https://umd.edu">umd.edu</a></li>
+        <li><a href="#">Web Accessibility</a></li>
+        <li><a href="#">Privacy Notice</a></li>
+      </ul>
+    </div>
+  </umd-element-footer>
+
+</body>
+</html>

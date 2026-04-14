@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traditions of the Past — History &amp; Traditions | University of Maryland</title>
+
+  <!-- ============================================================
+       UMD Critical CSS — MUST precede cdn.js
+       If cdn.js loads first, elements upgrade before :defined rules
+       exist and container-type never gets set.
+       Load order: inline <style> → <script> cdn.js → </head>
+       See REQUIRED-CSS.md for what each rule does and why.
+  ============================================================ -->
+  <style>
+    /* ====================
+       GROUP 1: container-type: normal
+       These components use grid-auto-flow / internal layout that
+       breaks under inline-size containment. Do NOT move to GROUP 2.
+    ==================== */
+    umd-element-navigation-utility:not(:defined),
+    umd-element-utility-header:not(:defined),
+    umd-element-navigation-header:not(:defined),
+    umd-element-nav-item:not(:defined),
+    umd-element-call-to-action:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-navigation-utility,
+    umd-element-utility-header,
+    umd-element-navigation-header,
+    umd-element-nav-item,
+    umd-element-call-to-action {
+      display: block;
+      container-type: normal;
+    }
+
+    /* ====================
+       GROUP 2: container-type: inline-size
+       These components use shadow DOM @container queries that fire
+       against the host element. Without inline-size on the host,
+       two-column layouts collapse to stacked.
+    ==================== */
+    umd-element-hero:not(:defined),
+    umd-element-hero-minimal:not(:defined),
+    umd-element-hero-expand:not(:defined),
+    umd-element-hero-logo:not(:defined),
+    umd-element-hero-grid:not(:defined),
+    umd-element-hero-brand-video:not(:defined),
+    umd-element-pathway:not(:defined),
+    umd-element-pathway-highlight:not(:defined),
+    umd-element-section-intro:not(:defined),
+    umd-element-section-intro-wide:not(:defined),
+    umd-element-card:not(:defined),
+    umd-element-card-overlay:not(:defined),
+    umd-element-card-icon:not(:defined),
+    umd-element-card-video:not(:defined),
+    umd-element-quote:not(:defined),
+    umd-element-stat:not(:defined),
+    umd-element-person-bio:not(:defined),
+    umd-element-accordion-item:not(:defined),
+    umd-element-nav-slider:not(:defined),
+    umd-element-media-inline:not(:defined),
+    umd-element-breadcrumb:not(:defined),
+    umd-element-footer:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-hero,
+    umd-element-hero-minimal,
+    umd-element-hero-expand,
+    umd-element-hero-logo,
+    umd-element-hero-grid,
+    umd-element-hero-brand-video,
+    umd-element-pathway,
+    umd-element-pathway-highlight,
+    umd-element-section-intro,
+    umd-element-section-intro-wide,
+    umd-element-card,
+    umd-element-card-overlay,
+    umd-element-card-icon,
+    umd-element-card-video,
+    umd-element-quote,
+    umd-element-stat,
+    umd-element-person-bio,
+    umd-element-accordion-item,
+    umd-element-nav-slider,
+    umd-element-media-inline,
+    umd-element-breadcrumb,
+    umd-element-footer {
+      display: block;
+      container-type: inline-size;
+    }
+    umd-element-breadcrumb:defined {
+      margin-top: 16px;
+    }
+
+    /* ====================
+       GROUP 3: Full-bleed components
+       umd-layout-image-expand collapses to content width without
+       explicit width: 100%. Do NOT wrap in a horizontal spacing class.
+       Do NOT set max-width on host — shadow DOM applies 1600px internally.
+       Content slot text must be explicitly white (color:white) —
+       the component has no data-theme support. See RULES.md §17.
+    ==================== */
+    umd-layout-image-expand:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-layout-image-expand {
+      display: block;
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    /* ====================
+       FONTS
+       Interstate is licensed. These declarations set the stack but
+       do NOT embed the font. Without @font-face, falls back to
+       Helvetica/Arial. Layouts and sizing are unaffected.
+    ==================== */
+    :root {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+    p, li, label, input, textarea, select {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+
+    /* ====================
+       VERTICAL SPACING — between sections and items
+    ==================== */
+
+    /* Landing page — between sections */
+    .umd-layout-vertical-landing           { margin-bottom: 56px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+    /* Landing page — between items within a section */
+    .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+    /* Interior page — page content area margins (production + alias) */
+    .umd-layout-space-vertical-interior,
+    .umd-layout-vertical-interior          { margin-bottom: 56px; }
+    @media (min-width: 1024px) {
+      .umd-layout-space-vertical-interior,
+      .umd-layout-vertical-interior        { margin-bottom: 80px; }
+    }
+
+    /* Interior page — between items within a section (production + alias) */
+    .umd-layout-space-vertical-interior-child,
+    .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
+
+    /* ====================
+       HORIZONTAL SPACING — page-lock classes
+    ==================== */
+    [class^="umd-layout-space-horizontal-"] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1200px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+    .umd-layout-space-horizontal-full     { max-width: 100%;   }
+    .umd-layout-space-horizontal-larger   { max-width: 1600px; }
+    .umd-layout-space-horizontal-large    { max-width: 1400px; }
+    .umd-layout-space-horizontal-normal   { max-width: 1280px; }
+    .umd-layout-space-horizontal-small    { max-width: 992px;  }
+    .umd-layout-space-horizontal-smallest { max-width: 800px;  }
+
+    /* ====================
+       INTERIOR PAGE LAYOUT — sidebar + content columns
+       Production class: umd-layout-space-columns-left
+       Sidebar: 242px + 120px gap (hidden <1024px)
+       Content: calc(100% - 242px), constrained to 800px
+    ==================== */
+    @media (min-width: 768px) {
+      .umd-layout-space-columns-left {
+        display: flex;
+        align-items: flex-start;
+      }
+      .umd-layout-space-columns-left > *:first-child {
+        width: 242px;
+        flex-shrink: 0;
+        margin-right: 120px;
+      }
+      .umd-layout-space-columns-left > *:last-child {
+        width: calc(100% - 242px);
+      }
+    }
+    @media (max-width: 1023px) {
+      .umd-layout-space-columns-left > *:first-child {
+        display: none;
+      }
+    }
+
+    /* Interior content column max-width */
+    .max-w-\[800px\] { max-width: 800px; }
+
+    /* ====================
+       WATERMARK DECORATION
+    ==================== */
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      color: #f1f1f1;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: min(calc(44px + 13vw), 240px);
+      line-height: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    :is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+      opacity: 0.6;
+      z-index: -1;
+    }
+    .umd-watermark-dark > * {
+      opacity: 0.12;
+      z-index: inherit;
+    }
+    @keyframes slide-in-from-left {
+      from { transform: translate(-15vw); }
+      to   { transform: translate(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+          animation: slide-in-from-left forwards;
+          animation-timeline: view();
+          animation-range-start: 0;
+          animation-range-end: 100vh;
+          transform: translate(-15vw);
+        }
+      }
+    }
+
+    /* ====================
+       SECTION-INTRO-WIDE WRAPPER
+       Required when .umd-layout-space-horizontal-larger wraps
+       umd-element-section-intro-wide
+    ==================== */
+    .umd-layout-space-horizontal-larger {
+      position: relative;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    /* ====================
+       GRID UTILITIES
+    ==================== */
+    .umd-layout-grid-child-fill-height {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-grid-child-fill-height > * {
+      flex: 1;
+    }
+
+    /* ====================
+       INTERIOR TEXT STYLES — from production UMD stylesheet
+    ==================== */
+
+    /* Heading style used on H2/H3 in interior content */
+    .umd-sans-larger-bold {
+      font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.4em;
+      text-wrap: pretty;
+    }
+    @media (min-width: 650px) {
+      .umd-sans-larger-bold { font-size: calc(18px + .5vw); }
+    }
+    @media (min-width: 1024px) {
+      .umd-sans-larger-bold { font-size: 22px; line-height: 1.25em; }
+    }
+
+    /* Tailwind text color utility */
+    .text-black { color: #000; }
+
+    /* Rich text editorial block */
+    .umd-text-rich-advanced {
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    .umd-text-rich-advanced * {
+      color: #454545;
+    }
+    .umd-text-rich-advanced > * {
+      font-size: 18px;
+      margin-top: 24px;
+    }
+    .umd-text-rich-advanced > *:first-child {
+      margin-top: 0;
+    }
+    .umd-text-rich-advanced a {
+      position: relative;
+      color: #000;
+      text-decoration: underline;
+    }
+    .umd-text-rich-advanced a:hover,
+    .umd-text-rich-advanced a:focus {
+      color: #e21833;
+      text-decoration: none;
+    }
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
+</head>
+<body>
+
+  <!-- 1. GLOBAL UNIVERSITY HEADER -->
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <!-- 2. SITE NAVIGATION HEADER -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="University of Maryland" />
+    </a>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/about">About</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/about/history">Traditions &amp; History</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/alumni">Alumni</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/giving">Give</a>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+
+  <!-- 3. HERO — Background hero small, centered text -->
+  <section>
+    <umd-element-hero data-layout-height="small" data-layout-text="center">
+      <p slot="eyebrow">History &amp; Traditions</p>
+      <h1 slot="headline">Traditions of the Past</h1>
+      <img slot="image" src="../images/large/campus/shaking.webp" alt="Students holding newspapers up during a game" />
+    </umd-element-hero>
+  </section>
+
+  <!-- 4. BREADCRUMB — wrapped in horizontal + vertical spacing per production HTML -->
+  <div class="umd-layout-space-horizontal-larger umd-layout-space-vertical-interior">
+    <umd-element-breadcrumb>
+      <div slot="paths">
+        <a href="/" aria-label="Return Home"><span aria-hidden="true">Home</span></a>
+        <a href="/about/history"><span>Traditions &amp; History</span></a>
+        <p aria-label="Current Page"><span>Traditions of the Past</span></p>
+      </div>
+    </umd-element-breadcrumb>
+  </div>
+
+  <!-- 5. SIDEBAR + CONTENT COLUMN LAYOUT -->
+  <div class="umd-layout-space-horizontal-larger">
+    <div class="umd-layout-space-columns-left">
+
+      <!-- Left nav (hidden below 1024px via built-in CSS) -->
+      <div id="umd-shell-sidebar-container">
+        <umd-element-nav-slider>
+          <!-- Primary link: parent section (bold, acts as section header) -->
+          <!-- data-child-ref matches data-parent-ref on the children-slides div below -->
+          <div slot="primary-slide-links">
+            <a href="/about" data-child-ref="about-umd"><span>About UMD</span></a>
+          </div>
+          <!-- Children panel: data-active = currently open (shows "back" indicator) -->
+          <!-- data-parent-ref must match the data-child-ref on the parent link above -->
+          <div slot="children-slides">
+            <div data-active data-parent-ref="about-umd">
+              <a href="/about/history"><span>History &amp; Traditions</span></a>
+              <a href="/about/traditions-of-the-past" data-selected><span>Traditions of the Past</span></a>
+              <a href="/about/symbols"><span>University Symbols</span></a>
+              <a href="/about/fight-song"><span>Fight Song</span></a>
+            </div>
+          </div>
+        </umd-element-nav-slider>
+      </div>
+
+      <!-- Main content column, constrained to 800px -->
+      <div id="umd-shell-content" class="max-w-[800px]">
+
+        <!-- SECTION A: Beanies — H2, image left, text wrapping -->
+        <section class="umd-layout-space-vertical-interior">
+          <h2 class="umd-layout-space-vertical-interior-child text-black umd-sans-larger-bold">Beanies</h2>
+          <umd-element-media-inline>
+            <img slot="image" src="../images/small/people/freshman-beanie.webp" alt="Young student wearing a beanie and a sign saying I can't help it (I'm a freshman)" />
+            <div slot="text" class="umd-text-rich-advanced">
+              <p>From the 1910s to the 1960s, freshman students were required to wear beanies everywhere they went on campus, from their first day of school until the freshmen-sophomore tug-of-war, held during the spring semester. The beanies were known as "rat caps" for the men, and "rabbit caps" for the women.</p>
+            </div>
+          </umd-element-media-inline>
+        </section>
+
+        <!-- SECTION B: Byrd Beach — H3, image right, text wrapping -->
+        <section class="umd-layout-space-vertical-interior">
+          <h3 class="umd-layout-space-vertical-interior-child text-black umd-sans-larger-bold">Byrd Beach</h3>
+          <umd-element-media-inline data-layout-alignment="right">
+            <img slot="image" src="../images/small/campus/Students-at-Byrd-Beach-1985.webp" alt="Students at Byrd Beach 1985" />
+            <div slot="text" class="umd-text-rich-advanced">
+              <p>For decades, until everyday access to the football stadium was cut off, students greeted the return of springtime warmth by donning their bathing suits and stretching out along the bleachers in then-Byrd Stadium to study, tan and people-watch.</p>
+            </div>
+          </umd-element-media-inline>
+        </section>
+
+        <!-- SECTION C: Class Wars — H3, image left, multi-paragraph -->
+        <section class="umd-layout-space-vertical-interior">
+          <h3 class="umd-layout-space-vertical-interior-child text-black umd-sans-larger-bold">Class Wars</h3>
+          <umd-element-media-inline>
+            <img slot="image" src="../images/small/people/tug-of-war2.webp" alt="Vintage photo of students playing tug of war" />
+            <div slot="text" class="umd-text-rich-advanced">
+              <p>What happened when the beanie-wearing freshmen squared off against their arch-nemesis, the sophomore class? In the early part of the 20th century, the competition involved first- and second-year students playing King of the Mountain on a 120-foot iron water tower located on campus. This tradition continued until 1913 when wily sophomore Robert McCutcheon knocked down the freshman flag with a well-aimed rifle shot that severed its staff.</p>
+              <p>Painting class years on the tower became the preferred method of braggadocio in the early 20th century, until 1937, when the unused water tower was sold for $800 by the university to supply the war effort in Europe.</p>
+              <p>This annual struggle between the freshman and sophomore classes during the spring semester marked the end of the beanie-wearing season for the freshman. The traditional contest over Paint Branch Creek began about 1915 and continued into the early 1950s.</p>
+            </div>
+          </umd-element-media-inline>
+        </section>
+
+        <!-- SECTION D: Kissing Tunnel — H3, text only (no image) -->
+        <section class="umd-layout-space-vertical-interior">
+          <h3 class="umd-layout-space-vertical-interior-child text-black umd-sans-larger-bold">Kissing Tunnel</h3>
+          <div class="umd-text-rich-advanced">
+            <p>Located beneath Regents Drive south of Memorial Chapel, the historic Kissing Tunnel got its name by being a popular stop after a College Park date night back in the 1950s and 1960s, when all residence halls were single-gender.</p>
+          </div>
+        </section>
+
+        <!-- SECTION E: May Day — H3, image right, text wrapping -->
+        <section class="umd-layout-space-vertical-interior">
+          <h3 class="umd-layout-space-vertical-interior-child text-black umd-sans-larger-bold">May Day</h3>
+          <umd-element-media-inline data-layout-alignment="right">
+            <img slot="image" src="../images/small/people/may-day.webp" alt="Vintage photo of young women in formal light dresses seated around a woman in a large seat, women hold bouquets" />
+            <div slot="text" class="umd-text-rich-advanced">
+              <p>Adele H. Stamp, the university's dean of women from 1922 to 1960, began the tradition of celebrating May Day at Maryland. The ceremony, last held in 1961, featured a Maypole dance, pageant, Mortar Board tapping for senior women and crowning of the queen.</p>
+            </div>
+          </umd-element-media-inline>
+        </section>
+
+      </div><!-- /umd-shell-content -->
+    </div><!-- /umd-layout-space-columns-left -->
+  </div><!-- /umd-layout-space-horizontal-larger -->
+
+  <!-- 6. FOOTER -->
+  <footer class="overflow-hidden">
+    <umd-element-footer data-display="visual" data-theme="dark">
+      <a slot="logo" href="/"><img src="../images/logos/footer-logo.svg" alt="University of Maryland" /></a>
+    </umd-element-footer>
+  </footer>
+
+</body>
+</html>

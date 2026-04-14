@@ -6,7 +6,7 @@
     "last_verified": "2026-03-02",
     "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
     "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
-    "component_count": 21,
+    "component_count": 23,
     "last_updated": "2026-03-29",
     "batch_4": "section-intro, section-intro-wide, footer",
     "batch_5": "sticky-columns, card-event, feed-events-list"
@@ -100,6 +100,111 @@
     "source": "npm",
     "priority": 1,
     "batch": 1
+  },
+  "nav-slider": {
+    "tag": "umd-element-nav-slider",
+    "label": "Navigation Slider",
+    "description": "Left-side navigation panel for interior pages. Displays primary nav links (with optional secondary/action links) in a collapsible drawer on mobile and a 280px fixed column on desktop. Requires an interior layout CSS grid wrapper — the component does not handle its own column positioning.",
+    "slots": [
+      {
+        "name": "primary-slide-links",
+        "required": true,
+        "description": "Main navigation links. Use a <nav> element with bare <a> children (no <ul> needed).",
+        "example": "<nav slot=\"primary-slide-links\">\n  <a href=\"/overview\">Overview</a>\n  <a href=\"/programs\">Programs</a>\n</nav>"
+      },
+      {
+        "name": "primary-slide-secondary-links",
+        "required": false,
+        "description": "Secondary action links (e.g. Apply Now, Request Info). Use a <div> with bare <a> children.",
+        "example": "<div slot=\"primary-slide-secondary-links\"><a href=\"/apply\">Apply Now</a></div>"
+      },
+      {
+        "name": "primary-slide-content",
+        "required": false,
+        "description": "Optional custom content block in the primary slide panel.",
+        "example": "<div slot=\"primary-slide-content\"><p>Custom panel content.</p></div>"
+      },
+      {
+        "name": "children-slides",
+        "required": false,
+        "description": "Additional sub-slide panels.",
+        "example": "<div slot=\"children-slides\">...</div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "resize",
+        "type": "string",
+        "values": ["true"],
+        "description": "Set to 'true' to trigger recalculation of slider dimensions on container size changes."
+      }
+    ],
+    "page_types": ["interior"],
+    "interior_only": true,
+    "configurable": true,
+    "notes": "Interior pages only. Requires container-type: inline-size in critical CSS. Does not self-position — wrap in an interior-layout grid: 280px nav column + 1fr content column at ≥1024px, gap 48px. See RULES.md §21 for full layout CSS and example.",
+    "source": "npm",
+    "priority": 1,
+    "batch": 6
+  },
+  "media-inline": {
+    "tag": "umd-element-media-inline",
+    "label": "Media Inline",
+    "description": "Inline image component with optional wrapping text or caption. Used for editorial content within the interior page 800px content column. Three rendering modes selected automatically: standard (image only), caption (image + caption below), wrapped (image floated with text wrapping around it). The image is always displayed at a constrained width; text wraps alongside it in the 'wrapped' variant.",
+    "slots": [
+      {
+        "name": "image",
+        "required": true,
+        "description": "The image to display. Use an <img> element.",
+        "example": "<img slot=\"image\" src=\"/image.jpg\" alt=\"Description\" />"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Text content that wraps around the image. Activates 'wrapped' layout mode. Use a <div> or <p>.",
+        "example": "<div slot=\"text\"><p>Body copy that wraps alongside the image.</p></div>"
+      },
+      {
+        "name": "caption",
+        "required": false,
+        "description": "Caption displayed below the image. Activates 'caption' layout mode. Use a <p> or <div>.",
+        "example": "<p slot=\"caption\">Photo: University Archives</p>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-layout-alignment",
+        "type": "enum",
+        "values": ["right"],
+        "description": "Aligns the image to the right so text wraps on the left. Default (omit) places image on the left. Only applies in wrapped mode (when slot='text' is present)."
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark background with light text."
+      }
+    ],
+    "page_types": ["interior"],
+    "aliases": {
+      "media inline": {
+        "description": "Standard inline image",
+        "attrs": {}
+      },
+      "media inline right": {
+        "description": "Image floated right, text wraps left",
+        "attrs": { "data-layout-alignment": "right" }
+      },
+      "media inline caption": {
+        "description": "Image with caption below — use slot='caption' instead of slot='text'",
+        "attrs": {}
+      }
+    },
+    "notes": "Rendering mode is chosen automatically: no text/caption = standard; slot='caption' present = caption mode; slot='text' present = wrapped mode. The 'text' and 'caption' slots are mutually exclusive — only one activates at a time (text takes precedence). In the production UMD CMS, this component appears inside the 800px content column with umd-text-rich-advanced on the text slot div. The deprecated slot name 'wrapping-text' still works but prefer 'text'.",
+    "example": "<umd-element-media-inline>\n  <img slot=\"image\" src=\"/beanie.jpg\" alt=\"Student wearing a freshman beanie\" />\n  <div slot=\"text\" class=\"umd-text-rich-advanced\">\n    <p>From the 1910s to the 1960s, freshman students were required to wear beanies everywhere they went on campus.</p>\n  </div>\n</umd-element-media-inline>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 6
   },
   "hero-standard": {
     "tag": "umd-element-hero",

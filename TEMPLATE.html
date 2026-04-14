@@ -58,6 +58,9 @@
     umd-element-stat:not(:defined),
     umd-element-person-bio:not(:defined),
     umd-element-accordion-item:not(:defined),
+    umd-element-nav-slider:not(:defined),
+    umd-element-media-inline:not(:defined),
+    umd-element-breadcrumb:not(:defined),
     umd-element-footer:not(:defined) {
       content-visibility: hidden;
     }
@@ -79,9 +82,15 @@
     umd-element-stat,
     umd-element-person-bio,
     umd-element-accordion-item,
+    umd-element-nav-slider,
+    umd-element-media-inline,
+    umd-element-breadcrumb,
     umd-element-footer {
       display: block;
       container-type: inline-size;
+    }
+    umd-element-breadcrumb:defined {
+      margin-top: 16px;
     }
 
     /* ====================
@@ -224,6 +233,54 @@
     }
     .umd-layout-grid-child-fill-height > * {
       flex: 1;
+    }
+
+    /* ====================
+       INTERIOR TEXT STYLES — from production UMD stylesheet
+       Use on H2/H3 in interior content columns.
+       umd-sans-larger-bold: 22px/700/1.25em at desktop
+       text-black: color #000 (Tailwind utility)
+       umd-text-rich-advanced: body copy 18px/1.5em/#454545
+    ==================== */
+    .umd-sans-larger-bold {
+      font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.4em;
+      text-wrap: pretty;
+    }
+    @media (min-width: 650px) {
+      .umd-sans-larger-bold { font-size: calc(18px + .5vw); }
+    }
+    @media (min-width: 1024px) {
+      .umd-sans-larger-bold { font-size: 22px; line-height: 1.25em; }
+    }
+
+    .text-black { color: #000; }
+
+    .umd-text-rich-advanced {
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    .umd-text-rich-advanced * {
+      color: #454545;
+    }
+    .umd-text-rich-advanced > * {
+      font-size: 18px;
+      margin-top: 24px;
+    }
+    .umd-text-rich-advanced > *:first-child {
+      margin-top: 0;
+    }
+    .umd-text-rich-advanced a {
+      position: relative;
+      color: #000;
+      text-decoration: underline;
+    }
+    .umd-text-rich-advanced a:hover,
+    .umd-text-rich-advanced a:focus {
+      color: #e21833;
+      text-decoration: none;
     }
   </style>
 

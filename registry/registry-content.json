@@ -17,7 +17,8 @@
       "section-intro",
       "section-intro-wide",
       "image-expand",
-      "sticky-columns"
+      "sticky-columns",
+      "media-inline"
     ]
   },
   "pathway": {
@@ -166,6 +167,7 @@
         }
       }
     },
+    "page_types": ["landing"],
     "example": "<umd-element-pathway>\n  <img slot=\"image\" src=\"/feature.jpg\" alt=\"Featured research\" />\n  <p slot=\"eyebrow\">Featured Research</p>\n  <h2 slot=\"headline\">Advancing the Future of Engineering</h2>\n  <div slot=\"text\"><p>Our researchers are tackling the defining challenges of our time.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/research\">Explore Research</a></umd-element-call-to-action>\n  </div>\n</umd-element-pathway>",
     "source": "npm",
     "priority": 2,
@@ -235,6 +237,7 @@
         }
       }
     },
+    "page_types": ["landing"],
     "example": "<umd-element-pathway-highlight>\n  <p slot=\"eyebrow\">From Our Dean</p>\n  <h2 slot=\"headline\">A Message of Excellence</h2>\n  <div slot=\"text\"><p>Supporting body content on the left side of the section.</p></div>\n  <p slot=\"highlight\">The work happening here will define the next generation of engineers.</p>\n  <p slot=\"highlight-attribution\">\u2014 Dean John Smith</p>\n</umd-element-pathway-highlight>",
     "source": "npm",
     "priority": 3,
@@ -299,6 +302,7 @@
         "attrs": {}
       }
     },
+    "page_types": ["landing"],
     "notes": "Text aligns center. Max-width constrains content to roughly 640px. When no headline is provided, text renders larger. If only text (no headline), text gets largest/bold treatment.",
     "example": "<umd-element-section-intro>\n  <h2 slot=\"headline\">Our Research Areas</h2>\n  <div slot=\"text\"><p>Discover the cutting-edge work happening across our departments.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action><a href=\"/research\">Explore Research</a></umd-element-call-to-action>\n  </div>\n</umd-element-section-intro>",
     "source": "npm",
@@ -349,6 +353,7 @@
         "attrs": {}
       }
     },
+    "page_types": ["landing"],
     "notes": "No text slot \u2014 wide variant is headline + optional CTA only. Layout switches to flex row at container width 500px+. Uses container-type: inline-size on host (same pattern as pathway).",
     "example": "<umd-element-section-intro-wide>\n  <h2 slot=\"headline\">Featured Stories</h2>\n  <div slot=\"actions\">\n    <umd-element-call-to-action><a href=\"/news\">View All News</a></umd-element-call-to-action>\n  </div>\n</umd-element-section-intro-wide>",
     "source": "npm",
@@ -383,6 +388,7 @@
       }
     },
     "example": "<section style=\"background:#000;\">\n  <umd-layout-image-expand>\n    <div slot=\"content\">\n      <div>\n        <h2 style=\"color:white;\">Our Research Impact</h2>\n        <p style=\"color:white;\">Supporting description of the section.</p>\n      </div>\n    </div>\n    <img slot=\"image\" src=\"/feature.jpg\" alt=\"Research at Maryland\" />\n  </umd-layout-image-expand>\n</section>",
+    "page_types": ["landing"],
     "notes": "No data-theme or data-display attributes. Both slots are required for layout to render. Scroll animation requires animation-timeline: scroll() support (Chrome 115+, Firefox 110+). Falls back to static full-height image. FULL-BLEED: host requires explicit width: 100% in critical CSS \u2014 do not apply a horizontal spacing class (same rule as pathway/hero). The internal image animation uses 100vw; if the host collapses to content width (e.g. due to a narrow component in the content slot) the component will appear narrow. TEXT COLOR: the component does NOT support data-theme \u2014 text color is not set internally. Content slot children must use explicit color: white (via inline styles or utility classes) because the text overlays the image with a dark overlay (rgba(0,0,0,0.65)). SECTION WRAPPER: always wrap in a dark section (background: #000) for visual continuity with the overlay. INTERNAL MAX-WIDTH: the shadow DOM applies max-width: 1600px on the text-lock container internally \u2014 do NOT set max-width on the host element. See RULES.md section 17.",
     "source": "npm",
     "priority": 3,
@@ -421,10 +427,70 @@
         "attrs": {}
       }
     },
+    "page_types": ["landing"],
     "notes": "Both slots are required. Always set data-layout-position when a sticky nav header is present (use the nav height in px). The sticky column is always left on desktop; static column is always right. No theme or display variants. Apply a horizontal spacing class (e.g. umd-layout-space-horizontal-larger) on the host for consistent page gutters. SLOT CONTENT STYLING: the component has no opinions about slot content \u2014 apply UMD utility classes manually. Sticky column: use umd-sans-largest-uppercase + mb-md on the h2, umd-text-rich-advanced + mb-sm on body copy, umd-layout-grid-inline-tablet-rows on CTA wrapper. Static column: wrap items in umd-layout-grid-gap-stacked (single-column stacked grid, gap 24px) \u2014 do NOT use a custom CSS grid. These classes are not injected by cdn.js; define them in the page style block. See RULES.md \u00a720 for full CSS and canonical example.",
     "example": "<umd-element-sticky-columns class=\"umd-layout-space-horizontal-larger\" data-layout-position=\"100px\">\n  <div slot=\"sticky-column\">\n    <h2 class=\"umd-sans-largest-uppercase mb-md\">Our Values</h2>\n    <div class=\"umd-text-rich-advanced mb-sm\">\n      <p>The principles behind everything we do at the University of Maryland.</p>\n    </div>\n    <div class=\"umd-layout-grid-inline-tablet-rows\">\n      <umd-element-call-to-action data-display=\"secondary\"><a href=\"/values\">Learn More</a></umd-element-call-to-action>\n    </div>\n  </div>\n  <div slot=\"static-column\">\n    <div class=\"umd-layout-grid-gap-stacked\">\n      <umd-element-accordion-item>\n        <p slot=\"headline\">United</p>\n        <div slot=\"text\"><p>We are stronger together.</p></div>\n      </umd-element-accordion-item>\n      <umd-element-accordion-item>\n        <p slot=\"headline\">Fearless</p>\n        <div slot=\"text\"><p>We pursue bold ideas.</p></div>\n      </umd-element-accordion-item>\n    </div>\n  </div>\n</umd-element-sticky-columns>",
     "source": "npm",
     "priority": 2,
     "batch": 5
+  },
+  "media-inline": {
+    "tag": "umd-element-media-inline",
+    "label": "Media Inline",
+    "description": "Inline image component with optional wrapping text or caption. Used for editorial content within the interior page 800px content column. Three rendering modes selected automatically: standard (image only), caption (image + caption below), wrapped (image floated with text wrapping around it). The image is always displayed at a constrained width; text wraps alongside it in the 'wrapped' variant.",
+    "slots": [
+      {
+        "name": "image",
+        "required": true,
+        "description": "The image to display. Use an <img> element.",
+        "example": "<img slot=\"image\" src=\"/image.jpg\" alt=\"Description\" />"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Text content that wraps around the image. Activates 'wrapped' layout mode. Use a <div> or <p>.",
+        "example": "<div slot=\"text\"><p>Body copy that wraps alongside the image.</p></div>"
+      },
+      {
+        "name": "caption",
+        "required": false,
+        "description": "Caption displayed below the image. Activates 'caption' layout mode. Use a <p> or <div>.",
+        "example": "<p slot=\"caption\">Photo: University Archives</p>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-layout-alignment",
+        "type": "enum",
+        "values": ["right"],
+        "description": "Aligns the image to the right so text wraps on the left. Default (omit) places image on the left. Only applies in wrapped mode (when slot='text' is present)."
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark background with light text."
+      }
+    ],
+    "page_types": ["interior"],
+    "aliases": {
+      "media inline": {
+        "description": "Standard inline image",
+        "attrs": {}
+      },
+      "media inline right": {
+        "description": "Image floated right, text wraps left",
+        "attrs": { "data-layout-alignment": "right" }
+      },
+      "media inline caption": {
+        "description": "Image with caption below — use slot='caption' instead of slot='text'",
+        "attrs": {}
+      }
+    },
+    "notes": "Rendering mode is chosen automatically: no text/caption = standard; slot='caption' present = caption mode; slot='text' present = wrapped mode. The 'text' and 'caption' slots are mutually exclusive — only one activates at a time (text takes precedence). In the production UMD CMS, this component appears inside the 800px content column with umd-text-rich-advanced on the text slot div. The deprecated slot name 'wrapping-text' still works but prefer 'text'.",
+    "example": "<umd-element-media-inline>\n  <img slot=\"image\" src=\"/beanie.jpg\" alt=\"Student wearing a freshman beanie\" />\n  <div slot=\"text\" class=\"umd-text-rich-advanced\">\n    <p>From the 1910s to the 1960s, freshman students were required to wear beanies everywhere they went on campus.</p>\n  </div>\n</umd-element-media-inline>\n\n<!-- Right-aligned image -->\n<umd-element-media-inline data-layout-alignment=\"right\">\n  <img slot=\"image\" src=\"/beach.jpg\" alt=\"Students at Byrd Beach 1985\" />\n  <div slot=\"text\" class=\"umd-text-rich-advanced\">\n    <p>For decades, students greeted the return of springtime by stretching out along the bleachers in Byrd Stadium.</p>\n  </div>\n</umd-element-media-inline>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 6
   }
 }

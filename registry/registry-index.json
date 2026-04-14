@@ -6,7 +6,7 @@
     "last_verified": "2026-03-02",
     "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
     "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
-    "component_count": 21,
+    "component_count": 23,
     "last_updated": "2026-03-29",
     "batch_4": "section-intro, section-intro-wide, footer",
     "batch_5": "sticky-columns, card-event, feed-events-list"
@@ -18,9 +18,10 @@
         "header-utility",
         "header-site",
         "nav-item",
+        "nav-slider",
         "footer"
       ],
-      "description": "Global header, site header, nav items, footer"
+      "description": "Global header, site header, nav items, nav slider (interior only), footer"
     },
     "heroes": {
       "file": "registry/registry-heroes.json",
@@ -54,9 +55,69 @@
         "section-intro",
         "section-intro-wide",
         "image-expand",
-        "sticky-columns"
+        "sticky-columns",
+        "media-inline"
       ],
-      "description": "Pathways, section intros, image expand, sticky columns"
+      "description": "Pathways, section intros, image expand, sticky columns, media inline"
+    }
+  },
+  "interior_page_layout": {
+    "description": "Rules for interior (subpage) layouts. See RULES.md §21 for full documentation.",
+    "heroes": {
+      "background_hero_small": {
+        "component": "hero-standard",
+        "attrs": { "data-display": "overlay", "data-layout-height": "small" },
+        "variants": {
+          "left_text": "data-display=overlay + data-layout-height=small",
+          "centered_text": "data-display=overlay + data-layout-height=small + data-layout-text=center"
+        }
+      },
+      "minimal_hero": {
+        "component": "hero-minimal",
+        "theme_variants": {
+          "no_background": "(omit data-theme)",
+          "light_background": "data-theme=light",
+          "dark_background": "data-theme=dark",
+          "maryland_background": "data-theme=maryland — NOT typically used on interior pages"
+        }
+      }
+    },
+    "interior_only_feature": {
+      "left_nav_slider": "Optional left-side navigation slider — available on interior pages only. See registry/registry-navigation.json: nav-slider."
+    },
+    "components_available": [
+      "header-utility",
+      "header-site",
+      "nav-item",
+      "nav-slider",
+      "footer",
+      "hero-standard (small variants only)",
+      "hero-minimal",
+      "media-inline",
+      "card-standard",
+      "card-overlay",
+      "card-event",
+      "feed-events-list",
+      "rich-text (umd-text-rich-advanced CSS class)",
+      "carousel (not yet in registry)",
+      "banner-promo (not yet in registry)",
+      "accordion (not yet in registry)",
+      "quote (not yet in category registry)",
+      "logo-grid (not yet in registry)",
+      "stat (not yet in category registry)",
+      "people-cards (not yet in registry)",
+      "bio-card (not yet in registry)",
+      "tabs (not yet in registry)"
+    ],
+    "landing_page_only": [
+      "pathway", "pathway-highlight", "section-intro", "section-intro-wide",
+      "image-expand", "sticky-columns", "card-icon", "card-video",
+      "hero-expand", "hero-logo", "hero-grid", "hero-brand-video"
+    ],
+    "spacing": {
+      "between_major_sections": "umd-layout-vertical-interior (56px mobile/tablet, 80px desktop)",
+      "between_items_within_section": "umd-layout-vertical-interior-child (32px all breakpoints)",
+      "do_not_use": "umd-layout-vertical-landing, umd-layout-vertical-landing-child"
     }
   }
 }

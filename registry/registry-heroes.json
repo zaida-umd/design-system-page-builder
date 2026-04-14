@@ -140,6 +140,8 @@
       "default-interior": "Shorter height for interior pages",
       "default-interior-centered": "Interior page + centered text"
     },
+    "page_types": ["landing", "interior"],
+    "interior_note": "On interior pages, use small variants only: data-display=overlay + data-layout-height=small (left text) or add data-layout-text=center for centered text. Full-height variants are landing only.",
     "notes": "Most versatile hero. The README's example uses data-theme='dark' data-display='overlay' for a typical background image hero. For a dark overlay hero with a background image: add both data-theme='dark' and data-display='overlay' and slot an image.",
     "example_dark_overlay": "<umd-element-hero data-display=\"overlay\" data-theme=\"dark\">\n  <img slot=\"image\" src=\"hero.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Clark School of Engineering</p>\n  <h1 slot=\"headline\">Advancing the Future</h1>\n  <div slot=\"text\"><p>World-class research and education.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Learn More</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero>",
     "source": "npm",
@@ -296,6 +298,8 @@
       }
     },
     "example": "<umd-element-hero-minimal>\n  <p slot=\"eyebrow\">The Graduate School</p>\n  <h1 slot=\"headline\">Graduate Admissions</h1>\n  <div slot=\"text\"><p>Join one of the world's premier public research universities.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply Now</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-minimal>",
+    "page_types": ["interior"],
+    "interior_note": "Interior-only hero. Three usable themes: default (no background), light, dark. Maryland (red) theme is available but not typically used on interior pages.",
     "notes": "Best for interior pages and section intros. Host height is ~30vh. Use hero-standard for full-height landing heroes.",
     "source": "npm",
     "priority": 2,
@@ -361,6 +365,7 @@
       }
     },
     "example": "<umd-element-hero-expand>\n  <video slot=\"video\" src=\"/campus.mp4\" autoplay muted loop></video>\n  <p slot=\"eyebrow\">University of Maryland</p>\n  <h1 slot=\"headline\">Fearless Ideas Start Here</h1>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Discover UMD</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-expand>",
+    "page_types": ["landing"],
     "notes": "Full 100vh height. Sticky scroll behavior is built in. Pair with data-layout-top-position if a sticky navigation header is present.",
     "source": "npm",
     "priority": 3,
@@ -433,6 +438,7 @@
       }
     },
     "example": "<umd-element-hero-logo>\n  <img slot=\"image\" src=\"/unit-logo.svg\" alt=\"Clark School of Engineering\" />\n  <p slot=\"eyebrow\">Clark School of Engineering</p>\n  <h1 slot=\"headline\">Engineering the Future</h1>\n  <div slot=\"text\"><p>World-class research and education in engineering and technology.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Learn More</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-logo>",
+    "page_types": ["landing"],
     "source": "npm",
     "priority": 3,
     "batch": 3
@@ -502,6 +508,7 @@
       }
     },
     "example": "<umd-element-hero-grid>\n  <div slot=\"column-left\">\n    <img src=\"/img1.jpg\" alt=\"\" />\n    <img src=\"/img2.jpg\" alt=\"\" />\n  </div>\n  <div slot=\"column-center\">\n    <img src=\"/img3.jpg\" alt=\"\" />\n    <video src=\"/hero.mp4\" autoplay muted loop></video>\n  </div>\n  <div slot=\"column-right\">\n    <img src=\"/img4.jpg\" alt=\"\" />\n    <img src=\"/img5.jpg\" alt=\"\" />\n  </div>\n  <h1 slot=\"headline\">Fearless Ideas</h1>\n  <div slot=\"text\"><p>World-class research at the University of Maryland.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/about\">Explore UMD</a></umd-element-call-to-action>\n  </div>\n</umd-element-hero-grid>",
+    "page_types": ["landing"],
     "notes": "Full 100vh height. All three column slots are required for layout to render correctly. Center column can include both images and a video.",
     "source": "npm",
     "priority": 3,
@@ -554,6 +561,7 @@
       }
     },
     "example": "<umd-element-hero-brand-video animation-trigger=\"load\">\n  <video src=\"/brand.mp4\" autoplay muted loop poster=\"/poster.jpg\"></video>\n  <h1 slot=\"headline\">Fearless Ideas Start Here</h1>\n  <div slot=\"text\"><p>The University of Maryland \u2014 a Top 20 public research university.</p></div>\n</umd-element-hero-brand-video>",
+    "page_types": ["landing"],
     "notes": "Video is a direct child element, NOT slotted with slot= attribute. Headline and text use slot= as normal. Full 100vh height.",
     "source": "npm",
     "priority": 3,

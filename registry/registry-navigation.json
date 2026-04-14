@@ -15,6 +15,7 @@
       "header-utility",
       "header-site",
       "nav-item",
+      "nav-slider",
       "footer"
     ]
   },
@@ -25,6 +26,7 @@
     "attrs": [],
     "configurable": false,
     "usage": "<umd-element-utility-header></umd-element-utility-header>",
+    "page_types": ["landing", "interior"],
     "notes": "Fixed UMD global bar \u2014 identical on every page. Self-contained: renders UMD flag, 'A Top 20 Public Research University', and utility nav. No slots, no attrs needed. Hardcode in every template. Never touch during page updates.",
     "source": "npm",
     "priority": 1,
@@ -79,6 +81,7 @@
     "variants": {
       "sticky": "Add sticky attribute for fixed positioning on scroll"
     },
+    "page_types": ["landing", "interior"],
     "notes": "Site-level header \u2014 logo and nav links change per site. The component auto-registers umd-element-nav-item children from the main-navigation slot. CTA button only appears when both cta-url and cta-text are present.",
     "source": "npm",
     "priority": 1,
@@ -103,10 +106,70 @@
     ],
     "attrs": [],
     "configurable": true,
+    "page_types": ["landing", "interior"],
     "notes": "Used inside the main-navigation slot of umd-element-navigation-header. Each nav link = one umd-element-nav-item.",
     "source": "npm",
     "priority": 1,
     "batch": 1
+  },
+  "nav-slider": {
+    "tag": "umd-element-nav-slider",
+    "label": "Navigation Slider",
+    "description": "Left-side navigation panel for interior pages. Displays primary nav links (with optional secondary/action links) in a collapsible drawer on mobile and a 280px fixed column on desktop. Requires an interior layout CSS grid wrapper — the component does not handle its own column positioning.",
+    "slots": [
+      {
+        "name": "primary-slide-links",
+        "required": true,
+        "description": "Parent section link(s). Use a <div> with bare <a> elements — each <a> is a section label displayed BOLD. For interior page sidebars, this is just the parent section (e.g. 'About UMD'). Add data-child-ref=\"{id}\" on the <a> to wire it to a children-slides panel with matching data-parent-ref.",
+        "example": "<div slot=\"primary-slide-links\">\n  <a href=\"/about\" data-child-ref=\"about-section\"><span>About UMD</span></a>\n</div>"
+      },
+      {
+        "name": "children-slides",
+        "required": false,
+        "description": "Sub-panel containing child page links at normal (non-bold) weight. Use a <div slot='children-slides'> containing one or more <div data-parent-ref='{id}'> groups. The data-parent-ref must match the data-child-ref on the parent link. Add data-active to the div that should be shown on load (the current section). Mark the current page link with data-selected. This pattern also triggers the 'back' indicator automatically.",
+        "example": "<div slot=\"children-slides\">\n  <div data-active data-parent-ref=\"about-section\">\n    <a href=\"/about/history\"><span>History &amp; Traditions</span></a>\n    <a href=\"/about/traditions-of-the-past\" data-selected><span>Traditions of the Past</span></a>\n    <a href=\"/about/symbols\"><span>University Symbols</span></a>\n  </div>\n</div>"
+      },
+      {
+        "name": "primary-slide-secondary-links",
+        "required": false,
+        "description": "Secondary action links displayed below the primary nav links (e.g. Apply Now, Request Info). Use a <div> with bare <a> children.",
+        "example": "<div slot=\"primary-slide-secondary-links\">\n  <a href=\"/apply\">Apply Now</a>\n  <a href=\"/info\">Request Info</a>\n</div>"
+      },
+      {
+        "name": "primary-slide-content",
+        "required": false,
+        "description": "Optional custom content block rendered in the primary slide panel.",
+        "example": "<div slot=\"primary-slide-content\"><p>Custom panel content.</p></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "resize",
+        "type": "string",
+        "values": ["true"],
+        "description": "Set to 'true' to trigger recalculation of slider dimensions. Use when the component's container size changes after initial render (e.g. on window resize or dynamic content updates)."
+      }
+    ],
+    "page_types": ["interior"],
+    "interior_only": true,
+    "critical_css": "umd-element-nav-slider requires container-type: inline-size in critical CSS (same group as umd-element-hero-minimal and umd-element-footer).",
+    "layout_note": "The component does not position itself. Wrap it in an interior-layout grid alongside <main> content. At ≥1024px the grid is 280px (nav) + 1fr (content) with a 48px gap. On mobile/tablet both columns stack. Apply umd-layout-space-horizontal-larger (or -normal) on the outer wrapper.",
+    "layout_css": ".interior-layout { display: grid; grid-template-columns: 1fr; gap: 0; align-items: start; } @media (min-width: 1024px) { .interior-layout { grid-template-columns: 280px 1fr; gap: 48px; } }",
+    "aliases": {
+      "nav slider": {
+        "description": "Left-side interior page navigation slider",
+        "attrs": {}
+      },
+      "side nav": {
+        "description": "Alias for nav slider — interior page left navigation",
+        "attrs": {}
+      }
+    },
+    "notes": "Two-level navigation pattern: primary-slide-links holds the bold section header(s); children-slides holds the child page links at normal weight with the back indicator. Use data-child-ref on parent <a> and matching data-parent-ref on the children <div>. Add data-active to the currently open children panel. Add data-selected to the current page link. Wrap all <a> text in <span>. Use <div> (not <nav>) for slot containers.",
+    "example": "<umd-element-nav-slider>\n  <!-- Parent section: bold label, wired to children panel -->\n  <div slot=\"primary-slide-links\">\n    <a href=\"/about\" data-child-ref=\"about-section\"><span>About UMD</span></a>\n  </div>\n  <!-- Children panel: data-active = open on load, triggers back indicator -->\n  <div slot=\"children-slides\">\n    <div data-active data-parent-ref=\"about-section\">\n      <a href=\"/about/history\"><span>History &amp; Traditions</span></a>\n      <a href=\"/about/traditions-of-the-past\" data-selected><span>Traditions of the Past</span></a>\n      <a href=\"/about/symbols\"><span>University Symbols</span></a>\n      <a href=\"/about/fight-song\"><span>Fight Song</span></a>\n    </div>\n  </div>\n</umd-element-nav-slider>",
+    "source": "npm",
+    "priority": 1,
+    "batch": 6
   },
   "footer": {
     "tag": "umd-element-footer",
@@ -235,6 +298,7 @@
         }
       }
     },
+    "page_types": ["landing", "interior"],
     "notes": "role='contentinfo' and aria-label='site footer' are auto-applied if absent. Logo slot must be an <a> wrapping an <img>. Link columns only render if they have child nodes. Simple is default if neither mega nor visual is set.",
     "example": "<umd-element-footer>\n  <a slot=\"logo\" href=\"/\"><img src=\"/dept-logo.png\" alt=\"College of Engineering\" /></a>\n  <p slot=\"contact-headline\">College of Engineering</p>\n  <address slot=\"address\">1101 Engineering Building<br>College Park, MD 20742</address>\n  <div slot=\"contact-links\">\n    <a href=\"mailto:eng@umd.edu\">eng@umd.edu</a>\n    <a href=\"tel:3014051000\">(301) 405-1000</a>\n  </div>\n  <ul slot=\"social-links\">\n    <li><a href=\"https://twitter.com/umdengineer\">Twitter</a></li>\n    <li><a href=\"https://facebook.com/umdengineer\">Facebook</a></li>\n  </ul>\n  <div slot=\"utility-links\">\n    <ul>\n      <li><a href=\"/privacy\">Privacy Policy</a></li>\n      <li><a href=\"/accessibility\">Web Accessibility</a></li>\n    </ul>\n  </div>\n</umd-element-footer>",
     "source": "npm",

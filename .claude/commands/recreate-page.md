@@ -1,4 +1,4 @@
-# Recreate this page
+# Recreate this page / convert this page to the design system
 
 Build a complete UMD landing page HTML file based on an existing page and save it to `/Users/zjocson/repos/design-system-page-builder/examples/`. Help identify the right UMD design system component for all components on a given piece of content or use case.
 

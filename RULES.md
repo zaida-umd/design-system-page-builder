@@ -467,9 +467,11 @@ When `.umd-layout-space-horizontal-larger` wraps `umd-element-section-intro-wide
 
 ---
 
-## 13. Don't invent eyebrows
+## 13. Don't invent eyebrows — and keep them short
 
 The `eyebrow` slot is optional on pathways, heroes, cards, and section intros. Only populate it when the source content explicitly includes a label or category above the headline. Do not invent one to fill the space or add context — an empty eyebrow slot is correct and intentional.
+
+**Character limit: 16 characters maximum.** Eyebrows are visual labels — short category tags, not sentences. If the natural label exceeds 16 characters, either abbreviate it or omit the eyebrow entirely.
 
 ```html
 <!-- ✓ Correct — no eyebrow in source, don't add one -->
@@ -478,12 +480,24 @@ The `eyebrow` slot is optional on pathways, heroes, cards, and section intros. O
   ...
 </umd-element-pathway>
 
+<!-- ✓ Correct — short label from source content -->
+<umd-element-hero>
+  <p slot="eyebrow">Graduate School</p>  <!-- 14 chars ✓ -->
+  <h1 slot="headline">Apply Today</h1>
+</umd-element-hero>
+
 <!-- ✗ Wrong — eyebrow fabricated to add context -->
 <umd-element-pathway data-theme="dark">
   <p slot="eyebrow">Graduate Studies at Maryland</p>
   <h2 slot="headline">Choose Maryland</h2>
   ...
 </umd-element-pathway>
+
+<!-- ✗ Wrong — eyebrow too long (>16 chars) -->
+<umd-element-hero>
+  <p slot="eyebrow">Clark School of Engineering</p>  <!-- 26 chars ✗ -->
+  <h1 slot="headline">Advancing the Future</h1>
+</umd-element-hero>
 ```
 
 ---
@@ -907,3 +921,419 @@ Always apply the horizontal spacing class and sticky offset on the host element:
 
 - `class="umd-layout-space-horizontal-larger"` — page gutters (1600px max-width)
 - `data-layout-position="100px"` — sticky top offset; set to match your sticky nav height so the sticky column clears it when scrolling
+
+---
+
+## 21. Interior page layout
+
+Interior pages are distinct from landing pages in structure, available components, spacing classes, and critical CSS requirements. All rules in this section are verified from the production UMD.edu stylesheet and HTML.
+
+---
+
+### Critical CSS — interior page additions
+
+Interior pages require additional entries in the `<style>` block **before** `cdn.js`. Add these to the base TEMPLATE.html critical CSS:
+
+**Add to GROUP 2 (`container-type: inline-size`):**
+```css
+umd-element-nav-slider:not(:defined),
+umd-element-media-inline:not(:defined),
+umd-element-breadcrumb:not(:defined) { content-visibility: hidden; }
+
+umd-element-nav-slider,
+umd-element-media-inline,
+umd-element-breadcrumb { display: block; container-type: inline-size; }
+```
+
+**Breadcrumb top margin (from production `umdApp` stylesheet):**
+```css
+umd-element-breadcrumb:defined { margin-top: 16px; }
+```
+
+**Sidebar + content column layout (`umd-layout-space-columns-left` is NOT in cdn.js — must be defined locally):**
+```css
+@media (min-width: 768px) {
+  .umd-layout-space-columns-left { display: flex; align-items: flex-start; }
+  .umd-layout-space-columns-left > *:first-child { width: 242px; flex-shrink: 0; margin-right: 120px; }
+  .umd-layout-space-columns-left > *:last-child { width: calc(100% - 242px); }
+}
+@media (max-width: 1023px) {
+  .umd-layout-space-columns-left > *:first-child { display: none; }
+}
+```
+
+**Content column max-width (Tailwind utility — not in cdn.js):**
+```css
+.max-w-\[800px\] { max-width: 800px; }
+```
+
+**Interior spacing aliases (production class + alias in one rule):**
+```css
+.umd-layout-space-vertical-interior,
+.umd-layout-vertical-interior          { margin-bottom: 56px; }
+@media (min-width: 1024px) {
+  .umd-layout-space-vertical-interior,
+  .umd-layout-vertical-interior        { margin-bottom: 80px; }
+}
+.umd-layout-space-vertical-interior-child,
+.umd-layout-vertical-interior-child    { margin-bottom: 32px; }
+```
+
+**Interior text styles (from production `umdApp` stylesheet — not in cdn.js):**
+```css
+/* H2/H3 heading style */
+.umd-sans-larger-bold {
+  font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
+  font-size: 18px; font-weight: 700; line-height: 1.4em; text-wrap: pretty;
+}
+@media (min-width: 650px)  { .umd-sans-larger-bold { font-size: calc(18px + .5vw); } }
+@media (min-width: 1024px) { .umd-sans-larger-bold { font-size: 22px; line-height: 1.25em; } }
+
+.text-black { color: #000; }
+
+/* Rich text body copy */
+.umd-text-rich-advanced { font-size: 18px; line-height: 1.5em; }
+.umd-text-rich-advanced * { color: #454545; }
+.umd-text-rich-advanced > * { font-size: 18px; margin-top: 24px; }
+.umd-text-rich-advanced > *:first-child { margin-top: 0; }
+.umd-text-rich-advanced a { color: #000; text-decoration: underline; }
+.umd-text-rich-advanced a:hover,
+.umd-text-rich-advanced a:focus { color: #e21833; text-decoration: none; }
+```
+
+---
+
+### Page HTML skeleton
+
+The correct element order for an interior page. Note that the breadcrumb and the columns layout each have their **own** `umd-layout-space-horizontal-larger` wrapper — they are not nested inside a shared outer div.
+
+```html
+<!-- Full-width: always outside any wrapper -->
+<umd-element-navigation-utility data-alert-off="true" ...></umd-element-navigation-utility>
+<umd-element-utility-header></umd-element-utility-header>
+<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">...</umd-element-navigation-header>
+
+<!-- Hero: full-width, no spacing class on <section> -->
+<section>
+  <umd-element-hero data-layout-height="small">...</umd-element-hero>
+</section>
+
+<!-- Breadcrumb: own horizontal wrapper + vertical spacing -->
+<div class="umd-layout-space-horizontal-larger umd-layout-space-vertical-interior">
+  <umd-element-breadcrumb>
+    <div slot="paths">
+      <a href="/" aria-label="Return Home"><span aria-hidden="true">Home</span></a>
+      <a href="/section"><span>Section Name</span></a>
+      <p aria-label="Current Page"><span>Current Page Title</span></p>
+    </div>
+  </umd-element-breadcrumb>
+</div>
+
+<!-- Columns layout: own horizontal wrapper -->
+<div class="umd-layout-space-horizontal-larger">
+  <div class="umd-layout-space-columns-left">
+    <div id="umd-shell-sidebar-container">
+      <!-- umd-element-nav-slider (optional) -->
+    </div>
+    <div id="umd-shell-content" class="max-w-[800px]">
+      <!-- content sections -->
+    </div>
+  </div>
+</div>
+
+<footer>
+  <umd-element-footer>...</umd-element-footer>
+</footer>
+```
+
+---
+
+### Heroes available on interior pages
+
+Two hero options are used on interior pages:
+
+**1. Background hero — small (`umd-element-hero`)**
+
+Standard background hero with `data-layout-height="small"`. Available in two text alignments (see §22 — standard/background is the default, not overlay):
+
+| Variant | Attributes |
+|---|---|
+| Left text (default) | `data-layout-height="small"` |
+| Centered text | `data-layout-height="small" data-layout-text="center"` |
+
+The `data-display="overlay"` attribute is an **explicit design choice** for the overlay variant. Do not add it to interior page heroes unless specifically requested.
+
+**2. Minimal hero (`umd-element-hero-minimal`)**
+
+No background image required. Three theme states for interior use:
+
+| Variant | Attribute |
+|---|---|
+| No background (default) | *(omit `data-theme`)* |
+| Light background | `data-theme="light"` |
+| Dark background | `data-theme="dark"` |
+
+> `data-theme="maryland"` (red background) is available but **not typically used** on interior pages.
+
+All full-height heroes (`hero-expand`, `hero-logo`, `hero-grid`, `hero-brand-video`) and non-small standard hero variants are **landing-page only** — do not use on interior pages.
+
+---
+
+### Breadcrumb
+
+Always use `umd-element-breadcrumb` — never a hand-coded `<nav>` or `<ol>`. Place it after the hero, before the columns layout, in its own wrapper div carrying both the horizontal lock and the vertical spacing class. The component handles all separator, link, and current-page styling internally.
+
+```html
+<div class="umd-layout-space-horizontal-larger umd-layout-space-vertical-interior">
+  <umd-element-breadcrumb>
+    <div slot="paths">
+      <a href="/" aria-label="Return Home"><span aria-hidden="true">Home</span></a>
+      <a href="/about"><span>About</span></a>
+      <p aria-label="Current Page"><span>Traditions of the Past</span></p>
+    </div>
+  </umd-element-breadcrumb>
+</div>
+```
+
+Rules for `slot="paths"` content:
+- First link: `<a href="/" aria-label="Return Home"><span aria-hidden="true">Home</span></a>`
+- Intermediate links: `<a href="..."><span>Label</span></a>`
+- Current page: `<p aria-label="Current Page"><span>Label</span></p>` (not a link)
+
+---
+
+### Sidebar + content column layout
+
+Interior pages that include a left nav use **`umd-layout-space-columns-left`** — a production UMD layout class. Do **not** write a custom CSS grid. This class is not in `cdn.js` — it must be defined in the page's critical CSS (see above).
+
+| Breakpoint | Behaviour |
+|---|---|
+| <768px | Single column, sidebar hidden |
+| 768px–1023px | Flex row, sidebar hidden (`display: none`) |
+| ≥1024px | Sidebar visible: 242px wide, 120px gap, content fills remainder |
+
+The content column carries `max-w-[800px]` to cap editorial text at 800px. This is a Tailwind utility and must also be defined in critical CSS.
+
+---
+
+### Left navigation (sidebar)
+
+`umd-element-nav-slider` is interior-only. It uses a two-level slot structure (verified from production UMD.edu HTML):
+
+```html
+<umd-element-nav-slider>
+  <!-- LEVEL 1: parent section — renders BOLD as a section label -->
+  <div slot="primary-slide-links">
+    <a href="/about" data-child-ref="about-section"><span>About UMD</span></a>
+  </div>
+  <!-- LEVEL 2: child pages — renders at normal weight -->
+  <!-- data-active = open on page load; also triggers the "back" indicator -->
+  <!-- data-selected = current page link -->
+  <div slot="children-slides">
+    <div data-active data-parent-ref="about-section">
+      <a href="/about/history"><span>History &amp; Traditions</span></a>
+      <a href="/about/traditions-of-the-past" data-selected><span>Traditions of the Past</span></a>
+      <a href="/about/symbols"><span>University Symbols</span></a>
+    </div>
+  </div>
+</umd-element-nav-slider>
+```
+
+Slot rules:
+- `slot="primary-slide-links"`: Use `<div>` (not `<nav>`). Links here render **bold** — section headers only, not individual page links.
+- `slot="children-slides"`: `<div data-parent-ref="{id}">` groups. `data-active` opens the panel on load and triggers the "back" indicator. `data-selected` marks the current page.
+- `data-child-ref` on the parent link must exactly match `data-parent-ref` on the children group.
+- Wrap all link text in `<span>`.
+
+---
+
+### Spacing rules — interior pages
+
+Interior pages use the `umd-layout-space-vertical-interior` and `umd-layout-space-vertical-interior-child` classes. The `umd-layout-vertical-interior*` aliases are combined in the same CSS rule and both work — prefer the `umd-layout-space-*` form (matches production).
+
+**`umd-layout-space-vertical-interior`** — on each top-level `<section>` within the content column. Controls space between major content blocks:
+
+| Breakpoint | `margin-bottom` |
+|---|---|
+| Default (mobile/tablet) | 56px |
+| ≥1024px | 80px |
+
+**`umd-layout-space-vertical-interior-child`** — on the heading or element directly above grouped content within a section. Controls space between a section heading and what follows it:
+
+| All breakpoints | 32px `margin-bottom` |
+|---|---|
+
+Never use `umd-layout-vertical-landing` or `umd-layout-vertical-landing-child` on interior pages.
+
+---
+
+### Typography — interior content column
+
+All headings and body copy inside the `max-w-[800px]` content column require explicit CSS classes. These classes are **not** part of `cdn.js` — they must be declared in critical CSS.
+
+**Headings (H2, H3):**
+```html
+<h2 class="umd-layout-space-vertical-interior-child text-black umd-sans-larger-bold">Section Title</h2>
+```
+- `umd-sans-larger-bold` — 22px / 700 weight / 1.25em line-height at desktop
+- `text-black` — `color: #000`
+
+**Body copy:**
+```html
+<div class="umd-text-rich-advanced">
+  <p>Body copy. 18px / 1.5em line-height / color #454545.</p>
+  <p>Second paragraph — 24px top margin from first-child exception.</p>
+</div>
+```
+- `umd-text-rich-advanced` sets size, color, paragraph spacing, and link styles
+- Always wrap `slot="text"` content in `umd-text-rich-advanced` inside `umd-element-media-inline`
+
+---
+
+### Component subset — interior pages
+
+Only the following components are used on interior page layouts. Do not place landing-page-only components on interior pages.
+
+**Always on every page**
+- Global university header (`umd-element-utility-header`)
+- Site header with navigation (`umd-element-navigation-header` + `umd-element-nav-item`)
+- Footer (`umd-element-footer`)
+
+**Heroes — interior options only**
+- Background hero small — `umd-element-hero` with `data-layout-height="small"`
+- Minimal hero — `umd-element-hero-minimal`
+
+**Content — available on interior pages**
+- Inline media (`umd-element-media-inline`) — primary editorial content component
+- Headlines and rich text (`umd-text-rich-advanced` CSS class)
+- Standard cards (`umd-element-card`) — block and list variants
+- Overlay cards (`umd-element-card-overlay`)
+- Event cards and event lists (`umd-element-event`)
+- Events list feed (`umd-feed-events-list`)
+- Standard carousel *(not yet in registry)*
+- Banner promo *(not yet in registry)*
+- Accordion *(not yet in registry)*
+- Quote (`umd-element-quote`)
+- Logo grid *(not yet in registry)*
+- Stat layouts (`umd-element-stat`)
+- People cards — list and block *(not yet in registry)*
+- Bio card *(not yet in registry)*
+- Tabs *(not yet in registry)*
+
+**Landing-page only — do not use on interior pages**
+
+`pathway`, `pathway-highlight`, `section-intro`, `section-intro-wide`, `image-expand`, `sticky-columns`, `card-icon`, `card-video`, `hero-expand`, `hero-logo`, `hero-grid`, `hero-brand-video`.
+
+---
+
+## 25. Hero section — when to add `umd-layout-vertical-landing`
+
+Hero components manage their own internal spacing but produce no external bottom margin. Whether to add `umd-layout-vertical-landing` to the hero `<section>` depends entirely on what follows it.
+
+**Add `umd-layout-vertical-landing`** when the section immediately after the hero has a light/white background (section intro, card grid, pathway, etc.) — the margin creates the expected breathing room between the hero and the next section.
+
+**Omit `umd-layout-vertical-landing`** when a dark-background section immediately follows the hero. The margin would create a visible white gap between two dark elements. Instead, let the next section provide its own spacing (see §19).
+
+```html
+<!-- ✓ Light content follows — include the spacing -->
+<section class="umd-layout-vertical-landing">
+  <umd-element-hero data-theme="dark">...</umd-element-hero>
+</section>
+<section class="umd-layout-vertical-landing">
+  <umd-element-section-intro>...</umd-element-section-intro>
+</section>
+
+<!-- ✓ Dark section follows — omit spacing on hero, keep it on the dark section -->
+<section>
+  <umd-element-hero data-theme="dark">...</umd-element-hero>
+</section>
+<section class="umd-layout-background-full-dark umd-layout-vertical-landing">
+  ...
+</section>
+```
+
+---
+
+## 22. Default hero — use the standard (background) hero
+
+The default hero for landing pages is `umd-element-hero` with **no `data-display` attribute**. In this mode the image renders as a full background behind the text. This is the standard, expected treatment.
+
+**Do not default to `data-display="overlay"`** — the overlay variant is a specific design choice with different visual behavior (composited color overlay on the image). Use it only when a true text-over-image overlay effect is explicitly desired.
+
+| Intent | Correct |
+|---|---|
+| Standard page opener with background image | *(no `data-display`)* |
+| Text-over-image with color overlay panel | `data-display="overlay"` |
+| Shorter version for interior pages | `data-display="default-interior"` or `data-layout-height="small"` |
+
+```html
+<!-- ✓ Default — background image hero -->
+<umd-element-hero data-theme="dark" data-animation>
+  <img slot="image" src="/hero.jpg" alt="" />
+  <h1 slot="headline">Fearless Ideas Start Here</h1>
+</umd-element-hero>
+
+<!-- Only use overlay when an overlay panel effect is specifically needed -->
+<umd-element-hero data-display="overlay" data-theme="dark">
+  <img slot="image" src="/hero.jpg" alt="" />
+  <h1 slot="headline">Fearless Ideas Start Here</h1>
+</umd-element-hero>
+```
+
+---
+
+## 23. Logo images — always use local fallbacks
+
+Never leave a broken or placeholder logo image in a header or footer. The following local fallback logos are always available:
+
+| Location | Slot | File |
+|---|---|---|
+| Site navigation header | `slot="logo"` on `umd-element-navigation-header` | `../images/logos/primary-logo-dark.svg` |
+| Footer | `slot="logo"` on `umd-element-footer` | `../images/logos/footer-logo.svg` |
+
+Use a department-specific external logo only when you have confirmed the URL is accessible. If there is any doubt, use the local fallback.
+
+```html
+<!-- ✓ Correct — local fallback always works -->
+<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+  <a slot="logo" href="/">
+    <img src="../images/logos/primary-logo-dark.svg" alt="University of Maryland" />
+  </a>
+  ...
+</umd-element-navigation-header>
+
+<umd-element-footer>
+  <a slot="logo" href="/">
+    <img src="../images/logos/footer-logo.svg" alt="University of Maryland" />
+  </a>
+  ...
+</umd-element-footer>
+```
+
+---
+
+## 24. Pathway section padding — 80px top and bottom
+
+Non-overlay pathway sections (`umd-element-pathway` without `data-display="overlay"`) require explicit vertical padding on the section wrapper. The pathway component itself does not provide internal top/bottom breathing room — without wrapper padding the component sits flush against adjacent content.
+
+**Rule:** Wrap standard, hero, and sticky pathway variants in a `<section>` with `padding: 80px 0`. Apply this alongside any background color:
+
+```html
+<!-- ✓ Correct — 80px padding on dark pathway section -->
+<section style="background: #000; padding: 80px 0;">
+  <umd-element-pathway data-theme="dark">
+    ...
+  </umd-element-pathway>
+</section>
+
+<!-- ✗ Wrong — no padding, pathway sits flush -->
+<section style="background: #000;">
+  <umd-element-pathway data-theme="dark">
+    ...
+  </umd-element-pathway>
+</section>
+```
+
+This applies to: standard pathway (no `data-display`), `data-display="hero"`, `data-display="sticky"`.
+
+**Overlay pathway (`data-display="overlay"`) is exempt** — it manages its own internal padding.

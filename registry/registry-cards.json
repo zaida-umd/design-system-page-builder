@@ -127,6 +127,7 @@
       }
     },
     "example": "<umd-element-card>\n  <a slot=\"image\" href=\"/article\"><img src=\"/image.jpg\" alt=\"\" /></a>\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description of the article content.</p>\n  <time slot=\"date\" datetime=\"2025-03-01\">March 1, 2025</time>\n</umd-element-card>",
+    "page_types": ["landing", "interior"],
     "source": "npm",
     "priority": 2,
     "batch": 2,
@@ -230,6 +231,7 @@
         }
       }
     },
+    "page_types": ["landing", "interior"],
     "example": "<umd-element-card-overlay type=\"image\">\n  <img slot=\"image\" src=\"/image.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description.</p>\n  <div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/article\">Learn More</a></umd-element-call-to-action></div>\n</umd-element-card-overlay>",
     "source": "npm",
     "priority": 2,
@@ -281,6 +283,7 @@
         }
       }
     },
+    "page_types": ["landing"],
     "example": "<umd-element-card-icon>\n  <img slot=\"image\" src=\"/icon.svg\" alt=\"\" />\n  <h3 slot=\"headline\">Research Excellence</h3>\n  <p slot=\"text\">Supporting description of this area.</p>\n</umd-element-card-icon>",
     "source": "npm",
     "priority": 3,
@@ -325,6 +328,7 @@
         }
       }
     },
+    "page_types": ["landing"],
     "example": "<umd-element-card-video>\n  <video slot=\"video\" src=\"/video.mp4\" poster=\"/poster.jpg\"></video>\n</umd-element-card-video>",
     "source": "npm",
     "priority": 3,
@@ -456,6 +460,7 @@
         }
       }
     },
+    "page_types": ["landing", "interior"],
     "notes": "date-start-iso is required \u2014 the component will render an empty div if it is missing. Use a <time> element with a valid ISO 8601 datetime attribute (e.g. 2025-04-15T09:00:00). The date sign and event meta (time, location) are generated automatically from the date slots. For the promo (overlay) variant, always include an image \u2014 without one the overlay has no background.",
     "example": "<umd-element-event>\n  <h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>\n  <p slot=\"text\">Join us for presentations from leading researchers.</p>\n  <time slot=\"date-start-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025 at 9:00 AM</time>\n  <time slot=\"date-end-iso\" datetime=\"2025-04-15T17:00:00\">April 15, 2025 at 5:00 PM</time>\n  <p slot=\"location\">Stamp Student Union</p>\n</umd-element-event>",
     "source": "npm",
@@ -510,6 +515,7 @@
         }
       }
     },
+    "page_types": ["landing", "interior"],
     "notes": "No content slots \u2014 events are fetched and rendered automatically from the API. data-token is required; the component renders an empty div and logs an error without it. Use data-filter-group-ids to scope to a specific category (e.g. arts, athletics). Pairs naturally with umd-element-sticky-columns as the static column content.",
     "example": "<umd-feed-events-list\n  data-token=\"your-api-token\"\n  data-layout-row-count=\"5\"\n  data-lazy-load=\"true\">\n</umd-feed-events-list>",
     "source": "npm",

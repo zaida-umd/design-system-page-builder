@@ -209,12 +209,26 @@
         "description": "Image loading priority. Defaults to lazy."
       }
     ],
+    "classes": [
+      {
+        "name": "size-large",
+        "description": "Applied directly on umd-element-card-overlay to increase minimum height. Sets minHeight to 320px on mobile and 560px on tablet+. Use whenever the card is featured prominently — e.g., as the sticky column in umd-element-sticky-columns. Example: <umd-element-card-overlay type=\"image\" class=\"size-large\">",
+        "usage": "feature card in sticky column or hero-style card contexts"
+      }
+    ],
     "aliases": {
       "overlay card": {
         "description": "Card with image background and text overlay — always include type=\"image\" when using an image slot",
         "attrs": {
           "type": "image"
         }
+      },
+      "overlay card large": {
+        "description": "Overlay card with taller min-height for featured/sticky column use. Add class=\"size-large\" to the element.",
+        "attrs": {
+          "type": "image"
+        },
+        "classes": ["size-large"]
       },
       "overlay card dark": {
         "description": "Overlay card with dark theme",
@@ -232,6 +246,7 @@
       }
     },
     "page_types": ["landing", "interior"],
+    "notes": "When used as a feature card — e.g., in the sticky column slot of umd-element-sticky-columns — always add class=\"size-large\" to the element. CRITICAL — cdn.js never injects the UA custom styles for host elements into the document, so the size-large min-height rule must be defined manually in the page <style> block. Additionally, min-height alone does not work — the shadow DOM inner container uses height: 100% which only cascades when the host has an explicit height. Use height: 320px (mobile) and height: 560px (tablet+) on the host element. Without .size-large + the manual CSS rule, the card uses the internal default of 360px (mobile) and 424px (tablet).",
     "example": "<umd-element-card-overlay type=\"image\">\n  <img slot=\"image\" src=\"/image.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description.</p>\n  <div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/article\">Learn More</a></umd-element-call-to-action></div>\n</umd-element-card-overlay>",
     "source": "npm",
     "priority": 2,

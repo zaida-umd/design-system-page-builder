@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home — College of Computer, Mathematical, and Natural Sciences | University of Maryland</title>
+
+  <!-- ============================================================
+       UMD Critical CSS — MUST precede cdn.js
+  ============================================================ -->
+  <style>
+    /* ====================
+       GROUP 1: container-type: normal
+    ==================== */
+    umd-element-navigation-utility:not(:defined),
+    umd-element-utility-header:not(:defined),
+    umd-element-navigation-header:not(:defined),
+    umd-element-nav-item:not(:defined),
+    umd-element-call-to-action:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-navigation-utility,
+    umd-element-utility-header,
+    umd-element-navigation-header,
+    umd-element-nav-item,
+    umd-element-call-to-action {
+      display: block;
+      container-type: normal;
+    }
+
+    /* ====================
+       GROUP 2: container-type: inline-size
+    ==================== */
+    umd-element-hero:not(:defined),
+    umd-element-hero-minimal:not(:defined),
+    umd-element-pathway:not(:defined),
+    umd-element-pathway-highlight:not(:defined),
+    umd-element-section-intro:not(:defined),
+    umd-element-section-intro-wide:not(:defined),
+    umd-element-card:not(:defined),
+    umd-element-card-overlay:not(:defined),
+    umd-element-card-icon:not(:defined),
+    umd-element-stat:not(:defined),
+    umd-element-sticky-columns:not(:defined),
+    umd-element-tabs:not(:defined),
+    umd-element-footer:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-hero,
+    umd-element-hero-minimal,
+    umd-element-pathway,
+    umd-element-pathway-highlight,
+    umd-element-section-intro,
+    umd-element-section-intro-wide,
+    umd-element-card,
+    umd-element-card-overlay,
+    umd-element-card-icon,
+    umd-element-stat,
+    umd-element-sticky-columns,
+    umd-element-tabs,
+    umd-element-footer {
+      display: block;
+      container-type: inline-size;
+    }
+
+    /* ====================
+       GROUP 3: Full-bleed components
+    ==================== */
+    umd-layout-image-expand:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-layout-image-expand {
+      display: block;
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    /* ====================
+       FONTS
+    ==================== */
+    :root {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+    p, li, label, input, textarea, select {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+
+    /* ====================
+       VERTICAL SPACING
+    ==================== */
+    .umd-layout-vertical-landing           { margin-bottom: 56px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+    .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+    .umd-layout-vertical-interior          { margin-bottom: 56px; }
+    @media (min-width: 1024px) { .umd-layout-vertical-interior { margin-bottom: 80px; } }
+
+    .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
+
+    /* ====================
+       HORIZONTAL SPACING
+    ==================== */
+    [class^="umd-layout-space-horizontal-"] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1200px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+    .umd-layout-space-horizontal-full     { max-width: 100%;   }
+    .umd-layout-space-horizontal-larger   { max-width: 1600px; }
+    .umd-layout-space-horizontal-large    { max-width: 1400px; }
+    .umd-layout-space-horizontal-normal   { max-width: 1280px; }
+    .umd-layout-space-horizontal-small    { max-width: 992px;  }
+    .umd-layout-space-horizontal-smallest { max-width: 800px;  }
+
+    /* ====================
+       SECTION-INTRO-WIDE WRAPPER
+    ==================== */
+    .umd-layout-space-horizontal-larger {
+      position: relative;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    /* ====================
+       WATERMARK DECORATION
+    ==================== */
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      color: #f1f1f1;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: min(calc(44px + 13vw), 240px);
+      line-height: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    :is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+      opacity: 0.6;
+      z-index: -1;
+    }
+    .umd-watermark-dark > * {
+      opacity: 0.12;
+      z-index: inherit;
+    }
+
+    /* ====================
+       GRID UTILITIES
+    ==================== */
+    .umd-layout-grid-child-fill-height {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-grid-child-fill-height > * {
+      flex: 1;
+    }
+
+    /* ====================
+       STICKY-COLUMNS UTILITIES (RULES.md §20)
+    ==================== */
+    .umd-sans-largest-uppercase {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: min(calc(28px + 1vw), 48px);
+      line-height: 1.1em;
+      text-wrap: pretty;
+    }
+    .mb-md { margin-bottom: 24px; }
+    .mb-sm { margin-bottom: 16px; }
+    .umd-layout-grid-gap-stacked {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    .umd-layout-grid-inline-tablet-rows {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* ====================
+       BODY TEXT — umd-sans-medium
+       From @universityofmaryland/web-styles-library.
+       Not injected by cdn.js — must be defined manually.
+       Use on paragraph text inside tab panels, card text,
+       and any rich body copy outside of umd-text-rich-advanced.
+       16px / 1.375em mobile → 18px / 1.55em desktop.
+    ==================== */
+    .umd-sans-medium {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 16px;
+      line-height: 1.375em;
+    }
+    @media (min-width: 650px)  { .umd-sans-medium { font-size: calc(16px + 0.16vw); } }
+    @media (min-width: 1024px) { .umd-sans-medium { font-size: 18px; line-height: 1.55em; } }
+
+    /* ====================
+       CARD LIST SEPARATORS
+       cdn.js never injects UA custom adjacent-sibling styles into the document.
+       Must be defined manually for the border lines between list cards.
+    ==================== */
+    umd-element-card[data-display="list"] + umd-element-card[data-display="list"] {
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid #E6E6E6;
+    }
+
+    /* ====================
+       OVERLAY CARD SIZE-LARGE
+       cdn.js never injects the UA custom styles for umd-element-card-overlay.size-large
+       into the document — must be defined manually here.
+       Use height (not min-height) so it cascades into the shadow DOM height:100% chain.
+    ==================== */
+    umd-element-card-overlay.size-large {
+      height: 320px;
+    }
+    @media (min-width: 768px) {
+      umd-element-card-overlay.size-large {
+        height: 560px;
+      }
+    }
+
+    /* ====================
+       INTERIOR TEXT STYLES
+    ==================== */
+    .umd-sans-larger-bold {
+      font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.4em;
+      text-wrap: pretty;
+    }
+    @media (min-width: 650px)  { .umd-sans-larger-bold { font-size: calc(18px + .5vw); } }
+    @media (min-width: 1024px) { .umd-sans-larger-bold { font-size: 22px; line-height: 1.25em; } }
+
+    .text-black { color: #000; }
+
+    .umd-text-rich-advanced {
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    .umd-text-rich-advanced * { color: #454545; }
+    .umd-text-rich-advanced > * { font-size: 18px; margin-top: 24px; }
+    .umd-text-rich-advanced > *:first-child { margin-top: 0; }
+    .umd-text-rich-advanced a { position: relative; color: #000; text-decoration: underline; }
+    .umd-text-rich-advanced a:hover,
+    .umd-text-rich-advanced a:focus { color: #e21833; text-decoration: none; }
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
+</head>
+<body>
+
+  <!-- ========================================
+       1. GLOBAL UNIVERSITY HEADER
+  ======================================== -->
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <!-- ========================================
+       2. SITE NAVIGATION HEADER
+  ======================================== -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="https://cmns.umd.edu">
+      <img src="../images/cmns/UMD_CMNS_Left_Color_1.png" alt="College of Computer, Mathematical, and Natural Sciences" />
+    </a>
+    <nav slot="main-navigation">
+
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/about">About</a>
+        <div slot="dropdown-links">
+          <a href="/about/dean">Meet the Dean</a>
+          <a href="/about/administration">College Administration</a>
+          <a href="/about/strategic-plan">Strategic Plan</a>
+          <a href="/about/belonging-community">Belonging &amp; Community</a>
+          <a href="/about/alumni">Alumni</a>
+          <a href="/about/giving">Giving</a>
+          <a href="/about/faculty-staff">Faculty &amp; Staff</a>
+          <a href="/about/board-of-visitors">Board of Visitors</a>
+          <a href="/about/circle-of-discovery">Circle of Discovery</a>
+        </div>
+      </umd-element-nav-item>
+
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/undergraduate">Undergraduate</a>
+        <div slot="dropdown-links">
+          <a href="/undergraduate/future-students">Future Students</a>
+          <a href="/undergraduate/future-students/majors-minors">Majors &amp; Minors</a>
+          <a href="/undergraduate/future-students/admissions">Admissions</a>
+          <a href="/undergraduate/future-students/visit">Plan a Visit</a>
+          <a href="/undergraduate/current-students">Current Students</a>
+          <a href="/undergraduate/current-students/advising-academic-planning">Advising &amp; Academic Planning</a>
+          <a href="/undergraduate/current-students/career-ready">Career Ready</a>
+          <a href="/undergraduate/current-students/scholarships">Scholarships</a>
+        </div>
+      </umd-element-nav-item>
+
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/graduate">Graduate</a>
+        <div slot="dropdown-links">
+          <a href="/graduate/degree-programs">Degree Programs</a>
+          <a href="/graduate/science-academy">Science Academy</a>
+          <a href="/graduate/science-academy/machine-learning">Applied Machine Learning</a>
+          <a href="/graduate/science-academy/artificial-intelligence">Artificial Intelligence</a>
+          <a href="/graduate/science-academy/quantum-computing">Quantum Computing</a>
+          <a href="/graduate/admissions">Admissions</a>
+          <a href="/graduate/fellowships">Graduate Fellowships</a>
+        </div>
+      </umd-element-nav-item>
+
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/research">Research</a>
+        <div slot="dropdown-links">
+          <a href="/research/institutes-centers">Institutes &amp; Centers</a>
+          <a href="/research/solving-grand-challenges">Grand Challenges</a>
+          <a href="/research/solving-grand-challenges/climate-change">Climate Change</a>
+          <a href="/research/solving-grand-challenges/human-disease">Human Disease</a>
+          <a href="/research/solving-grand-challenges/artificial-intelligence">Artificial Intelligence</a>
+          <a href="/research/solving-grand-challenges/quantum-computing">Quantum Computing</a>
+          <a href="/research/solving-grand-challenges/space-exploration">Space Exploration</a>
+          <a href="/research/shared-facilities">Shared Research Facilities</a>
+          <a href="https://research.umd.edu/innovation">Innovation</a>
+        </div>
+      </umd-element-nav-item>
+
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/news-events">News &amp; Events</a>
+        <div slot="dropdown-links">
+          <a href="/news-events/news">News</a>
+          <a href="/news-events/events">Events</a>
+          <a href="/news-events/events/science-on-tap">Science on Tap</a>
+          <a href="/news-events/events/summer-camps">Summer Camps</a>
+          <a href="/news-events/odyssey">Odyssey Magazine</a>
+          <a href="/news-events/newsletters">Newsletters</a>
+        </div>
+      </umd-element-nav-item>
+
+    </nav>
+  </umd-element-navigation-header>
+
+  <!-- ========================================
+       3. HERO — Standard/background, dark theme
+       No data-display: image fills behind text.
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-hero data-theme="dark">
+      <img slot="image" src="../images/cmns/We-Are-CMNS-YT-Thumbnail-final.jpg" alt="We Are CMNS — College of Computer, Mathematical, and Natural Sciences" />
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary">
+          <a href="https://youtu.be/qjNm6HemnoM">Watch Video</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-hero>
+  </section>
+
+  <!-- ========================================
+       4. STATS — 3-column grid of large stats
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:48px 32px;">
+        <umd-element-stat data-visual-size="large" data-decoration-line>
+          <span slot="stat">10,000</span>
+          <div slot="text"><p>Undergraduate and Graduate Students</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line>
+          <span slot="stat">14</span>
+          <div slot="text"><p>Top-25 Ranked Programs</p></div>
+          <div slot="sub-text"><p><em>U.S. News &amp; World Report</em></p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line>
+          <span slot="stat">$250M</span>
+          <div slot="text"><p>Annual Sponsored Research Funding</p></div>
+        </umd-element-stat>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       5. FEATURED NEWS
+       section-intro-wide header + sticky-columns:
+       sticky left = 1 overlay card (YouTube link)
+       static right = 7 list-style news cards
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+
+    <div class="umd-layout-space-horizontal-larger umd-layout-vertical-landing-child">
+      <umd-element-section-intro-wide>
+        <h2 slot="headline">Featured News</h2>
+        <div slot="actions">
+          <umd-element-call-to-action>
+            <a href="/news-events/news">See More</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro-wide>
+    </div>
+
+    <umd-element-sticky-columns class="umd-layout-space-horizontal-larger" data-layout-position="100px">
+
+      <!-- Sticky column: YouTube feature card -->
+      <div slot="sticky-column">
+        <umd-element-card-overlay type="image" class="size-large">
+          <img slot="image" src="../images/cmns/ray-video-still.jpg" alt="Fighting Mosquitoes with Fungi" />
+          <h3 slot="headline">
+            <a href="https://www.youtube.com/watch?v=ammKuIl3LpY">Fighting Mosquitoes with Fungi</a>
+          </h3>
+          <p slot="text">The goal is to kill disease-carrying mosquitoes and replace the chemical insecticides to which they have become resistant.</p>
+          <a slot="cta-icon" href="https://www.youtube.com/watch?v=ammKuIl3LpY">Watch Video</a>
+        </umd-element-card-overlay>
+      </div>
+
+      <!-- Static column: news article list -->
+      <div slot="static-column">
+        <div class="umd-layout-grid-gap-stacked">
+
+          <umd-element-card data-display="list">
+            <a slot="image" href="/news-events/news/we-are-cmns">
+              <img src="../images/cmns/we-are-cmns-screenshot.png" alt="Meet the College of Computer, Mathematical, and Natural Sciences at UMD" />
+            </a>
+            <h3 slot="headline">
+              <a href="/news-events/news/we-are-cmns">Meet the College of Computer, Mathematical, and Natural Sciences at UMD</a>
+            </h3>
+          </umd-element-card>
+
+          <umd-element-card data-display="list">
+            <a slot="image" href="/news-events/news/atmospheric-oceanic-science-major-allison-fenley-noaa-hollings-scholarship">
+              <img src="../images/cmns/allison-fenley.JPG" alt="Allison Fenley" />
+            </a>
+            <h3 slot="headline">
+              <a href="/news-events/news/atmospheric-oceanic-science-major-allison-fenley-noaa-hollings-scholarship">UMD Atmospheric and Oceanic Science Major Allison Fenley Awarded 2026 Hollings Scholarship</a>
+            </h3>
+          </umd-element-card>
+
+          <umd-element-card data-display="list">
+            <a slot="image" href="/news-events/news/atmospheric-oceanic-science-major-donovan-fry-noaa-hollings-scholarship">
+              <img src="../images/cmns/donovan-fry.jpg" alt="Donovan Fry" />
+            </a>
+            <h3 slot="headline">
+              <a href="/news-events/news/atmospheric-oceanic-science-major-donovan-fry-noaa-hollings-scholarship">UMD Atmospheric and Oceanic Science Major Donovan Fry Awarded 2026 Hollings Scholarship</a>
+            </h3>
+          </umd-element-card>
+
+          <umd-element-card data-display="list">
+            <a slot="image" href="/news-events/news/jenna-strauch-noaa-hollings-scholarship">
+              <img src="../images/cmns/img_1457.jpeg" alt="Jenna Strauch" />
+            </a>
+            <h3 slot="headline">
+              <a href="/news-events/news/jenna-strauch-noaa-hollings-scholarship">UMD Sophomore Jenna Strauch Earns Prestigious NOAA Hollings Scholarship</a>
+            </h3>
+          </umd-element-card>
+
+          <umd-element-card data-display="list">
+            <a slot="image" href="/news-events/news/atmospheric-oceanic-science-major-felix-gomez-noaa-hollings-scholarship">
+              <img src="../images/cmns/20250430_220323_059-2.jpg" alt="Felix Gomez" />
+            </a>
+            <h3 slot="headline">
+              <a href="/news-events/news/atmospheric-oceanic-science-major-felix-gomez-noaa-hollings-scholarship">UMD Atmospheric and Oceanic Science Major Felix Gomez Awarded Prestigious NOAA Hollings Scholarship</a>
+            </h3>
+          </umd-element-card>
+
+          <umd-element-card data-display="list">
+            <a slot="image" href="/news-events/news/nathan-jud-phd-biological-sciences-paleobotanist-william-jewell-college">
+              <img src="../images/cmns/nathan-at-dnm-2025.png" alt="Nathan Jud" />
+            </a>
+            <h3 slot="headline">
+              <a href="/news-events/news/nathan-jud-phd-biological-sciences-paleobotanist-william-jewell-college">UMD Alum Tells Plants' Evolutionary Tale One Fossil at a Time</a>
+            </h3>
+          </umd-element-card>
+
+          <umd-element-card data-display="list">
+            <a slot="image" href="/news-events/news/peter-demuth-cancer-immunotherapy-elicio">
+              <img src="../images/cmns/demuth-sq.jpg" alt="Peter DeMuth" />
+            </a>
+            <h3 slot="headline">
+              <a href="/news-events/news/peter-demuth-cancer-immunotherapy-elicio">Fighting Cancer with Immunotherapy</a>
+            </h3>
+          </umd-element-card>
+
+        </div>
+      </div>
+
+    </umd-element-sticky-columns>
+  </section>
+
+  <!-- ========================================
+       6. GRAND CHALLENGES
+       Gray background section:
+       section-intro (centered heading + subtext)
+       + pathway (image left / tabs right)
+  ======================================== -->
+  <section class="umd-layout-vertical-landing" style="background: #e6e6e6; padding-top: 120px; padding-bottom: 120px;">
+
+    <div class="umd-layout-space-horizontal-larger umd-layout-vertical-landing-child">
+      <umd-element-section-intro include-separator>
+        <h2 slot="headline">We Take On Humanity's Grand Challenges</h2>
+        <div slot="text">
+          <p>Our education, research, scholarship and creative activities, and service are designed to accelerate solutions to humanity's grand challenges—within our communities and around the globe.</p>
+        </div>
+      </umd-element-section-intro>
+    </div>
+
+    <umd-element-pathway data-layout-image-position="left">
+      <img slot="image" src="../images/cmns/4-grand-challenges.jpg" alt="CMNS Grand Challenges — Climate Change, Human Disease, Artificial Intelligence, Quantum Computing, Space Exploration" />
+      <h2 slot="headline">Explore Our Research Areas</h2>
+      <div slot="text">
+        <umd-element-tabs>
+          <div slot="tabs">
+
+            <div data-title="Climate Change">
+              <p style="line-height: 1.5em; font-size: 16px; margin-bottom: 16px;">We see the signs everywhere—our future is in jeopardy. As Earth's temperature rises, greenhouse gases reach record levels and severe weather events strike with frightening frequency. Our researchers are fiercely committed to the fight against global warming, tapping into satellite data to predict crop-killing droughts, identifying climate-resilient trees, and unraveling the relationship between airborne pollutants and weather conditions.</p>
+              <p style="line-height: 1.5em; font-size: 16px;"><a href="/research/solving-grand-challenges/climate-change">Learn More</a></p>
+            </div>
+
+            <div data-title="Human Disease">
+              <p style="line-height: 1.5em; font-size: 16px; margin-bottom: 16px;">Scientists in CMNS are tackling the dynamics of infectious and hereditary diseases at all scales—from complex multispecies conditions such as malaria to whole-body aging disorders, from the flu's organ-specific infection pathway to the submicroscopic structure of disease-causing viruses and disease-fighting antibodies.</p>
+              <p style="line-height: 1.5em; font-size: 16px;"><a href="/research/solving-grand-challenges/human-disease">Learn More</a></p>
+            </div>
+
+            <div data-title="Artificial Intelligence">
+              <p style="line-height: 1.5em; font-size: 16px; margin-bottom: 16px;">Researchers in CMNS work at the forefront of machine learning technology, using AI for applications that touch weather prediction, health care, transportation, finance, and wildlife conservation—while advancing the science of how computers learn and asking important questions about its impact on society.</p>
+              <p style="line-height: 1.5em; font-size: 16px;"><a href="/research/solving-grand-challenges/artificial-intelligence">Learn More</a></p>
+            </div>
+
+            <div data-title="Quantum Computing">
+              <p style="line-height: 1.5em; font-size: 16px; margin-bottom: 16px;">The University of Maryland is a powerhouse of quantum discovery. Over 200 quantum scientists and engineers are exploiting the unique properties of quantum physics to develop quantum computers capable of currently impossible calculations, ultra-secure quantum networking, and exotic new quantum materials.</p>
+              <p style="line-height: 1.5em; font-size: 16px;"><a href="/research/solving-grand-challenges/quantum-computing">Learn More</a></p>
+            </div>
+
+            <div data-title="Space Exploration">
+              <p style="line-height: 1.5em; font-size: 16px; margin-bottom: 16px;">CMNS astronomers, physicists, atmospheric scientists, and geologists are hard at work on the frontiers of space exploration. The college's close relationship with NASA's Goddard Space Flight Center enables faculty and students to share research facilities and advance our understanding of the universe.</p>
+              <p style="line-height: 1.5em; font-size: 16px;"><a href="/research/solving-grand-challenges/space-exploration">Learn More</a></p>
+            </div>
+
+          </div>
+        </umd-element-tabs>
+      </div>
+    </umd-element-pathway>
+
+  </section>
+
+  <!-- ========================================
+       7. QUICK LINKS — 4-column overlay card grid
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
+
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/cmns/ESJ-class-in-session-square.jpg" alt="Students in a class session" />
+          <h3 slot="headline">
+            <a href="/undergraduate/future-students/majors-minors">Majors &amp; Minors</a>
+          </h3>
+        </umd-element-card-overlay>
+
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/cmns/baby-terrapin-square.jpg" alt="Baby Terrapin" />
+          <h3 slot="headline">
+            <a href="/about/alumni">Alumni</a>
+          </h3>
+        </umd-element-card-overlay>
+
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/cmns/Odyssey-covers-square.jpg" alt="Odyssey Magazine covers" />
+          <h3 slot="headline">
+            <a href="/news-events/odyssey">Odyssey Magazine</a>
+          </h3>
+        </umd-element-card-overlay>
+
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/cmns/thumbnail-logo-AIM-sq.png" alt="Research Institutes and Centers" />
+          <h3 slot="headline">
+            <a href="/research/institutes-centers">Research Institutes &amp; Centers</a>
+          </h3>
+        </umd-element-card-overlay>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       8. FOOTER
+  ======================================== -->
+  <umd-element-footer>
+    <a slot="logo" href="https://cmns.umd.edu">
+      <img src="../images/cmns/UMD_CMNS_Left_Color_W.png" alt="College of Computer, Mathematical, and Natural Sciences" />
+    </a>
+    <p slot="contact-headline">College of Computer, Mathematical, and Natural Sciences</p>
+    <address slot="address">
+      Dean's Office: 3400 A.V. Williams Building<br />
+      Undergraduate Student Services: 1300 Symons Hall<br />
+      University of Maryland<br />
+      College Park, MD 20742
+    </address>
+    <div slot="contact-links">
+      <a href="/contact-us">Contact Us</a>
+    </div>
+    <ul slot="social-links">
+      <li><a href="https://bsky.app/profile/umdscience.bsky.social">Bluesky</a></li>
+      <li><a href="https://www.facebook.com/umdcmns">Facebook</a></li>
+      <li><a href="https://www.instagram.com/umdscience/">Instagram</a></li>
+      <li><a href="https://www.linkedin.com/company/umdscience/">LinkedIn</a></li>
+      <li><a href="https://www.reddit.com/user/umd-science/">Reddit</a></li>
+      <li><a href="https://www.threads.com/@umdscience">Threads</a></li>
+      <li><a href="https://x.com/umdscience">X (Twitter)</a></li>
+      <li><a href="https://www.youtube.com/@UMDscience">YouTube</a></li>
+    </ul>
+    <div slot="utility-links">
+      <ul>
+        <li><a href="https://umd.wd1.myworkdayjobs.com/UMCP" target="_blank">Employment</a></li>
+        <li><a href="https://www.umd.edu" target="_blank">UMD Home</a></li>
+        <li><a href="https://umd.edu/privacy-notice" target="_blank">Privacy Notice</a></li>
+        <li><a href="https://umd.edu/web-accessibility" target="_blank">Web Accessibility</a></li>
+        <li><a href="mailto:cmnsweb@umd.edu">Webmaster</a></li>
+      </ul>
+    </div>
+  </umd-element-footer>
+
+</body>
+</html>

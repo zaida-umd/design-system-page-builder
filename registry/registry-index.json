@@ -56,9 +56,11 @@
         "section-intro-wide",
         "image-expand",
         "sticky-columns",
-        "media-inline"
+        "media-inline",
+        "stat",
+        "tabs"
       ],
-      "description": "Pathways, section intros, image expand, sticky columns, media inline"
+      "description": "Pathways, section intros, image expand, sticky columns, media inline, stats, tabs"
     }
   },
   "interior_page_layout": {
@@ -104,16 +106,17 @@
       "accordion (not yet in registry)",
       "quote (not yet in category registry)",
       "logo-grid (not yet in registry)",
-      "stat (not yet in category registry)",
+      "stat (umd-element-stat)",
       "people-cards (not yet in registry)",
       "bio-card (not yet in registry)",
-      "tabs (not yet in registry)"
+      "tabs (umd-element-tabs)"
     ],
     "landing_page_only": [
       "pathway", "pathway-highlight", "section-intro", "section-intro-wide",
       "image-expand", "sticky-columns", "card-icon", "card-video",
       "hero-expand", "hero-logo", "hero-grid", "hero-brand-video"
     ],
+    "note_on_stat_and_tabs": "umd-element-stat and umd-element-tabs are available on both landing and interior pages — see registry/registry-content.json for full documentation",
     "spacing": {
       "between_major_sections": "umd-layout-vertical-interior (56px mobile/tablet, 80px desktop)",
       "between_items_within_section": "umd-layout-vertical-interior-child (32px all breakpoints)",

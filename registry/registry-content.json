@@ -492,5 +492,135 @@
     "source": "npm",
     "priority": 2,
     "batch": 6
+  },
+  "stat": {
+    "tag": "umd-element-stat",
+    "label": "Stat",
+    "description": "Displays a single key metric or statistic with a number, descriptive label, and optional sub-text. Use in CSS grid rows (max 4 per row for large size) or inside sticky-columns with umd-layout-grid-gap-stacked for vertical stacking.",
+    "slots": [
+      {
+        "name": "stat",
+        "required": true,
+        "description": "The number or value to display. Max 6 characters for large size. Use a <span> element.",
+        "example": "<span slot=\"stat\">10,000</span>"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Descriptive label below the number. MUST be wrapped in a <div> — a bare <p> is silently dropped.",
+        "example": "<div slot=\"text\"><p>Undergraduate and Graduate Students</p></div>"
+      },
+      {
+        "name": "sub-text",
+        "required": false,
+        "description": "Attribution or context shown below the label. Wrap in a <div>.",
+        "example": "<div slot=\"sub-text\"><p>(U.S. News & World Report)</p></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-visual-size",
+        "type": "enum",
+        "values": ["large"],
+        "description": "Large display size for prominent metrics. Omit for default (smaller) size."
+      },
+      {
+        "name": "data-decoration-line",
+        "type": "boolean",
+        "description": "Adds a decorative red line above the stat number. Boolean attribute — presence enables it."
+      },
+      {
+        "name": "data-display",
+        "type": "enum",
+        "values": ["block"],
+        "description": "Block card variant — renders as a card with background. Use with umd-layout-grid-child-fill-height for equal card heights."
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark color theme."
+      },
+      {
+        "name": "data-animation",
+        "type": "enum",
+        "values": ["offset"],
+        "description": "Scroll-triggered entrance animation. Use data-animation=\"offset\" when placing stats in a sticky-columns static column."
+      }
+    ],
+    "aliases": {
+      "stat large": {
+        "description": "Large stat with decorative red line",
+        "attrs": {
+          "data-visual-size": "large",
+          "data-decoration-line": ""
+        }
+      },
+      "stat large dark": {
+        "description": "Large stat, dark theme",
+        "attrs": {
+          "data-visual-size": "large",
+          "data-decoration-line": "",
+          "data-theme": "dark"
+        }
+      },
+      "stat block": {
+        "description": "Stat rendered as a card block",
+        "attrs": {
+          "data-display": "block"
+        }
+      }
+    },
+    "page_types": ["landing", "interior"],
+    "notes": "slot=\"text\" MUST wrap content in a <div> — a bare <p> element is silently dropped by the component. For large stats: max 4 per row (RULES.md §9). Three-stat rows use grid-template-columns: repeat(3, 1fr); gap: 48px 32px. Block stats (data-display=\"block\") pair with umd-layout-grid-child-fill-height for equal heights. Use data-animation=\"offset\" when inside sticky-columns static column.",
+    "example": "<div style=\"display:grid; grid-template-columns:repeat(3,1fr); gap:48px 32px;\">\n  <umd-element-stat data-visual-size=\"large\" data-decoration-line>\n    <span slot=\"stat\">10,000</span>\n    <div slot=\"text\"><p>Undergraduate and Graduate Students</p></div>\n  </umd-element-stat>\n  <umd-element-stat data-visual-size=\"large\" data-decoration-line>\n    <span slot=\"stat\">14</span>\n    <div slot=\"text\"><p>Top-25 Ranked Programs</p></div>\n    <div slot=\"sub-text\"><p>(U.S. News &amp; World Report)</p></div>\n  </umd-element-stat>\n  <umd-element-stat data-visual-size=\"large\" data-decoration-line>\n    <span slot=\"stat\">$250M</span>\n    <div slot=\"text\"><p>Annual Sponsored Research Funding</p></div>\n  </umd-element-stat>\n</div>",
+    "source": "npm",
+    "priority": 1,
+    "batch": 7
+  },
+  "tabs": {
+    "tag": "umd-element-tabs",
+    "label": "Tabs",
+    "description": "Interactive tabbed content component. Tab buttons are generated automatically from the data-title attribute on each direct child of the slot=\"tabs\" wrapper. Clicking a button shows that panel and hides others. Supports dark theme and sticky positioning.",
+    "slots": [
+      {
+        "name": "tabs",
+        "required": true,
+        "description": "A single wrapper div containing one div per tab panel. Each panel div MUST have data-title=\"Tab Label\" — this text becomes the tab button. Panels without data-title are skipped.",
+        "example": "<div slot=\"tabs\">\n  <div data-title=\"Climate Change\"><p>Content for this tab.</p></div>\n  <div data-title=\"Human Disease\"><p>Content for this tab.</p></div>\n</div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark color theme — white tab buttons on dark background."
+      },
+      {
+        "name": "data-layout-position",
+        "type": "string",
+        "description": "Pixel offset from top of viewport for sticky tab bar positioning. Set to match sticky nav height (e.g. \"100\") so the tab bar clears the nav.",
+        "example": "data-layout-position=\"100\""
+      }
+    ],
+    "aliases": {
+      "tabs": {
+        "description": "Default tabbed content component",
+        "attrs": {}
+      },
+      "tabs dark": {
+        "description": "Tabbed content, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      }
+    },
+    "page_types": ["landing", "interior"],
+    "notes": "The slot=\"tabs\" wrapper must contain direct child divs, each with data-title=\"Label\". The component reads data-title to generate tab buttons and hides all panels except the active one. Tab panels can contain any HTML — paragraphs, links, images, etc. Add container-type: inline-size to umd-element-tabs in critical CSS. CRITICAL — Shadow DOM cloning: The tabs component clones the slot content into shadow DOM via innerHTML. This means external CSS classes (e.g. .umd-sans-medium) cannot style elements inside tab panels — they are unreachable once cloned. Additionally, the shadow DOM base reset sets div { line-height: 1; } which all child p elements inherit. To correctly style text in tab panels, use INLINE STYLES directly on <p> elements: style=\"line-height: 1.5em; font-size: 16px;\". Do NOT rely on CSS classes for tab panel text.",
+    "example": "<umd-element-tabs>\n  <div slot=\"tabs\">\n    <div data-title=\"Climate Change\">\n      <p>Our researchers are tackling global warming through satellite data, climate modeling, and more.</p>\n      <a href=\"/research/climate-change\">Learn More</a>\n    </div>\n    <div data-title=\"Human Disease\">\n      <p>Scientists in CMNS are tackling infectious and hereditary diseases at every scale.</p>\n      <a href=\"/research/human-disease\">Learn More</a>\n    </div>\n    <div data-title=\"Artificial Intelligence\">\n      <p>Researchers work at the forefront of machine learning technology and applications.</p>\n      <a href=\"/research/artificial-intelligence\">Learn More</a>\n    </div>\n  </div>\n</umd-element-tabs>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 7
   }
 }

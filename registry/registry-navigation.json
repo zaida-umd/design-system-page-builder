@@ -98,16 +98,22 @@
         "example": "<a slot=\"primary-link\" href=\"/about\">About</a>"
       },
       {
+        "name": "dropdown-links",
+        "required": false,
+        "description": "Sub-navigation links that appear in the dropdown. Use a <div> containing bare <a> elements — one per dropdown item. This is the primary slot for standard nav dropdowns.",
+        "example": "<div slot=\"dropdown-links\">\n  <a href=\"/about/dean\">Meet the Dean</a>\n  <a href=\"/about/administration\">College Administration</a>\n  <a href=\"/about/giving\">Giving</a>\n</div>"
+      },
+      {
         "name": "dropdown-callout",
         "required": false,
-        "description": "Optional dropdown content panel.",
-        "example": "<div slot=\"dropdown-callout\">...</div>"
+        "description": "Optional rich callout panel shown alongside dropdown-links. Use for featured content, images, or CTAs within the dropdown. Children must have content to render.",
+        "example": "<div slot=\"dropdown-callout\"><p>Featured content here.</p></div>"
       }
     ],
     "attrs": [],
     "configurable": true,
     "page_types": ["landing", "interior"],
-    "notes": "Used inside the main-navigation slot of umd-element-navigation-header. Each nav link = one umd-element-nav-item.",
+    "notes": "Used inside the main-navigation slot of umd-element-navigation-header. Each nav link = one umd-element-nav-item. For standard dropdowns with a list of links, use slot=\"dropdown-links\" with bare <a> children — this is what generates the dropdown list. slot=\"dropdown-callout\" is for rich callout content alongside the links and only renders if its children have content.",
     "source": "npm",
     "priority": 1,
     "batch": 1

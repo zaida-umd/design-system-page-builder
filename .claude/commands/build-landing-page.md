@@ -5,9 +5,10 @@ Build a complete UMD landing page HTML file and save it to `/test/` in the main 
 
 ## Setup
 
-1. Read `TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. Do not rebuild it.
+1. Read `TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. Do not rebuild it. The CSS comes from `styles/critical.css` (single source of truth for all CSS rules).
 2. Registry files in `registry/` are the source of truth for all slots and attributes (already read above).
 3. Follow every rule in `RULES.md` exactly.
+4. Read `LAYOUT-PATTERNS.md` for HTML patterns when using rich text sections, dark backgrounds, two-column grids, or inline CTA rows.
 
 ## Page identity
 

@@ -19,9 +19,10 @@ Before touching a file, act as an objective design critic.
 
 ## Setup
 
-1. Read `TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim.
+1. Read `TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. The CSS comes from `styles/critical.css` (single source of truth for all CSS rules).
 2. Registry files in `registry/` are the source of truth for all slots and attributes.
 3. Follow every rule in `RULES.md` exactly.
+4. Read `LAYOUT-PATTERNS.md` for HTML patterns when using rich text sections, dark backgrounds, two-column grids, or inline CTA rows.
 
 ---
 
@@ -230,16 +231,9 @@ Use `umd-layout-space-vertical-interior` between sections and `umd-layout-space-
 
 ---
 
-## Critical CSS additions
+## Critical CSS
 
-In the `<head>` critical CSS block, add these rules if not already present:
-
-```css
-/* Interior page content column */
-.max-w-\[800px\] { max-width: 800px; }
-```
-
-The `container-type: inline-size` block already covers `umd-element-nav-slider`, `umd-element-hero-minimal`, and `umd-element-footer` — include `umd-element-media-inline` in the same block.
+All interior page CSS (`.umd-layout-space-columns-left`, `.max-w-[800px]`, interior spacing aliases, media-inline registration, etc.) is already included in `TEMPLATE.html` via `styles/critical.css`. No additional CSS rules need to be added — use the template's `<head>` block verbatim.
 
 ---
 
@@ -250,5 +244,3 @@ The `container-type: inline-size` block already covers `umd-element-nav-slider`,
 - [ ] Left nav uses `slot="primary-slide-links"` with bare `<a>` elements
 - [ ] Hero eyebrow ≤ 16 characters
 - [ ] No broken logo images — `../images/logos/primary-logo-dark.svg` (header), `../images/logos/footer-logo.svg` (footer)
-- [ ] `umd-element-media-inline` in `container-type: inline-size` critical CSS block
-- [ ] `max-w-[800px]` defined in critical CSS as `.max-w-\[800px\]`

@@ -1,6 +1,8 @@
 # UMD Layout Patterns — CSS-Only Reference
 
-These are **CSS utility class patterns**, not web components. They must be defined in your own `<style>` block — they are not injected by `cdn.js`. All classes are from `@universityofmaryland/web-styles-library`.
+These are **CSS utility class patterns**, not web components. They are not injected by `cdn.js`. All CSS definitions live in `styles/critical.css` (the single source of truth) and are already included in the TEMPLATE.html `<style>` block. All classes are from `@universityofmaryland/web-styles-library`.
+
+This file documents **HTML usage patterns** — how to compose these classes in markup. For the CSS definitions themselves, see `styles/critical.css`.
 
 ---
 

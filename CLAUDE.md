@@ -19,8 +19,10 @@ The `.claude/commands/` directory contains slash commands for this project. **Be
 1. `.claude/commands/*.md` — task instructions (check first)
 2. `RULES.md` — layout, spacing, and component usage rules
 3. `registry/` — component slots and attributes (verified from NPM)
-4. `TEMPLATE.html` — critical CSS and script load order (copy verbatim)
-5. `LAYOUT-PATTERNS.md` — CSS-only utility class patterns and definitions
+4. `styles/critical.css` — **single source of truth for all CSS rules** (canonical file)
+5. `TEMPLATE.html` — inlines `styles/critical.css` verbatim + HTML skeleton (copy `<head>` block verbatim)
+6. `LAYOUT-PATTERNS.md` — CSS-only utility class HTML patterns and examples
+7. `REQUIRED-CSS.md` — explains *why* each CSS rule group is needed (commentary, no CSS to copy)
 
 ## Logos
 

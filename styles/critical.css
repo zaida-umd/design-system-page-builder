@@ -1,0 +1,480 @@
+/*
+ * UMD Design System — Critical CSS
+ * Verified against @universityofmaryland/web-components-library@1.17.18
+ *
+ * This is the SINGLE SOURCE OF TRUTH for all CSS rules required by UMD
+ * web components. TEMPLATE.html inlines this file in <head> before cdn.js.
+ *
+ * LOAD ORDER: inline <style> (this file) -> <script> cdn.js -> </head>
+ * If cdn.js loads first, elements upgrade before :defined rules exist
+ * and container-type never gets set.
+ *
+ * Sections:
+ *   1. Component registration (container-type)
+ *   2. Fonts
+ *   3. Vertical spacing
+ *   4. Horizontal spacing (page locks)
+ *   5. Watermark decoration
+ *   6. Section-intro-wide wrapper
+ *   7. Grid utilities
+ *   8. Layout patterns (grids, dark sections, alignment)
+ *   9. Typography (inline headlines, color utilities)
+ *  10. Rich text advanced (light + dark)
+ *  11. Interior page layout (columns, sidebar, content width)
+ *  12. Image-expand content utilities
+ *  13. Sticky columns utilities
+ */
+
+
+/* ============================================================
+   1. COMPONENT REGISTRATION
+   ============================================================ */
+
+/* GROUP 1: container-type: normal
+   These components use grid-auto-flow / internal layout that
+   breaks under inline-size containment. Do NOT move to GROUP 2. */
+umd-element-navigation-utility:not(:defined),
+umd-element-utility-header:not(:defined),
+umd-element-navigation-header:not(:defined),
+umd-element-nav-item:not(:defined),
+umd-element-call-to-action:not(:defined) {
+  content-visibility: hidden;
+}
+umd-element-navigation-utility,
+umd-element-utility-header,
+umd-element-navigation-header,
+umd-element-nav-item,
+umd-element-call-to-action {
+  display: block;
+  container-type: normal;
+}
+
+/* GROUP 2: container-type: inline-size
+   These components use shadow DOM @container queries that fire
+   against the host element. Without inline-size on the host,
+   two-column layouts collapse to stacked. */
+umd-element-hero:not(:defined),
+umd-element-hero-minimal:not(:defined),
+umd-element-hero-expand:not(:defined),
+umd-element-hero-logo:not(:defined),
+umd-element-hero-grid:not(:defined),
+umd-element-hero-brand-video:not(:defined),
+umd-element-pathway:not(:defined),
+umd-element-pathway-highlight:not(:defined),
+umd-element-section-intro:not(:defined),
+umd-element-section-intro-wide:not(:defined),
+umd-element-card:not(:defined),
+umd-element-card-overlay:not(:defined),
+umd-element-card-icon:not(:defined),
+umd-element-card-video:not(:defined),
+umd-element-quote:not(:defined),
+umd-element-stat:not(:defined),
+umd-element-person-bio:not(:defined),
+umd-element-accordion-item:not(:defined),
+umd-element-nav-slider:not(:defined),
+umd-element-media-inline:not(:defined),
+umd-element-breadcrumb:not(:defined),
+umd-element-footer:not(:defined) {
+  content-visibility: hidden;
+}
+umd-element-hero,
+umd-element-hero-minimal,
+umd-element-hero-expand,
+umd-element-hero-logo,
+umd-element-hero-grid,
+umd-element-hero-brand-video,
+umd-element-pathway,
+umd-element-pathway-highlight,
+umd-element-section-intro,
+umd-element-section-intro-wide,
+umd-element-card,
+umd-element-card-overlay,
+umd-element-card-icon,
+umd-element-card-video,
+umd-element-quote,
+umd-element-stat,
+umd-element-person-bio,
+umd-element-accordion-item,
+umd-element-nav-slider,
+umd-element-media-inline,
+umd-element-breadcrumb,
+umd-element-footer {
+  display: block;
+  container-type: inline-size;
+}
+umd-element-breadcrumb:defined {
+  margin-top: 16px;
+}
+
+/* GROUP 3: Full-bleed components
+   umd-layout-image-expand collapses to content width without
+   explicit width: 100%. Do NOT wrap in a horizontal spacing class.
+   Do NOT set max-width on host — shadow DOM applies 1600px internally.
+   Content slot text must be explicitly white (color:white) —
+   the component has no data-theme support. See RULES.md §17. */
+umd-layout-image-expand:not(:defined) {
+  content-visibility: hidden;
+}
+umd-layout-image-expand {
+  display: block;
+  container-type: inline-size;
+  width: 100%;
+}
+
+
+/* ============================================================
+   2. FONTS
+   Interstate is licensed. These declarations set the stack but
+   do NOT embed the font. Without @font-face, falls back to
+   Helvetica/Arial. Layouts and sizing are unaffected.
+   ============================================================ */
+:root {
+  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+}
+p, li, label, input, textarea, select {
+  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+}
+
+
+/* ============================================================
+   3. VERTICAL SPACING — between sections and items
+   ============================================================ */
+
+/* Landing page — between sections */
+.umd-layout-vertical-landing           { margin-bottom: 56px; }
+@media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+@media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+/* Landing page — between items within a section */
+.umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+@media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+@media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+/* Interior page — page content area margins (both class names work) */
+.umd-layout-space-vertical-interior,
+.umd-layout-vertical-interior          { margin-bottom: 56px; }
+@media (min-width: 1024px) {
+  .umd-layout-space-vertical-interior,
+  .umd-layout-vertical-interior        { margin-bottom: 80px; }
+}
+
+/* Interior page — between items within a section */
+.umd-layout-space-vertical-interior-child,
+.umd-layout-vertical-interior-child    { margin-bottom: 32px; }
+
+/* Headline bottom spacing — above a content grid */
+.umd-layout-space-vertical-headline-large { margin-bottom: 16px; }
+@media (min-width: 1024px) {
+  .umd-layout-space-vertical-headline-large { margin-bottom: 24px; }
+}
+
+
+/* ============================================================
+   4. HORIZONTAL SPACING — page-lock classes
+   ============================================================ */
+[class^="umd-layout-space-horizontal-"] {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+@media (min-width: 768px) {
+  [class^="umd-layout-space-horizontal-"] {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+@media (min-width: 1200px) {
+  [class^="umd-layout-space-horizontal-"] {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+}
+.umd-layout-space-horizontal-full     { max-width: 100%;   }
+.umd-layout-space-horizontal-larger   { max-width: 1600px; }
+.umd-layout-space-horizontal-large    { max-width: 1400px; }
+.umd-layout-space-horizontal-normal   { max-width: 1280px; }
+.umd-layout-space-horizontal-small    { max-width: 992px;  }
+.umd-layout-space-horizontal-smallest { max-width: 800px;  }
+
+
+/* ============================================================
+   5. WATERMARK DECORATION
+   ============================================================ */
+:is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+  position: absolute;
+  top: 20px;
+  left: -2%;
+  color: #f1f1f1;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: min(calc(44px + 13vw), 240px);
+  line-height: 0;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+:is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+  opacity: 0.6;
+  z-index: -1;
+}
+.umd-watermark-dark > * {
+  opacity: 0.12;
+  z-index: inherit;
+}
+@keyframes slide-in-from-left {
+  from { transform: translate(-15vw); }
+  to   { transform: translate(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: scroll()) {
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      animation: slide-in-from-left forwards;
+      animation-timeline: view();
+      animation-range-start: 0;
+      animation-range-end: 100vh;
+      transform: translate(-15vw);
+    }
+  }
+}
+
+
+/* ============================================================
+   6. SECTION-INTRO-WIDE WRAPPER
+   Required when .umd-layout-space-horizontal-larger wraps
+   umd-element-section-intro-wide. position:relative for
+   watermark positioning, container-type for internal @container
+   query, isolation for watermark z-index stacking context.
+   ============================================================ */
+.umd-layout-space-horizontal-larger {
+  position: relative;
+  container-type: inline-size;
+  isolation: isolate;
+}
+
+
+/* ============================================================
+   7. GRID UTILITIES
+   ============================================================ */
+
+/* Equal-height card grid children */
+.umd-layout-grid-child-fill-height {
+  display: flex;
+  flex-direction: column;
+}
+.umd-layout-grid-child-fill-height > * {
+  flex: 1;
+}
+
+
+/* ============================================================
+   8. LAYOUT PATTERNS — grids, dark sections, alignment
+   Source: @universityofmaryland/web-styles-library
+   ============================================================ */
+
+/* Two-column grid — stacks mobile, 2 columns at 650px+ */
+.umd-layout-grid-gap-two {
+  display: grid;
+}
+@media (min-width: 650px) {
+  .umd-layout-grid-gap-two {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}
+@media (min-width: 1024px) {
+  .umd-layout-grid-gap-two { gap: 40px; }
+}
+
+/* Inline CTA row — stacks mobile, flex row at 650px+ */
+.umd-layout-grid-inline-tablet-rows {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+@media (min-width: 650px) {
+  .umd-layout-grid-inline-tablet-rows {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}
+
+/* Full-width dark section with responsive padding */
+.umd-layout-background-full-dark {
+  background-color: #000000;
+  padding: 48px 0;
+}
+@media (min-width: 768px) {
+  .umd-layout-background-full-dark { padding: 80px 0; }
+}
+@media (min-width: 1200px) {
+  .umd-layout-background-full-dark { padding: 104px 0; }
+}
+
+/* Stacked figure content — for <figure> inside rich text */
+.umd-layout-alignment-block-stacked {
+  display: flex;
+  flex-direction: column;
+}
+.umd-layout-alignment-block-stacked > * { margin-top: 16px; }
+.umd-layout-alignment-block-stacked > *:first-child { margin-top: 0; }
+
+/* Single-column stacked grid (sticky columns static slot) */
+.umd-layout-grid-gap-stacked {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+
+/* ============================================================
+   9. TYPOGRAPHY — inline headlines and color utilities
+   Used inside umd-text-rich-advanced for in-content headlines.
+   Apply to <p> elements, not heading tags.
+   ============================================================ */
+
+.umd-sans-large {
+  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.25em;
+}
+
+.umd-sans-larger-bold {
+  font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4em;
+  text-wrap: pretty;
+}
+@media (min-width: 650px) {
+  .umd-sans-larger-bold { font-size: calc(18px + .5vw); }
+}
+@media (min-width: 1024px) {
+  .umd-sans-larger-bold { font-size: 22px; line-height: 1.25em; }
+}
+
+.umd-sans-extralarge-bold {
+  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1.25em;
+  text-wrap: pretty;
+}
+@media (min-width: 650px) {
+  .umd-sans-extralarge-bold { font-size: calc(18px + 1.16vw); }
+}
+@media (min-width: 1024px) {
+  .umd-sans-extralarge-bold { font-size: 32px; line-height: 1.125em; }
+}
+
+.umd-sans-largest-uppercase {
+  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: 32px;
+  line-height: 1.1em;
+}
+@media (min-width: 768px)  { .umd-sans-largest-uppercase { font-size: 40px; } }
+@media (min-width: 1024px) { .umd-sans-largest-uppercase { font-size: 44px; } }
+
+/* Color utilities */
+.text-black { color: #000; }
+.text-white { color: #ffffff; }
+
+
+/* ============================================================
+   10. RICH TEXT ADVANCED — editorial body copy
+   Light and dark variants. 18px/1.5em with link hover styles.
+   ============================================================ */
+
+/* Light variant */
+.umd-text-rich-advanced {
+  font-size: 18px;
+  line-height: 1.5em;
+}
+.umd-text-rich-advanced * {
+  color: #454545;
+}
+.umd-text-rich-advanced > * {
+  font-size: 18px;
+  margin-top: 24px;
+}
+.umd-text-rich-advanced > *:first-child {
+  margin-top: 0;
+}
+.umd-text-rich-advanced a {
+  color: #000000;
+  background-image: linear-gradient(#000000, #000000);
+  position: relative;
+  background-position: left calc(100% - 1px);
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+}
+.umd-text-rich-advanced a:hover,
+.umd-text-rich-advanced a:focus {
+  background-image: linear-gradient(#E21833, #E21833);
+}
+
+/* Dark variant */
+.umd-text-rich-advanced-dark {
+  font-size: 18px;
+  line-height: 1.5em;
+}
+.umd-text-rich-advanced-dark p,
+.umd-text-rich-advanced-dark li { color: #ffffff; }
+.umd-text-rich-advanced-dark a {
+  color: #ffffff;
+  background-image: linear-gradient(#ffffff, #ffffff);
+  position: relative;
+  background-position: left calc(100% - 1px);
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+}
+.umd-text-rich-advanced-dark a:hover,
+.umd-text-rich-advanced-dark a:focus {
+  background-image: linear-gradient(#FFD200, #FFD200);
+}
+
+
+/* ============================================================
+   11. INTERIOR PAGE LAYOUT
+   Sidebar + content column. Not in cdn.js — must be local.
+   ============================================================ */
+
+/* Sidebar + content column flex layout */
+@media (min-width: 768px) {
+  .umd-layout-space-columns-left { display: flex; align-items: flex-start; }
+  .umd-layout-space-columns-left > *:first-child { width: 242px; flex-shrink: 0; margin-right: 120px; }
+  .umd-layout-space-columns-left > *:last-child { width: calc(100% - 242px); }
+}
+@media (max-width: 1023px) {
+  .umd-layout-space-columns-left > *:first-child { display: none; }
+}
+
+/* Content column max-width (Tailwind utility) */
+.max-w-\[800px\] { max-width: 800px; }
+
+
+/* ============================================================
+   12. IMAGE-EXPAND CONTENT UTILITIES
+   Constrain and align the quote panel inside umd-layout-image-expand.
+   Apply these classes on div[slot="content"], not a child wrapper.
+   ============================================================ */
+.max-w-\[480px\] { max-width: 480px; }
+.w-full          { width: 100%; }
+.block           { display: block; }
+.mr-auto         { margin-right: auto; }
+
+
+/* ============================================================
+   13. STICKY COLUMNS UTILITIES
+   Spacing tokens for slot content inside umd-element-sticky-columns.
+   ============================================================ */
+.mb-md { margin-bottom: 24px; }
+.mb-sm { margin-bottom: 16px; }

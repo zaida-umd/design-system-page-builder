@@ -12,18 +12,18 @@ Every standalone UMD HTML page must load these two files in `<head>`:
 ```html
 <!-- CORRECT order: critical CSS first, then cdn.js -->
 <style>
-  /* contents of umd-critical.css inlined here */
+  /* contents of styles/critical.css inlined here */
 </style>
 <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
 ```
+
+The canonical CSS is in **`styles/critical.css`** — the single source of truth. `TEMPLATE.html` inlines it verbatim. When updating CSS rules, edit `styles/critical.css` first, then copy changes to `TEMPLATE.html`.
 
 **Critical:** the CSS rules must be parsed before `cdn.js` runs and registers the custom elements. If `cdn.js` loads first, elements upgrade before `:defined` rules exist and `container-type` never gets set. Always inline the critical CSS as a `<style>` block (not a `<link>`) when serving standalone HTML files — a `<link>` to a relative path will fail if the file is opened directly from disk.
 - All two-column layouts (pathway standard/overlay/sticky, card grids, etc.) collapse to stacked. Only `data-display="hero"` pathway variants are immune — they use padding-based internal layout rather than container queries.
 - Body copy (`p`, `li`) falls back to the browser default sans-serif instead of Interstate.
 
-`umd-critical.css` is derived from the UMD build pipeline's `critical.css`. It provides:
-1. `component:defined { container-type: inline-size }` for every element tag — required for shadow DOM `@container` queries to fire.
-2. `font-family: "Interstate"` on `:root`, `p`, `li`, and form elements.
+`styles/critical.css` provides component registration, fonts, vertical/horizontal spacing, watermark, layout patterns, typography, rich text, interior page layout, and utility classes. See REQUIRED-CSS.md for explanations of what each section does and why it's needed.
 
 ---
 
@@ -275,26 +275,9 @@ The design system provides CSS utility classes for consistent spacing between se
 | All breakpoints | 32px `margin-bottom` |
 |---|---|
 
-### CSS to include in your `<style>` block
+### CSS
 
-```css
-/* Landing page — between sections */
-.umd-layout-vertical-landing           { margin-bottom: 56px; }
-@media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
-@media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
-
-/* Landing page — between items within a section */
-.umd-layout-vertical-landing-child     { margin-bottom: 32px; }
-@media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
-@media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
-
-/* Interior page — page content area margins */
-.umd-layout-vertical-interior          { margin-bottom: 56px; }
-@media (min-width: 1024px) { .umd-layout-vertical-interior { margin-bottom: 80px; } }
-
-/* Interior page — between items within a section */
-.umd-layout-vertical-interior-child    { margin-bottom: 32px; }
-```
+All vertical spacing rules are defined in `styles/critical.css` — section 3. They are already included in the TEMPLATE.html `<style>` block.
 
 ### Usage pattern
 
@@ -366,40 +349,9 @@ Padding scale: `spacing.md` (24px) → `spacing.2xl` (48px) → `spacing.4xl` (6
 | `umd-layout-space-horizontal-small` | 992px | Narrow content columns |
 | `umd-layout-space-horizontal-smallest` | 800px | Article body, forms |
 
-### CSS to include in your `<style>` block
+### CSS
 
-All classes share the same padding scale — only `max-width` differs:
-
-```css
-/* Shared padding behaviour — apply to all variants */
-[class^="umd-layout-space-horizontal-"] {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
-}
-@media (min-width: 768px) {
-  [class^="umd-layout-space-horizontal-"] {
-    padding-left: 48px;
-    padding-right: 48px;
-  }
-}
-@media (min-width: 1200px) {
-  [class^="umd-layout-space-horizontal-"] {
-    padding-left: 64px;
-    padding-right: 64px;
-  }
-}
-
-/* Per-class max-width */
-.umd-layout-space-horizontal-full    { max-width: 100%;    }
-.umd-layout-space-horizontal-larger  { max-width: 1600px;  }
-.umd-layout-space-horizontal-large   { max-width: 1400px;  }
-.umd-layout-space-horizontal-normal  { max-width: 1280px;  }
-.umd-layout-space-horizontal-small   { max-width: 992px;   }
-.umd-layout-space-horizontal-smallest{ max-width: 800px;   }
-```
+All horizontal spacing rules are defined in `styles/critical.css` — section 4. They are already included in the TEMPLATE.html `<style>` block.
 
 ### Navigation header requires `umd-layout-space-horizontal-full`
 
@@ -449,19 +401,7 @@ Pathway and hero components manage their own internal horizontal spacing — do 
 
 ### Extra properties required when wrapping `umd-element-section-intro-wide`
 
-When `.umd-layout-space-horizontal-larger` wraps `umd-element-section-intro-wide`, two additional properties are required beyond the standard padding/max-width:
-
-```css
-.umd-layout-space-horizontal-larger {
-  /* ...standard padding rules... */
-  position: relative;       /* required — watermark span is position:absolute */
-  container-type: inline-size; /* required — fires the component's internal container
-                                  query that puts headline and CTA in a flex row at 500px+ */
-  isolation: isolate;       /* required when watermark is present — creates a local
-                                  stacking context so z-index:-1 on the watermark goes
-                                  behind the headline text, not behind the page background */
-}
-```
+When `.umd-layout-space-horizontal-larger` wraps `umd-element-section-intro-wide`, three additional properties are required: `position: relative` (watermark span is `position:absolute`), `container-type: inline-size` (fires the component's internal `@container` query), and `isolation: isolate` (creates a local stacking context for watermark `z-index`). These are already defined in `styles/critical.css` — section 6.
 
 `section-intro` (centered variant, `umd-element-section-intro`) constrains its own width internally and does not need a horizontal spacing wrapper.
 
@@ -568,53 +508,9 @@ The span text should echo the headline. It is `aria-hidden="true"` and `role="pr
 
 Note: `umd-element-call-to-action` requires its own `data-theme="dark"` — see rule 14.
 
-### Required CSS (add to your `<style>` block)
+### CSS
 
-```css
-/* Base styles — all three classes */
-:is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
-  position: absolute;
-  top: 20px;
-  left: -2%;
-  color: #f1f1f1;
-  font-weight: 700;
-  text-transform: uppercase;
-  font-size: min(calc(44px + 13vw), 240px);
-  line-height: 0;
-  pointer-events: none;
-  user-select: none;
-  white-space: nowrap;
-}
-
-/* Light variant */
-:is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
-  opacity: 0.6;
-  z-index: -1;
-}
-
-/* Dark variant */
-.umd-watermark-dark > * {
-  opacity: 0.12;
-  z-index: inherit;
-}
-
-/* Scroll-driven entrance animation */
-@keyframes slide-in-from-left {
-  from { transform: translate(-15vw); }
-  to   { transform: translate(0); }
-}
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: scroll()) {
-    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
-      animation: slide-in-from-left forwards;
-      animation-timeline: view();
-      animation-range-start: 0;
-      animation-range-end: 100vh;
-      transform: translate(-15vw);
-    }
-  }
-}
-```
+All watermark rules are defined in `styles/critical.css` — section 5. They are already included in the TEMPLATE.html `<style>` block.
 
 **Critical:** All three watermark classes (`.umd-text-decoration-watermark`, `.umd-watermark`, `.umd-watermark-dark`) must be included in the base `:is()` selector. Omitting `.umd-watermark-dark` from the base selector means the dark variant span gets none of the positioning or font styles.
 
@@ -679,15 +575,7 @@ The image-expand component does **not** support `data-theme`. It has no internal
 
 When `umd-element-quote` is placed in the `content` slot, add `data-visual-transparent="true"` to the quote component. This removes the quote's opaque background card so the image shows through. The quote's `data-theme="dark"` then handles all text color internally — no `color: white` inline styles needed on the slot content.
 
-Also constrain the quote panel width and align it using utility classes directly on `div[slot="content"]` — the shadow DOM's text-lock is full-width by default. Use these classes on the slot element itself (not a child wrapper):
-
-```css
-/* Required in your <style> block whenever image-expand is used */
-.max-w-\[480px\] { max-width: 480px; }
-.w-full          { width: 100%; }
-.block           { display: block; }
-.mr-auto         { margin-right: auto; }
-```
+Also constrain the quote panel width and align it using utility classes directly on `div[slot="content"]` — the shadow DOM's text-lock is full-width by default. Use these classes on the slot element itself (not a child wrapper). The utility classes (`.max-w-[480px]`, `.w-full`, `.block`, `.mr-auto`) are defined in `styles/critical.css` — section 12 and already included in the TEMPLATE.html `<style>` block.
 
 ```html
 <!-- ✓ Correct — transparent quote, constrained and left-aligned -->
@@ -732,18 +620,7 @@ The component is full-bleed (same rule as pathway and hero — see §12). Do **n
 
 ### Critical CSS for the host
 
-The host element requires `width: 100%` in critical CSS. Without it, the host collapses to content width and the 100vw image animation breaks.
-
-```css
-umd-layout-image-expand:not(:defined) {
-  content-visibility: hidden;
-}
-umd-layout-image-expand {
-  display: block;
-  container-type: inline-size;
-  width: 100%;
-}
-```
+The host element requires `width: 100%` in critical CSS. Without it, the host collapses to content width and the 100vw image animation breaks. This is already defined in `styles/critical.css` — section 1, GROUP 3.
 
 ### Summary of gotchas
 
@@ -886,28 +763,9 @@ Wrap content in `umd-layout-grid-gap-stacked` — a single-column grid with 24px
 - `umd-layout-grid-gap-stacked` — `display: grid; grid-template-columns: 1fr; gap: 24px` — items stack vertically
 - `data-animation="offset"` — scroll-triggered entrance animation on each stat
 
-### Required CSS
+### CSS
 
-These utility classes are **not** injected by `cdn.js`. Define them in your page `<style>` block. Full CSS definitions are in LAYOUT-PATTERNS.md (for `umd-text-rich-advanced`, `umd-layout-grid-inline-tablet-rows`) and must be added for `umd-sans-largest-uppercase`, `umd-layout-grid-gap-stacked`, `mb-md`, and `mb-sm`:
-
-```css
-.umd-layout-grid-gap-stacked {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-.umd-sans-largest-uppercase {
-  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
-  font-weight: 800;
-  text-transform: uppercase;
-  font-size: 32px;
-  line-height: 1.1em;
-}
-@media (min-width: 768px)  { .umd-sans-largest-uppercase { font-size: 40px; } }
-@media (min-width: 1024px) { .umd-sans-largest-uppercase { font-size: 44px; } }
-.mb-md { margin-bottom: 24px; }
-.mb-sm { margin-bottom: 16px; }
-```
+All sticky columns utility classes (`.umd-layout-grid-gap-stacked`, `.umd-sans-largest-uppercase`, `.mb-md`, `.mb-sm`) are defined in `styles/critical.css` — sections 8, 9, and 13. They are already included in the TEMPLATE.html `<style>` block.
 
 ### Host attributes
 
@@ -932,74 +790,13 @@ Interior pages are distinct from landing pages in structure, available component
 
 ### Critical CSS — interior page additions
 
-Interior pages require additional entries in the `<style>` block **before** `cdn.js`. Add these to the base TEMPLATE.html critical CSS:
+All interior page CSS is now included in `styles/critical.css` and the TEMPLATE.html `<style>` block. No additional CSS is needed for interior pages beyond what the template already provides. The relevant sections in `styles/critical.css` are:
 
-**Add to GROUP 2 (`container-type: inline-size`):**
-```css
-umd-element-nav-slider:not(:defined),
-umd-element-media-inline:not(:defined),
-umd-element-breadcrumb:not(:defined) { content-visibility: hidden; }
-
-umd-element-nav-slider,
-umd-element-media-inline,
-umd-element-breadcrumb { display: block; container-type: inline-size; }
-```
-
-**Breadcrumb top margin (from production `umdApp` stylesheet):**
-```css
-umd-element-breadcrumb:defined { margin-top: 16px; }
-```
-
-**Sidebar + content column layout (`umd-layout-space-columns-left` is NOT in cdn.js — must be defined locally):**
-```css
-@media (min-width: 768px) {
-  .umd-layout-space-columns-left { display: flex; align-items: flex-start; }
-  .umd-layout-space-columns-left > *:first-child { width: 242px; flex-shrink: 0; margin-right: 120px; }
-  .umd-layout-space-columns-left > *:last-child { width: calc(100% - 242px); }
-}
-@media (max-width: 1023px) {
-  .umd-layout-space-columns-left > *:first-child { display: none; }
-}
-```
-
-**Content column max-width (Tailwind utility — not in cdn.js):**
-```css
-.max-w-\[800px\] { max-width: 800px; }
-```
-
-**Interior spacing aliases (production class + alias in one rule):**
-```css
-.umd-layout-space-vertical-interior,
-.umd-layout-vertical-interior          { margin-bottom: 56px; }
-@media (min-width: 1024px) {
-  .umd-layout-space-vertical-interior,
-  .umd-layout-vertical-interior        { margin-bottom: 80px; }
-}
-.umd-layout-space-vertical-interior-child,
-.umd-layout-vertical-interior-child    { margin-bottom: 32px; }
-```
-
-**Interior text styles (from production `umdApp` stylesheet — not in cdn.js):**
-```css
-/* H2/H3 heading style */
-.umd-sans-larger-bold {
-  font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
-  font-size: 18px; font-weight: 700; line-height: 1.4em; text-wrap: pretty;
-}
-@media (min-width: 650px)  { .umd-sans-larger-bold { font-size: calc(18px + .5vw); } }
-@media (min-width: 1024px) { .umd-sans-larger-bold { font-size: 22px; line-height: 1.25em; } }
-
-.text-black { color: #000; }
-
-/* Rich text body copy */
-.umd-text-rich-advanced { font-size: 18px; line-height: 1.5em; }
-.umd-text-rich-advanced * { color: #454545; }
-.umd-text-rich-advanced > * { font-size: 18px; margin-top: 24px; }
-.umd-text-rich-advanced > *:first-child { margin-top: 0; }
-.umd-text-rich-advanced a { color: #000; text-decoration: underline; }
-.umd-text-rich-advanced a:hover,
-.umd-text-rich-advanced a:focus { color: #e21833; text-decoration: none; }
-```
+- **Section 1** — Component registration: `umd-element-nav-slider`, `umd-element-media-inline`, and `umd-element-breadcrumb` are in GROUP 2
+- **Section 3** — Vertical spacing: interior spacing aliases (`.umd-layout-space-vertical-interior*` and `.umd-layout-vertical-interior*`)
+- **Section 9** — Typography: `.umd-sans-larger-bold`, `.text-black`
+- **Section 10** — Rich text: `.umd-text-rich-advanced` (light and dark variants)
+- **Section 11** — Interior layout: `.umd-layout-space-columns-left`, `.max-w-[800px]`
 
 ---
 

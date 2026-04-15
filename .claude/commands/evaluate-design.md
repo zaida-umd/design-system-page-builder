@@ -14,7 +14,8 @@ If no concept is provided, ask the user to describe the page they want to build.
 
 1. Read all four registry category files — source of truth for all available components, slots, and attributes: `registry/registry-navigation.json`, `registry/registry-heroes.json`, `registry/registry-cards.json`, `registry/registry-content.json`.
 2. Read `RULES.md` sections 3, 5, 9, 11, 13, 14 — these govern layout, theming, and slot usage.
-3. If a specific page URL is mentioned, fetch it to understand the content.
+3. Read `LAYOUT-PATTERNS.md` for CSS utility class HTML patterns (rich text, grids, dark sections).
+4. If a specific page URL is mentioned, fetch it to understand the content.
 
 ---
 

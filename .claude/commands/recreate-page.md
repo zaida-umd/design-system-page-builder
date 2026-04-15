@@ -31,8 +31,9 @@ Wait for the subagent to complete before proceeding.
 
 ## Step 2: Setup
 
-1. Read `/Users/zjocson/repos/design-system-page-builder/TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. Do not rebuild it.
+1. Read `/Users/zjocson/repos/design-system-page-builder/TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. Do not rebuild it. The CSS comes from `styles/critical.css` (single source of truth for all CSS rules).
 2. Read `/Users/zjocson/repos/design-system-page-builder/registry/registry-index.json` to see available categories and which components are in each.
+3. Read `/Users/zjocson/repos/design-system-page-builder/LAYOUT-PATTERNS.md` for HTML patterns when using rich text sections, dark backgrounds, two-column grids, or inline CTA rows.
 3. **Read `tmp/source.html`** to understand the page structure, content, and asset references. Use the downloaded files in `tmp/` as the authoritative source — do not re-fetch the live URL.
 4. Based on the content types on the page, read only the relevant category file(s):
    - Navigation/headers/footer → `/Users/zjocson/repos/design-system-page-builder/registry/registry-navigation.json`

@@ -73,7 +73,8 @@ Use content and images from the source page as the fictional client. Shorten the
 
 | Content type | First component to consider |
 |---|---|
-| Top-of-page hero with image | `umd-element-hero` (`data-display="overlay"` for photo, `data-display="stacked"` for clean) |
+| Top-of-page hero with image (landing page) | `umd-element-hero` (no `data-display` for standard background image; `data-display="overlay"` only for an explicit color-panel overlay effect) |
+| Top-of-page hero with image (interior page) | `umd-element-hero data-layout-height="small"` — **always use the small height on interior pages** (RULES.md §21) |
 | Page title / section header bar | `umd-element-hero-minimal` |
 | Split image + text feature | `umd-element-pathway` (`data-display="overlay"` for emphasized content, standard for typical use) |
 | Stats / metrics | `umd-element-stat` with grid wrapper or `umd-element-stat` in a `sticky-column` when a text introduction is needed |
@@ -81,6 +82,7 @@ Use content and images from the source page as the fictional client. Shorten the
 | Section heading + CTA | `umd-element-section-intro` (centered) or `umd-element-section-intro-wide` (with watermark) |
 | Pull quote / testimonial | `umd-element-quote` (standard) or `data-display="featured"` for a quote that stands out |
 | Full-bleed image scroll effect | `umd-layout-image-expand` for high visual |
+| Row of 2–4 standalone navigation links | `umd-element-card-overlay` (no image, `slot="cta-icon"`) in a grid — NOT secondary CTAs |
 | FAQ / expandable content | `umd-element-accordion-item` |
 | Person profile | `umd-element-person-bio` |
 | Icon + text card | `umd-element-card-icon` |
@@ -91,7 +93,7 @@ Use content and images from the source page as the fictional client. Shorten the
 
 ## Spacing and layout
 
-- Every top-level `<section>` gets `class="umd-layout-vertical-landing"`.
+- Every top-level `<section>` gets `class="umd-layout-vertical-landing"` — **except** dark sections that are immediately followed by another dark section. Omit `umd-layout-vertical-landing` from preceding dark sections to avoid a white gap; only the final dark section in the group carries it.
 - Pathway and hero are full-bleed — do NOT wrap in a horizontal spacing class.
 - Card grids and section intros go inside a `umd-layout-space-horizontal-larger` wrapper.
 - `umd-element-quote` uses `umd-layout-space-horizontal-normal` (1280px) — not `larger` (RULES.md §12).

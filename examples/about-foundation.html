@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{PAGE_TITLE}} — {{SITE_NAME}} | University of Maryland</title>
+  <title>About the Foundation — University of Maryland College Park Foundation | University of Maryland</title>
 
   <!-- ============================================================
        UMD Critical CSS — MUST precede cdn.js
@@ -470,98 +470,163 @@
 
   <!-- ========================================
        2. SITE NAVIGATION HEADER
-       Replace logo, nav items, and utility links.
   ======================================== -->
   <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
-    <a slot="logo" href="{{SITE_URL}}">
-      <img src="{{LOGO_URL}}" alt="{{SITE_NAME}}" />
+    <a slot="logo" href="https://umcpf.umd.edu/">
+      <img src="../images/UMCPF_black_horizontal_logo.png" alt="University of Maryland College Park Foundation" />
     </a>
     <nav slot="main-navigation">
-      <!-- Repeat umd-element-nav-item for each top-level link -->
       <umd-element-nav-item>
-        <a slot="primary-link" href="{{NAV_HREF}}">{{NAV_LABEL}}</a>
-        <!-- Optional dropdown: add <a slot="sub-link"> children -->
+        <a slot="primary-link" href="https://umcpf.umd.edu/about-foundation">About the Foundation</a>
+        <div slot="dropdown-links">
+          <a href="https://umcpf.umd.edu/about-foundation/announcements">Announcements</a>
+          <a href="https://umcpf.umd.edu/about-foundation/outstanding-service-award">Outstanding Service Award</a>
+          <a href="https://umcpf.umd.edu/about-foundation/foundation-staff">Foundation Staff</a>
+          <a href="https://umcpf.umd.edu/about-foundation/contact">Contact</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://umcpf.umd.edu/board-trustees">Board of Trustees</a>
+        <div slot="dropdown-links">
+          <a href="https://umcpf.umd.edu/board-trustees/board-chair">From the Board Chair</a>
+          <a href="https://umcpf.umd.edu/board-trustees/board-directory">Board Directory</a>
+          <a href="https://umcpf.umd.edu/board-trustees/committees">Committees</a>
+          <a href="https://umcpf.umd.edu/board-trustees/ex-officio-trustees">Ex Officio Trustees</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://umcpf.umd.edu/resources">Resources</a>
+        <div slot="dropdown-links">
+          <a href="https://umcpf.umd.edu/resources/investment-strategy">Investment Strategy</a>
+          <a href="https://umcpf.umd.edu/resources/governance-policies">Governance Policies</a>
+          <a href="https://umcpf.umd.edu/resources/reports">Reports</a>
+          <a href="https://umcpf.umd.edu/resources/tax-information">Tax Information</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://go.umd.edu/umcpfzeck" target="_blank" rel="noopener">Trustee Login</a>
       </umd-element-nav-item>
     </nav>
-    <!-- Optional utility nav -->
-    <!--
-    <div slot="utility-navigation">
-      <a href="/give">Give</a>
-    </div>
-    -->
   </umd-element-navigation-header>
 
   <!-- ========================================
-       3. PAGE CONTENT
-       Replace the sections below with actual content.
-       Use umd-layout-vertical-landing on each <section>.
-       Use umd-layout-space-horizontal-* wrappers for content width.
+       3. HERO — standard background hero (image behind text, left-aligned)
+       Source image: Hornbake Plaza, Hornbake_10242017_9204
   ======================================== -->
-
-  <!-- HERO SECTION (if needed) -->
-  <!--
-  <section class="umd-layout-vertical-landing">
-    <umd-element-hero data-display="stacked">
-      <h1 slot="headline">{{HEADLINE}}</h1>
-      <p slot="text">{{SUBHEAD}}</p>
-      <img slot="image" src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" />
-      <umd-element-call-to-action data-display="primary" slot="actions">
-        <a href="{{CTA_URL}}">{{CTA_TEXT}}</a>
-      </umd-element-call-to-action>
+  <section>
+    <umd-element-hero data-theme="dark" data-layout-height="small">
+      <img slot="image" src="../images/HornbakePlaza_10242017_9204-1920x1080.jpg" alt="Soft poofy clouds over a bright and warm Hornbake Plaza, full of green and colorful tree leaves." />
+      <h1 slot="headline">About the Foundation</h1>
     </umd-element-hero>
   </section>
-  -->
-
-  <!-- CONTENT SECTION EXAMPLE -->
-  <!--
-  <section class="umd-layout-vertical-landing">
-    <div class="umd-layout-space-horizontal-larger">
-      <umd-element-section-intro-wide>
-        <h2 slot="headline">{{SECTION_TITLE}}</h2>
-        <umd-element-call-to-action data-display="secondary" slot="actions">
-          <a href="{{LINK}}">{{LINK_TEXT}}</a>
-        </umd-element-call-to-action>
-      </umd-element-section-intro-wide>
-    </div>
-  </section>
-  -->
-
-  <!-- PATHWAY EXAMPLE (standard — requires dark wrapper) -->
-  <!--
-  <section class="umd-layout-vertical-landing" style="background: #000;">
-    <umd-element-pathway data-theme="dark">
-      <h2 slot="headline">{{HEADLINE}}</h2>
-      <p slot="text">{{BODY_TEXT}}</p>
-      <img slot="image" src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" />
-      <umd-element-call-to-action data-display="primary" data-theme="dark" slot="actions">
-        <a href="{{CTA_URL}}">{{CTA_TEXT}}</a>
-      </umd-element-call-to-action>
-    </umd-element-pathway>
-  </section>
-  -->
 
   <!-- ========================================
-       4. FOOTER
-       Replace contact info, links, and social.
+       4. BREADCRUMB
+  ======================================== -->
+  <div class="umd-layout-space-horizontal-larger umd-layout-space-vertical-interior">
+    <umd-element-breadcrumb>
+      <div slot="paths">
+        <a href="https://umcpf.umd.edu/" aria-label="Return Home"><span aria-hidden="true">Home</span></a>
+        <p aria-label="Current Page"><span>About the Foundation</span></p>
+      </div>
+    </umd-element-breadcrumb>
+  </div>
+
+  <!-- ========================================
+       5. INTERIOR COLUMNS LAYOUT
+       Left: nav-slider sidebar
+       Right: page title + body copy + CTAs
+  ======================================== -->
+  <div class="umd-layout-space-horizontal-larger umd-layout-space-vertical-interior">
+    <div class="umd-layout-space-columns-left">
+
+      <!-- SIDEBAR: Left navigation -->
+      <div id="umd-shell-sidebar-container">
+        <umd-element-nav-slider>
+          <div slot="primary-slide-links">
+            <a href="https://umcpf.umd.edu/about-foundation" data-child-ref="about-foundation-section">
+              <span>About the Foundation</span>
+            </a>
+            <a href="https://umcpf.umd.edu/board-trustees">
+              <span>Board of Trustees</span>
+            </a>
+            <a href="https://umcpf.umd.edu/resources">
+              <span>Resources</span>
+            </a>
+          </div>
+          <div slot="children-slides">
+            <div data-active data-parent-ref="about-foundation-section">
+              <a href="https://umcpf.umd.edu/about-foundation/announcements">
+                <span>Announcements</span>
+              </a>
+              <a href="https://umcpf.umd.edu/about-foundation/outstanding-service-award">
+                <span>Outstanding Service Award</span>
+              </a>
+              <a href="https://umcpf.umd.edu/about-foundation/foundation-staff">
+                <span>Foundation Staff</span>
+              </a>
+              <a href="https://umcpf.umd.edu/about-foundation/contact">
+                <span>Contact</span>
+              </a>
+            </div>
+          </div>
+        </umd-element-nav-slider>
+      </div>
+
+      <!-- CONTENT: Main page content -->
+      <div id="umd-shell-content" class="max-w-[800px]">
+
+        <div class="umd-text-rich-advanced umd-layout-space-vertical-interior-child">
+          <p>The University of Maryland College Park Foundation was established in 2000 as a 501(c)(3) non-profit corporation organized to receive, hold, invest and manage assets given in support of the University of Maryland, College Park. In the years since its inception, the UMCP Foundation has achieved growth, expansion and excellence while advancing the State of Maryland's flagship campus on its ascent as a preeminent public research institution and global leader in entrepreneurship and innovation.</p>
+        </div>
+
+        <div class="umd-layout-grid-inline-tablet-rows">
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://umcpf.umd.edu/about-foundation/announcements">Announcements</a>
+          </umd-element-call-to-action>
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://umcpf.umd.edu/about-foundation/outstanding-service-award">Outstanding Service Award</a>
+          </umd-element-call-to-action>
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://umcpf.umd.edu/about-foundation/foundation-staff">Foundation Staff</a>
+          </umd-element-call-to-action>
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://umcpf.umd.edu/about-foundation/contact">Contact</a>
+          </umd-element-call-to-action>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================
+       6. FOOTER
   ======================================== -->
   <umd-element-footer>
-    <a slot="logo" href="{{SITE_URL}}">
-      <img src="{{LOGO_URL}}" alt="{{SITE_NAME}}" />
+    <a slot="logo" href="https://umcpf.umd.edu/">
+      <img src="../images/logos/footer-logo.svg" alt="University of Maryland" />
     </a>
-    <p slot="contact-headline">{{DEPARTMENT_NAME}}</p>
+    <p slot="contact-headline">University of Maryland College Park Foundation, Inc.</p>
     <address slot="address">
-      {{ADDRESS_LINE_1}}<br />
-      {{ADDRESS_LINE_2}}
+      4603 Calvert Rd.<br />
+      College Park, MD 20740
     </address>
     <div slot="contact-links">
-      <a href="tel:{{PHONE}}">{{PHONE_DISPLAY}}</a>
-      <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+      <a href="tel:3019551265">(301) 955-1265</a>
     </div>
-    <div slot="social-links">
-      <a href="{{FACEBOOK_URL}}">Facebook</a>
-      <a href="{{TWITTER_URL}}">Twitter</a>
-      <a href="{{INSTAGRAM_URL}}">Instagram</a>
+    <div slot="utility-links">
+      <ul>
+        <li><a href="https://umcpf.umd.edu/resources/tax-information">Tax Information</a></li>
+        <li><a href="https://umcpf.umd.edu/about-foundation/contact">Contact</a></li>
+        <li><a href="https://giving.umd.edu/giving/" target="_blank" rel="noopener">Give to Maryland</a></li>
+      </ul>
     </div>
+    <ul slot="social-links">
+      <li><a href="https://www.facebook.com/UnivofMaryland">Facebook</a></li>
+      <li><a href="https://twitter.com/umdresearchpark">Twitter</a></li>
+      <li><a href="https://www.instagram.com/univofmaryland/">Instagram</a></li>
+      <li><a href="https://www.youtube.com/user/UMD2101">YouTube</a></li>
+    </ul>
   </umd-element-footer>
 
 </body>

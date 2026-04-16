@@ -11,6 +11,10 @@
  *
  * Sections:
  *   1. Component registration (container-type)
+ *      GROUP 1 — container-type: normal (nav, CTA)
+ *      GROUP 2 — container-type: inline-size (hero, cards, quote, stat, etc.)
+ *      GROUP 3 — full-bleed (image-expand)
+ *      GROUP 4 — feed components (news feed)
  *   2. Fonts
  *   3. Vertical spacing
  *   4. Horizontal spacing (page locks)
@@ -21,7 +25,7 @@
  *   9. Typography (inline headlines, color utilities)
  *  10. Rich text advanced (light + dark)
  *  11. Interior page layout (columns, sidebar, content width)
- *  12. Image-expand content utilities
+ *  12. Image-expand content utilities (pl-md, umd-adjacent-line-text, umd-text-rich-simple-large-dark)
  *  13. Sticky columns utilities
  */
 
@@ -121,6 +125,24 @@ umd-layout-image-expand {
   width: 100%;
 }
 
+/* GROUP 4: Feed components
+   Use contain-intrinsic-size + min-height to prevent layout shift
+   while components fetch data. The :not(:defined) block reserves
+   space so page doesn't reflow once the feed loads. */
+umd-feed-news:not(:defined),
+umd-feed-news-list:not(:defined),
+umd-feed-news-featured:not(:defined) {
+  content-visibility: hidden;
+  contain-intrinsic-size: auto 10vh;
+  min-height: 10vh;
+}
+umd-feed-news,
+umd-feed-news-list,
+umd-feed-news-featured {
+  display: block;
+  container-type: inline-size;
+}
+
 
 /* ============================================================
    2. FONTS
@@ -173,6 +195,7 @@ p, li, label, input, textarea, select {
    4. HORIZONTAL SPACING — page-lock classes
    ============================================================ */
 [class^="umd-layout-space-horizontal-"] {
+  box-sizing: border-box;
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -463,13 +486,57 @@ p, li, label, input, textarea, select {
 
 /* ============================================================
    12. IMAGE-EXPAND CONTENT UTILITIES
-   Constrain and align the quote panel inside umd-layout-image-expand.
-   Apply these classes on div[slot="content"], not a child wrapper.
+   Classes for div[slot="content"] inside umd-layout-image-expand.
+   The component has no data-theme — text must be styled explicitly.
+   Pattern: outer div gets pl-md (24px left padding for red bar),
+   h2 gets umd-adjacent-line-text (::before draws the red bar at left:-24px),
+   body copy gets umd-text-rich-simple-large-dark (white, 18px/1.5em).
    ============================================================ */
+
+/* Alignment and sizing */
 .max-w-\[480px\] { max-width: 480px; }
 .w-full          { width: 100%; }
 .block           { display: block; }
 .mr-auto         { margin-right: auto; }
+
+/* Left-border accent — creates the red vertical bar to the left of headings.
+   Wrap content in a .pl-md div; apply this class to the heading element. */
+.pl-md { padding-left: 24px; }
+
+.umd-adjacent-line-text { position: relative; }
+.umd-adjacent-line-text::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background-color: #E21833;
+  left: -24px;
+}
+
+/* Body copy on dark/image backgrounds — white text, animated underline links */
+.umd-text-rich-simple-large-dark {
+  font-size: 18px;
+  line-height: 1.5em;
+  color: #ffffff;
+}
+.umd-text-rich-simple-large-dark * { color: #ffffff; }
+.umd-text-rich-simple-large-dark > * { font-size: 18px; margin-top: 24px; }
+.umd-text-rich-simple-large-dark > *:first-child { margin-top: 0; }
+.umd-text-rich-simple-large-dark a {
+  color: #ffffff;
+  background-image: linear-gradient(#ffffff, #ffffff);
+  position: relative;
+  background-position: left calc(100% - 1px);
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+}
+.umd-text-rich-simple-large-dark a:hover,
+.umd-text-rich-simple-large-dark a:focus {
+  background-image: linear-gradient(#FFD200, #FFD200);
+}
 
 
 /* ============================================================

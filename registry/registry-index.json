@@ -43,7 +43,10 @@
         "card-icon",
         "card-video",
         "card-event",
-        "feed-events-list"
+        "feed-events-list",
+        "feed-news-grid",
+        "feed-news-list",
+        "feed-news-featured"
       ],
       "description": "Card and feed components for content grids"
     },

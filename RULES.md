@@ -297,6 +297,31 @@ All vertical spacing rules are defined in `styles/critical.css` — section 3. T
 </section>
 ```
 
+### Section intro → content grid spacing (48px desktop)
+
+A section intro or section header **always** needs `umd-layout-vertical-landing-child` between it and the content grid below it. This class delivers the standard child gap: 32px mobile → 40px tablet → **48px desktop**.
+
+- For `umd-element-section-intro`: add the class directly to the element.
+- For `umd-element-section-intro-wide`: wrap it in a `<div class="umd-layout-vertical-landing-child">` (do not add directly to the component — the wrapper approach avoids interfering with internal watermark positioning).
+
+```html
+<!-- section-intro: class directly on the element -->
+<umd-element-section-intro class="umd-layout-vertical-landing-child">
+  <h2 slot="headline">Our Programs</h2>
+</umd-element-section-intro>
+<div class="card-grid">...</div>
+
+<!-- section-intro-wide: wrapper div carries the spacing class -->
+<div class="umd-layout-vertical-landing-child">
+  <umd-element-section-intro-wide>
+    <h2 slot="headline">Latest News</h2>
+  </umd-element-section-intro-wide>
+</div>
+<umd-feed-news data-token="..."></umd-feed-news>
+```
+
+This rule applies whether the content that follows is a card grid, a feed component (`umd-feed-news`, `umd-feed-news-list`, `umd-feed-news-featured`), CTA buttons, or any other content block.
+
 ### Note on pathway sections
 
 Pathway and hero components manage their own internal spacing. When wrapping a pathway in a dark `<section>`, apply `umd-layout-vertical-landing` to the `<section>` element, not to the component itself. The section's `margin-bottom` creates the gap to the next section.
@@ -1088,7 +1113,9 @@ Never leave a broken or placeholder logo image in a header or footer. The follow
 | Site navigation header | `slot="logo"` on `umd-element-navigation-header` | `../images/logos/primary-logo-dark.svg` |
 | Footer | `slot="logo"` on `umd-element-footer` | `../images/logos/footer-logo.svg` |
 
-Use a department-specific external logo only when you have confirmed the URL is accessible. If there is any doubt, use the local fallback.
+**Footer logo:** Always use `../images/logos/footer-logo.svg` as the default. Do not attempt external department logo URLs in the footer — they are frequently on light backgrounds or blocked by hotlink protection and will not render correctly against the dark footer background.
+
+**Header logo:** Use a department-specific external logo only when you have confirmed the URL is accessible and renders on a dark background. If there is any doubt, use the local fallback.
 
 ```html
 <!-- ✓ Correct — local fallback always works -->

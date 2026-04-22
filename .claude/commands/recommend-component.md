@@ -45,6 +45,7 @@ Help identify the right UMD design system component for a given piece of content
 | Pull quote / testimonial | `umd-element-quote` wrapped in `umd-layout-space-horizontal-normal`; `data-display="featured"` for large format |
 | Quote + editorial body copy | `umd-element-pathway-highlight` — only when real body copy exists alongside the quote; quote-only → use `umd-element-quote` |
 | Full-bleed image scroll effect | `umd-layout-image-expand` |
+| Row of 2–4 standalone navigation links | `umd-element-card-overlay` (no image, `slot="cta-icon"`) in a grid — NOT secondary CTAs |
 | FAQ / expandable content | `umd-element-accordion-item` |
 | Person profile | `umd-element-person-bio` |
 | Icon + text card | `umd-element-card-icon` |

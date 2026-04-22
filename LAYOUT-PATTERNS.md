@@ -6,6 +6,212 @@ This file documents **HTML usage patterns** — how to compose these classes in 
 
 ---
 
+## Hero-to-Content Spacing Rule
+
+The `<section>` that wraps a hero **must carry `umd-layout-vertical-landing`** (landing pages) or `umd-layout-vertical-interior` (interior pages) to create the gap between the hero bottom and the first content section.
+
+```html
+<!-- ✓ Landing page — hero section carries the spacing -->
+<section class="umd-layout-vertical-landing">
+  <umd-element-hero data-theme="dark" data-animation>
+    ...
+  </umd-element-hero>
+</section>
+
+<!-- ✓ Interior page — same rule, different class -->
+<section class="umd-layout-vertical-interior">
+  <umd-element-hero data-display="small">
+    ...
+  </umd-element-hero>
+</section>
+```
+
+### Exception: adjacent dark sections
+
+If the hero is dark **and** the first content section is also a full dark section, omit the spacing class from the hero's `<section>`. The two dark blocks merge visually and no gap is needed.
+
+```html
+<!-- ✓ Dark hero directly above dark section — no gap needed -->
+<section>
+  <umd-element-hero data-theme="dark" data-animation>...</umd-element-hero>
+</section>
+<section class="umd-layout-vertical-landing umd-layout-background-full-dark">
+  <!-- stats, events, cards on dark background -->
+</section>
+
+<!-- ✗ Wrong — adding spacing here creates a white gap between two dark blocks -->
+<section class="umd-layout-vertical-landing">
+  <umd-element-hero data-theme="dark" data-animation>...</umd-element-hero>
+</section>
+<section class="umd-layout-vertical-landing umd-layout-background-full-dark">
+  ...
+</section>
+```
+
+---
+
+## Masonry Grid (`umd-layout-grid-masonry`)
+
+Two-column staggered layout. Odd children are offset upward, even children are pushed down, creating a visual zigzag. Stacks to a single column on mobile.
+
+**When to use:** 4 image-overlay cards on landing pages. Works especially well when cards have equal dimensions and strong images.
+
+**When NOT to use:** Mixed content types, lists, or cards where visual hierarchy matters — use `umd-layout-grid-gap-two` for plain two-column grids.
+
+```html
+<!-- 4 overlay cards in staggered masonry -->
+<div class="umd-layout-grid-masonry">
+  <umd-element-card-overlay type="image">
+    <img slot="image" src="/img1.jpg" alt="" />
+    <h2 slot="headline"><a href="/research">Research</a></h2>
+    <p slot="text">Body copy.</p>
+  </umd-element-card-overlay>
+  <umd-element-card-overlay type="image">
+    <img slot="image" src="/img2.jpg" alt="" />
+    <h2 slot="headline"><a href="/academics">Academics</a></h2>
+    <p slot="text">Body copy.</p>
+  </umd-element-card-overlay>
+  <umd-element-card-overlay type="image">
+    <img slot="image" src="/img3.jpg" alt="" />
+    <h2 slot="headline"><a href="/partners">Partners</a></h2>
+    <p slot="text">Body copy.</p>
+  </umd-element-card-overlay>
+  <umd-element-card-overlay type="image">
+    <img slot="image" src="/img4.jpg" alt="" />
+    <h2 slot="headline"><a href="/alumni">Alumni</a></h2>
+    <p slot="text">Body copy.</p>
+  </umd-element-card-overlay>
+</div>
+```
+
+Add per-page CSS to set card height (the stagger depends on cards having a defined height):
+
+```css
+.umd-layout-grid-masonry umd-element-card-overlay {
+  min-height: 420px;
+}
+@media (min-width: 768px) {
+  .umd-layout-grid-masonry umd-element-card-overlay { min-height: 480px; }
+}
+```
+
+**Stagger mechanics** (for reference — defined in `critical.css`):
+
+| Child position | Desktop offset |
+|---|---|
+| 1st (odd) | `margin-top: 0` (first-child override) |
+| 2nd (even) | `margin-top: 40px` (pushed down) |
+| 3rd (odd) | `margin-top: -40px` (pulled up) |
+| 4th (even) | `margin-top: 0` |
+
+---
+
+## Three-Column Offset Grid (`umd-layout-grid-offset-three`)
+
+An alternative to a flat 3-column grid when you want visual interest. Use for 3 overlay or image cards. See `critical.css` for the CSS definition.
+
+---
+
+## Section-Intro to Content Spacing
+
+`umd-element-section-intro` and `umd-element-section-intro-wide` have no built-in bottom margin. Place the spacing class **directly on the section-intro component** to create the gap between the heading and the content (cards, list, feed) below it.
+
+- **Landing pages:** `umd-layout-vertical-landing-child` — `margin-bottom: 32px` → `40px` → `48px`
+- **Interior pages:** `umd-layout-vertical-interior-child` — `margin-bottom: 32px`
+
+```html
+<!-- ✓ Landing page — spacing class on the section-intro component -->
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-larger">
+
+    <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+      <h2 slot="headline">Latest News</h2>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="secondary">
+          <a href="/news">View All</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-section-intro-wide>
+
+    <div class="grid-four">
+      <umd-element-card data-aligned>...</umd-element-card>
+      <umd-element-card data-aligned>...</umd-element-card>
+    </div>
+
+  </div>
+</section>
+```
+
+```html
+<!-- ✓ Dark section — same rule, data-theme="dark" on intro -->
+<section class="umd-layout-vertical-landing umd-layout-background-full-dark">
+  <div class="umd-layout-space-horizontal-normal">
+
+    <umd-element-section-intro data-theme="dark" class="umd-layout-vertical-landing-child">
+      <h2 slot="headline">Upcoming Events</h2>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="secondary" data-theme="dark">
+          <a href="/events">View All Events</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-section-intro>
+
+    <div class="umd-layout-grid-gap-stacked">
+      <umd-element-event data-display="list" data-theme="dark">...</umd-element-event>
+    </div>
+
+  </div>
+</section>
+```
+
+```html
+<!-- ✓ Interior page — use umd-layout-vertical-interior-child instead -->
+<section class="umd-layout-vertical-interior">
+  <div class="umd-layout-space-horizontal-normal">
+
+    <umd-element-section-intro class="umd-layout-vertical-interior-child">
+      <h2 slot="headline">Faculty Research</h2>
+    </umd-element-section-intro>
+
+    <div class="umd-layout-grid-gap-two">
+      <umd-element-card>...</umd-element-card>
+    </div>
+
+  </div>
+</section>
+```
+
+```html
+<!-- ✗ Wrong — class on the grid, not the intro. This adds margin-bottom
+     BELOW the cards (gap to next section), not between heading and cards. -->
+<umd-element-section-intro-wide>...</umd-element-section-intro-wide>
+<div class="grid-four umd-layout-vertical-landing-child">...</div>
+```
+
+---
+
+## Footer Address Markup
+
+`umd-element-footer` uses **extract-and-append** (not native HTML slot projection). The component moves `slot="address"` content directly into its shadow DOM, so light-DOM CSS targeting `[slot="address"]` has no effect.
+
+The shadow DOM applies `color: white` only to `p`, `a`, and `span` children of the address wrapper. **Always wrap each address line in a `<span>`** — raw text nodes and `<br>` tags get no color treatment and appear black on the dark footer background.
+
+```html
+<!-- ✓ Correct — each line in a <span> -->
+<address slot="address">
+  <span>1101 Engineering Building</span>
+  <span>College Park, MD 20742</span>
+</address>
+
+<!-- ✗ Wrong — raw text with <br> gets no color, appears invisible on dark footer -->
+<address slot="address">
+  1101 Engineering Building<br />
+  College Park, MD 20742
+</address>
+```
+
+---
+
 ## Rich Text Advanced (`umd-text-rich-advanced`)
 
 A content wrapper for editorial/body copy sections. Provides 18px body text, 1.5em line height, and animated underline link hover styles.
@@ -145,6 +351,33 @@ Stacks CTAs vertically on mobile, switches to a flex row at 650px+. Use to wrap 
   }
 }
 ```
+
+### Adjacent dark sections — eliminating white gaps
+
+When two dark-background sections appear next to each other, `umd-layout-vertical-landing` on the first section creates a white `margin-bottom` gap between them. Omit `umd-layout-vertical-landing` from the first section to merge them visually.
+
+```html
+<!-- ✓ Correct — no white gap between dark sections -->
+<section style="background:#000;">
+  <umd-layout-image-expand>...</umd-layout-image-expand>
+</section>
+<section class="umd-layout-vertical-landing umd-layout-background-full-dark">
+  <!-- stats, cards, or other dark content -->
+</section>
+
+<!-- ✗ Wrong — umd-layout-vertical-landing on the first dark section
+     produces a white margin gap before the second dark section -->
+<section class="umd-layout-vertical-landing" style="background:#000;">
+  <umd-layout-image-expand>...</umd-layout-image-expand>
+</section>
+<section class="umd-layout-vertical-landing umd-layout-background-full-dark">
+  ...
+</section>
+```
+
+**Rule:** The section that provides the spacing gap to the next section should always be the LAST dark section in the group — it carries `umd-layout-vertical-landing` to push away from the following light section. All preceding dark sections in the group omit it.
+
+---
 
 ### `umd-layout-background-full-dark` — full-width dark section
 
@@ -300,6 +533,59 @@ Use a plain `<hr>` directly inside `umd-text-rich-advanced` or `umd-text-rich-ad
   <hr>
   <p>Content following the rule.</p>
 </div>
+```
+
+---
+
+## Link Cards Grid (`umd-element-card-overlay` without image)
+
+When a section contains only a row of standalone links — no supporting body copy, no images, just navigation destinations — use `umd-element-card-overlay` without an image slot instead of a row of secondary CTAs. Without `type="image"` and without a `slot="image"`, the card renders as a text-only dark card. Use `slot="cta-icon"` for the arrow link.
+
+**When to use this pattern:** A row of 2–4 links that each represent a destination (topic, program, action). The cards provide visual weight and a dark card grid is more scannable than a row of pill buttons.
+
+**When NOT to use:** If links have supporting descriptions, use `umd-element-card` (standard). If links are secondary actions accompanying a primary button, keep using `umd-layout-grid-inline-tablet-rows` with CTAs.
+
+```html
+<!-- 2-column link card grid — uses existing umd-layout-grid-gap-two -->
+<div class="umd-layout-grid-gap-two">
+  <umd-element-card-overlay>
+    <h3 slot="headline"><a href="/page-one">First Destination</a></h3>
+    <a slot="cta-icon" href="/page-one">Go</a>
+  </umd-element-card-overlay>
+  <umd-element-card-overlay>
+    <h3 slot="headline"><a href="/page-two">Second Destination</a></h3>
+    <a slot="cta-icon" href="/page-two">Go</a>
+  </umd-element-card-overlay>
+</div>
+
+<!-- 3-column link card grid — add page-specific CSS class -->
+<div class="link-cards-three">
+  <umd-element-card-overlay>
+    <h3 slot="headline"><a href="/page-one">First Destination</a></h3>
+    <a slot="cta-icon" href="/page-one">Go</a>
+  </umd-element-card-overlay>
+  <umd-element-card-overlay>
+    <h3 slot="headline"><a href="/page-two">Second Destination</a></h3>
+    <a slot="cta-icon" href="/page-two">Go</a>
+  </umd-element-card-overlay>
+  <umd-element-card-overlay>
+    <h3 slot="headline"><a href="/page-three">Third Destination</a></h3>
+    <a slot="cta-icon" href="/page-three">Go</a>
+  </umd-element-card-overlay>
+</div>
+```
+
+Add this CSS to the page `<style>` block for 3-column grids (not in critical.css — define per page):
+
+```css
+.link-cards-three {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+@media (min-width: 650px) {
+  .link-cards-three { grid-template-columns: repeat(3, 1fr); }
+}
 ```
 
 ---

@@ -6,10 +6,11 @@
     "last_verified": "2026-03-02",
     "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
     "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
-    "component_count": 21,
-    "last_updated": "2026-03-29",
+    "component_count": 24,
+    "last_updated": "2026-04-15",
     "batch_4": "section-intro, section-intro-wide, footer",
     "batch_5": "sticky-columns, card-event, feed-events-list",
+    "batch_6": "feed-news-grid, feed-news-list, feed-news-featured",
     "category": "cards",
     "components": [
       "card-standard",
@@ -17,7 +18,10 @@
       "card-icon",
       "card-video",
       "card-event",
-      "feed-events-list"
+      "feed-events-list",
+      "feed-news-grid",
+      "feed-news-list",
+      "feed-news-featured"
     ]
   },
   "card-standard": {
@@ -361,16 +365,16 @@
         "example": "<h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>"
       },
       {
-        "name": "date-start-iso",
+        "name": "start-date-iso",
         "required": true,
         "description": "Event start date/time as a <time> element. The datetime attribute must be an ISO 8601 string \u2014 this drives the date sign and event meta display.",
-        "example": "<time slot=\"date-start-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025</time>"
+        "example": "<time slot=\"start-date-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025</time>"
       },
       {
-        "name": "date-end-iso",
+        "name": "end-date-iso",
         "required": false,
         "description": "Event end date/time as a <time> element with ISO 8601 datetime. Used to compute duration shown in event meta.",
-        "example": "<time slot=\"date-end-iso\" datetime=\"2025-04-15T17:00:00\">April 15, 2025 at 5:00 PM</time>"
+        "example": "<time slot=\"end-date-iso\" datetime=\"2025-04-15T17:00:00\">April 15, 2025 at 5:00 PM</time>"
       },
       {
         "name": "location",
@@ -476,11 +480,221 @@
       }
     },
     "page_types": ["landing", "interior"],
-    "notes": "date-start-iso is required \u2014 the component will render an empty div if it is missing. Use a <time> element with a valid ISO 8601 datetime attribute (e.g. 2025-04-15T09:00:00). The date sign and event meta (time, location) are generated automatically from the date slots. For the promo (overlay) variant, always include an image \u2014 without one the overlay has no background.",
-    "example": "<umd-element-event>\n  <h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>\n  <p slot=\"text\">Join us for presentations from leading researchers.</p>\n  <time slot=\"date-start-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025 at 9:00 AM</time>\n  <time slot=\"date-end-iso\" datetime=\"2025-04-15T17:00:00\">April 15, 2025 at 5:00 PM</time>\n  <p slot=\"location\">Stamp Student Union</p>\n</umd-element-event>",
+    "example": "<umd-element-event>\n  <h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>\n  <p slot=\"text\">Join us for presentations from leading researchers.</p>\n  <time slot=\"start-date-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025 at 9:00 AM</time>\n  <time slot=\"end-date-iso\" datetime=\"2025-04-15T17:00:00\">April 15, 2025 at 5:00 PM</time>\n  <p slot=\"location\">Stamp Student Union</p>\n</umd-element-event>",
+    "notes": "start-date-iso is required \u2014 the component will render an empty div if it is missing. Slot names are start-date-iso and end-date-iso (NOT date-start-iso / date-end-iso). Use a <time> element with a valid ISO 8601 datetime attribute (e.g. 2025-04-15T09:00:00). The date sign and event meta (time, location) are generated automatically from the date slots. For the promo (overlay) variant, always include an image \u2014 without one the overlay has no background.",
     "source": "npm",
     "priority": 2,
     "batch": 5
+  },
+  "feed-news-grid": {
+    "tag": "umd-feed-news",
+    "label": "News Grid Feed",
+    "description": "Dynamic grid of news articles fetched from the Maryland Today feed. Self-populating — no content slots. Renders cards in a responsive grid (1–4 columns). Supports overlay card style and lazy loading. Requires data-token.",
+    "slots": [],
+    "attrs": [
+      {
+        "name": "data-token",
+        "type": "string",
+        "required": true,
+        "description": "API authentication token. The component will not render without this."
+      },
+      {
+        "name": "data-filter-group-ids",
+        "type": "string",
+        "description": "Comma-separated category IDs to filter news. Omit to show all news."
+      },
+      {
+        "name": "data-layout-column-count",
+        "type": "number",
+        "description": "Number of columns in the grid (1–4). Defaults to 3."
+      },
+      {
+        "name": "data-layout-row-count",
+        "type": "number",
+        "description": "Number of rows to show initially (1–2). Defaults to 1."
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark color theme."
+      },
+      {
+        "name": "data-display",
+        "type": "enum",
+        "values": ["overlay"],
+        "description": "Use overlay card style (text over image background)."
+      },
+      {
+        "name": "data-lazy-load",
+        "type": "boolean",
+        "description": "Enable a 'load more' button to fetch additional articles beyond the initial count."
+      },
+      {
+        "name": "data-visual-transparent",
+        "type": "boolean",
+        "description": "Transparent card backgrounds. Use when placing the feed over a colored section."
+      },
+      {
+        "name": "data-entry-remove-ids",
+        "type": "string",
+        "description": "Comma-separated entry IDs to exclude from the feed."
+      }
+    ],
+    "critical_css": "umd-feed-news requires display:block and container-type:inline-size on the host element. Add to critical CSS: umd-feed-news:not(:defined) { content-visibility:hidden; contain-intrinsic-size:auto 10vh; min-height:10vh; } umd-feed-news { display:block; container-type:inline-size; }",
+    "aliases": {
+      "news grid": {
+        "description": "Default 3-column news grid feed",
+        "attrs": {}
+      },
+      "news grid dark": {
+        "description": "News grid feed, dark theme",
+        "attrs": { "data-theme": "dark" }
+      },
+      "news grid overlay": {
+        "description": "News grid with overlay card style",
+        "attrs": { "data-display": "overlay" }
+      }
+    },
+    "page_types": ["landing", "interior"],
+    "notes": "No content slots — articles are fetched and rendered automatically from the Maryland Today API. data-token is required. Use data-filter-group-ids to scope to a specific category (the source page uses '10476' for Maryland Promise stories). Wrapping in umd-layout-space-horizontal-larger is recommended for consistent gutters.",
+    "example": "<umd-feed-news\n  data-token=\"your-api-token\"\n  data-filter-group-ids=\"10476\"\n  data-layout-column-count=\"3\"\n  data-layout-row-count=\"1\">\n</umd-feed-news>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 6
+  },
+  "feed-news-list": {
+    "tag": "umd-feed-news-list",
+    "label": "News List Feed",
+    "description": "Dynamic stacked list of news articles fetched from the Maryland Today feed. Self-populating — no content slots. Renders articles as horizontal list cards optimized for vertical scanning. Requires data-token.",
+    "slots": [],
+    "attrs": [
+      {
+        "name": "data-token",
+        "type": "string",
+        "required": true,
+        "description": "API authentication token. The component will not render without this."
+      },
+      {
+        "name": "data-filter-group-ids",
+        "type": "string",
+        "description": "Comma-separated category IDs to filter news."
+      },
+      {
+        "name": "data-layout-row-count",
+        "type": "number",
+        "description": "Number of articles to show initially (1–10). Defaults to 5."
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark color theme."
+      },
+      {
+        "name": "data-lazy-load",
+        "type": "boolean",
+        "description": "Enable a 'load more' button to fetch additional articles."
+      },
+      {
+        "name": "data-entry-remove-ids",
+        "type": "string",
+        "description": "Comma-separated entry IDs to exclude from the feed."
+      }
+    ],
+    "critical_css": "umd-feed-news-list requires display:block and container-type:inline-size on the host element. Add to critical CSS.",
+    "aliases": {
+      "news list": {
+        "description": "Default stacked news list feed",
+        "attrs": {}
+      },
+      "news list dark": {
+        "description": "News list feed, dark theme",
+        "attrs": { "data-theme": "dark" }
+      }
+    },
+    "page_types": ["landing", "interior"],
+    "notes": "No content slots — articles fetched automatically. Pairs well with umd-element-sticky-columns as the static column content alongside a section intro in the sticky column.",
+    "example": "<umd-feed-news-list\n  data-token=\"your-api-token\"\n  data-filter-group-ids=\"10476\"\n  data-layout-row-count=\"5\"\n  data-lazy-load=\"true\">\n</umd-feed-news-list>",
+    "source": "npm",
+    "priority": 2,
+    "batch": 6
+  },
+  "feed-news-featured": {
+    "tag": "umd-feed-news-featured",
+    "label": "Featured News Feed",
+    "description": "Dynamic featured news layout: first article renders as a large overlay card with sticky positioning; next two articles appear as a supporting block card grid. Additional articles load via lazy load. No content slots. Requires data-token.",
+    "slots": [],
+    "attrs": [
+      {
+        "name": "data-token",
+        "type": "string",
+        "required": true,
+        "description": "API authentication token. The component will not render without this."
+      },
+      {
+        "name": "data-filter-group-ids",
+        "type": "string",
+        "description": "Comma-separated category IDs to filter news."
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark color theme."
+      },
+      {
+        "name": "data-layout-reverse",
+        "type": "boolean",
+        "description": "Reverse the layout — overlay card moves to the right, supporting grid to the left."
+      },
+      {
+        "name": "data-top-position",
+        "type": "string",
+        "description": "Override sticky position in pixels (e.g. '100'). Set to match the height of a sticky nav header."
+      },
+      {
+        "name": "data-layout-position",
+        "type": "string",
+        "description": "Observed attribute — dynamically updates the sticky card's top position. Same purpose as data-top-position but reactive to DOM changes."
+      },
+      {
+        "name": "data-lazy-load",
+        "type": "boolean",
+        "description": "Enable a 'load more' button to fetch additional articles beyond the initial 3."
+      },
+      {
+        "name": "data-visual-transparent",
+        "type": "boolean",
+        "description": "Transparent card backgrounds on supporting block cards."
+      },
+      {
+        "name": "data-entry-remove-ids",
+        "type": "string",
+        "description": "Comma-separated entry IDs to exclude from the feed."
+      }
+    ],
+    "critical_css": "umd-feed-news-featured requires display:block and container-type:inline-size on the host element. Add to critical CSS.",
+    "aliases": {
+      "news featured": {
+        "description": "Featured news layout — large overlay card + supporting grid",
+        "attrs": {}
+      },
+      "news featured reversed": {
+        "description": "Featured news layout, reversed — overlay card on right",
+        "attrs": { "data-layout-reverse": "" }
+      },
+      "news featured dark": {
+        "description": "Featured news layout, dark theme",
+        "attrs": { "data-theme": "dark" }
+      }
+    },
+    "page_types": ["landing"],
+    "notes": "Renders 3 articles on initial load: 1 overlay (featured) + 2 block cards. Falls back to standard 2-column grid if fewer than 2 articles are returned. Set data-top-position to match your sticky nav height so the overlay card sticks below the nav. No content slots — articles are fetched automatically from the Maryland Today API.",
+    "example": "<umd-feed-news-featured\n  data-token=\"your-api-token\"\n  data-filter-group-ids=\"10476\"\n  data-top-position=\"100\">\n</umd-feed-news-featured>",
+    "source": "npm",
+    "priority": 1,
+    "batch": 6
   },
   "feed-events-list": {
     "tag": "umd-feed-events-list",

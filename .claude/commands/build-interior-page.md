@@ -2,20 +2,6 @@
 
 Build a complete UMD interior/subpage HTML file using real content from the "Traditions of the Past" page (`https://umd.edu/about/traditions-of-the-past`). Save it to `test/test-interior-page.html`.
 
-## Phase 0 — Design evaluation (run before writing any HTML)
-
-Before touching a file, act as an objective design critic.
-
-1. Read all four registry category files: `registry/registry-navigation.json`, `registry/registry-heroes.json`, `registry/registry-cards.json`, `registry/registry-content.json`.
-2. For each required section below, state which component you'll use, which attributes, and what content fills each slot.
-3. Score the proposed plan on four dimensions (0–10 each):
-   - **Component fitness** — best component for the content type
-   - **Layout variety** — at least 2 distinct visual patterns in the content area
-   - **Content hierarchy** — clear flow from hero → intro → editorial content
-   - **Design integrity** — RULES.md compliance (spacing classes, slot names, interior-only rules)
-4. If any dimension scores below 6, revise the plan. Only proceed after ≥ 24/40 with no dimension below 6.
-
----
 
 ## Setup
 

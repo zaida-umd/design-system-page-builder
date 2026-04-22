@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College of Information (INFO) | University of Maryland</title>
+
+  <!-- ============================================================
+       UMD Critical CSS — MUST precede cdn.js
+       SOURCE OF TRUTH: styles/critical.css
+  ============================================================ -->
+  <style>
+    /* ====================
+       GROUP 1: container-type: normal
+    ==================== */
+    umd-element-navigation-utility:not(:defined),
+    umd-element-utility-header:not(:defined),
+    umd-element-navigation-header:not(:defined),
+    umd-element-nav-item:not(:defined),
+    umd-element-call-to-action:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-navigation-utility,
+    umd-element-utility-header,
+    umd-element-navigation-header,
+    umd-element-nav-item,
+    umd-element-call-to-action {
+      display: block;
+      container-type: normal;
+    }
+
+    /* ====================
+       GROUP 2: container-type: inline-size
+    ==================== */
+    umd-element-hero:not(:defined),
+    umd-element-hero-minimal:not(:defined),
+    umd-element-hero-expand:not(:defined),
+    umd-element-hero-logo:not(:defined),
+    umd-element-hero-grid:not(:defined),
+    umd-element-hero-brand-video:not(:defined),
+    umd-element-pathway:not(:defined),
+    umd-element-pathway-highlight:not(:defined),
+    umd-element-section-intro:not(:defined),
+    umd-element-section-intro-wide:not(:defined),
+    umd-element-card:not(:defined),
+    umd-element-card-overlay:not(:defined),
+    umd-element-card-icon:not(:defined),
+    umd-element-card-video:not(:defined),
+    umd-element-quote:not(:defined),
+    umd-element-stat:not(:defined),
+    umd-element-person-bio:not(:defined),
+    umd-element-accordion-item:not(:defined),
+    umd-element-nav-slider:not(:defined),
+    umd-element-media-inline:not(:defined),
+    umd-element-breadcrumb:not(:defined),
+    umd-element-footer:not(:defined),
+    umd-element-event:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-hero,
+    umd-element-hero-minimal,
+    umd-element-hero-expand,
+    umd-element-hero-logo,
+    umd-element-hero-grid,
+    umd-element-hero-brand-video,
+    umd-element-pathway,
+    umd-element-pathway-highlight,
+    umd-element-section-intro,
+    umd-element-section-intro-wide,
+    umd-element-card,
+    umd-element-card-overlay,
+    umd-element-card-icon,
+    umd-element-card-video,
+    umd-element-quote,
+    umd-element-stat,
+    umd-element-person-bio,
+    umd-element-accordion-item,
+    umd-element-nav-slider,
+    umd-element-media-inline,
+    umd-element-breadcrumb,
+    umd-element-footer,
+    umd-element-event {
+      display: block;
+      container-type: inline-size;
+    }
+    umd-element-breadcrumb:defined {
+      margin-top: 16px;
+    }
+
+    /* ====================
+       GROUP 3: Full-bleed components
+    ==================== */
+    umd-layout-image-expand:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-layout-image-expand {
+      display: block;
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    /* ====================
+       FONTS
+    ==================== */
+    :root {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+    p, li, label, input, textarea, select {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+
+    /* ====================
+       VERTICAL SPACING
+    ==================== */
+    .umd-layout-vertical-landing           { margin-bottom: 56px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+    .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+    .umd-layout-space-vertical-interior,
+    .umd-layout-vertical-interior          { margin-bottom: 56px; }
+    @media (min-width: 1024px) {
+      .umd-layout-space-vertical-interior,
+      .umd-layout-vertical-interior        { margin-bottom: 80px; }
+    }
+
+    .umd-layout-space-vertical-interior-child,
+    .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
+
+    .umd-layout-space-vertical-headline-large { margin-bottom: 16px; }
+    @media (min-width: 1024px) {
+      .umd-layout-space-vertical-headline-large { margin-bottom: 24px; }
+    }
+
+    /* ====================
+       HORIZONTAL SPACING
+    ==================== */
+    [class^="umd-layout-space-horizontal-"] {
+      box-sizing: border-box;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1200px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+    .umd-layout-space-horizontal-full     { max-width: 100%;   }
+    .umd-layout-space-horizontal-larger   { max-width: 1600px; }
+    .umd-layout-space-horizontal-large    { max-width: 1400px; }
+    .umd-layout-space-horizontal-normal   { max-width: 1280px; }
+    .umd-layout-space-horizontal-small    { max-width: 992px;  }
+    .umd-layout-space-horizontal-smallest { max-width: 800px;  }
+
+    /* ====================
+       WATERMARK DECORATION
+    ==================== */
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      color: #f1f1f1;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: min(calc(44px + 13vw), 240px);
+      line-height: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    :is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+      opacity: 0.6;
+      z-index: -1;
+    }
+    .umd-watermark-dark > * {
+      opacity: 0.12;
+      z-index: inherit;
+    }
+    @keyframes slide-in-from-left {
+      from { transform: translate(-15vw); }
+      to   { transform: translate(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+          animation: slide-in-from-left forwards;
+          animation-timeline: view();
+          animation-range-start: 0;
+          animation-range-end: 100vh;
+          transform: translate(-15vw);
+        }
+      }
+    }
+
+    /* ====================
+       SECTION-INTRO-WIDE WRAPPER
+    ==================== */
+    .umd-layout-space-horizontal-larger {
+      position: relative;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    /* ====================
+       GRID UTILITIES
+    ==================== */
+    .umd-layout-grid-child-fill-height {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-grid-child-fill-height > * {
+      flex: 1;
+    }
+
+    /* Two-column grid */
+    .umd-layout-grid-gap-two {
+      display: grid;
+    }
+    @media (min-width: 650px) {
+      .umd-layout-grid-gap-two {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-gap-two { gap: 40px; }
+    }
+
+    /* Inline CTA row */
+    .umd-layout-grid-inline-tablet-rows {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    @media (min-width: 650px) {
+      .umd-layout-grid-inline-tablet-rows {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+    }
+
+    /* Full-width dark section */
+    .umd-layout-background-full-dark {
+      background-color: #000000;
+      padding: 48px 0;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-background-full-dark { padding: 80px 0; }
+    }
+    @media (min-width: 1200px) {
+      .umd-layout-background-full-dark { padding: 104px 0; }
+    }
+
+    /* Stacked figure content */
+    .umd-layout-alignment-block-stacked {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-alignment-block-stacked > * { margin-top: 16px; }
+    .umd-layout-alignment-block-stacked > *:first-child { margin-top: 0; }
+
+    /* Single-column stacked grid */
+    .umd-layout-grid-gap-stacked {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    /* ====================
+       TYPOGRAPHY
+    ==================== */
+    .umd-sans-large {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1.25em;
+    }
+    .umd-sans-larger-bold {
+      font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.4em;
+      text-wrap: pretty;
+    }
+    @media (min-width: 650px) {
+      .umd-sans-larger-bold { font-size: calc(18px + .5vw); }
+    }
+    @media (min-width: 1024px) {
+      .umd-sans-larger-bold { font-size: 22px; line-height: 1.25em; }
+    }
+    .umd-sans-extralarge-bold {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1.25em;
+      text-wrap: pretty;
+    }
+    @media (min-width: 650px) {
+      .umd-sans-extralarge-bold { font-size: calc(18px + 1.16vw); }
+    }
+    @media (min-width: 1024px) {
+      .umd-sans-extralarge-bold { font-size: 32px; line-height: 1.125em; }
+    }
+    .umd-sans-largest-uppercase {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 32px;
+      line-height: 1.1em;
+    }
+    @media (min-width: 768px)  { .umd-sans-largest-uppercase { font-size: 40px; } }
+    @media (min-width: 1024px) { .umd-sans-largest-uppercase { font-size: 44px; } }
+    .text-black { color: #000; }
+    .text-white { color: #ffffff; }
+
+    /* ====================
+       RICH TEXT ADVANCED
+    ==================== */
+    .umd-text-rich-advanced {
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    .umd-text-rich-advanced * { color: #454545; }
+    .umd-text-rich-advanced > * {
+      font-size: 18px;
+      margin-top: 24px;
+    }
+    .umd-text-rich-advanced > *:first-child { margin-top: 0; }
+    .umd-text-rich-advanced a {
+      color: #000000;
+      background-image: linear-gradient(#000000, #000000);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-advanced a:hover,
+    .umd-text-rich-advanced a:focus {
+      background-image: linear-gradient(#E21833, #E21833);
+    }
+    .umd-text-rich-advanced-dark {
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    .umd-text-rich-advanced-dark p,
+    .umd-text-rich-advanced-dark li { color: #ffffff; }
+    .umd-text-rich-advanced-dark a {
+      color: #ffffff;
+      background-image: linear-gradient(#ffffff, #ffffff);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-advanced-dark a:hover,
+    .umd-text-rich-advanced-dark a:focus {
+      background-image: linear-gradient(#FFD200, #FFD200);
+    }
+
+    /* ====================
+       INTERIOR PAGE LAYOUT
+    ==================== */
+    @media (min-width: 768px) {
+      .umd-layout-space-columns-left { display: flex; align-items: flex-start; }
+      .umd-layout-space-columns-left > *:first-child { width: 242px; flex-shrink: 0; margin-right: 120px; }
+      .umd-layout-space-columns-left > *:last-child { width: calc(100% - 242px); }
+    }
+    @media (max-width: 1023px) {
+      .umd-layout-space-columns-left > *:first-child { display: none; }
+    }
+    .max-w-\[800px\] { max-width: 800px; }
+    .max-w-\[480px\] { max-width: 480px; }
+    .w-full          { width: 100%; }
+    .block           { display: block; }
+    .mr-auto         { margin-right: auto; }
+    .mb-md { margin-bottom: 24px; }
+    .mb-sm { margin-bottom: 16px; }
+
+    /* ====================
+       UTILITY NAVIGATION LINKS
+       ::slotted(*) only reaches div[slot="utility-navigation"], not
+       the <a> children — these light-DOM styles fill the gap.
+    ==================== */
+    [slot="utility-navigation"] a {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 14px;
+      color: #454545;
+      text-decoration: none;
+      line-height: 1.25;
+    }
+    [slot="utility-navigation"] a:hover,
+    [slot="utility-navigation"] a:focus {
+      color: #E21833;
+      text-decoration: underline;
+    }
+
+    /* ====================
+       MASONRY GRID (2 columns with stagger offset)
+       Source: @universityofmaryland/web-styles-library — masonary.twoColumn
+       Odd cards offset upward, even cards pushed down for visual zigzag.
+       Use for 4 image-overlay cards on landing pages.
+    ==================== */
+    .umd-layout-grid-masonry {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-masonry {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-masonry { gap: 40px; }
+    }
+    .umd-layout-grid-masonry > * > * {
+      width: 100%;
+      height: 100%;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-masonry > *:nth-of-type(odd)  { margin-top: -32px; margin-bottom: 32px; }
+      .umd-layout-grid-masonry > *:nth-of-type(even) { margin-top: 0; }
+      .umd-layout-grid-masonry > *:first-child        { margin-top: 0; }
+      .umd-layout-grid-masonry > *:nth-of-type(2)    { margin-top: 32px; }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-masonry > *:nth-of-type(odd) { margin-top: -40px; margin-bottom: 40px; }
+      .umd-layout-grid-masonry > *:nth-of-type(2)   { margin-top: 40px; }
+    }
+
+    /* Overlay cards in masonry need a defined height for the stagger to work */
+    .umd-layout-grid-masonry umd-element-card-overlay {
+      min-height: 420px;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-masonry umd-element-card-overlay { min-height: 480px; }
+    }
+
+    /* ====================
+       PAGE-SPECIFIC: 4-column grid (news cards)
+    ==================== */
+    .grid-four {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 650px) {
+      .grid-four { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .grid-four { grid-template-columns: repeat(4, 1fr); gap: 32px; }
+    }
+
+    /* NOTE: footer address styling is handled by shadow DOM CSS.
+       Wrap address lines in <span> elements — the shadow DOM applies
+       color:white and display:block to & span children. Raw text
+       nodes with <br> tags get no color treatment and appear black
+       on the dark footer background. */
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
+</head>
+<body>
+
+  <!-- ========================================
+       1. GLOBAL UNIVERSITY HEADER
+  ======================================== -->
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <!-- ========================================
+       2. SITE NAVIGATION HEADER
+       Logo: UMD primary logo (ischool logo is designed for dark
+       backgrounds and does not work on the light nav header)
+  ======================================== -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="https://ischool.umd.edu/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="University of Maryland College of Information" />
+    </a>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://ischool.umd.edu/about/">About</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/about/welcome-from-the-dean/">Welcome From the Dean</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/about/umd-info-college-vision-mission-and-history/">Mission, Strategic Plan, History</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/about/rankings-fast-facts/">Rankings &amp; Fast Facts</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/about/info-leadership/">Leadership</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/about/jobs/">Jobs at the INFO College</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://ischool.umd.edu/research/">Research</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/research/expertise-areas/">Expertise Areas</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/research/centers-and-labs/">Research Labs, Centers, Groups</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/research/undergraduate-research-resources/">Undergraduate Research Resources</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://ischool.umd.edu/academics/">Academics</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/academics/bachelors-programs/">Bachelor's Programs</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/academics/masters-programs/">Master's Programs</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/academics/doctoral-programs/">Doctoral Programs</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/academics/certificates-non-degree-study/">Certificates &amp; Non-Degree Study</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/academics/apply/">Apply</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://ischool.umd.edu/alumni/">Alumni</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/alumni/alumni-network/">Alumni Network</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/alumni/alumni-spotlights/">Alumni Spotlights</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/alumni/distinguished-alumni-awards/">Alumni of the Year Awards</a>
+        <a slot="sub-link" href="https://ischool.umd.edu/alumni/events/">Upcoming Events</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://ischool.umd.edu/partners/">Partners</a>
+      </umd-element-nav-item>
+    </nav>
+    <div slot="utility-navigation">
+      <a href="https://ischool.umd.edu/news/">News</a>
+      <a href="https://ischool.umd.edu/events/">Events</a>
+      <a href="https://ischool.umd.edu/academics/apply/">Apply</a>
+      <a href="https://ischool.umd.edu/give/">Give</a>
+    </div>
+  </umd-element-navigation-header>
+
+  <!-- ========================================
+       3. HERO — Standard background hero with video
+       Source video: ProfD leadership doctorate recruitment
+       umd-layout-vertical-landing creates the gap between hero
+       and the first content section (pillars). Required on
+       landing page heroes unless a dark section immediately follows.
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-hero data-theme="dark" data-animation>
+      <video slot="video" src="../images/media/profd-video-leader-library-doctorate.mp4" autoplay muted loop playsinline></video>
+      <h1 slot="headline">Welcome to the College of Information</h1>
+      <div slot="text">
+        <p>A top-ranked research and teaching college where faculty, staff, and students use information and technology to break down barriers and create exciting new possibilities.</p>
+      </div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
+          <a href="https://ischool.umd.edu/about/">Learn More</a>
+        </umd-element-call-to-action>
+        <umd-element-call-to-action data-display="secondary" data-theme="dark">
+          <a href="https://ischool.umd.edu/academics/apply/">Apply Now</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-hero>
+  </section>
+
+  <!-- ========================================
+       4. PILLARS — Four overlay cards in staggered masonry layout
+       Research, Academics, Partners, Alumni
+       umd-layout-grid-masonry: 2-column stagger — odd cards offset
+       upward, even cards pushed down, creating a visual zigzag.
+       umd-layout-space-horizontal-normal (1280px) — masonry is a
+       2-column layout; the wider "larger" lock spreads it too thin.
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-normal">
+      <div class="umd-layout-grid-masonry">
+
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/small/people/scientist-engineer-computer.jpg" alt="Researcher working at a computer" />
+          <h2 slot="headline"><a href="https://ischool.umd.edu/research/">Research</a></h2>
+          <p slot="text">Expanding the frontiers of how information and technology is accessed, used, and leveraged to empower individuals and communities.</p>
+          <div slot="actions">
+            <umd-element-call-to-action data-display="secondary" data-theme="dark">
+              <a href="https://ischool.umd.edu/research/">Discover Our Research</a>
+            </umd-element-call-to-action>
+          </div>
+        </umd-element-card-overlay>
+
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/small/people/2-female-students-in-booth-pathway1.jpg" alt="Two students collaborating" />
+          <h2 slot="headline"><a href="https://ischool.umd.edu/academics/">Academics</a></h2>
+          <p slot="text">Bachelor, Master, PhD, and Certificate programs preparing the next generation of information professionals and researchers.</p>
+          <div slot="actions">
+            <umd-element-call-to-action data-display="secondary" data-theme="dark">
+              <a href="https://ischool.umd.edu/academics/">Explore Programs</a>
+            </umd-element-call-to-action>
+          </div>
+        </umd-element-card-overlay>
+
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/small/people/2-people-at-laptop.jpg" alt="Two people collaborating at a laptop" />
+          <h2 slot="headline"><a href="https://ischool.umd.edu/partners/">Partners</a></h2>
+          <p slot="text">Working with community, academic, and industry partners to create information science solutions and career opportunities for students.</p>
+          <div slot="actions">
+            <umd-element-call-to-action data-display="secondary" data-theme="dark">
+              <a href="https://ischool.umd.edu/partners/">Explore How to Partner</a>
+            </umd-element-call-to-action>
+          </div>
+        </umd-element-card-overlay>
+
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/small/people/student-group.jpg" alt="Group of UMD students together" />
+          <h2 slot="headline"><a href="https://ischool.umd.edu/alumni/">Alumni</a></h2>
+          <p slot="text">Supporting new generations of students through scholarships, internships, and connections while enjoying networking and other benefits.</p>
+          <div slot="actions">
+            <umd-element-call-to-action data-display="secondary" data-theme="dark">
+              <a href="https://ischool.umd.edu/alumni/">Get Involved</a>
+            </umd-element-call-to-action>
+          </div>
+        </umd-element-card-overlay>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       5. NEWS — 4-up card grid
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">UMD INFO News</h2>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://ischool.umd.edu/news/">View All News</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro-wide>
+
+      <div class="grid-four">
+
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://ischool.umd.edu/news/when-the-feed-becomes-the-front-line/">
+            <img src="../images/War-Room-2048x1024-1-1200x600.png" alt="Government surveillance agency and military joint operation agent working at system control center" />
+          </a>
+          <p slot="eyebrow">Research</p>
+          <h3 slot="headline">
+            <a href="https://ischool.umd.edu/news/when-the-feed-becomes-the-front-line/">When the Feed Becomes the Front Line</a>
+          </h3>
+          <p slot="text">A new generation of AI tools is changing how analysts and aid workers make sense of war in real time.</p>
+          <time slot="date" datetime="2026-04-15">April 15, 2026</time>
+        </umd-element-card>
+
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://ischool.umd.edu/news/chi-2026-roundup-hcil-students-and-faculty-publish-19-papers-win-two-honorable-mentions/">
+            <img src="../images/CHI-2026-1200x600.png" alt="CHI 2026 Logo" />
+          </a>
+          <p slot="eyebrow">Research</p>
+          <h3 slot="headline">
+            <a href="https://ischool.umd.edu/news/chi-2026-roundup-hcil-students-and-faculty-publish-19-papers-win-two-honorable-mentions/">CHI 2026 Roundup: HCIL Students and Faculty Publish 19 Papers, Win Two Honorable Mentions</a>
+          </h3>
+          <p slot="text">UMD's HCIL contributes 19 papers to CHI 2026, advancing human-computer interaction research worldwide.</p>
+          <time slot="date" datetime="2026-04-14">April 14, 2026</time>
+        </umd-element-card>
+
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://ischool.umd.edu/news/for-caregivers-making-over-the-counter-medication-decisions-alone-help-may-be-on-the-way/">
+            <img src="../images/Smart-Phone-Medicine-2048x1024-1-1200x600.png" alt="Middle age woman using smartphone holding pills at home" />
+          </a>
+          <p slot="eyebrow">Research</p>
+          <h3 slot="headline">
+            <a href="https://ischool.umd.edu/news/for-caregivers-making-over-the-counter-medication-decisions-alone-help-may-be-on-the-way/">For Caregivers Making Over-the-Counter Medication Decisions Alone, Help May Be on the Way</a>
+          </h3>
+          <p slot="text">Dr. Eun Kyoung Choe is using AI to turn dense OTC drug labels into personalized guidance.</p>
+          <time slot="date" datetime="2026-04-14">April 14, 2026</time>
+        </umd-element-card>
+
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://ischool.umd.edu/news/university-of-maryland-appoints-new-college-of-information-dean/">
+            <img src="../images/John-Bertot-Header-2048x1024-1-1200x600.png" alt="John Bertot, new College of Information Dean" />
+          </a>
+          <p slot="eyebrow">College News</p>
+          <h3 slot="headline">
+            <a href="https://ischool.umd.edu/news/university-of-maryland-appoints-new-college-of-information-dean/">Announcing the New College of Information Dean</a>
+          </h3>
+          <p slot="text">Dr. John Bertot has been appointed as the next dean of UMD's College of Information, beginning July 1, 2026.</p>
+          <time slot="date" datetime="2026-03-25">March 25, 2026</time>
+        </umd-element-card>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       6. EVENTS — Event list (slider) display, dark theme
+       data-display="list" = horizontal list layout with large date
+       sign. Preferred for event listings without images or descriptions.
+       umd-layout-space-horizontal-normal — list layouts read better
+       at narrower max-widths.
+  ======================================== -->
+  <section class="umd-layout-vertical-landing umd-layout-background-full-dark">
+    <div class="umd-layout-space-horizontal-normal">
+
+      <umd-element-section-intro data-theme="dark" class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Upcoming Events</h2>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary" data-theme="dark">
+            <a href="https://ischool.umd.edu/events/">View All Events</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro>
+
+      <div class="umd-layout-grid-gap-stacked">
+
+        <umd-element-event data-display="list" data-theme="dark" data-visual-time>
+          <h3 slot="headline">
+            <a href="https://ischool.umd.edu/events/jump-start-your-job-search-for-graduating-seniors/">Jump Start Your Job Search For Graduating Seniors</a>
+          </h3>
+          <time slot="start-date-iso" datetime="2026-04-20T12:00:00">April 20, 2026 12:00 PM</time>
+          <time slot="end-date-iso" datetime="2026-04-20T13:30:00">April 20, 2026 1:30 PM</time>
+          <p slot="location">College of Information</p>
+        </umd-element-event>
+
+        <umd-element-event data-display="list" data-theme="dark" data-visual-time>
+          <h3 slot="headline">
+            <a href="https://ischool.umd.edu/events/graduate-school-information-sessions/">Graduate School Information Session(s)</a>
+          </h3>
+          <time slot="start-date-iso" datetime="2026-04-21T16:00:00">April 21, 2026 4:00 PM</time>
+          <time slot="end-date-iso" datetime="2026-04-21T17:00:00">April 21, 2026 5:00 PM</time>
+          <p slot="location">Hornbake Library</p>
+        </umd-element-event>
+
+        <umd-element-event data-display="list" data-theme="dark" data-visual-time>
+          <h3 slot="headline">
+            <a href="https://ischool.umd.edu/events/i3r-alliance-film-screening-change-the-subject/">i3r Alliance Film Screening: "Change the Subject"</a>
+          </h3>
+          <time slot="start-date-iso" datetime="2026-04-20T16:00:00">April 20, 2026 4:00 PM</time>
+          <time slot="end-date-iso" datetime="2026-04-20T18:00:00">April 20, 2026 6:00 PM</time>
+          <p slot="location">College of Information</p>
+        </umd-element-event>
+
+        <umd-element-event data-display="list" data-theme="dark" data-visual-time>
+          <h3 slot="headline">
+            <a href="https://ischool.umd.edu/events/winning-at-money-a-cashflow-game-for-building-wealth/">Winning at Money: A Cashflow Game for Building Wealth!</a>
+          </h3>
+          <time slot="start-date-iso" datetime="2026-04-21T17:00:00">April 21, 2026 5:00 PM</time>
+          <time slot="end-date-iso" datetime="2026-04-21T19:00:00">April 21, 2026 7:00 PM</time>
+          <p slot="location">Hornbake Library</p>
+        </umd-element-event>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       7. FOOTER
+  ======================================== -->
+  <umd-element-footer data-display="mega">
+    <a slot="logo" href="https://ischool.umd.edu/">
+      <img src="../images/logos/footer-logo.svg" alt="University of Maryland College of Information" />
+    </a>
+    <p slot="contact-headline">College of Information (INFO)</p>
+    <address slot="address">
+      <span>4130 Campus Drive</span>
+      <span>Hornbake Library, Rm. 0201</span>
+      <span>College Park, MD 20742-4345</span>
+    </address>
+    <div slot="contact-links">
+      <a href="tel:3014052033">(301) 405-2033</a>
+    </div>
+    <nav slot="link-column-one">
+      <ul>
+        <li><a href="https://ischool.umd.edu/about/">About</a></li>
+        <li><a href="https://ischool.umd.edu/about/welcome-from-the-dean/">Welcome From the Dean</a></li>
+        <li><a href="https://ischool.umd.edu/about/umd-info-college-vision-mission-and-history/">Mission &amp; History</a></li>
+        <li><a href="https://ischool.umd.edu/about/rankings-fast-facts/">Rankings &amp; Fast Facts</a></li>
+        <li><a href="https://ischool.umd.edu/about/info-leadership/">Leadership</a></li>
+        <li><a href="https://ischool.umd.edu/about/jobs/">Jobs</a></li>
+      </ul>
+    </nav>
+    <nav slot="link-column-two">
+      <ul>
+        <li><a href="https://ischool.umd.edu/academics/">Academics</a></li>
+        <li><a href="https://ischool.umd.edu/academics/bachelors-programs/">Bachelor's Programs</a></li>
+        <li><a href="https://ischool.umd.edu/academics/masters-programs/">Master's Programs</a></li>
+        <li><a href="https://ischool.umd.edu/academics/doctoral-programs/">Doctoral Programs</a></li>
+        <li><a href="https://ischool.umd.edu/academics/certificates-non-degree-study/">Certificates</a></li>
+        <li><a href="https://ischool.umd.edu/academics/apply/">Apply</a></li>
+      </ul>
+    </nav>
+    <nav slot="link-column-three">
+      <ul>
+        <li><a href="https://ischool.umd.edu/research/">Research</a></li>
+        <li><a href="https://ischool.umd.edu/alumni/">Alumni</a></li>
+        <li><a href="https://ischool.umd.edu/partners/">Partners</a></li>
+        <li><a href="https://ischool.umd.edu/news/">News</a></li>
+        <li><a href="https://ischool.umd.edu/events/">Events</a></li>
+        <li><a href="https://ischool.umd.edu/contact/">Contact</a></li>
+      </ul>
+    </nav>
+    <ul slot="social-links">
+      <li><a href="https://x.com/infocollegeumd">X (Twitter)</a></li>
+      <li><a href="https://www.facebook.com/INFOCollegeUMD1/">Facebook</a></li>
+      <li><a href="https://www.youtube.com/@INFOCollegeUMD">YouTube</a></li>
+      <li><a href="https://www.instagram.com/infocollegeumd/">Instagram</a></li>
+      <li><a href="https://www.linkedin.com/school/infocollegeumd">LinkedIn</a></li>
+    </ul>
+    <div slot="utility-links">
+      <ul>
+        <li><a href="https://umd.edu/privacy-notice">Privacy Policy</a></li>
+        <li><a href="https://umd.edu/web-accessibility">Web Accessibility</a></li>
+      </ul>
+    </div>
+  </umd-element-footer>
+
+</body>
+</html>

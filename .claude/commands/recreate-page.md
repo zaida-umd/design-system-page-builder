@@ -100,6 +100,12 @@ Use content and images from the source page as the fictional client. Shorten the
 - `data-theme` does not cascade — set it on every child component that needs it (RULES.md §14).
 - `umd-element-pathway-highlight` requires real body copy in `slot="text"`. If the source has only a quote and attribution, use `umd-element-quote` instead (RULES.md §5).
 
+## Logo fallback
+
+For `slot="logo"` in `umd-element-footer`, always use `../images/logos/footer-logo.svg`. Do not attempt to use an external logo URL in the footer — department logos are often on light backgrounds or blocked by hotlink protection and will not render correctly against the dark footer background.
+
+For `slot="logo"` in `umd-element-navigation-header`, use a confirmed accessible URL from the downloaded source. If unavailable or uncertain, fall back to `../images/logos/primary-logo-dark.svg`.
+
 ## Image fallback
 
 Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them to `/Users/zjocson/repos/design-system-page-builder/images/` and reference as repo-relative paths: `../images/filename.jpg`.

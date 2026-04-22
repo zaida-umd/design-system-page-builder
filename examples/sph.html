@@ -270,6 +270,24 @@
         align-items: start;
       }
     }
+    /* ====================
+       UTILITY NAVIGATION LINKS
+       ::slotted(*) only reaches div[slot="utility-navigation"], not
+       the <a> children — these light-DOM styles fill the gap.
+    ==================== */
+    [slot="utility-navigation"] a {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 14px;
+      color: #454545;
+      text-decoration: none;
+      line-height: 1.25;
+    }
+    [slot="utility-navigation"] a:hover,
+    [slot="utility-navigation"] a:focus {
+      color: #E21833;
+      text-decoration: underline;
+    }
+
     .sph-events-list {
       display: flex;
       flex-direction: column;

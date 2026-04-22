@@ -352,6 +352,64 @@ p, li, label, input, textarea, select {
   gap: 24px;
 }
 
+/* Staggered two-column masonry grid — @universityofmaryland/web-styles-library: masonary.twoColumn
+   Odd children shift up, even children shift down, creating a visual zigzag stagger.
+   Use for 4 image-overlay cards. Direct children need a defined height. */
+.umd-layout-grid-masonry {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 768px) {
+  .umd-layout-grid-masonry {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+@media (min-width: 1024px) {
+  .umd-layout-grid-masonry { gap: 40px; }
+}
+.umd-layout-grid-masonry > * > * {
+  width: 100%;
+  height: 100%;
+}
+@media (min-width: 768px) {
+  .umd-layout-grid-masonry > *:nth-of-type(odd)  { margin-top: -32px; margin-bottom: 32px; }
+  .umd-layout-grid-masonry > *:nth-of-type(even) { margin-top: 0; }
+  .umd-layout-grid-masonry > *:first-child        { margin-top: 0; }
+  .umd-layout-grid-masonry > *:nth-of-type(2)    { margin-top: 32px; }
+}
+@media (min-width: 1024px) {
+  .umd-layout-grid-masonry > *:nth-of-type(odd) { margin-top: -40px; margin-bottom: 40px; }
+  .umd-layout-grid-masonry > *:nth-of-type(2)   { margin-top: 40px; }
+}
+
+/* Three-column offset grid — staggered cascade for 3 cards
+   @universityofmaryland/web-styles-library: offset.threeColumn
+   Card 1: no offset. Card 2: +48px. Card 3: +104px.
+   Use for 3 image-overlay or stat cards on landing pages. */
+.umd-layout-grid-offset-three {
+  display: grid;
+  gap: 32px;
+}
+@media (min-width: 768px) {
+  .umd-layout-grid-offset-three {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .umd-layout-grid-offset-three {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  .umd-layout-grid-offset-three > * {
+    align-self: start;
+    min-height: 400px;
+  }
+  .umd-layout-grid-offset-three > *:first-child  { margin-top: 48px; }
+  .umd-layout-grid-offset-three > *:nth-child(2) { margin-top: 104px; }
+}
+
 
 /* ============================================================
    9. TYPOGRAPHY — inline headlines and color utilities
@@ -545,3 +603,39 @@ p, li, label, input, textarea, select {
    ============================================================ */
 .mb-md { margin-bottom: 24px; }
 .mb-sm { margin-bottom: 16px; }
+
+
+/* ============================================================
+   14. UTILITY NAVIGATION LINK STYLES
+   umd-element-navigation-header applies ::slotted(*) flex layout
+   only to the direct child div[slot="utility-navigation"], not to
+   the <a> elements inside it. These light-DOM styles must be added
+   explicitly for correct link appearance.
+   ============================================================ */
+[slot="utility-navigation"] a {
+  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+  font-size: 14px;
+  color: #454545;
+  text-decoration: none;
+  line-height: 1.25;
+}
+[slot="utility-navigation"] a:hover,
+[slot="utility-navigation"] a:focus {
+  color: #E21833;
+  text-decoration: underline;
+}
+
+
+/* ============================================================
+   15. FOOTER ADDRESS MARKUP NOTE (no CSS needed here)
+   umd-element-footer uses extract-and-append (not slot projection).
+   The footer component moves slot="address" into the shadow DOM,
+   so light-DOM CSS targeting [slot="address"] has NO effect.
+   Shadow DOM applies color:white only to p, a, and span children.
+
+   CORRECT markup — use <span> per line, not raw text with <br>:
+     <address slot="address">
+       <span>1101 Engineering Building</span>
+       <span>College Park, MD 20742</span>
+     </address>
+   ============================================================ */

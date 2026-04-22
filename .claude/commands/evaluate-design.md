@@ -55,6 +55,12 @@ Is the most important content first and visually prominent? Is there a clear pat
 ### 4. Design Integrity (0–10)
 Does the plan follow RULES.md? Are themes applied correctly (data-theme on each child, not cascaded)? Are spacing classes appropriate (landing vs interior)? Are full-bleed sections NOT wrapped in horizontal spacing classes?
 
+Also check these specific patterns:
+
+- **Adjacent dark sections:** If two consecutive sections both have dark backgrounds, the first section must NOT have `umd-layout-vertical-landing` — that margin creates a white gap between dark elements. Only the last dark section in a group carries `umd-layout-vertical-landing`.
+- **image-expand background:** `umd-layout-image-expand` should only have a dark section wrapper (`background:#000`) when it sits between other dark sections. On a predominantly light page, do NOT add a dark background wrapper — the built-in overlay is sufficient.
+- **Standalone link rows → card-overlay:** If a section contains only 2–4 standalone navigation links with no supporting body copy, use `umd-element-card-overlay` (no image, with `slot="cta-icon"`) in a grid instead of secondary CTAs in `umd-layout-grid-inline-tablet-rows`. See LAYOUT-PATTERNS.md "Link Cards Grid" section.
+
 **Total: X / 40**
 
 If any dimension scores below 6, **stop here** and revise the plan before proceeding. Explain what needs to change.
@@ -105,4 +111,3 @@ This command can be run standalone:
 /evaluate-design A landing page for UMD's College of Engineering featuring research highlights, faculty spotlights, and an application CTA
 ```
 
-It is also embedded as Phase 0 in `/build-landing-page` and `/build-interior-page`. In that context, proceed to HTML only after the brief is approved (score ≥ 24/40 with no dimension below 6).

@@ -6,11 +6,12 @@
     "last_verified": "2026-03-02",
     "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
     "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
-    "component_count": 24,
-    "last_updated": "2026-04-15",
+    "component_count": 26,
+    "last_updated": "2026-04-22",
     "batch_4": "section-intro, section-intro-wide, footer",
     "batch_5": "sticky-columns, card-event, feed-events-list",
     "batch_6": "feed-news-grid, feed-news-list, feed-news-featured",
+    "batch_7": "event-slider, events-date",
     "category": "cards",
     "components": [
       "card-standard",
@@ -21,7 +22,9 @@
       "feed-events-list",
       "feed-news-grid",
       "feed-news-list",
-      "feed-news-featured"
+      "feed-news-featured",
+      "event-slider",
+      "events-date"
     ]
   },
   "card-standard": {
@@ -750,5 +753,100 @@
     "source": "npm",
     "priority": 2,
     "batch": 5
+  },
+  "event-slider": {
+    "tag": "umd-element-slider-events",
+    "label": "Event Slider",
+    "description": "Horizontal scrollable slider for displaying a collection of events. Headline and CTA are built into the component via slots — no separate section-intro needed. Each event item inside slot='event-list' must be a umd-element-events-date custom element (not a plain div, not umd-element-event). Supports dark theme.",
+    "slots": [
+      {
+        "name": "headline",
+        "required": false,
+        "description": "Section headline displayed above the slider.",
+        "example": "<h2 slot=\"headline\">Upcoming Events</h2>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA link displayed alongside the headline. Use a bare <a> element (not umd-element-call-to-action).",
+        "example": "<a slot=\"actions\" href=\"/events\">View All Events</a>"
+      },
+      {
+        "name": "event-list",
+        "required": true,
+        "description": "Container <div> holding event items. Each item should be a umd-element-events-date component — the slider copies the slot innerHTML and the browser upgrades these components inside the shadow DOM. Use umd-element-events-date with slots: headline (h3 with a), start-date-iso (time element). The slider renders date sign + headline for each item.",
+        "example": "<div slot=\"event-list\">\n  <umd-element-events-date>\n    <h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>\n    <time slot=\"start-date-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025</time>\n  </umd-element-events-date>\n  <umd-element-events-date>\n    <h3 slot=\"headline\"><a href=\"/events/career-fair\">Career Fair</a></h3>\n    <time slot=\"start-date-iso\" datetime=\"2025-04-20T14:00:00\">April 20, 2025</time>\n  </umd-element-events-date>\n</div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark color theme — dark background with light text."
+      },
+      {
+        "name": "resize",
+        "type": "string",
+        "values": ["true"],
+        "description": "Set to 'true' to trigger recalculation of date element sizes after dynamic content updates or container resize."
+      }
+    ],
+    "aliases": {
+      "event slider": {
+        "description": "Horizontal scrollable event slider with headline and CTA",
+        "attrs": {}
+      },
+      "event slider dark": {
+        "description": "Event slider, dark theme",
+        "attrs": {
+          "data-theme": "dark"
+        }
+      }
+    },
+    "page_types": ["landing", "interior"],
+    "notes": "The event-list slot is required. The component copies the innerHTML of the slot div into shadow DOM (extract-and-append — standard slot projection does NOT apply). Event items must be umd-element-events-date custom elements; plain divs produce no date sign. Actions slot expects a bare <a> tag, NOT umd-element-call-to-action. Include umd-element-slider-events in critical CSS Group 2 (container-type: inline-size).",
+    "example": "<umd-element-slider-events>\n  <h2 slot=\"headline\">Upcoming Events</h2>\n  <a slot=\"actions\" href=\"/events\">View All Events</a>\n  <div slot=\"event-list\">\n    <umd-element-events-date>\n      <h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>\n      <time slot=\"start-date-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025</time>\n    </umd-element-events-date>\n    <umd-element-events-date>\n      <h3 slot=\"headline\"><a href=\"/events/career-fair\">Career Fair</a></h3>\n      <time slot=\"start-date-iso\" datetime=\"2025-04-20T14:00:00\">April 20, 2025</time>\n    </umd-element-events-date>\n  </div>\n</umd-element-slider-events>",
+    "source": "npm",
+    "priority": 1,
+    "batch": 7
+  },
+  "events-date": {
+    "tag": "umd-element-events-date",
+    "label": "Event Date Lockup",
+    "description": "Renders a date sign block (month abbreviation + day number) alongside an event headline. Used as the child item type inside umd-element-slider-events. Not a standalone page component — always used within an event slider's event-list slot.",
+    "slots": [
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Event title. Use an h3 with an anchor link.",
+        "example": "<h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>"
+      },
+      {
+        "name": "start-date-iso",
+        "required": true,
+        "description": "Start date. Use a <time> element with a datetime attribute in ISO 8601 format (YYYY-MM-DDTHH:MM:SS). The component reads the datetime value to build the date sign. Slot name is start-date-iso — NOT date-start-iso.",
+        "example": "<time slot=\"start-date-iso\" datetime=\"2026-04-15T09:00:00\">April 15, 2026</time>"
+      },
+      {
+        "name": "end-date-iso",
+        "required": false,
+        "description": "End date for multi-day events. Same format as start-date-iso. Slot name is end-date-iso — NOT date-end-iso.",
+        "example": "<time slot=\"end-date-iso\" datetime=\"2026-04-16T17:00:00\">April 16, 2026</time>"
+      }
+    ],
+    "attrs": [],
+    "aliases": {
+      "event date": {
+        "description": "Single event item with date sign and headline",
+        "attrs": {}
+      }
+    },
+    "page_types": ["landing", "interior"],
+    "notes": "Slot names are start-date-iso and end-date-iso (not date-start-iso / date-end-iso). Wrong slot names fail silently — no date sign is rendered. Must be a direct child of the event-list slot div inside umd-element-slider-events.",
+    "example": "<umd-element-events-date>\n  <h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>\n  <time slot=\"start-date-iso\" datetime=\"2026-04-15T09:00:00\">April 15, 2026</time>\n</umd-element-events-date>",
+    "source": "npm",
+    "priority": 1,
+    "batch": 7
   }
 }

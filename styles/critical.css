@@ -78,7 +78,10 @@ umd-element-accordion-item:not(:defined),
 umd-element-nav-slider:not(:defined),
 umd-element-media-inline:not(:defined),
 umd-element-breadcrumb:not(:defined),
-umd-element-footer:not(:defined) {
+umd-element-footer:not(:defined),
+umd-element-event:not(:defined),
+umd-element-slider-events:not(:defined),
+umd-element-events-date:not(:defined) {
   content-visibility: hidden;
 }
 umd-element-hero,
@@ -102,7 +105,10 @@ umd-element-accordion-item,
 umd-element-nav-slider,
 umd-element-media-inline,
 umd-element-breadcrumb,
-umd-element-footer {
+umd-element-footer,
+umd-element-event,
+umd-element-slider-events,
+umd-element-events-date {
   display: block;
   container-type: inline-size;
 }
@@ -382,6 +388,20 @@ p, li, label, input, textarea, select {
 @media (min-width: 1024px) {
   .umd-layout-grid-masonry > *:nth-of-type(odd) { margin-top: -40px; margin-bottom: 40px; }
   .umd-layout-grid-masonry > *:nth-of-type(2)   { margin-top: 40px; }
+}
+
+/* Masonry + section-intro compensation
+   The masonry stagger uses negative margin-top on odd items (-32px tablet, -40px desktop).
+   Those negative margins pull row-2 cards upward, consuming the section-intro's
+   umd-layout-vertical-landing-child margin-bottom. Add matching padding-top to the
+   masonry container so the visual gap is preserved. */
+@media (min-width: 768px) {
+  umd-element-section-intro + .umd-layout-grid-masonry,
+  umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 32px; }
+}
+@media (min-width: 1024px) {
+  umd-element-section-intro + .umd-layout-grid-masonry,
+  umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 40px; }
 }
 
 /* Three-column offset grid — staggered cascade for 3 cards

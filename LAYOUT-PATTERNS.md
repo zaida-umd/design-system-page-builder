@@ -182,6 +182,57 @@ An alternative to a flat 3-column grid when you want visual interest. Use for 3 
 ```
 
 ```html
+<!-- ✓ Dark section with body copy — headline + text + primary CTA + line accent leading into masonry -->
+<section class="umd-layout-background-full-dark umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-normal">
+
+    <umd-element-section-intro data-theme="dark" include-separator class="umd-layout-vertical-landing-child">
+      <h2 slot="headline">Welcome to the College of Information</h2>
+      <div slot="text">
+        <p>The University of Maryland College of Information is a top-ranked research and teaching college where faculty, staff, and students are passionate about using information and technology.</p>
+      </div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
+          <a href="/about/">Learn More</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-section-intro>
+
+    <div class="umd-layout-grid-masonry">
+      <umd-element-card-overlay>...</umd-element-card-overlay>
+      <umd-element-card-overlay>...</umd-element-card-overlay>
+      <umd-element-card-overlay>...</umd-element-card-overlay>
+      <umd-element-card-overlay>...</umd-element-card-overlay>
+    </div>
+
+  </div>
+</section>
+```
+
+Notes:
+- `include-separator` — boolean attribute that adds a decorative red vertical line accent above the headline
+- `slot="text"` accepts a `<div>` with `<p>` body copy; renders between headline and actions
+- `data-display="primary"` on the CTA is appropriate here — dark sections use `data-theme="dark"` on the CTA too
+- The `umd-layout-vertical-landing-child` class goes on `umd-element-section-intro`, not on the grid
+
+### Masonry compensation rule
+
+`umd-layout-grid-masonry` applies `margin-top: -32px` (tablet) / `-40px` (desktop) to row-2+ odd items for the stagger effect. Those negative margins pull content upward, consuming the `umd-layout-vertical-landing-child` margin-bottom on the section-intro above. Add this CSS rule to restore the visual gap:
+
+```css
+@media (min-width: 768px) {
+  umd-element-section-intro + .umd-layout-grid-masonry,
+  umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 32px; }
+}
+@media (min-width: 1024px) {
+  umd-element-section-intro + .umd-layout-grid-masonry,
+  umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 40px; }
+}
+```
+
+This rule is included in `styles/critical.css`. Pages using this pattern have it automatically via the `<head>` block.
+
+```html
 <!-- ✗ Wrong — class on the grid, not the intro. This adds margin-bottom
      BELOW the cards (gap to next section), not between heading and cards. -->
 <umd-element-section-intro-wide>...</umd-element-section-intro-wide>

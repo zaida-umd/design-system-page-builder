@@ -60,6 +60,9 @@ Also check these specific patterns:
 - **Adjacent dark sections:** If two consecutive sections both have dark backgrounds, the first section must NOT have `umd-layout-vertical-landing` — that margin creates a white gap between dark elements. Only the last dark section in a group carries `umd-layout-vertical-landing`.
 - **image-expand background:** `umd-layout-image-expand` should only have a dark section wrapper (`background:#000`) when it sits between other dark sections. On a predominantly light page, do NOT add a dark background wrapper — the built-in overlay is sufficient.
 - **Standalone link rows → card-overlay:** If a section contains only 2–4 standalone navigation links with no supporting body copy, use `umd-element-card-overlay` (no image, with `slot="cta-icon"`) in a grid instead of secondary CTAs in `umd-layout-grid-inline-tablet-rows`. See LAYOUT-PATTERNS.md "Link Cards Grid" section.
+- **Section-intro visual enrichment — separator:** `umd-element-section-intro` supports `include-separator`, which adds a decorative red vertical line above the headline. Use it whenever the section-intro anchors a significant section (especially on dark or featured backgrounds). Don't leave section intros plain when the section warrants visual weight.
+- **Section-intro-wide visual enrichment — watermark:** `umd-element-section-intro-wide` benefits from a watermark word for visual depth. Split the section label: keep a short topical title in the `slot="headline"` and add `<div class="umd-watermark" aria-hidden="true"><span>[WORD]</span></div>` as the first child of the containing horizontal-space div. Example: headline = "UMD INFO", watermark = "News". The watermark div has zero height — its child span is absolutely positioned relative to the nearest `position: relative` ancestor (`.umd-layout-space-horizontal-larger` already provides this).
+- **Dark section CTA theming:** Every `umd-element-call-to-action` inside a dark section requires `data-theme="dark"`. This applies to CTAs inside `umd-element-section-intro`, hero actions, and card actions. `data-theme` does NOT cascade — set it on each CTA individually.
 
 **Total: X / 40**
 
@@ -73,6 +76,11 @@ List any known pitfalls for the proposed component choices. Examples:
 - "umd-element-quote with data-display="featured" requires data-visual-transparent="true" in image-expand context or it will block the background"
 - "Stats grid requires slot="text" for labels — slot="label" is not valid"
 - "Pathway overlay variant needs full-bleed — do not wrap in horizontal spacing class"
+
+Also flag these automatically if the relevant components are in the plan:
+
+- **`umd-element-section-intro` + `umd-layout-grid-masonry`:** The masonry stagger applies `margin-top: -32px` (tablet) / `-40px` (desktop) on row-2 odd items, which pulls content upward and consumes the section-intro's `umd-layout-vertical-landing-child` margin-bottom. Add compensation CSS: `umd-element-section-intro + .umd-layout-grid-masonry { padding-top: 32px }` at tablet and `padding-top: 40px` at desktop. This rule is in `styles/critical.css`; pages using this pairing need it in their `<style>` block too.
+- **`umd-element-slider-events` and `umd-element-events-date`:** See registry for correct slot names and required child element types — slot name errors fail silently with no date sign rendered.
 
 ---
 

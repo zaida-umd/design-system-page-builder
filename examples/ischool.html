@@ -54,7 +54,9 @@
     umd-element-media-inline:not(:defined),
     umd-element-breadcrumb:not(:defined),
     umd-element-footer:not(:defined),
-    umd-element-event:not(:defined) {
+    umd-element-event:not(:defined),
+    umd-element-slider-events:not(:defined),
+    umd-element-events-date:not(:defined) {
       content-visibility: hidden;
     }
     umd-element-hero,
@@ -79,7 +81,9 @@
     umd-element-media-inline,
     umd-element-breadcrumb,
     umd-element-footer,
-    umd-element-event {
+    umd-element-event,
+    umd-element-slider-events,
+    umd-element-events-date {
       display: block;
       container-type: inline-size;
     }
@@ -446,6 +450,19 @@
       .umd-layout-grid-masonry > *:nth-of-type(2)   { margin-top: 40px; }
     }
 
+    /* Masonry + section-intro compensation
+       Negative margin-top on masonry's row-2 odd items pulls content upward, consuming
+       the section-intro's margin-bottom. Padding-top on the masonry container restores
+       the visual gap. Values match the negative margin amounts at each breakpoint. */
+    @media (min-width: 768px) {
+      umd-element-section-intro + .umd-layout-grid-masonry,
+      umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 32px; }
+    }
+    @media (min-width: 1024px) {
+      umd-element-section-intro + .umd-layout-grid-masonry,
+      umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 40px; }
+    }
+
     /* Overlay cards in masonry need a defined height for the stagger to work */
     .umd-layout-grid-masonry umd-element-card-overlay {
       min-height: 420px;
@@ -539,40 +556,48 @@
   </umd-element-navigation-header>
 
   <!-- ========================================
-       3. HERO — Standard background hero with video
+       3. HERO — Standard background hero with video, centered text
        Source video: ProfD leadership doctorate recruitment
-       umd-layout-vertical-landing creates the gap between hero
-       and the first content section (pillars). Required on
-       landing page heroes unless a dark section immediately follows.
+       data-layout-text="center" centers headline/text/actions.
+       No umd-layout-vertical-landing here — the dark pillar section
+       immediately follows, creating one continuous dark visual block.
   ======================================== -->
-  <section class="umd-layout-vertical-landing">
-    <umd-element-hero data-theme="dark" data-animation>
+  <section>
+    <umd-element-hero data-theme="dark" data-animation data-layout-text="center">
       <video slot="video" src="../images/media/profd-video-leader-library-doctorate.mp4" autoplay muted loop playsinline></video>
-      <h1 slot="headline">Welcome to the College of Information</h1>
+      <h1 slot="headline">Doctor of Information Leadership</h1>
       <div slot="text">
-        <p>A top-ranked research and teaching college where faculty, staff, and students use information and technology to break down barriers and create exciting new possibilities.</p>
+        <p>Preparing LIS students to lead information institutions</p>
       </div>
       <div slot="actions">
         <umd-element-call-to-action data-display="primary" data-theme="dark">
-          <a href="https://ischool.umd.edu/about/">Learn More</a>
-        </umd-element-call-to-action>
-        <umd-element-call-to-action data-display="secondary" data-theme="dark">
-          <a href="https://ischool.umd.edu/academics/apply/">Apply Now</a>
+          <a href="https://ischool.umd.edu/academics/doctoral-programs/">Learn More</a>
         </umd-element-call-to-action>
       </div>
     </umd-element-hero>
   </section>
 
   <!-- ========================================
-       4. PILLARS — Four overlay cards in staggered masonry layout
-       Research, Academics, Partners, Alumni
-       umd-layout-grid-masonry: 2-column stagger — odd cards offset
-       upward, even cards pushed down, creating a visual zigzag.
-       umd-layout-space-horizontal-normal (1280px) — masonry is a
-       2-column layout; the wider "larger" lock spreads it too thin.
+       4. PILLARS — Section intro + four overlay cards in masonry
+       Dark section flows directly from the dark hero above.
+       umd-layout-vertical-landing-child on the section-intro creates
+       the gap between intro and masonry grid.
   ======================================== -->
-  <section class="umd-layout-vertical-landing">
+  <section class="umd-layout-background-full-dark umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-normal">
+
+      <umd-element-section-intro data-theme="dark" include-separator class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Welcome to the College of Information</h2>
+        <div slot="text">
+          <p>The University of Maryland College of Information (INFO) is a top-ranked research and teaching college where faculty, staff, and students are passionate about using information and technology to break down barriers and create exciting new possibilities.</p>
+        </div>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="primary" data-theme="dark">
+            <a href="https://ischool.umd.edu/about/">Learn More</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro>
+
       <div class="umd-layout-grid-masonry">
 
         <umd-element-card-overlay type="image">
@@ -629,8 +654,10 @@
   <section class="umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-larger">
 
+      <div class="umd-watermark" aria-hidden="true"><span>News</span></div>
+
       <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
-        <h2 slot="headline">UMD INFO News</h2>
+        <h2 slot="headline">UMD INFO</h2>
         <div slot="actions">
           <umd-element-call-to-action data-display="secondary">
             <a href="https://ischool.umd.edu/news/">View All News</a>
@@ -693,63 +720,61 @@
   </section>
 
   <!-- ========================================
-       6. EVENTS — Event list (slider) display, dark theme
-       data-display="list" = horizontal list layout with large date
-       sign. Preferred for event listings without images or descriptions.
-       umd-layout-space-horizontal-normal — list layouts read better
-       at narrower max-widths.
+       6. EVENTS — Event Slider (umd-element-slider-events)
+       Horizontal scrollable slider with visual date signs.
+       Each item in slot="event-list" must be a umd-element-events-date
+       component — the slider copies the event-list innerHTML and the
+       browser upgrades these components inside the shadow DOM.
+       umd-element-events-date slots: headline, date-start-iso,
+       date-end-iso. Renders date sign (month + day) + headline only.
+       Light background — the slider's built-in gray wrapper applies.
   ======================================== -->
-  <section class="umd-layout-vertical-landing umd-layout-background-full-dark">
+  <section class="umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-normal">
 
-      <umd-element-section-intro data-theme="dark" class="umd-layout-vertical-landing-child">
+      <umd-element-slider-events>
         <h2 slot="headline">Upcoming Events</h2>
-        <div slot="actions">
-          <umd-element-call-to-action data-display="secondary" data-theme="dark">
-            <a href="https://ischool.umd.edu/events/">View All Events</a>
-          </umd-element-call-to-action>
+        <a slot="actions" href="https://ischool.umd.edu/events/">View All Events</a>
+        <div slot="event-list">
+
+          <umd-element-events-date>
+            <h3 slot="headline">
+              <a href="https://ischool.umd.edu/events/jump-start-your-job-search-for-graduating-seniors/">Jump Start Your Job Search For Graduating Seniors</a>
+            </h3>
+            <time slot="start-date-iso" datetime="2026-04-20T12:00:00">April 20, 2026</time>
+          </umd-element-events-date>
+
+          <umd-element-events-date>
+            <h3 slot="headline">
+              <a href="https://ischool.umd.edu/events/i3r-alliance-film-screening-change-the-subject/">i3r Alliance Film Screening: "Change the Subject"</a>
+            </h3>
+            <time slot="start-date-iso" datetime="2026-04-20T16:00:00">April 20, 2026</time>
+          </umd-element-events-date>
+
+          <umd-element-events-date>
+            <h3 slot="headline">
+              <a href="https://ischool.umd.edu/events/graduate-school-information-sessions/">Graduate School Information Session(s)</a>
+            </h3>
+            <time slot="start-date-iso" datetime="2026-04-21T16:00:00">April 21, 2026</time>
+          </umd-element-events-date>
+
+          <umd-element-events-date>
+            <h3 slot="headline">
+              <a href="https://ischool.umd.edu/events/winning-at-money-a-cashflow-game-for-building-wealth/">Winning at Money: A Cashflow Game for Building Wealth!</a>
+            </h3>
+            <time slot="start-date-iso" datetime="2026-04-21T17:00:00">April 21, 2026</time>
+          </umd-element-events-date>
+
+          <umd-element-events-date>
+            <h3 slot="headline">
+              <a href="https://ischool.umd.edu/events/">INFO Spring Research Showcase</a>
+            </h3>
+            <time slot="start-date-iso" datetime="2026-04-23T10:00:00">April 23, 2026</time>
+          </umd-element-events-date>
+
         </div>
-      </umd-element-section-intro>
+      </umd-element-slider-events>
 
-      <div class="umd-layout-grid-gap-stacked">
-
-        <umd-element-event data-display="list" data-theme="dark" data-visual-time>
-          <h3 slot="headline">
-            <a href="https://ischool.umd.edu/events/jump-start-your-job-search-for-graduating-seniors/">Jump Start Your Job Search For Graduating Seniors</a>
-          </h3>
-          <time slot="start-date-iso" datetime="2026-04-20T12:00:00">April 20, 2026 12:00 PM</time>
-          <time slot="end-date-iso" datetime="2026-04-20T13:30:00">April 20, 2026 1:30 PM</time>
-          <p slot="location">College of Information</p>
-        </umd-element-event>
-
-        <umd-element-event data-display="list" data-theme="dark" data-visual-time>
-          <h3 slot="headline">
-            <a href="https://ischool.umd.edu/events/graduate-school-information-sessions/">Graduate School Information Session(s)</a>
-          </h3>
-          <time slot="start-date-iso" datetime="2026-04-21T16:00:00">April 21, 2026 4:00 PM</time>
-          <time slot="end-date-iso" datetime="2026-04-21T17:00:00">April 21, 2026 5:00 PM</time>
-          <p slot="location">Hornbake Library</p>
-        </umd-element-event>
-
-        <umd-element-event data-display="list" data-theme="dark" data-visual-time>
-          <h3 slot="headline">
-            <a href="https://ischool.umd.edu/events/i3r-alliance-film-screening-change-the-subject/">i3r Alliance Film Screening: "Change the Subject"</a>
-          </h3>
-          <time slot="start-date-iso" datetime="2026-04-20T16:00:00">April 20, 2026 4:00 PM</time>
-          <time slot="end-date-iso" datetime="2026-04-20T18:00:00">April 20, 2026 6:00 PM</time>
-          <p slot="location">College of Information</p>
-        </umd-element-event>
-
-        <umd-element-event data-display="list" data-theme="dark" data-visual-time>
-          <h3 slot="headline">
-            <a href="https://ischool.umd.edu/events/winning-at-money-a-cashflow-game-for-building-wealth/">Winning at Money: A Cashflow Game for Building Wealth!</a>
-          </h3>
-          <time slot="start-date-iso" datetime="2026-04-21T17:00:00">April 21, 2026 5:00 PM</time>
-          <time slot="end-date-iso" datetime="2026-04-21T19:00:00">April 21, 2026 7:00 PM</time>
-          <p slot="location">Hornbake Library</p>
-        </umd-element-event>
-
-      </div>
     </div>
   </section>
 

@@ -133,7 +133,7 @@ An alternative to a flat 3-column grid when you want visual interest. Use for 3 
       </div>
     </umd-element-section-intro-wide>
 
-    <div class="grid-four">
+    <div class="umd-layout-grid-columns-four">
       <umd-element-card data-aligned>...</umd-element-card>
       <umd-element-card data-aligned>...</umd-element-card>
     </div>
@@ -236,8 +236,79 @@ This rule is included in `styles/critical.css`. Pages using this pattern have it
 <!-- ✗ Wrong — class on the grid, not the intro. This adds margin-bottom
      BELOW the cards (gap to next section), not between heading and cards. -->
 <umd-element-section-intro-wide>...</umd-element-section-intro-wide>
-<div class="grid-four umd-layout-vertical-landing-child">...</div>
+<div class="umd-layout-grid-columns-four umd-layout-vertical-landing-child">...</div>
 ```
+
+---
+
+## Events Section — Featured Promo + Stacked List
+
+Use `umd-element-sticky-columns` when you have one editorially featured event and a list of upcoming events. The sticky column holds the featured event (visible while the user scrolls the list); the static column holds the list.
+
+**When to use:** Any events section with a "featured" or "highlighted" event plus 3–6 upcoming events below.
+
+**Light vs. dark background:** For events sections in the lower half of the page, prefer a light background with `umd-element-section-intro-wide` and a watermark. Dark theming is appropriate early in the page (after a dark hero) but events sections are primarily for scanning — a light background improves readability. If the page already has a dark band earlier (stats, image-expand, pathway), the events section should contrast it with light.
+
+```html
+<section class="umd-layout-vertical-landing">
+  <!-- Watermark + section heading -->
+  <div class="umd-layout-space-horizontal-larger">
+    <div class="umd-watermark" aria-hidden="true">
+      <span role="presentation">Events</span>
+    </div>
+    <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+      <h2 slot="headline">Upcoming Events</h2>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="secondary">
+          <a href="/events">View All Events</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-section-intro-wide>
+  </div>
+
+  <!-- Sticky: featured event | Static: event list -->
+  <umd-element-sticky-columns
+    class="umd-layout-space-horizontal-larger"
+    data-layout-position="100px">
+
+    <div slot="sticky-column">
+      <!-- Note: use display="promo" (deprecated attr), NOT data-display="promo" — see RULES.md §26 -->
+      <umd-element-event display="promo">
+        <img slot="image" src="../images/event.jpg" alt="Event photo" />
+        <time slot="start-date-iso" datetime="2026-05-01T09:00:00">May 1, 2026</time>
+        <h3 slot="headline"><a href="/events/featured">Featured Event Title</a></h3>
+        <p slot="location">Stamp Student Union</p>
+        <div slot="text">
+          <p>Short description of the featured event — 1–2 sentences.</p>
+        </div>
+      </umd-element-event>
+    </div>
+
+    <div slot="static-column">
+      <div class="umd-layout-grid-gap-stacked">
+        <umd-element-event data-display="list">
+          <time slot="start-date-iso" datetime="2026-04-23T12:00:00">April 23, 2026</time>
+          <h3 slot="headline"><a href="/events/1">Event One Title</a></h3>
+          <p slot="location">Room 1234, Building Name</p>
+        </umd-element-event>
+        <umd-element-event data-display="list">
+          <time slot="start-date-iso" datetime="2026-04-25T14:00:00">April 25, 2026</time>
+          <h3 slot="headline"><a href="/events/2">Event Two Title</a></h3>
+          <p slot="location">Virtual</p>
+        </umd-element-event>
+        <!-- add 3–5 total list events -->
+      </div>
+    </div>
+
+  </umd-element-sticky-columns>
+</section>
+```
+
+**Notes:**
+- The "View All Events" CTA belongs in the section-intro-wide `slot="actions"` — do not repeat it at the bottom of the event list.
+- `umd-element-event data-display="list"` works correctly with `data-display`; only `promo` and `feature` require the deprecated `display` attribute.
+- `data-layout-position="100px"` should match the sticky nav height so the promo event clears it when scrolling.
+- If a live events feed is needed, `umd-feed-events-list` can replace the stacked list — but it requires a server context (CORS blocks it on localhost).
 
 ---
 

@@ -244,12 +244,11 @@
     /* ====================
        GRID UTILITIES
     ==================== */
-    .umd-layout-grid-child-fill-height {
-      display: flex;
-      flex-direction: column;
-    }
-    .umd-layout-grid-child-fill-height > * {
-      flex: 1;
+    @media (min-width: 768px) {
+      .umd-layout-grid-child-fill-height,
+      .umd-layout-grid-child-fill-height > * {
+        height: 100%;
+      }
     }
 
     /* ====================
@@ -311,6 +310,9 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 24px;
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-gap-stacked { gap: 40px; }
     }
 
     /* ====================
@@ -594,26 +596,14 @@
 
   <!-- ========================================
        4. FOOTER
-       Replace contact info, links, and social.
+       Visual footer with campus background image.
+       Default image: ../images/large/campus/footer-campus.jpg
   ======================================== -->
-  <umd-element-footer>
+  <umd-element-footer data-display="visual">
     <a slot="logo" href="{{SITE_URL}}">
-      <img src="{{LOGO_URL}}" alt="{{SITE_NAME}}" />
+      <img src="../images/logos/footer-logo.svg" alt="{{SITE_NAME}}" />
     </a>
-    <p slot="contact-headline">{{DEPARTMENT_NAME}}</p>
-    <address slot="address">
-      <span>{{ADDRESS_LINE_1}}</span>
-      <span>{{ADDRESS_LINE_2}}</span>
-    </address>
-    <div slot="contact-links">
-      <a href="tel:{{PHONE}}">{{PHONE_DISPLAY}}</a>
-      <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
-    </div>
-    <div slot="social-links">
-      <a href="{{FACEBOOK_URL}}">Facebook</a>
-      <a href="{{TWITTER_URL}}">Twitter</a>
-      <a href="{{INSTAGRAM_URL}}">Instagram</a>
-    </div>
+    <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="" />
   </umd-element-footer>
 
 </body>

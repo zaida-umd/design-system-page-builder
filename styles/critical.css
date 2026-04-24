@@ -287,13 +287,12 @@ p, li, label, input, textarea, select {
    7. GRID UTILITIES
    ============================================================ */
 
-/* Equal-height card grid children */
-.umd-layout-grid-child-fill-height {
-  display: flex;
-  flex-direction: column;
-}
-.umd-layout-grid-child-fill-height > * {
-  flex: 1;
+/* Equal-height card grid children — @universityofmaryland/web-styles-library: layout.grid.child.fillHeight */
+@media (min-width: 768px) {
+  .umd-layout-grid-child-fill-height,
+  .umd-layout-grid-child-fill-height > * {
+    height: 100%;
+  }
 }
 
 
@@ -316,12 +315,33 @@ p, li, label, input, textarea, select {
   .umd-layout-grid-gap-two { gap: 40px; }
 }
 
-/* Inline CTA row — stacks mobile, flex row at 650px+ */
+/* Four-column grid — @universityofmaryland/web-styles-library: layout.grid.columnsFour */
+.umd-layout-grid-columns-four {
+  display: grid;
+}
+@media (max-width: 649px) {
+  .umd-layout-grid-columns-four {
+    grid-gap: 32px;
+  }
+}
+@media (min-width: 650px) {
+  .umd-layout-grid-columns-four {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .umd-layout-grid-columns-four {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Inline CTA row — @universityofmaryland/web-styles-library: layout.grid.inline.tabletRows */
 .umd-layout-grid-inline-tablet-rows {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  justify-content: flex-start;
 }
 @media (min-width: 650px) {
   .umd-layout-grid-inline-tablet-rows {
@@ -351,11 +371,14 @@ p, li, label, input, textarea, select {
 .umd-layout-alignment-block-stacked > * { margin-top: 16px; }
 .umd-layout-alignment-block-stacked > *:first-child { margin-top: 0; }
 
-/* Single-column stacked grid (sticky columns static slot) */
+/* Single-column stacked grid — @universityofmaryland/web-styles-library: layout.grid.gap.stacked */
 .umd-layout-grid-gap-stacked {
   display: grid;
   grid-template-columns: 1fr;
   gap: 24px;
+}
+@media (min-width: 1024px) {
+  .umd-layout-grid-gap-stacked { gap: 40px; }
 }
 
 /* Staggered two-column masonry grid — @universityofmaryland/web-styles-library: masonary.twoColumn

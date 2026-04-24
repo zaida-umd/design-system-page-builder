@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home — The Maryland Promise Scholarship Program | University of Maryland</title>
+
+  <!-- ============================================================
+       UMD Critical CSS — MUST precede cdn.js
+       SOURCE OF TRUTH: styles/critical.css
+  ============================================================ -->
+  <style>
+    /* ====================
+       GROUP 1: container-type: normal
+    ==================== */
+    umd-element-navigation-utility:not(:defined),
+    umd-element-utility-header:not(:defined),
+    umd-element-navigation-header:not(:defined),
+    umd-element-nav-item:not(:defined),
+    umd-element-call-to-action:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-navigation-utility,
+    umd-element-utility-header,
+    umd-element-navigation-header,
+    umd-element-nav-item,
+    umd-element-call-to-action {
+      display: block;
+      container-type: normal;
+    }
+
+    /* ====================
+       GROUP 2: container-type: inline-size
+    ==================== */
+    umd-element-hero:not(:defined),
+    umd-element-hero-minimal:not(:defined),
+    umd-element-hero-expand:not(:defined),
+    umd-element-hero-logo:not(:defined),
+    umd-element-hero-grid:not(:defined),
+    umd-element-hero-brand-video:not(:defined),
+    umd-element-pathway:not(:defined),
+    umd-element-pathway-highlight:not(:defined),
+    umd-element-section-intro:not(:defined),
+    umd-element-section-intro-wide:not(:defined),
+    umd-element-card:not(:defined),
+    umd-element-card-overlay:not(:defined),
+    umd-element-card-icon:not(:defined),
+    umd-element-card-video:not(:defined),
+    umd-element-quote:not(:defined),
+    umd-element-stat:not(:defined),
+    umd-element-person-bio:not(:defined),
+    umd-element-accordion-item:not(:defined),
+    umd-element-nav-slider:not(:defined),
+    umd-element-media-inline:not(:defined),
+    umd-element-breadcrumb:not(:defined),
+    umd-element-footer:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-hero,
+    umd-element-hero-minimal,
+    umd-element-hero-expand,
+    umd-element-hero-logo,
+    umd-element-hero-grid,
+    umd-element-hero-brand-video,
+    umd-element-pathway,
+    umd-element-pathway-highlight,
+    umd-element-section-intro,
+    umd-element-section-intro-wide,
+    umd-element-card,
+    umd-element-card-overlay,
+    umd-element-card-icon,
+    umd-element-card-video,
+    umd-element-quote,
+    umd-element-stat,
+    umd-element-person-bio,
+    umd-element-accordion-item,
+    umd-element-nav-slider,
+    umd-element-media-inline,
+    umd-element-breadcrumb,
+    umd-element-footer {
+      display: block;
+      container-type: inline-size;
+    }
+
+    umd-element-breadcrumb:defined {
+      margin-top: 16px;
+    }
+
+    /* ====================
+       GROUP 3: Full-bleed components
+    ==================== */
+    umd-layout-image-expand:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-layout-image-expand {
+      display: block;
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    /* ====================
+       GROUP 4: Feed components
+    ==================== */
+    umd-feed-news:not(:defined),
+    umd-feed-news-list:not(:defined),
+    umd-feed-news-featured:not(:defined) {
+      content-visibility: hidden;
+      contain-intrinsic-size: auto 10vh;
+      min-height: 10vh;
+    }
+    umd-feed-news,
+    umd-feed-news-list,
+    umd-feed-news-featured {
+      display: block;
+      container-type: inline-size;
+    }
+
+    /* ====================
+       FONTS
+    ==================== */
+    :root {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+    p, li, label, input, textarea, select {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+    }
+
+    /* ====================
+       VERTICAL SPACING
+    ==================== */
+    .umd-layout-vertical-landing           { margin-bottom: 56px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+    .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+    @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+    @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+    .umd-layout-space-vertical-interior,
+    .umd-layout-vertical-interior          { margin-bottom: 56px; }
+    @media (min-width: 1024px) {
+      .umd-layout-space-vertical-interior,
+      .umd-layout-vertical-interior        { margin-bottom: 80px; }
+    }
+
+    .umd-layout-space-vertical-interior-child,
+    .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
+
+    .umd-layout-space-vertical-headline-large { margin-bottom: 16px; }
+    @media (min-width: 1024px) {
+      .umd-layout-space-vertical-headline-large { margin-bottom: 24px; }
+    }
+
+    /* ====================
+       HORIZONTAL SPACING
+    ==================== */
+    [class^="umd-layout-space-horizontal-"] {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1200px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+    .umd-layout-space-horizontal-full     { max-width: 100%;   }
+    .umd-layout-space-horizontal-larger   { max-width: 1600px; }
+    .umd-layout-space-horizontal-large    { max-width: 1400px; }
+    .umd-layout-space-horizontal-normal   { max-width: 1280px; }
+    .umd-layout-space-horizontal-small    { max-width: 992px;  }
+    .umd-layout-space-horizontal-smallest { max-width: 800px;  }
+
+    /* ====================
+       WATERMARK DECORATION
+    ==================== */
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      color: #f1f1f1;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: min(calc(44px + 13vw), 240px);
+      line-height: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    :is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+      opacity: 0.6;
+      z-index: -1;
+    }
+    .umd-watermark-dark > * {
+      opacity: 0.12;
+      z-index: inherit;
+    }
+    @keyframes slide-in-from-left {
+      from { transform: translate(-15vw); }
+      to   { transform: translate(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+          animation: slide-in-from-left forwards;
+          animation-timeline: view();
+          animation-range-start: 0;
+          animation-range-end: 100vh;
+          transform: translate(-15vw);
+        }
+      }
+    }
+
+    /* ====================
+       SECTION-INTRO-WIDE WRAPPER
+    ==================== */
+    .umd-layout-space-horizontal-larger {
+      position: relative;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    /* ====================
+       GRID UTILITIES
+    ==================== */
+    @media (min-width: 768px) {
+      .umd-layout-grid-child-fill-height,
+      .umd-layout-grid-child-fill-height > * {
+        height: 100%;
+      }
+    }
+
+    /* ====================
+       LAYOUT PATTERNS
+    ==================== */
+    .umd-layout-grid-gap-two {
+      display: grid;
+    }
+    @media (min-width: 650px) {
+      .umd-layout-grid-gap-two {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-gap-two { gap: 40px; }
+    }
+
+    .umd-layout-grid-inline-tablet-rows {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: flex-start;
+    }
+    @media (min-width: 650px) {
+      .umd-layout-grid-inline-tablet-rows {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+    }
+
+    .umd-layout-background-full-dark {
+      background-color: #000000;
+      padding: 48px 0;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-background-full-dark { padding: 80px 0; }
+    }
+    @media (min-width: 1200px) {
+      .umd-layout-background-full-dark { padding: 104px 0; }
+    }
+
+    .umd-layout-alignment-block-stacked {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-alignment-block-stacked > * { margin-top: 16px; }
+    .umd-layout-alignment-block-stacked > *:first-child { margin-top: 0; }
+
+    .umd-layout-grid-gap-stacked {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    /* ====================
+       TYPOGRAPHY
+    ==================== */
+    .umd-sans-large {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1.25em;
+    }
+
+    .umd-sans-larger-bold {
+      font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.4em;
+      text-wrap: pretty;
+    }
+    @media (min-width: 650px) {
+      .umd-sans-larger-bold { font-size: calc(18px + .5vw); }
+    }
+    @media (min-width: 1024px) {
+      .umd-sans-larger-bold { font-size: 22px; line-height: 1.25em; }
+    }
+
+    .umd-sans-extralarge-bold {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1.25em;
+      text-wrap: pretty;
+    }
+    @media (min-width: 650px) {
+      .umd-sans-extralarge-bold { font-size: calc(18px + 1.16vw); }
+    }
+    @media (min-width: 1024px) {
+      .umd-sans-extralarge-bold { font-size: 32px; line-height: 1.125em; }
+    }
+
+    .umd-sans-largest-uppercase {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 32px;
+      line-height: 1.1em;
+    }
+    @media (min-width: 768px)  { .umd-sans-largest-uppercase { font-size: 40px; } }
+    @media (min-width: 1024px) { .umd-sans-largest-uppercase { font-size: 44px; } }
+
+    .text-black { color: #000; }
+    .text-white { color: #ffffff; }
+
+    /* ====================
+       RICH TEXT ADVANCED
+    ==================== */
+    .umd-text-rich-advanced {
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    .umd-text-rich-advanced * {
+      color: #454545;
+    }
+    .umd-text-rich-advanced > * {
+      font-size: 18px;
+      margin-top: 24px;
+    }
+    .umd-text-rich-advanced > *:first-child {
+      margin-top: 0;
+    }
+    .umd-text-rich-advanced a {
+      color: #000000;
+      background-image: linear-gradient(#000000, #000000);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-advanced a:hover,
+    .umd-text-rich-advanced a:focus {
+      background-image: linear-gradient(#E21833, #E21833);
+    }
+
+    .umd-text-rich-advanced-dark {
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    .umd-text-rich-advanced-dark p,
+    .umd-text-rich-advanced-dark li { color: #ffffff; }
+    .umd-text-rich-advanced-dark a {
+      color: #ffffff;
+      background-image: linear-gradient(#ffffff, #ffffff);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-advanced-dark a:hover,
+    .umd-text-rich-advanced-dark a:focus {
+      background-image: linear-gradient(#FFD200, #FFD200);
+    }
+
+    /* ====================
+       IMAGE-EXPAND CONTENT UTILITIES
+    ==================== */
+    .max-w-\[480px\] { max-width: 480px; }
+    .w-full          { width: 100%; }
+    .block           { display: block; }
+    .mr-auto         { margin-right: auto; }
+
+    .pl-md { padding-left: 24px; }
+
+    .umd-adjacent-line-text { position: relative; }
+    .umd-adjacent-line-text::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background-color: #E21833;
+      left: -24px;
+    }
+
+    .umd-text-rich-simple-large-dark {
+      font-size: 18px;
+      line-height: 1.5em;
+      color: #ffffff;
+    }
+    .umd-text-rich-simple-large-dark * { color: #ffffff; }
+    .umd-text-rich-simple-large-dark > * { font-size: 18px; margin-top: 24px; }
+    .umd-text-rich-simple-large-dark > *:first-child { margin-top: 0; }
+    .umd-text-rich-simple-large-dark a {
+      color: #ffffff;
+      background-image: linear-gradient(#ffffff, #ffffff);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-simple-large-dark a:hover,
+    .umd-text-rich-simple-large-dark a:focus {
+      background-image: linear-gradient(#FFD200, #FFD200);
+    }
+
+    /* ====================
+       STICKY COLUMNS UTILITIES
+    ==================== */
+    .mb-md { margin-bottom: 24px; }
+    .mb-sm { margin-bottom: 16px; }
+
+    /* ====================
+       STATS GRID — three columns
+    ==================== */
+    .stats-grid-three {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px 32px;
+    }
+    @media (min-width: 650px) {
+      .stats-grid-three {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* ====================
+       LINK CARDS GRID — three columns
+       For umd-element-card-overlay (no image) standalone link grids
+    ==================== */
+    .promise-link-cards {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 650px) {
+      .promise-link-cards {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
+</head>
+<body>
+
+  <!-- ========================================
+       1. GLOBAL UNIVERSITY HEADER
+  ======================================== -->
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <!-- ========================================
+       2. SITE NAVIGATION HEADER
+  ======================================== -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="https://promise.umd.edu/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="The Maryland Promise Scholarship Program" />
+    </a>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://promise.umd.edu/about">About</a>
+        <div slot="dropdown-links">
+          <a href="https://promise.umd.edu/about/program-components">Program Components</a>
+          <a href="https://promise.umd.edu/about/eligibility-and-requirements">Eligibility and Requirements</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://promise.umd.edu/scholars">Our Scholars</a>
+        <div slot="dropdown-links">
+          <a href="https://promise.umd.edu/scholars/cohort-1">Cohort 1 (2019-20)</a>
+          <a href="https://promise.umd.edu/scholars/cohort-2">Cohort 2 (2020-21)</a>
+          <a href="https://promise.umd.edu/scholars/cohort-3">Cohort 3 (2021-22)</a>
+          <a href="https://promise.umd.edu/scholars/cohort-4">Cohort 4 (2022-23)</a>
+          <a href="https://promise.umd.edu/scholars/cohort-5">Cohort 5 (2023-24)</a>
+          <a href="https://promise.umd.edu/scholars/cohort-6">Cohort 6 (2024-25)</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support the Program</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://promise.umd.edu/impact">Impact Stories</a>
+        <div slot="dropdown-links">
+          <a href="https://promise.umd.edu/impact/68m-gift-extend-opportunities-underserved-montgomery-county-students">$6.8M Gift to Extend Opportunities to Underserved Montgomery County Students</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://promise.umd.edu/contact-us">Contact</a>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+
+  <!-- ========================================
+       3. PAGE CONTENT
+  ======================================== -->
+
+  <!-- HERO: Full-bleed background image of Hornbake Plaza -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-hero data-display="overlay" data-theme="dark">
+      <img slot="image" src="../images/large/campus/hornbake-plaza-fall.jpg" alt="Hornbake plaza as viewed from the top of Hornbake Library. Scene includes fall colors in the trees and students walking along sidewalks on a crisp fall day." />
+      <h1 slot="headline">Our Promise</h1>
+      <div slot="text">
+        <p>The Maryland Promise Scholarship Program provides supportive educational and financial opportunities to undergraduate students from the state of Maryland and Washington, D.C. exhibiting strong academic and leadership potential.</p>
+      </div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
+          <a href="https://promise.umd.edu/scholars">Meet Our Scholars</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-hero>
+  </section>
+
+  <!-- QUOTE: President Darryll J. Pines — featured pull quote -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-normal">
+      <umd-element-quote data-display="featured">
+        <p slot="quote">The Maryland Promise Scholarship Program is an investment in our region's talented, hardworking students. Scholars in the program will receive support to develop academically, professionally and personally—and to ultimately become the next generation of leaders.</p>
+        <p slot="attribution">Darryll J. Pines, President, University of Maryland</p>
+        <img slot="image" src="../images/projects/promise/DarryllPines_05262020_JC_7405_Final-square_w574_h574.jpg" alt="University of Maryland President Darryll J. Pines" />
+      </umd-element-quote>
+    </div>
+  </section>
+
+  <!-- SECTION INTRO: Program pillars -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-section-intro include-separator>
+      <h2 slot="headline">The Next Generation of Leaders</h2>
+      <div slot="text">
+        <p>The Maryland Promise Scholarship Program emphasizes four important components to help cultivate the next generation of leaders and community change agents:</p>
+        <p><strong>Academic Excellence</strong> / <strong>Professional Development</strong> / <strong>Leadership Development</strong> / <strong>Community Engagement</strong></p>
+      </div>
+    </umd-element-section-intro>
+  </section>
+
+  <!-- IMAGE EXPAND: Inaugural class group photo -->
+  <!-- No umd-layout-vertical-landing: dark section immediately follows → no white gap between them -->
+  <section style="background:#000;">
+    <umd-layout-image-expand>
+      <div slot="content">
+        <div class="pl-md" style="max-width: 480px;">
+          <h2 class="umd-sans-largest-uppercase umd-adjacent-line-text text-white mb-md">
+            Our Scholars Community
+          </h2>
+          <div class="umd-text-rich-simple-large-dark mb-md">
+            <p>The inaugural class of the Maryland Promise Scholarship Program with the A. James &amp; Alice B. Clark Foundation — scholars from across all 13 colleges and schools, united by academic excellence and a commitment to leadership.</p>
+          </div>
+          <umd-element-call-to-action data-display="primary" data-theme="light">
+            <a href="https://promise.umd.edu/scholars"><span>Meet Our Scholars</span></a>
+          </umd-element-call-to-action>
+        </div>
+      </div>
+      <img slot="image" src="../images/projects/promise/MarylandPromise2020_02112020_JC_9982-4x3-min_w1920_h1280.jpg" alt="Maryland Promise Scholarship Program inaugural class seated and standing together at a large conference table, dressed professionally" />
+    </umd-layout-image-expand>
+  </section>
+
+  <!-- STATS: Three key metrics — dark section -->
+  <section class="umd-layout-vertical-landing umd-layout-background-full-dark">
+    <div class="umd-layout-space-horizontal-larger">
+      <div class="stats-grid-three">
+        <umd-element-stat data-visual-size="large" data-decoration-line data-theme="dark">
+          <span slot="stat">137</span>
+          <div slot="text"><p>Total Maryland Promise Scholarship Program Scholars</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line data-theme="dark">
+          <span slot="stat">$219.5M</span>
+          <div slot="text"><p>Transformative investment to propel UMD to the forefront of education and research worldwide</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line data-theme="dark">
+          <span slot="stat">13</span>
+          <div slot="text"><p>Colleges and Schools represented</p></div>
+        </umd-element-stat>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE: Courtney Clark Pastrick — Clark Foundation -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-normal">
+      <umd-element-quote>
+        <p slot="quote">My father always said that education changes lives, and his education changed his life.</p>
+        <p slot="attribution">Courtney Clark Pastrick, Daughter of A. James Clark and Board Chair, A. James &amp; Alice B. Clark Foundation</p>
+        <img slot="image" src="../images/projects/promise/Mr_Clark-square_w320_h320.jpg" alt="Headshot of A. James Clark, smiling man with white hair, gray suit, red tie, light blue dress shirt, and gold background." />
+      </umd-element-quote>
+    </div>
+  </section>
+
+  <!-- SUPPORT CTAs — card-overlay (no image) grid instead of secondary CTA row -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <div class="umd-layout-grid-gap-two">
+        <umd-element-card-overlay>
+          <h3 slot="headline"><a href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support the Maryland Promise Scholarship Program</a></h3>
+          <a slot="cta-icon" href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support</a>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay>
+          <h3 slot="headline"><a href="https://buildingtogether.umd.edu/" target="_blank" rel="noopener">Building Together: An Investment for Maryland</a></h3>
+          <a slot="cta-icon" href="https://buildingtogether.umd.edu/" target="_blank" rel="noopener">Learn More</a>
+        </umd-element-card-overlay>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPACT STORIES: hidden — feed requires *.umd.edu origin (CORS), blank locally -->
+  <section class="umd-layout-vertical-landing" hidden>
+    <div class="umd-layout-space-horizontal-larger">
+      <div class="umd-layout-vertical-landing-child">
+        <umd-element-section-intro-wide>
+          <h2 slot="headline">Donor Impact Stories</h2>
+          <div slot="actions">
+            <umd-element-call-to-action>
+              <a href="https://today.umd.edu/initiatives/maryland-promise-program" target="_blank" rel="noopener">Read More Stories on Maryland Today</a>
+            </umd-element-call-to-action>
+          </div>
+        </umd-element-section-intro-wide>
+      </div>
+      <!-- NOTE: feed requires a *.umd.edu origin — blank locally due to CORS.
+           today.umd.edu/graphql blocks non-UMD origins at the server level.
+           Token is correct; test on a deployed UMD domain. -->
+      <umd-feed-news
+        data-token="4F3TNWrvfL_HsZAms45YyzOo7OW1QUfW"
+        data-filter-group-ids="10476"
+        data-layout-column-count="3"
+        data-layout-row-count="1">
+      </umd-feed-news>
+    </div>
+  </section>
+
+  <!-- BOTTOM CTAs — card-overlay (no image) grid instead of secondary CTA row -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <div class="promise-link-cards">
+        <umd-element-card-overlay>
+          <h3 slot="headline"><a href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support the Program</a></h3>
+          <a slot="cta-icon" href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support</a>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay>
+          <h3 slot="headline"><a href="https://promise.umd.edu/contact-us">Contact Us</a></h3>
+          <a slot="cta-icon" href="https://promise.umd.edu/contact-us">Contact</a>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay>
+          <h3 slot="headline"><a href="https://promise.umd.edu/about/eligibility-and-requirements">Eligibility and Requirements</a></h3>
+          <a slot="cta-icon" href="https://promise.umd.edu/about/eligibility-and-requirements">Learn More</a>
+        </umd-element-card-overlay>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       4. FOOTER
+  ======================================== -->
+  <umd-element-footer>
+    <a slot="logo" href="https://promise.umd.edu/">
+      <img src="../images/logos/footer-logo.svg" alt="The Maryland Promise Scholarship Program" />
+    </a>
+    <p slot="contact-headline">The Maryland Promise Scholarship Program</p>
+    <address slot="address">
+      1126 Campus Drive<br />
+      2223 H.J. Patterson Hall, University of Maryland<br />
+      College Park, MD 20740
+    </address>
+    <div slot="contact-links">
+      <a href="tel:3013149880">301.314.9880</a>
+      <a href="mailto:mpp@umd.edu">mpp@umd.edu</a>
+    </div>
+    <ul slot="social-links">
+      <li><a href="https://twitter.com/ugstumd">Twitter</a></li>
+      <li><a href="https://www.facebook.com/ugstumd/">Facebook</a></li>
+      <li><a href="https://www.instagram.com/marylandpromise/">Instagram</a></li>
+      <li><a href="https://www.youtube.com/user/UMD2101">YouTube</a></li>
+    </ul>
+    <div slot="utility-links">
+      <ul>
+        <li><a href="https://www.ugst.umd.edu/" target="_blank" rel="noopener">Undergraduate Studies</a></li>
+        <li><a href="https://admissions.umd.edu/" target="_blank" rel="noopener">Undergraduate Admissions</a></li>
+      </ul>
+    </div>
+  </umd-element-footer>
+
+</body>
+</html>

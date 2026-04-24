@@ -47,7 +47,7 @@ Wait for the subagent to complete before proceeding.
 
 Use content and images from the source page as the fictional client. Shorten the page title used in the command and name the output file `examples/{title}.html`.
 
-**Images:** Extract actual image paths from `tmp/source.html` — do not guess or construct URLs. For the generated page, copy the downloaded images from `tmp/assets/images/` into `/Users/zjocson/repos/design-system-page-builder/images/` (preserving subdirectory structure where applicable) and reference them as repo-relative paths: `../images/filename.jpg`.
+**Images:** Extract actual image paths from `tmp/source.html` — do not guess or construct URLs. For the generated page, copy the downloaded images from `tmp/assets/images/` into `/Users/zjocson/repos/design-system-page-builder/images/projects/{title}/` (where `{title}` matches the output filename, e.g. `images/projects/ischool/`) and reference them as repo-relative paths: `../images/projects/{title}/filename.jpg`. Videos go into `images/media/`.
 
 
 ## Process
@@ -78,6 +78,8 @@ Use content and images from the source page as the fictional client. Shorten the
 | Page title / section header bar | `umd-element-hero-minimal` |
 | Split image + text feature | `umd-element-pathway` (`data-display="overlay"` for emphasized content, standard for typical use) |
 | Stats / metrics | `umd-element-stat` with grid wrapper or `umd-element-stat` in a `sticky-column` when a text introduction is needed |
+| Featured event + upcoming list | `umd-element-sticky-columns`: sticky column = `umd-element-event display="promo"`, static column = `umd-layout-grid-gap-stacked` of `umd-element-event data-display="list"`. See LAYOUT-PATTERNS.md "Events Section". |
+| One featured item + many secondary items | `umd-element-sticky-columns` — general pattern for any "one editorial pick + list" layout (events, news, research). Sticky = featured; static = list. |
 | News/story cards | `umd-element-card` (standard) or `umd-element-card-overlay` (type="image" for photo bg) |
 | Section heading + CTA | `umd-element-section-intro` (centered) or `umd-element-section-intro-wide` (with watermark) |
 | Pull quote / testimonial | `umd-element-quote` (standard) or `data-display="featured"` for a quote that stands out |
@@ -100,15 +102,22 @@ Use content and images from the source page as the fictional client. Shorten the
 - `data-theme` does not cascade — set it on every child component that needs it (RULES.md §14).
 - `umd-element-pathway-highlight` requires real body copy in `slot="text"`. If the source has only a quote and attribution, use `umd-element-quote` instead (RULES.md §5).
 
-## Logo fallback
+## Footer
 
-For `slot="logo"` in `umd-element-footer`, always use `../images/logos/footer-logo.svg`. Do not attempt to use an external logo URL in the footer — department logos are often on light backgrounds or blocked by hotlink protection and will not render correctly against the dark footer background.
+Always use the visual footer:
+```html
+<umd-element-footer data-display="visual">
+  <a slot="logo" href="/"><img src="../images/logos/footer-logo.svg" alt="University of Maryland" /></a>
+  <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="" />
+</umd-element-footer>
+```
+Do not add contact info, address, or social links — the visual variant renders the logo and image only. Do not use an external logo URL in the footer.
 
 For `slot="logo"` in `umd-element-navigation-header`, use a confirmed accessible URL from the downloaded source. If unavailable or uncertain, fall back to `../images/logos/primary-logo-dark.svg`.
 
 ## Image fallback
 
-Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them to `/Users/zjocson/repos/design-system-page-builder/images/` and reference as repo-relative paths: `../images/filename.jpg`.
+Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them to `/Users/zjocson/repos/design-system-page-builder/images/projects/{title}/` and reference as repo-relative paths: `../images/projects/{title}/filename.jpg`. Copy any video files to `images/media/`.
 
 If an image was not downloaded (listed in `tmp/skipped-assets.txt` or absent from `tmp/assets/images/`):
 1. Read `/Users/zjocson/repos/design-system-page-builder/images/images-index.json`

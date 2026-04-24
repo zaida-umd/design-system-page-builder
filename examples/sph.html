@@ -7,17 +7,10 @@
 
   <!-- ============================================================
        UMD Critical CSS — MUST precede cdn.js
-       If cdn.js loads first, elements upgrade before :defined rules
-       exist and container-type never gets set.
-       Load order: inline <style> → <script> cdn.js → </head>
-       See REQUIRED-CSS.md for what each rule does and why.
+       SOURCE OF TRUTH: styles/critical.css
   ============================================================ -->
   <style>
-    /* ====================
-       GROUP 1: container-type: normal
-       These components use grid-auto-flow / internal layout that
-       breaks under inline-size containment. Do NOT move to GROUP 2.
-    ==================== */
+    /* GROUP 1: container-type: normal */
     umd-element-navigation-utility:not(:defined),
     umd-element-utility-header:not(:defined),
     umd-element-navigation-header:not(:defined),
@@ -34,12 +27,7 @@
       container-type: normal;
     }
 
-    /* ====================
-       GROUP 2: container-type: inline-size
-       These components use shadow DOM @container queries that fire
-       against the host element. Without inline-size on the host,
-       two-column layouts collapse to stacked.
-    ==================== */
+    /* GROUP 2: container-type: inline-size */
     umd-element-hero:not(:defined),
     umd-element-hero-minimal:not(:defined),
     umd-element-hero-expand:not(:defined),
@@ -58,6 +46,12 @@
     umd-element-stat:not(:defined),
     umd-element-person-bio:not(:defined),
     umd-element-accordion-item:not(:defined),
+    umd-element-nav-slider:not(:defined),
+    umd-element-media-inline:not(:defined),
+    umd-element-breadcrumb:not(:defined),
+    umd-element-sticky-columns:not(:defined),
+    umd-element-event:not(:defined),
+    umd-feed-events-list:not(:defined),
     umd-element-footer:not(:defined) {
       content-visibility: hidden;
     }
@@ -79,19 +73,21 @@
     umd-element-stat,
     umd-element-person-bio,
     umd-element-accordion-item,
+    umd-element-nav-slider,
+    umd-element-media-inline,
+    umd-element-breadcrumb,
+    umd-element-sticky-columns,
+    umd-element-event,
+    umd-feed-events-list,
     umd-element-footer {
       display: block;
       container-type: inline-size;
     }
+    umd-element-breadcrumb:defined {
+      margin-top: 16px;
+    }
 
-    /* ====================
-       GROUP 3: Full-bleed components
-       umd-layout-image-expand collapses to content width without
-       explicit width: 100%. Do NOT wrap in a horizontal spacing class.
-       Do NOT set max-width on host — shadow DOM applies 1600px internally.
-       Content slot text must be explicitly white (color:white) —
-       the component has no data-theme support. See RULES.md §17.
-    ==================== */
+    /* GROUP 3: Full-bleed components */
     umd-layout-image-expand:not(:defined) {
       content-visibility: hidden;
     }
@@ -101,12 +97,7 @@
       width: 100%;
     }
 
-    /* ====================
-       FONTS
-       Interstate is licensed. These declarations set the stack but
-       do NOT embed the font. Without @font-face, falls back to
-       Helvetica/Arial. Layouts and sizing are unaffected.
-    ==================== */
+    /* FONTS */
     :root {
       font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
     }
@@ -114,31 +105,33 @@
       font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
     }
 
-    /* ====================
-       VERTICAL SPACING — between sections and items
-    ==================== */
-
-    /* Landing page — between sections */
+    /* VERTICAL SPACING */
     .umd-layout-vertical-landing           { margin-bottom: 56px; }
     @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
     @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
 
-    /* Landing page — between items within a section */
     .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
     @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
     @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
 
-    /* Interior page — page content area margins */
+    .umd-layout-space-vertical-interior,
     .umd-layout-vertical-interior          { margin-bottom: 56px; }
-    @media (min-width: 1024px) { .umd-layout-vertical-interior { margin-bottom: 80px; } }
+    @media (min-width: 1024px) {
+      .umd-layout-space-vertical-interior,
+      .umd-layout-vertical-interior        { margin-bottom: 80px; }
+    }
 
-    /* Interior page — between items within a section */
+    .umd-layout-space-vertical-interior-child,
     .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
 
-    /* ====================
-       HORIZONTAL SPACING — page-lock classes
-    ==================== */
+    .umd-layout-space-vertical-headline-large { margin-bottom: 16px; }
+    @media (min-width: 1024px) {
+      .umd-layout-space-vertical-headline-large { margin-bottom: 24px; }
+    }
+
+    /* HORIZONTAL SPACING */
     [class^="umd-layout-space-horizontal-"] {
+      box-sizing: border-box;
       display: block;
       margin-left: auto;
       margin-right: auto;
@@ -164,9 +157,7 @@
     .umd-layout-space-horizontal-small    { max-width: 992px;  }
     .umd-layout-space-horizontal-smallest { max-width: 800px;  }
 
-    /* ====================
-       WATERMARK DECORATION
-    ==================== */
+    /* WATERMARK DECORATION */
     :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
       position: absolute;
       top: 20px;
@@ -204,77 +195,195 @@
       }
     }
 
-    /* ====================
-       SECTION-INTRO-WIDE WRAPPER
-       Required when .umd-layout-space-horizontal-larger wraps
-       umd-element-section-intro-wide
-    ==================== */
+    /* SECTION-INTRO-WIDE WRAPPER */
     .umd-layout-space-horizontal-larger {
       position: relative;
       container-type: inline-size;
       isolation: isolate;
     }
 
-    /* ====================
-       GRID UTILITIES
-    ==================== */
-    .umd-layout-grid-child-fill-height {
-      display: flex;
-      flex-direction: column;
-    }
-    .umd-layout-grid-child-fill-height > * {
-      flex: 1;
+    /* GRID UTILITIES */
+    @media (min-width: 768px) {
+      .umd-layout-grid-child-fill-height,
+      .umd-layout-grid-child-fill-height > * {
+        height: 100%;
+      }
     }
 
-    /* ====================
-       NEWS CARD GRID
-    ==================== */
-    .sph-card-grid {
+    /* LAYOUT PATTERNS */
+    .umd-layout-grid-gap-two {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
     }
-    @media (min-width: 600px) {
-      .sph-card-grid {
+    @media (min-width: 650px) {
+      .umd-layout-grid-gap-two {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-gap-two { gap: 40px; }
+    }
+
+    .umd-layout-grid-columns-four {
+      display: grid;
+    }
+    @media (max-width: 649px) {
+      .umd-layout-grid-columns-four {
+        grid-gap: 32px;
+      }
+    }
+    @media (min-width: 650px) {
+      .umd-layout-grid-columns-four {
         grid-template-columns: repeat(2, 1fr);
       }
     }
     @media (min-width: 1024px) {
-      .sph-card-grid {
-        grid-template-columns: repeat(3, 1fr);
+      .umd-layout-grid-columns-four {
+        grid-template-columns: repeat(4, 1fr);
       }
     }
 
-    /* ====================
-       PROGRAMS BUTTON GRID
-    ==================== */
-    .sph-programs-grid {
+    .umd-layout-grid-inline-tablet-rows {
+      align-items: flex-start;
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       gap: 16px;
-      margin-top: 24px;
-      margin-bottom: 24px;
+      justify-content: flex-start;
+    }
+    @media (min-width: 650px) {
+      .umd-layout-grid-inline-tablet-rows {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+      }
     }
 
-    /* ====================
-       EVENTS GRID
-    ==================== */
-    .sph-events-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
+    .umd-layout-background-full-dark {
+      background-color: #000000;
+      padding: 48px 0;
     }
     @media (min-width: 768px) {
-      .sph-events-grid {
-        grid-template-columns: repeat(2, 1fr);
-        align-items: start;
-      }
+      .umd-layout-background-full-dark { padding: 80px 0; }
     }
-    /* ====================
-       UTILITY NAVIGATION LINKS
-       ::slotted(*) only reaches div[slot="utility-navigation"], not
-       the <a> children — these light-DOM styles fill the gap.
-    ==================== */
+    @media (min-width: 1200px) {
+      .umd-layout-background-full-dark { padding: 104px 0; }
+    }
+
+    .umd-layout-alignment-block-stacked {
+      display: flex;
+      flex-direction: column;
+    }
+    .umd-layout-alignment-block-stacked > * { margin-top: 16px; }
+    .umd-layout-alignment-block-stacked > *:first-child { margin-top: 0; }
+
+    .umd-layout-grid-gap-stacked {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-gap-stacked { gap: 40px; }
+    }
+
+    /* TYPOGRAPHY */
+    .umd-sans-large {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1.25em;
+    }
+    .umd-sans-larger-bold {
+      font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.4em;
+      text-wrap: pretty;
+    }
+    @media (min-width: 650px) { .umd-sans-larger-bold { font-size: calc(18px + .5vw); } }
+    @media (min-width: 1024px) { .umd-sans-larger-bold { font-size: 22px; line-height: 1.25em; } }
+
+    .umd-sans-extralarge-bold {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      line-height: 1.25em;
+      text-wrap: pretty;
+    }
+    @media (min-width: 650px) { .umd-sans-extralarge-bold { font-size: calc(18px + 1.16vw); } }
+    @media (min-width: 1024px) { .umd-sans-extralarge-bold { font-size: 32px; line-height: 1.125em; } }
+
+    .umd-sans-largest-uppercase {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 32px;
+      line-height: 1.1em;
+    }
+    @media (min-width: 768px)  { .umd-sans-largest-uppercase { font-size: 40px; } }
+    @media (min-width: 1024px) { .umd-sans-largest-uppercase { font-size: 44px; } }
+
+    .text-black { color: #000; }
+    .text-white { color: #ffffff; }
+
+    /* RICH TEXT */
+    .umd-text-rich-advanced {
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    .umd-text-rich-advanced * { color: #454545; }
+    .umd-text-rich-advanced > * { font-size: 18px; margin-top: 24px; }
+    .umd-text-rich-advanced > *:first-child { margin-top: 0; }
+    .umd-text-rich-advanced a {
+      color: #000000;
+      background-image: linear-gradient(#000000, #000000);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-advanced a:hover,
+    .umd-text-rich-advanced a:focus {
+      background-image: linear-gradient(#E21833, #E21833);
+    }
+
+    .umd-text-rich-advanced-dark { font-size: 18px; line-height: 1.5em; }
+    .umd-text-rich-advanced-dark p,
+    .umd-text-rich-advanced-dark li { color: #ffffff; }
+    .umd-text-rich-advanced-dark a {
+      color: #ffffff;
+      background-image: linear-gradient(#ffffff, #ffffff);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-advanced-dark a:hover,
+    .umd-text-rich-advanced-dark a:focus {
+      background-image: linear-gradient(#FFD200, #FFD200);
+    }
+
+    /* INTERIOR PAGE LAYOUT */
+    @media (min-width: 768px) {
+      .umd-layout-space-columns-left { display: flex; align-items: flex-start; }
+      .umd-layout-space-columns-left > *:first-child { width: 242px; flex-shrink: 0; margin-right: 120px; }
+      .umd-layout-space-columns-left > *:last-child { width: calc(100% - 242px); }
+    }
+    @media (max-width: 1023px) {
+      .umd-layout-space-columns-left > *:first-child { display: none; }
+    }
+
+    .max-w-\[800px\] { max-width: 800px; }
+    .max-w-\[480px\] { max-width: 480px; }
+    .w-full          { width: 100%; }
+    .block           { display: block; }
+    .mr-auto         { margin-right: auto; }
+
+    .mb-md { margin-bottom: 24px; }
+    .mb-sm { margin-bottom: 16px; }
+
+    /* UTILITY NAV LINKS */
     [slot="utility-navigation"] a {
       font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
       font-size: 14px;
@@ -288,10 +397,63 @@
       text-decoration: underline;
     }
 
-    .sph-events-list {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    /* MASONRY GRID */
+    .umd-layout-grid-masonry {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-masonry { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-masonry { gap: 40px; }
+    }
+    .umd-layout-grid-masonry > * > * { width: 100%; height: 100%; }
+    @media (min-width: 768px) {
+      .umd-layout-grid-masonry > *:nth-of-type(odd)  { margin-top: -32px; margin-bottom: 32px; }
+      .umd-layout-grid-masonry > *:nth-of-type(even) { margin-top: 0; }
+      .umd-layout-grid-masonry > *:first-child        { margin-top: 0; }
+      .umd-layout-grid-masonry > *:nth-of-type(2)    { margin-top: 32px; }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-masonry > *:nth-of-type(odd) { margin-top: -40px; margin-bottom: 40px; }
+      .umd-layout-grid-masonry > *:nth-of-type(2)   { margin-top: 40px; }
+    }
+
+    /* ====================
+       PAGE-SPECIFIC: SPH
+    ==================== */
+
+    /* size-large card overlay — must be defined locally (not injected by cdn.js) */
+    umd-element-card-overlay.size-large {
+      height: 320px;
+    }
+    @media (min-width: 768px) {
+      umd-element-card-overlay.size-large {
+        height: 560px;
+      }
+    }
+
+    /* News — 3-column card grid */
+    .sph-news-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .sph-news-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+      }
+    }
+
+    /* Events section — space below heading in static column */
+    .sph-events-heading {
+      margin-bottom: 24px;
+    }
+    .sph-events-cta {
+      margin-top: 24px;
     }
   </style>
 
@@ -299,309 +461,289 @@
 </head>
 <body>
 
-  <!-- ========================================
-       1. GLOBAL UNIVERSITY HEADER
-       Hardcoded. Never modified. Zero config.
-  ======================================== -->
+  <!-- 1. GLOBAL UNIVERSITY HEADER -->
   <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
-
   <umd-element-utility-header></umd-element-utility-header>
 
-  <!-- ========================================
-       2. SITE NAVIGATION HEADER
-  ======================================== -->
-  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full"
-    search-url="https://sph.umd.edu/search"
-    cta-url="https://sph.umd.edu/apply-school-public-health"
-    cta-text="Apply">
+  <!-- 2. SITE NAVIGATION HEADER -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
     <a slot="logo" href="https://sph.umd.edu">
-      <img src="../images/sph/sph-logo.svg" alt="University of Maryland School of Public Health" />
+      <img src="../images/projects/sph/logo.svg" alt="University of Maryland School of Public Health" />
     </a>
     <nav slot="main-navigation">
       <umd-element-nav-item>
         <a slot="primary-link" href="https://sph.umd.edu/academics">Academics</a>
-        <a slot="sub-link" href="https://sph.umd.edu/undergraduate-degrees">Undergraduate Degrees</a>
-        <a slot="sub-link" href="https://sph.umd.edu/academics/masters-degrees">Master's Degrees</a>
-        <a slot="sub-link" href="https://sph.umd.edu/academics/doctoral-degrees">Doctoral Degrees</a>
-        <a slot="sub-link" href="https://sph.umd.edu/academics/dual-degrees">Dual Degrees</a>
-        <a slot="sub-link" href="https://sph.umd.edu/academics/certificates">Certificates</a>
-        <a slot="sub-link" href="https://sph.umd.edu/academics/online-graduate-programs-public-health">Online Programs</a>
-        <a slot="sub-link" href="https://sph.umd.edu/academics/departments-units">Departments &amp; Units</a>
-        <a slot="sub-link" href="https://sph.umd.edu/academics/advising-resources">Advising &amp; Resources</a>
+        <div slot="dropdown-links">
+          <a href="https://sph.umd.edu/undergraduate-degrees">Undergraduate Degrees</a>
+          <a href="https://sph.umd.edu/academics/masters-degrees">Master's Degrees</a>
+          <a href="https://sph.umd.edu/academics/doctoral-degrees">Doctoral Degrees</a>
+          <a href="https://sph.umd.edu/academics/dual-degrees">Dual Degrees</a>
+          <a href="https://sph.umd.edu/academics/certificates">Certificates</a>
+          <a href="https://sph.umd.edu/academics/online-graduate-programs-public-health">Online Programs</a>
+          <a href="https://sph.umd.edu/academics/departments-units">Departments &amp; Units</a>
+          <a href="https://sph.umd.edu/academics/advising-resources">Advising &amp; Resources</a>
+        </div>
       </umd-element-nav-item>
       <umd-element-nav-item>
         <a slot="primary-link" href="https://sph.umd.edu/admissions">Admissions</a>
-        <a slot="sub-link" href="https://sph.umd.edu/admissions/maryland-experience">Why UMD Public Health</a>
-        <a slot="sub-link" href="https://sph.umd.edu/admissions/future-undergraduate-students">Undergraduate Admissions</a>
-        <a slot="sub-link" href="https://sph.umd.edu/admissions/graduate-admissions">Graduate Admissions</a>
-        <a slot="sub-link" href="https://sph.umd.edu/admissions/tuition-and-aid">Tuition &amp; Aid</a>
-        <a slot="sub-link" href="https://sph.umd.edu/admissions/request-information">Request Information</a>
-        <a slot="sub-link" href="https://sph.umd.edu/admissions/visit-sph">Visit</a>
+        <div slot="dropdown-links">
+          <a href="https://sph.umd.edu/admissions/maryland-experience">Why UMD Public Health</a>
+          <a href="https://sph.umd.edu/admissions/future-undergraduate-students">Undergraduate Admissions</a>
+          <a href="https://sph.umd.edu/admissions/graduate-admissions">Graduate Admissions</a>
+          <a href="https://sph.umd.edu/admissions/non-degree-seeking-students">Non-Degree Seeking Students</a>
+          <a href="https://sph.umd.edu/admissions/tuition-and-aid">Tuition &amp; Aid</a>
+          <a href="https://sph.umd.edu/admissions/request-information">Request Information</a>
+          <a href="https://sph.umd.edu/admissions/visit-sph">Visit</a>
+        </div>
       </umd-element-nav-item>
       <umd-element-nav-item>
         <a slot="primary-link" href="https://sph.umd.edu/research-impact">Research &amp; Impact</a>
-        <a slot="sub-link" href="https://sph.umd.edu/research-impact/research-centers">Research Centers</a>
-        <a slot="sub-link" href="https://sph.umd.edu/research-impact/laboratories-projects-and-programs">Laboratories, Projects and Programs</a>
-        <a slot="sub-link" href="https://sph.umd.edu/research-impact/policy-reports">Policy Reports</a>
-        <a slot="sub-link" href="https://sph.umd.edu/research-impact/ai-public-health">AI for Public Health</a>
+        <div slot="dropdown-links">
+          <a href="https://sph.umd.edu/research-impact/research-centers">Research Centers</a>
+          <a href="https://sph.umd.edu/research-impact/laboratories-projects-and-programs">Laboratories, Projects and Programs</a>
+          <a href="https://sph.umd.edu/research-impact/policy-reports">Policy Reports</a>
+          <a href="https://sph.umd.edu/research-impact/ai-public-health">AI for Public Health</a>
+          <a href="https://sph.umd.edu/research-impact/public-health-research-day-2026">Public Health Research Day</a>
+        </div>
       </umd-element-nav-item>
       <umd-element-nav-item>
         <a slot="primary-link" href="https://sph.umd.edu/people">People</a>
-        <a slot="sub-link" href="https://sph.umd.edu/people/faculty-staff">Faculty &amp; Staff</a>
-        <a slot="sub-link" href="https://sph.umd.edu/people/alumni-community">Alumni Community</a>
+        <div slot="dropdown-links">
+          <a href="https://sph.umd.edu/people/faculty-staff">Faculty &amp; Staff</a>
+          <a href="https://sph.umd.edu/people/alumni-community">Alumni Community</a>
+        </div>
       </umd-element-nav-item>
       <umd-element-nav-item>
         <a slot="primary-link" href="https://sph.umd.edu/student-opportunities">Student Opportunities</a>
-        <a slot="sub-link" href="https://sph.umd.edu/student-opportunities/career-exploration">Career Exploration</a>
-        <a slot="sub-link" href="https://sph.umd.edu/student-opportunities/mentorship">Mentorship</a>
-        <a slot="sub-link" href="https://sph.umd.edu/student-opportunities/professional-development">Professional Development</a>
-        <a slot="sub-link" href="https://sph.umd.edu/student-opportunities/internships">Internships</a>
-        <a slot="sub-link" href="https://sph.umd.edu/student-opportunities/student-research-opportunities">Student Research Opportunities</a>
+        <div slot="dropdown-links">
+          <a href="https://sph.umd.edu/student-opportunities/career-exploration">Career Exploration</a>
+          <a href="https://sph.umd.edu/student-opportunities/mentorship">Mentorship</a>
+          <a href="https://sph.umd.edu/student-opportunities/professional-development">Professional Development</a>
+          <a href="https://sph.umd.edu/student-opportunities/internships">Internships</a>
+          <a href="https://sph.umd.edu/student-opportunities/student-research-opportunities">Student Research Opportunities</a>
+          <a href="https://sph.umd.edu/student-opportunities/student-organizations-honor-societies-and-honor-programs">Student Organizations &amp; Honor Societies</a>
+          <a href="https://sph.umd.edu/student-opportunities/peace-corps-prep-program">Peace Corps Prep</a>
+        </div>
       </umd-element-nav-item>
     </nav>
     <div slot="utility-navigation">
       <a href="https://sph.umd.edu/about">About</a>
       <a href="https://sph.umd.edu/news">News</a>
       <a href="https://sph.umd.edu/events">Events</a>
+      <a href="https://sph.umd.edu/apply-school-public-health">Apply</a>
       <a href="https://sph.umd.edu/invest-public-health">Give</a>
     </div>
   </umd-element-navigation-header>
 
   <!-- ========================================
-       3. PAGE CONTENT
+       PAGE CONTENT
   ======================================== -->
 
-  <!-- HERO — Full-bleed overlay with "Moving Forward for the Health of All" -->
-  <section class="umd-layout-vertical-landing">
+  <!-- HERO — dark overlay, no eyebrow, single CTA from source page -->
+  <section style="background:#000;">
     <umd-element-hero data-display="overlay" data-theme="dark" data-animation>
-      <img slot="image" src="../images/sph/hero-person.png" alt="Woman in the rain holding a giant leaf above her head while smiling" />
-      <p slot="eyebrow">University of Maryland School of Public Health</p>
+      <img slot="image" src="../images/projects/sph/a_positive_person__3830_x_1010_px___2_.png" alt="Woman in the rain holding a giant leaf above her head while smiling" />
       <h1 slot="headline">Moving Forward for the Health of All</h1>
       <div slot="actions">
-        <umd-element-call-to-action data-display="primary">
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
           <a href="https://sph.umd.edu/give">Visit Donation Page</a>
         </umd-element-call-to-action>
       </div>
     </umd-element-hero>
   </section>
 
-  <!-- PROGRAMS & DEGREES — Section intro + CTA buttons for each program type -->
-  <section class="umd-layout-vertical-landing">
+  <!-- PROGRAMS & DEGREES — dark section with watermark and image overlay cards -->
+  <section class="umd-layout-background-full-dark umd-layout-vertical-landing">
+    <!-- Watermark decoration -->
+    <div class="umd-layout-space-horizontal-larger umd-watermark-dark">
+      <span aria-hidden="true" role="presentation">Programs</span>
+    </div>
+
     <div class="umd-layout-space-horizontal-larger">
-      <umd-element-section-intro include-separator>
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child" data-theme="dark">
         <h2 slot="headline">Programs &amp; Degrees</h2>
-        <div slot="text">
-          <p>From undergraduate to doctoral programs, find the path that fits your public health career goals.</p>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary" data-theme="dark">
+            <a href="https://sph.umd.edu/academics/departments-units">View All Departments &amp; Units</a>
+          </umd-element-call-to-action>
         </div>
-      </umd-element-section-intro>
-      <div class="sph-programs-grid">
-        <umd-element-call-to-action data-display="secondary">
-          <a href="https://sph.umd.edu/undergraduate-degrees">Undergraduate</a>
-        </umd-element-call-to-action>
-        <umd-element-call-to-action data-display="secondary">
-          <a href="https://sph.umd.edu/academics/masters-degrees">Master's</a>
-        </umd-element-call-to-action>
-        <umd-element-call-to-action data-display="secondary">
-          <a href="https://sph.umd.edu/academics/doctoral-degrees">Doctoral</a>
-        </umd-element-call-to-action>
-        <umd-element-call-to-action data-display="secondary">
-          <a href="https://sph.umd.edu/academics/certificates">Certificate Programs</a>
-        </umd-element-call-to-action>
-      </div>
-      <div style="text-align: center; margin-top: 8px;">
-        <umd-element-call-to-action>
-          <a href="https://sph.umd.edu/academics/departments-units">View All Departments and Units</a>
-        </umd-element-call-to-action>
+      </umd-element-section-intro-wide>
+
+      <div class="umd-layout-grid-columns-four">
+        <umd-element-card-overlay type="image" class="size-large" data-theme="dark">
+          <img slot="image" src="../images/small/default/card-background.webp" alt="" loading="lazy" />
+          <h3 slot="headline"><a href="https://sph.umd.edu/undergraduate-degrees">Undergraduate</a></h3>
+          <a slot="cta-icon" href="https://sph.umd.edu/undergraduate-degrees">Explore undergraduate programs</a>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay type="image" class="size-large" data-theme="dark">
+          <img slot="image" src="../images/small/default/card-background.webp" alt="" loading="lazy" />
+          <h3 slot="headline"><a href="https://sph.umd.edu/academics/masters-degrees">Master's</a></h3>
+          <a slot="cta-icon" href="https://sph.umd.edu/academics/masters-degrees">Explore master's degrees</a>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay type="image" class="size-large" data-theme="dark">
+          <img slot="image" src="../images/small/default/card-background.webp" alt="" loading="lazy" />
+          <h3 slot="headline"><a href="https://sph.umd.edu/academics/doctoral-degrees">Doctoral</a></h3>
+          <a slot="cta-icon" href="https://sph.umd.edu/academics/doctoral-degrees">Explore doctoral programs</a>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay type="image" class="size-large" data-theme="dark">
+          <img slot="image" src="../images/small/default/card-background.webp" alt="" loading="lazy" />
+          <h3 slot="headline"><a href="https://sph.umd.edu/academics/certificates">Certificate Programs</a></h3>
+          <a slot="cta-icon" href="https://sph.umd.edu/academics/certificates">Explore certificates</a>
+        </umd-element-card-overlay>
       </div>
     </div>
   </section>
 
-  <!-- AI FOR PUBLIC HEALTH — Pathway feature highlighting the AI initiative -->
-  <section class="umd-layout-vertical-landing" style="background: #000;">
-    <umd-element-pathway data-theme="dark" data-layout-image-position="left">
-      <img slot="image" src="../images/sph/hero-ai-banner.png" alt="UMD banner promoting AI for Public Health: Leading Forward" />
-      <p slot="eyebrow">Research &amp; Impact</p>
-      <h2 slot="headline">AI for Public Health</h2>
-      <div slot="text">
-        <p>The University of Maryland School of Public Health is leading the way in harnessing artificial intelligence to address the most pressing public health challenges of our time.</p>
-      </div>
-      <div slot="actions">
-        <umd-element-call-to-action data-display="primary" data-theme="dark">
-          <a href="https://sph.umd.edu/research-impact/ai-public-health">Read AI News</a>
-        </umd-element-call-to-action>
-      </div>
-    </umd-element-pathway>
-  </section>
-
-  <!-- LATEST NEWS — Section intro wide + 6 standard cards in a 3-column grid -->
+  <!-- LATEST NEWS — section-intro-wide + 3-column news card grid -->
   <section class="umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-larger">
-      <div class="umd-layout-vertical-landing-child">
-        <umd-element-section-intro-wide>
-          <h2 slot="headline">Latest News</h2>
-          <div slot="actions">
-            <umd-element-call-to-action>
-              <a href="https://sph.umd.edu/news">View More Articles</a>
-            </umd-element-call-to-action>
-          </div>
-        </umd-element-section-intro-wide>
-      </div>
-      <div class="sph-card-grid">
-        <umd-element-card data-aligned>
-          <a slot="image" href="https://sph.umd.edu/news/umd-psychologist-taps-small-town-roots-treat-rural-maryland-teens">
-            <img src="../images/sph/news-psychologist.jpg" alt="White man with blond hair in beige top standing in front of marble wall looks to camera with a small smile" />
-          </a>
-          <p slot="eyebrow">News</p>
-          <h3 slot="headline"><a href="https://sph.umd.edu/news/umd-psychologist-taps-small-town-roots-treat-rural-maryland-teens">UMD psychologist taps small-town roots to treat rural Maryland teens</a></h3>
-        </umd-element-card>
-
-        <umd-element-card data-aligned>
-          <a slot="image" href="https://sph.umd.edu/news/testing-drinking-waters-maryland">
-            <img src="../images/sph/news-water-testing.png" alt="Black man researcher in hazmat suit collects water from an outside faucet" />
-          </a>
-          <p slot="eyebrow">News</p>
-          <h3 slot="headline"><a href="https://sph.umd.edu/news/testing-drinking-waters-maryland">Testing the (drinking) waters in Maryland</a></h3>
-        </umd-element-card>
-
-        <umd-element-card data-aligned>
-          <a slot="image" href="https://www.instagram.com/reel/DU8n_SSktUx/">
-            <img src="../images/sph/news-cnn.png" alt="Male journalist interviewing female researcher on tv" />
-          </a>
-          <p slot="eyebrow">Video</p>
-          <h3 slot="headline"><a href="https://www.instagram.com/reel/DU8n_SSktUx/">SPH Water Emergency Team on CNN</a></h3>
-        </umd-element-card>
-
-        <umd-element-card data-aligned>
-          <a slot="image" href="https://sph.umd.edu/news/sph-aim-welcome-distinguished-artificial-intelligence-scholar-yulin-hswen">
-            <img src="../images/sph/news-ai-scholar.png" alt="Headshot photo of professor Yulin Hswen" />
-          </a>
-          <p slot="eyebrow">News</p>
-          <h3 slot="headline"><a href="https://sph.umd.edu/news/sph-aim-welcome-distinguished-artificial-intelligence-scholar-yulin-hswen">SPH, AIM welcome Distinguished Artificial Intelligence Scholar Yulin Hswen</a></h3>
-        </umd-element-card>
-
-        <umd-element-card data-aligned>
-          <a slot="image" href="https://sph.umd.edu/news/elevated-e-coli-staph-still-detected-potomac-river-4-weeks-after-sewage-spill">
-            <img src="../images/sph/news-potomac.png" alt="Grad student takes a water sample near the Potomac river sewage spill site" />
-          </a>
-          <p slot="eyebrow">News</p>
-          <h3 slot="headline"><a href="https://sph.umd.edu/news/elevated-e-coli-staph-still-detected-potomac-river-4-weeks-after-sewage-spill">Elevated E. coli, staph still detected in Potomac river 4 weeks after sewage spill</a></h3>
-        </umd-element-card>
-
-        <umd-element-card data-aligned>
-          <a slot="image" href="https://sph.umd.edu/news/growing-global-health-and-social-care-collaborations">
-            <img src="../images/sph/news-global-health.png" alt="A group of international scholars gather for photo" />
-          </a>
-          <p slot="eyebrow">News</p>
-          <h3 slot="headline"><a href="https://sph.umd.edu/news/growing-global-health-and-social-care-collaborations">Growing global health and social care collaborations</a></h3>
-        </umd-element-card>
-      </div>
-    </div>
-  </section>
-
-  <!-- TESTIMONIAL QUOTE — Pull quote from 2025 commencement speaker -->
-  <section class="umd-layout-vertical-landing">
-    <div class="umd-layout-space-horizontal-normal">
-      <umd-element-quote data-display="featured">
-        <p slot="quote">Make sure that you're really passionate about what it is that you're learning and what you're doing and the people that you're caring for. Always lead with empathy.</p>
-        <p slot="attribution">Crisdel Mayen Velasquez '25, Commencement Speaker</p>
-        <img slot="image" src="../images/sph/quote-portrait.jpg" alt="Female student outside by flowers" />
-      </umd-element-quote>
-    </div>
-  </section>
-
-  <!-- UPCOMING EVENTS — Event cards + featured event side by side -->
-  <section class="umd-layout-vertical-landing">
-    <div class="umd-layout-space-horizontal-larger">
-      <div class="umd-layout-vertical-landing-child">
-        <umd-element-section-intro-wide>
-          <h2 slot="headline">Upcoming Events</h2>
-          <div slot="actions">
-            <umd-element-call-to-action>
-              <a href="https://sph.umd.edu/events">View More Events</a>
-            </umd-element-call-to-action>
-          </div>
-        </umd-element-section-intro-wide>
-      </div>
-      <div class="sph-events-grid">
-        <!-- Event list -->
-        <div class="sph-events-list">
-          <umd-element-event>
-            <h3 slot="headline"><a href="https://sph.umd.edu/events/passover-2026">Passover 2026</a></h3>
-            <time slot="date-start-iso" datetime="2026-04-01T00:00:00">April 1, 2026</time>
-          </umd-element-event>
-
-          <umd-element-event>
-            <h3 slot="headline"><a href="https://sph.umd.edu/events/health-through-art">Health Through Art</a></h3>
-            <time slot="date-start-iso" datetime="2026-04-06T00:00:00">April 6, 2026</time>
-          </umd-element-event>
-
-          <umd-element-event>
-            <h3 slot="headline"><a href="https://sph.umd.edu/events/national-public-health-week-2026">National Public Health Week 2026</a></h3>
-            <time slot="date-start-iso" datetime="2026-04-06T00:00:00">April 6, 2026</time>
-          </umd-element-event>
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Latest News</h2>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://sph.umd.edu/news">View More Articles</a>
+          </umd-element-call-to-action>
         </div>
+      </umd-element-section-intro-wide>
+      <div class="sph-news-grid">
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://sph.umd.edu/news/student-run-study-abroad-inspires-creative-public-health-approaches">
+            <img src="../images/projects/sph/3_0.png" alt="Young Indian pupil watches as UMD student writes on her paper in a classroom in Varanasi" />
+          </a>
+          <p slot="eyebrow">News</p>
+          <h3 slot="headline"><a href="https://sph.umd.edu/news/student-run-study-abroad-inspires-creative-public-health-approaches">Student-run study abroad inspires creative public health approaches</a></h3>
+        </umd-element-card>
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://sph.umd.edu/news/honoring-2026-school-public-health-award-recipients">
+            <img src="../images/projects/sph/WEB_HEADER__1400_x_1050_px__17.png" alt="Group of five women and men dressed up and posing beside SPH banner" />
+          </a>
+          <p slot="eyebrow">News</p>
+          <h3 slot="headline"><a href="https://sph.umd.edu/news/honoring-2026-school-public-health-award-recipients">Honoring the 2026 School of Public Health Award Recipients</a></h3>
+        </umd-element-card>
+        <umd-element-card data-aligned>
+          <a slot="image" href="https://sph.umd.edu/news/alumni-network-honors-public-health-leaders">
+            <img src="../images/projects/sph/2025_PHEEL_AMA_Panel_Graphic_-_LinkedIn__1400_x_1050_px_.png" alt="Graphic with red background, SPH logo, and PHEEL Awardees headshots" />
+          </a>
+          <p slot="eyebrow">News</p>
+          <h3 slot="headline"><a href="https://sph.umd.edu/news/alumni-network-honors-public-health-leaders">Alumni Network honors public health leaders</a></h3>
+        </umd-element-card>
+      </div>
+    </div>
+  </section>
 
-        <!-- Featured event -->
-        <umd-element-event data-display="feature">
+  <!-- STUDENT QUOTE — image-expand with featured quote -->
+  <section class="umd-layout-vertical-landing">
+    <umd-layout-image-expand>
+      <div slot="content" class="block max-w-[480px] w-full mr-auto">
+        <umd-element-quote type="feature" data-visual-size="" data-animation="false" data-visual-transparent="true" data-theme="dark">
+          <div slot="quote">
+            <p>Make sure that you're really passionate about what it is that you're learning and what you're doing and the people that you're caring for. Always lead with empathy.</p>
+          </div>
+          <p slot="attribution">Crisdel Mayen Velasquez '25</p>
+          <p slot="attribution-sub-text">Commencement Speaker</p>
+          <div slot="actions">
+            <umd-element-call-to-action data-display="secondary" data-theme="dark">
+              <a href="https://sph.umd.edu/news">Read more stories</a>
+            </umd-element-call-to-action>
+          </div>
+        </umd-element-quote>
+      </div>
+      <img slot="image" src="../images/projects/sph/IMG_9887.JPG" alt="Female student outside by flowers" />
+    </umd-layout-image-expand>
+  </section>
+
+  <!-- EVENTS — sticky-columns: featured event (sticky) + event list (static) -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger umd-watermark">
+      <span aria-hidden="true" role="presentation">Events</span>
+    </div>
+    <div class="umd-layout-space-horizontal-larger">
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Upcoming Events</h2>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://sph.umd.edu/events">View All Events</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro-wide>
+    </div>
+
+    <umd-element-sticky-columns class="umd-layout-space-horizontal-larger" data-layout-position="100px">
+      <!-- Sticky: featured event in promo style -->
+      <div slot="sticky-column">
+        <umd-element-event display="promo">
+          <img slot="image" src="../images/projects/sph/52827364201_6daf89bf7c_o.jpg" alt="Students presenting posters at Public Health Research Day" />
+          <time slot="start-date-iso" datetime="2026-05-01T09:00:00">May 1, 2026</time>
+          <time slot="end-date-iso" datetime="2026-05-01T17:00:00">May 1, 2026</time>
           <h3 slot="headline"><a href="https://sph.umd.edu/research-impact/public-health-research-day-2026">Public Health Research Day 2026</a></h3>
-          <time slot="date-start-iso" datetime="2026-04-09T00:00:00">April 9, 2026</time>
-          <img slot="image" src="../images/sph/events-research-day.jpg" alt="Female student explaining her poster presentation" />
-          <div slot="actions">
-            <umd-element-call-to-action data-display="primary">
-              <a href="https://sph.umd.edu/research-impact/public-health-research-day-2026">View Event</a>
-            </umd-element-call-to-action>
+          <p slot="location">University of Maryland, College Park</p>
+          <div slot="text">
+            <p>Share your research with the UMD community at our annual showcase of student and faculty work in public health.</p>
           </div>
         </umd-element-event>
       </div>
-    </div>
-  </section>
 
-  <!-- CTA SECTION — "Become a Public Health Terp!" -->
-  <section class="umd-layout-vertical-landing">
-    <umd-element-hero-minimal data-theme="maryland">
-      <h2 slot="headline">Become a Public Health Terp!</h2>
-      <div slot="actions">
-        <umd-element-call-to-action data-display="primary">
-          <a href="https://sph.umd.edu/how-apply">How to Apply</a>
-        </umd-element-call-to-action>
-        <umd-element-call-to-action data-display="secondary">
-          <a href="https://sph.umd.edu/admissions/request-information">Request Info</a>
-        </umd-element-call-to-action>
+      <!-- Static: upcoming SPH events -->
+      <div slot="static-column">
+        <div class="umd-layout-grid-gap-stacked">
+          <umd-element-event data-display="list">
+            <time slot="start-date-iso" datetime="2026-04-23T10:30:00">April 23, 2026</time>
+            <time slot="end-date-iso" datetime="2026-04-23T11:00:00">April 23, 2026</time>
+            <h3 slot="headline"><a href="https://sph.umd.edu/events/take-your-kid-workschool-day-2026">Take Your Kid to Work/School Day 2026</a></h3>
+            <p slot="location">SPH Wellness Room 0113</p>
+          </umd-element-event>
+          <umd-element-event data-display="list">
+            <time slot="start-date-iso" datetime="2026-04-24T00:00:00">April 24, 2026</time>
+            <time slot="end-date-iso" datetime="2026-04-24T00:00:00">April 24, 2026</time>
+            <h3 slot="headline"><a href="https://sph.umd.edu/events/info-session-nacchos-student-section-program">Info Session for NACCHO's Student Section Program</a></h3>
+            <p slot="location">Virtual</p>
+          </umd-element-event>
+          <umd-element-event data-display="list">
+            <time slot="start-date-iso" datetime="2026-04-25T00:00:00">April 25, 2026</time>
+            <time slot="end-date-iso" datetime="2026-04-25T00:00:00">April 25, 2026</time>
+            <h3 slot="headline"><a href="https://sph.umd.edu/events/maryland-day-2026">Maryland Day 2026</a></h3>
+            <p slot="location">UMD Campus — McKeldin Mall &amp; SPH Building</p>
+          </umd-element-event>
+          <umd-element-event data-display="list">
+            <time slot="start-date-iso" datetime="2026-04-27T00:00:00">April 27, 2026</time>
+            <time slot="end-date-iso" datetime="2026-04-29T00:00:00">April 29, 2026</time>
+            <h3 slot="headline"><a href="https://sph.umd.edu/events/spring-2026-universitas-21-international-health-research-exchange-u21hrex-symposium-april-27-29th">U21 International Health Research Exchange Symposium</a></h3>
+            <p slot="location">University of Birmingham, UK</p>
+          </umd-element-event>
+          <umd-element-event data-display="list">
+            <time slot="start-date-iso" datetime="2026-04-28T11:00:00">April 28, 2026</time>
+            <time slot="end-date-iso" datetime="2026-04-28T14:00:00">April 28, 2026</time>
+            <h3 slot="headline"><a href="https://sph.umd.edu/events/happy-well-bites-2026-halal-grill-food-truck">Happy &amp; Well Bites 2026: Halal Grill Food Truck</a></h3>
+            <p slot="location">Front of School of Public Health</p>
+          </umd-element-event>
+        </div>
       </div>
-    </umd-element-hero-minimal>
+    </umd-element-sticky-columns>
   </section>
 
-  <!-- ========================================
-       4. FOOTER
-  ======================================== -->
-  <umd-element-footer>
-    <a slot="logo" href="https://sph.umd.edu">
-      <img src="../images/sph/sph-logo.svg" alt="University of Maryland School of Public Health" />
-    </a>
-    <p slot="contact-headline">School of Public Health</p>
-    <address slot="address">
-      4200 Valley Drive, Suite 2242<br />
-      College Park, Maryland 20742-2611
-    </address>
-    <div slot="contact-links">
-      <a href="tel:3014052438">(301) 405-2438</a>
+  <!-- CTA — "Become a Public Health Terp!" section intro with 2 CTAs -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-normal">
+      <umd-element-section-intro include-separator>
+        <h2 slot="headline">Become a Public Health Terp!</h2>
+        <div slot="actions">
+          <div class="umd-layout-grid-inline-tablet-rows">
+            <umd-element-call-to-action data-display="primary">
+              <a href="https://sph.umd.edu/how-apply">How to Apply</a>
+            </umd-element-call-to-action>
+            <umd-element-call-to-action data-display="secondary">
+              <a href="https://sph.umd.edu/admissions/request-information">Request Info</a>
+            </umd-element-call-to-action>
+          </div>
+        </div>
+      </umd-element-section-intro>
     </div>
-    <ul slot="social-links">
-      <li><a href="https://twitter.com/UMDPublicHealth">Twitter</a></li>
-      <li><a href="https://www.facebook.com/UMD.SPH">Facebook</a></li>
-      <li><a href="https://www.instagram.com/umdpublichealth/">Instagram</a></li>
-      <li><a href="https://www.youtube.com/c/UniversityofMarylandSchoolofPublicHealth">YouTube</a></li>
-    </ul>
-    <div slot="utility-links">
-      <ul>
-        <li><a href="https://sph.umd.edu/contact-us">Contact</a></li>
-        <li><a href="https://sph.umd.edu/admissions/visit-sph">Visit</a></li>
-        <li><a href="https://sph.umd.edu/apply-school-public-health">Apply</a></li>
-        <li><a href="https://sph.umd.edu/invest-public-health">Give</a></li>
-        <li><a href="https://ejobs.umd.edu/postings/search">Employment</a></li>
-        <li><a href="https://www.umd.edu/web-accessibility">Web Accessibility</a></li>
-      </ul>
-    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <umd-element-footer data-display="visual">
+    <a slot="logo" href="/"><img src="../images/logos/footer-logo.svg" alt="University of Maryland" /></a>
+    <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="" />
   </umd-element-footer>
 
 </body>

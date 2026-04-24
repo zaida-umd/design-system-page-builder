@@ -221,12 +221,11 @@
     /* ====================
        GRID UTILITIES
     ==================== */
-    .umd-layout-grid-child-fill-height {
-      display: flex;
-      flex-direction: column;
-    }
-    .umd-layout-grid-child-fill-height > * {
-      flex: 1;
+    @media (min-width: 768px) {
+      .umd-layout-grid-child-fill-height,
+      .umd-layout-grid-child-fill-height > * {
+        height: 100%;
+      }
     }
 
     /* Two-column grid */
@@ -249,6 +248,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      justify-content: flex-start;
     }
     @media (min-width: 650px) {
       .umd-layout-grid-inline-tablet-rows {
@@ -669,7 +669,7 @@
 
         <umd-element-card data-aligned>
           <a slot="image" href="https://ischool.umd.edu/news/when-the-feed-becomes-the-front-line/">
-            <img src="../images/War-Room-2048x1024-1-1200x600.png" alt="Government surveillance agency and military joint operation agent working at system control center" />
+            <img src="../images/projects/ischool/War-Room-2048x1024-1-1200x600.png" alt="Government surveillance agency and military joint operation agent working at system control center" />
           </a>
           <p slot="eyebrow">Research</p>
           <h3 slot="headline">
@@ -681,7 +681,7 @@
 
         <umd-element-card data-aligned>
           <a slot="image" href="https://ischool.umd.edu/news/chi-2026-roundup-hcil-students-and-faculty-publish-19-papers-win-two-honorable-mentions/">
-            <img src="../images/CHI-2026-1200x600.png" alt="CHI 2026 Logo" />
+            <img src="../images/projects/ischool/CHI-2026-1200x600.png" alt="CHI 2026 Logo" />
           </a>
           <p slot="eyebrow">Research</p>
           <h3 slot="headline">
@@ -693,7 +693,7 @@
 
         <umd-element-card data-aligned>
           <a slot="image" href="https://ischool.umd.edu/news/for-caregivers-making-over-the-counter-medication-decisions-alone-help-may-be-on-the-way/">
-            <img src="../images/Smart-Phone-Medicine-2048x1024-1-1200x600.png" alt="Middle age woman using smartphone holding pills at home" />
+            <img src="../images/projects/ischool/Smart-Phone-Medicine-2048x1024-1-1200x600.png" alt="Middle age woman using smartphone holding pills at home" />
           </a>
           <p slot="eyebrow">Research</p>
           <h3 slot="headline">
@@ -705,7 +705,7 @@
 
         <umd-element-card data-aligned>
           <a slot="image" href="https://ischool.umd.edu/news/university-of-maryland-appoints-new-college-of-information-dean/">
-            <img src="../images/John-Bertot-Header-2048x1024-1-1200x600.png" alt="John Bertot, new College of Information Dean" />
+            <img src="../images/projects/ischool/John-Bertot-Header-2048x1024-1-1200x600.png" alt="John Bertot, new College of Information Dean" />
           </a>
           <p slot="eyebrow">College News</p>
           <h3 slot="headline">

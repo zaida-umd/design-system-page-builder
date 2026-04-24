@@ -188,6 +188,9 @@
       grid-template-columns: 1fr;
       gap: 24px;
     }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-gap-stacked { gap: 40px; }
+    }
 
     /* Largest uppercase heading — used on sticky-column h2 */
     .umd-sans-largest-uppercase {
@@ -233,6 +236,7 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+      justify-content: flex-start;
     }
     @media (min-width: 650px) {
       .umd-layout-grid-inline-tablet-rows {

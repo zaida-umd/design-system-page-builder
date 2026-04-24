@@ -1161,3 +1161,31 @@ Non-overlay pathway sections (`umd-element-pathway` without `data-display="overl
 This applies to: standard pathway (no `data-display`), `data-display="hero"`, `data-display="sticky"`.
 
 **Overlay pathway (`data-display="overlay"`) is exempt** — it manages its own internal padding.
+
+---
+
+## 26. `umd-element-event` — promo and feature require deprecated `display` attribute
+
+`umd-element-event` is the only component where `data-display="promo"` and `data-display="feature"` do not work. In the design system source, `isDisplay.promo` and `isDisplay.feature` check only the deprecated `display` attribute — not `data-display`. Using `data-display="promo"` fails silently and renders the default block card instead.
+
+**Rule:** Use `display="promo"` and `display="feature"` (the deprecated attribute name) on `umd-element-event`. All other display variants on this component (`list`) and `data-display` on all other components work normally.
+
+```html
+<!-- ✓ Correct — uses deprecated display attribute for promo -->
+<umd-element-event display="promo">
+  <img slot="image" src="/event.jpg" alt="Event photo" />
+  <h3 slot="headline"><a href="/events/symposium">Annual Symposium</a></h3>
+  <time slot="start-date-iso" datetime="2026-05-01T09:00:00">May 1, 2026</time>
+</umd-element-event>
+
+<!-- ✗ Wrong — data-display="promo" silently renders as block card -->
+<umd-element-event data-display="promo">
+  <img slot="image" src="/event.jpg" alt="Event photo" />
+  <h3 slot="headline"><a href="/events/symposium">Annual Symposium</a></h3>
+  <time slot="start-date-iso" datetime="2026-05-01T09:00:00">May 1, 2026</time>
+</umd-element-event>
+```
+
+The `promo` display renders text overlaid on the background image (overlay card style) — it requires `slot="image"`. The `feature` display uses a large date sign with an eyebrow ribbon.
+
+Note: `data-display="list"` on `umd-element-event` works correctly with `data-display` (it has both old and new attribute support).

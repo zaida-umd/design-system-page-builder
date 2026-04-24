@@ -15,6 +15,16 @@
     }
   },
   "large": {
+    "large/campus/hornbake-plaza-fall.jpg": {
+      "alt": "Hornbake Plaza as viewed from Hornbake Library, with fall colors and students walking on a crisp fall day",
+      "tags": ["campus", "buildings"],
+      "default": false
+    },
+    "large/campus/hornbake-plaza.jpg": {
+      "alt": "Hornbake Plaza on the University of Maryland campus",
+      "tags": ["campus", "buildings"],
+      "default": false
+    },
     "large/campus/football-game-stands.jpg": {
       "alt": "Fans filling the stands at a Maryland football game",
       "tags": ["campus", "events", "athletics"],
@@ -30,6 +40,16 @@
       "tags": ["campus", "buildings"],
       "default": false
     },
+    "large/campus/Armory_Detail_05252010_004.JPG": {
+      "alt": "Architectural detail of the University of Maryland Armory building",
+      "tags": ["campus", "buildings"],
+      "default": false
+    },
+    "large/campus/PaintBranchBridge_Lights_07152018_6745_Final.jpg": {
+      "alt": "Paint Branch Bridge illuminated at night on the University of Maryland campus",
+      "tags": ["campus", "buildings"],
+      "default": false
+    },
     "large/default/visit-m-lawn.jpg": {
       "alt": "Students on the M lawn at the University of Maryland",
       "tags": ["campus", "people", "students"],
@@ -40,9 +60,34 @@
       "tags": ["campus", "people", "students"],
       "default": true
     },
+    "large/default/forward-pattern.jpg": {
+      "alt": "University of Maryland Fearlessly Forward pattern",
+      "tags": ["campus"],
+      "default": false
+    },
+    "large/events/0381_UMD Comencement 2024.jpg": {
+      "alt": "University of Maryland Commencement ceremony 2024",
+      "tags": ["events", "people", "students"],
+      "default": false
+    },
+    "large/events/2Commencement_05212021_JC_0344.jpeg": {
+      "alt": "University of Maryland Commencement ceremony 2021",
+      "tags": ["events", "people", "students"],
+      "default": false
+    },
+    "large/events/large-DE0F740A-EDA6-48B7-BBB21600F6ABAB21.jpg": {
+      "alt": "University of Maryland campus event",
+      "tags": ["events", "campus"],
+      "default": false
+    },
     "large/people/umd-smiling-graduates.jpg": {
       "alt": "Smiling UMD graduates at commencement",
       "tags": ["people", "students", "events"],
+      "default": false
+    },
+    "large/people/ENGR_LabShots_Battery_02222024_JC_9717.jpg": {
+      "alt": "Engineering researcher working on battery technology in a lab",
+      "tags": ["people", "research"],
       "default": false
     }
   },
@@ -66,6 +111,16 @@
       "alt": "Testudo statue in front of McKeldin Library",
       "tags": ["campus", "buildings"],
       "default": true
+    },
+    "small/default/Foward-Arrows_Loop_Updated_102325_12-fps.webp": {
+      "alt": "Animated Fearlessly Forward arrows",
+      "tags": ["campus"],
+      "default": false
+    },
+    "small/default/MT-Accolades_23-04_v4.gif": {
+      "alt": "University of Maryland accolades and rankings",
+      "tags": ["campus"],
+      "default": false
     },
     "small/people/2-female-students-in-booth-pathway1.jpg": {
       "alt": "Two female students talking in a booth",
@@ -95,6 +150,36 @@
     "small/people/student-group.jpg": {
       "alt": "Group of UMD students together",
       "tags": ["people", "students"],
+      "default": false
+    },
+    "small/people/2-people-working-togeter-laptop.png": {
+      "alt": "Two people working together at a laptop",
+      "tags": ["people", "students"],
+      "default": false
+    },
+    "small/people/AGNR_OutdoorClass_11202021_SC_5493_edit.jpg": {
+      "alt": "Students in an outdoor class in a field setting",
+      "tags": ["people", "students", "campus"],
+      "default": false
+    },
+    "small/people/ai-image2.jpg": {
+      "alt": "AI and technology research imagery",
+      "tags": ["people", "research"],
+      "default": false
+    },
+    "small/people/professor-portrait.jpg": {
+      "alt": "Portrait of a University of Maryland professor",
+      "tags": ["people"],
+      "default": false
+    },
+    "small/research/__Research-quantum.jpg": {
+      "alt": "Quantum computing research at the University of Maryland",
+      "tags": ["research"],
+      "default": false
+    },
+    "small/research/baby-turtle.jpg": {
+      "alt": "Baby turtle — wildlife and ecology research",
+      "tags": ["research", "campus"],
       "default": false
     }
   }

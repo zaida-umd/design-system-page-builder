@@ -167,12 +167,11 @@
     /* ====================
        GRID UTILITIES
     ==================== */
-    .umd-layout-grid-child-fill-height {
-      display: flex;
-      flex-direction: column;
-    }
-    .umd-layout-grid-child-fill-height > * {
-      flex: 1;
+    @media (min-width: 768px) {
+      .umd-layout-grid-child-fill-height,
+      .umd-layout-grid-child-fill-height > * {
+        height: 100%;
+      }
     }
 
     /* ====================
@@ -193,10 +192,14 @@
       grid-template-columns: 1fr;
       gap: 24px;
     }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-gap-stacked { gap: 40px; }
+    }
     .umd-layout-grid-inline-tablet-rows {
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
+      justify-content: flex-start;
     }
 
     /* ====================
@@ -284,7 +287,7 @@
   ======================================== -->
   <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
     <a slot="logo" href="https://cmns.umd.edu">
-      <img src="../images/cmns/UMD_CMNS_Left_Color_1.png" alt="College of Computer, Mathematical, and Natural Sciences" />
+      <img src="../images/projects/cmns/UMD_CMNS_Left_Color_1.png" alt="College of Computer, Mathematical, and Natural Sciences" />
     </a>
     <nav slot="main-navigation">
 
@@ -366,7 +369,7 @@
   ======================================== -->
   <section class="umd-layout-vertical-landing">
     <umd-element-hero data-theme="dark">
-      <img slot="image" src="../images/cmns/We-Are-CMNS-YT-Thumbnail-final.jpg" alt="We Are CMNS — College of Computer, Mathematical, and Natural Sciences" />
+      <img slot="image" src="../images/projects/cmns/We-Are-CMNS-YT-Thumbnail-final.jpg" alt="We Are CMNS — College of Computer, Mathematical, and Natural Sciences" />
       <div slot="actions">
         <umd-element-call-to-action data-display="primary">
           <a href="https://youtu.be/qjNm6HemnoM">Watch Video</a>
@@ -422,7 +425,7 @@
       <!-- Sticky column: YouTube feature card -->
       <div slot="sticky-column">
         <umd-element-card-overlay type="image" class="size-large">
-          <img slot="image" src="../images/cmns/ray-video-still.jpg" alt="Fighting Mosquitoes with Fungi" />
+          <img slot="image" src="../images/projects/cmns/ray-video-still.jpg" alt="Fighting Mosquitoes with Fungi" />
           <h3 slot="headline">
             <a href="https://www.youtube.com/watch?v=ammKuIl3LpY">Fighting Mosquitoes with Fungi</a>
           </h3>
@@ -437,7 +440,7 @@
 
           <umd-element-card data-display="list">
             <a slot="image" href="/news-events/news/we-are-cmns">
-              <img src="../images/cmns/we-are-cmns-screenshot.png" alt="Meet the College of Computer, Mathematical, and Natural Sciences at UMD" />
+              <img src="../images/projects/cmns/we-are-cmns-screenshot.png" alt="Meet the College of Computer, Mathematical, and Natural Sciences at UMD" />
             </a>
             <h3 slot="headline">
               <a href="/news-events/news/we-are-cmns">Meet the College of Computer, Mathematical, and Natural Sciences at UMD</a>
@@ -446,7 +449,7 @@
 
           <umd-element-card data-display="list">
             <a slot="image" href="/news-events/news/atmospheric-oceanic-science-major-allison-fenley-noaa-hollings-scholarship">
-              <img src="../images/cmns/allison-fenley.JPG" alt="Allison Fenley" />
+              <img src="../images/projects/cmns/allison-fenley.JPG" alt="Allison Fenley" />
             </a>
             <h3 slot="headline">
               <a href="/news-events/news/atmospheric-oceanic-science-major-allison-fenley-noaa-hollings-scholarship">UMD Atmospheric and Oceanic Science Major Allison Fenley Awarded 2026 Hollings Scholarship</a>
@@ -455,7 +458,7 @@
 
           <umd-element-card data-display="list">
             <a slot="image" href="/news-events/news/atmospheric-oceanic-science-major-donovan-fry-noaa-hollings-scholarship">
-              <img src="../images/cmns/donovan-fry.jpg" alt="Donovan Fry" />
+              <img src="../images/projects/cmns/donovan-fry.jpg" alt="Donovan Fry" />
             </a>
             <h3 slot="headline">
               <a href="/news-events/news/atmospheric-oceanic-science-major-donovan-fry-noaa-hollings-scholarship">UMD Atmospheric and Oceanic Science Major Donovan Fry Awarded 2026 Hollings Scholarship</a>
@@ -464,7 +467,7 @@
 
           <umd-element-card data-display="list">
             <a slot="image" href="/news-events/news/jenna-strauch-noaa-hollings-scholarship">
-              <img src="../images/cmns/img_1457.jpeg" alt="Jenna Strauch" />
+              <img src="../images/projects/cmns/img_1457.jpeg" alt="Jenna Strauch" />
             </a>
             <h3 slot="headline">
               <a href="/news-events/news/jenna-strauch-noaa-hollings-scholarship">UMD Sophomore Jenna Strauch Earns Prestigious NOAA Hollings Scholarship</a>
@@ -473,7 +476,7 @@
 
           <umd-element-card data-display="list">
             <a slot="image" href="/news-events/news/atmospheric-oceanic-science-major-felix-gomez-noaa-hollings-scholarship">
-              <img src="../images/cmns/20250430_220323_059-2.jpg" alt="Felix Gomez" />
+              <img src="../images/projects/cmns/20250430_220323_059-2.jpg" alt="Felix Gomez" />
             </a>
             <h3 slot="headline">
               <a href="/news-events/news/atmospheric-oceanic-science-major-felix-gomez-noaa-hollings-scholarship">UMD Atmospheric and Oceanic Science Major Felix Gomez Awarded Prestigious NOAA Hollings Scholarship</a>
@@ -482,7 +485,7 @@
 
           <umd-element-card data-display="list">
             <a slot="image" href="/news-events/news/nathan-jud-phd-biological-sciences-paleobotanist-william-jewell-college">
-              <img src="../images/cmns/nathan-at-dnm-2025.png" alt="Nathan Jud" />
+              <img src="../images/projects/cmns/nathan-at-dnm-2025.png" alt="Nathan Jud" />
             </a>
             <h3 slot="headline">
               <a href="/news-events/news/nathan-jud-phd-biological-sciences-paleobotanist-william-jewell-college">UMD Alum Tells Plants' Evolutionary Tale One Fossil at a Time</a>
@@ -491,7 +494,7 @@
 
           <umd-element-card data-display="list">
             <a slot="image" href="/news-events/news/peter-demuth-cancer-immunotherapy-elicio">
-              <img src="../images/cmns/demuth-sq.jpg" alt="Peter DeMuth" />
+              <img src="../images/projects/cmns/demuth-sq.jpg" alt="Peter DeMuth" />
             </a>
             <h3 slot="headline">
               <a href="/news-events/news/peter-demuth-cancer-immunotherapy-elicio">Fighting Cancer with Immunotherapy</a>
@@ -522,7 +525,7 @@
     </div>
 
     <umd-element-pathway data-layout-image-position="left">
-      <img slot="image" src="../images/cmns/4-grand-challenges.jpg" alt="CMNS Grand Challenges — Climate Change, Human Disease, Artificial Intelligence, Quantum Computing, Space Exploration" />
+      <img slot="image" src="../images/projects/cmns/4-grand-challenges.jpg" alt="CMNS Grand Challenges — Climate Change, Human Disease, Artificial Intelligence, Quantum Computing, Space Exploration" />
       <h2 slot="headline">Explore Our Research Areas</h2>
       <div slot="text">
         <umd-element-tabs>
@@ -568,28 +571,28 @@
       <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:24px;">
 
         <umd-element-card-overlay type="image">
-          <img slot="image" src="../images/cmns/ESJ-class-in-session-square.jpg" alt="Students in a class session" />
+          <img slot="image" src="../images/projects/cmns/ESJ-class-in-session-square.jpg" alt="Students in a class session" />
           <h3 slot="headline">
             <a href="/undergraduate/future-students/majors-minors">Majors &amp; Minors</a>
           </h3>
         </umd-element-card-overlay>
 
         <umd-element-card-overlay type="image">
-          <img slot="image" src="../images/cmns/baby-terrapin-square.jpg" alt="Baby Terrapin" />
+          <img slot="image" src="../images/projects/cmns/baby-terrapin-square.jpg" alt="Baby Terrapin" />
           <h3 slot="headline">
             <a href="/about/alumni">Alumni</a>
           </h3>
         </umd-element-card-overlay>
 
         <umd-element-card-overlay type="image">
-          <img slot="image" src="../images/cmns/Odyssey-covers-square.jpg" alt="Odyssey Magazine covers" />
+          <img slot="image" src="../images/projects/cmns/Odyssey-covers-square.jpg" alt="Odyssey Magazine covers" />
           <h3 slot="headline">
             <a href="/news-events/odyssey">Odyssey Magazine</a>
           </h3>
         </umd-element-card-overlay>
 
         <umd-element-card-overlay type="image">
-          <img slot="image" src="../images/cmns/thumbnail-logo-AIM-sq.png" alt="Research Institutes and Centers" />
+          <img slot="image" src="../images/projects/cmns/thumbnail-logo-AIM-sq.png" alt="Research Institutes and Centers" />
           <h3 slot="headline">
             <a href="/research/institutes-centers">Research Institutes &amp; Centers</a>
           </h3>
@@ -604,7 +607,7 @@
   ======================================== -->
   <umd-element-footer>
     <a slot="logo" href="https://cmns.umd.edu">
-      <img src="../images/cmns/UMD_CMNS_Left_Color_W.png" alt="College of Computer, Mathematical, and Natural Sciences" />
+      <img src="../images/projects/cmns/UMD_CMNS_Left_Color_W.png" alt="College of Computer, Mathematical, and Natural Sciences" />
     </a>
     <p slot="contact-headline">College of Computer, Mathematical, and Natural Sciences</p>
     <address slot="address">

@@ -193,12 +193,11 @@
     /* ====================
        GRID UTILITIES
     ==================== */
-    .umd-layout-grid-child-fill-height {
-      display: flex;
-      flex-direction: column;
-    }
-    .umd-layout-grid-child-fill-height > * {
-      flex: 1;
+    @media (min-width: 768px) {
+      .umd-layout-grid-child-fill-height,
+      .umd-layout-grid-child-fill-height > * {
+        height: 100%;
+      }
     }
 
     /* ====================

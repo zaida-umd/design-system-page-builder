@@ -315,6 +315,26 @@ p, li, label, input, textarea, select {
   .umd-layout-grid-gap-two { gap: 40px; }
 }
 
+/* Three-column gap grid — @universityofmaryland/web-styles-library: layout.grid.gap.three */
+.umd-layout-grid-gap-three {
+  display: grid;
+}
+@media (max-width: 649px) {
+  .umd-layout-grid-gap-three {
+    grid-gap: 32px;
+  }
+}
+@media (min-width: 650px) {
+  .umd-layout-grid-gap-three {
+    grid-gap: 32px;
+  }
+}
+@media (min-width: 768px) {
+  .umd-layout-grid-gap-three {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 /* Four-column grid — @universityofmaryland/web-styles-library: layout.grid.columnsFour */
 .umd-layout-grid-columns-four {
   display: grid;

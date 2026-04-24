@@ -65,6 +65,7 @@ Also check these specific patterns:
 - **Section-intro visual enrichment — separator:** `umd-element-section-intro` supports `include-separator`, which adds a decorative red vertical line above the headline. Use it whenever the section-intro anchors a significant section (especially on dark or featured backgrounds). Don't leave section intros plain when the section warrants visual weight.
 - **Section-intro-wide visual enrichment — watermark:** `umd-element-section-intro-wide` benefits from a watermark word for visual depth. Split the section label: keep a short topical title in the `slot="headline"` and add `<div class="umd-watermark" aria-hidden="true"><span>[WORD]</span></div>` as the first child of the containing horizontal-space div. Example: headline = "UMD INFO", watermark = "News". The watermark div has zero height — its child span is absolutely positioned relative to the nearest `position: relative` ancestor (`.umd-layout-space-horizontal-larger` already provides this).
 - **Dark section CTA theming:** Every `umd-element-call-to-action` inside a dark section requires `data-theme="dark"`. This applies to CTAs inside `umd-element-section-intro`, hero actions, and card actions. `data-theme` does NOT cascade — set it on each CTA individually.
+- **Duplicate card-overlay CTA rows:** When `umd-element-card-overlay` is used to replace a row of standalone CTAs or navigation links — no images and no supporting body copy in the original — and that pattern appears twice on the same page, flag it as repetitive. Differentiate the secondary set by converting to `umd-element-card-icon`. Use `icon-link.svg` for internal links, `icon-new-window.svg` for external; use `-dark` icon variants on `data-theme="dark"` cards. Reserve `umd-element-card-overlay` for the set where the content is richer or more featured.
 
 **Total: X / 40**
 
@@ -80,6 +81,9 @@ List any known pitfalls for the proposed component choices. Examples:
 - "Pathway overlay variant needs full-bleed — do not wrap in horizontal spacing class"
 
 Also flag these automatically if the relevant components are in the plan:
+
+- **`umd-element-quote data-display="featured"` CTA placement:** A CTA for the quote subject should use `slot="actions"` inside the component — not a sibling element placed after the quote. Use `<div slot="actions"><umd-element-call-to-action ...><a>...</a></umd-element-call-to-action></div>`. A bare `<a slot="actions">` renders as unstyled plain text — the div wrapper is required for CTA styling to apply.
+- **`umd-layout-image-expand` content text color:** Text in `slot="content"` must be explicitly set to white (e.g. `class="text-white"` or inline `style="color:#fff"`). The component's dark overlay does not cascade text color into slotted content — without explicit white, body text renders black-on-dark and is unreadable.
 
 - **`umd-element-section-intro` + `umd-layout-grid-masonry`:** The masonry stagger applies `margin-top: -32px` (tablet) / `-40px` (desktop) on row-2 odd items, which pulls content upward and consumes the section-intro's `umd-layout-vertical-landing-child` margin-bottom. Add compensation CSS: `umd-element-section-intro + .umd-layout-grid-masonry { padding-top: 32px }` at tablet and `padding-top: 40px` at desktop. This rule is in `styles/critical.css`; pages using this pairing need it in their `<style>` block too.
 - **`umd-element-slider-events` and `umd-element-events-date`:** See registry for correct slot names and required child element types — slot name errors fail silently with no date sign rendered.

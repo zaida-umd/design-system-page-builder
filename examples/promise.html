@@ -7,11 +7,21 @@
 
   <!-- ============================================================
        UMD Critical CSS — MUST precede cdn.js
+       If cdn.js loads first, elements upgrade before :defined rules
+       exist and container-type never gets set.
+       Load order: inline <style> → <script> cdn.js → </head>
+
        SOURCE OF TRUTH: styles/critical.css
+       This <style> block is a verbatim copy of styles/critical.css.
+       When updating CSS rules, edit styles/critical.css first, then
+       copy the changes here. See REQUIRED-CSS.md for explanations
+       of what each rule does and why.
   ============================================================ -->
   <style>
     /* ====================
        GROUP 1: container-type: normal
+       These components use grid-auto-flow / internal layout that
+       breaks under inline-size containment. Do NOT move to GROUP 2.
     ==================== */
     umd-element-navigation-utility:not(:defined),
     umd-element-utility-header:not(:defined),
@@ -31,6 +41,9 @@
 
     /* ====================
        GROUP 2: container-type: inline-size
+       These components use shadow DOM @container queries that fire
+       against the host element. Without inline-size on the host,
+       two-column layouts collapse to stacked.
     ==================== */
     umd-element-hero:not(:defined),
     umd-element-hero-minimal:not(:defined),
@@ -81,13 +94,17 @@
       display: block;
       container-type: inline-size;
     }
-
     umd-element-breadcrumb:defined {
       margin-top: 16px;
     }
 
     /* ====================
        GROUP 3: Full-bleed components
+       umd-layout-image-expand collapses to content width without
+       explicit width: 100%. Do NOT wrap in a horizontal spacing class.
+       Do NOT set max-width on host — shadow DOM applies 1600px internally.
+       Content slot text must be explicitly white (color:white) —
+       the component has no data-theme support. See RULES.md §17.
     ==================== */
     umd-layout-image-expand:not(:defined) {
       content-visibility: hidden;
@@ -99,24 +116,10 @@
     }
 
     /* ====================
-       GROUP 4: Feed components
-    ==================== */
-    umd-feed-news:not(:defined),
-    umd-feed-news-list:not(:defined),
-    umd-feed-news-featured:not(:defined) {
-      content-visibility: hidden;
-      contain-intrinsic-size: auto 10vh;
-      min-height: 10vh;
-    }
-    umd-feed-news,
-    umd-feed-news-list,
-    umd-feed-news-featured {
-      display: block;
-      container-type: inline-size;
-    }
-
-    /* ====================
        FONTS
+       Interstate is licensed. These declarations set the stack but
+       do NOT embed the font. Without @font-face, falls back to
+       Helvetica/Arial. Layouts and sizing are unaffected.
     ==================== */
     :root {
       font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
@@ -126,16 +129,20 @@
     }
 
     /* ====================
-       VERTICAL SPACING
+       VERTICAL SPACING — between sections and items
     ==================== */
+
+    /* Landing page — between sections */
     .umd-layout-vertical-landing           { margin-bottom: 56px; }
     @media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
     @media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
 
+    /* Landing page — between items within a section */
     .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
     @media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
     @media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
 
+    /* Interior page — page content area margins (both class names work) */
     .umd-layout-space-vertical-interior,
     .umd-layout-vertical-interior          { margin-bottom: 56px; }
     @media (min-width: 1024px) {
@@ -143,18 +150,21 @@
       .umd-layout-vertical-interior        { margin-bottom: 80px; }
     }
 
+    /* Interior page — between items within a section */
     .umd-layout-space-vertical-interior-child,
     .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
 
+    /* Headline bottom spacing — above a content grid */
     .umd-layout-space-vertical-headline-large { margin-bottom: 16px; }
     @media (min-width: 1024px) {
       .umd-layout-space-vertical-headline-large { margin-bottom: 24px; }
     }
 
     /* ====================
-       HORIZONTAL SPACING
+       HORIZONTAL SPACING — page-lock classes
     ==================== */
     [class^="umd-layout-space-horizontal-"] {
+      box-sizing: border-box;
       display: block;
       margin-left: auto;
       margin-right: auto;
@@ -222,6 +232,8 @@
 
     /* ====================
        SECTION-INTRO-WIDE WRAPPER
+       Required when .umd-layout-space-horizontal-larger wraps
+       umd-element-section-intro-wide
     ==================== */
     .umd-layout-space-horizontal-larger {
       position: relative;
@@ -240,8 +252,11 @@
     }
 
     /* ====================
-       LAYOUT PATTERNS
+       LAYOUT PATTERNS — grids, dark sections, alignment
+       Source: @universityofmaryland/web-styles-library
     ==================== */
+
+    /* Two-column grid — stacks mobile, 2 columns at 650px+ */
     .umd-layout-grid-gap-two {
       display: grid;
     }
@@ -255,12 +270,12 @@
       .umd-layout-grid-gap-two { gap: 40px; }
     }
 
+    /* Inline CTA row — stacks mobile, flex row at 650px+ */
     .umd-layout-grid-inline-tablet-rows {
       align-items: flex-start;
       display: flex;
       flex-direction: column;
       gap: 16px;
-      justify-content: flex-start;
     }
     @media (min-width: 650px) {
       .umd-layout-grid-inline-tablet-rows {
@@ -270,6 +285,7 @@
       }
     }
 
+    /* Full-width dark section with responsive padding */
     .umd-layout-background-full-dark {
       background-color: #000000;
       padding: 48px 0;
@@ -281,6 +297,7 @@
       .umd-layout-background-full-dark { padding: 104px 0; }
     }
 
+    /* Stacked figure content — for <figure> inside rich text */
     .umd-layout-alignment-block-stacked {
       display: flex;
       flex-direction: column;
@@ -288,14 +305,20 @@
     .umd-layout-alignment-block-stacked > * { margin-top: 16px; }
     .umd-layout-alignment-block-stacked > *:first-child { margin-top: 0; }
 
+    /* Single-column stacked grid (sticky columns static slot) */
     .umd-layout-grid-gap-stacked {
       display: grid;
       grid-template-columns: 1fr;
       gap: 24px;
     }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-gap-stacked { gap: 40px; }
+    }
 
     /* ====================
-       TYPOGRAPHY
+       TYPOGRAPHY — inline headlines and color utilities
+       Used inside umd-text-rich-advanced for in-content headlines.
+       Apply to <p> elements, not heading tags.
     ==================== */
     .umd-sans-large {
       font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
@@ -342,12 +365,16 @@
     @media (min-width: 768px)  { .umd-sans-largest-uppercase { font-size: 40px; } }
     @media (min-width: 1024px) { .umd-sans-largest-uppercase { font-size: 44px; } }
 
+    /* Color utilities */
     .text-black { color: #000; }
     .text-white { color: #ffffff; }
 
     /* ====================
-       RICH TEXT ADVANCED
+       RICH TEXT ADVANCED — editorial body copy
+       Light and dark variants. 18px/1.5em with link hover styles.
     ==================== */
+
+    /* Light variant */
     .umd-text-rich-advanced {
       font-size: 18px;
       line-height: 1.5em;
@@ -376,6 +403,7 @@
       background-image: linear-gradient(#E21833, #E21833);
     }
 
+    /* Dark variant */
     .umd-text-rich-advanced-dark {
       font-size: 18px;
       line-height: 1.5em;
@@ -397,82 +425,154 @@
     }
 
     /* ====================
+       INTERIOR PAGE LAYOUT
+       Sidebar + content column. Not in cdn.js — must be local.
+    ==================== */
+    @media (min-width: 768px) {
+      .umd-layout-space-columns-left { display: flex; align-items: flex-start; }
+      .umd-layout-space-columns-left > *:first-child { width: 242px; flex-shrink: 0; margin-right: 120px; }
+      .umd-layout-space-columns-left > *:last-child { width: calc(100% - 242px); }
+    }
+    @media (max-width: 1023px) {
+      .umd-layout-space-columns-left > *:first-child { display: none; }
+    }
+
+    /* Content column max-width (Tailwind utility) */
+    .max-w-\[800px\] { max-width: 800px; }
+
+    /* ====================
        IMAGE-EXPAND CONTENT UTILITIES
+       Constrain and align the quote panel inside umd-layout-image-expand.
+       Apply on div[slot="content"], not a child wrapper.
     ==================== */
     .max-w-\[480px\] { max-width: 480px; }
     .w-full          { width: 100%; }
     .block           { display: block; }
     .mr-auto         { margin-right: auto; }
 
-    .pl-md { padding-left: 24px; }
-
-    .umd-adjacent-line-text { position: relative; }
-    .umd-adjacent-line-text::before {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 0;
-      width: 2px;
-      height: 100%;
-      background-color: #E21833;
-      left: -24px;
-    }
-
-    .umd-text-rich-simple-large-dark {
-      font-size: 18px;
-      line-height: 1.5em;
-      color: #ffffff;
-    }
-    .umd-text-rich-simple-large-dark * { color: #ffffff; }
-    .umd-text-rich-simple-large-dark > * { font-size: 18px; margin-top: 24px; }
-    .umd-text-rich-simple-large-dark > *:first-child { margin-top: 0; }
-    .umd-text-rich-simple-large-dark a {
-      color: #ffffff;
-      background-image: linear-gradient(#ffffff, #ffffff);
-      position: relative;
-      background-position: left calc(100% - 1px);
-      background-repeat: no-repeat;
-      background-size: 100% 1px;
-      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
-    }
-    .umd-text-rich-simple-large-dark a:hover,
-    .umd-text-rich-simple-large-dark a:focus {
-      background-image: linear-gradient(#FFD200, #FFD200);
-    }
-
     /* ====================
        STICKY COLUMNS UTILITIES
+       Spacing tokens for slot content inside umd-element-sticky-columns.
     ==================== */
     .mb-md { margin-bottom: 24px; }
     .mb-sm { margin-bottom: 16px; }
 
     /* ====================
-       STATS GRID — three columns
+       UTILITY NAVIGATION LINKS
+       ::slotted(*) only reaches div[slot="utility-navigation"], not
+       the <a> children — these light-DOM styles fill the gap.
     ==================== */
-    .stats-grid-three {
+    [slot="utility-navigation"] a {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 14px;
+      color: #454545;
+      text-decoration: none;
+      line-height: 1.25;
+    }
+    [slot="utility-navigation"] a:hover,
+    [slot="utility-navigation"] a:focus {
+      color: #E21833;
+      text-decoration: underline;
+    }
+
+    /* ====================
+       MASONRY GRID (2-column stagger)
+       Source: @universityofmaryland/web-styles-library — masonary.twoColumn
+       Add min-height to direct children per use case.
+    ==================== */
+    .umd-layout-grid-masonry {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 48px 32px;
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-masonry {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-masonry { gap: 40px; }
+    }
+    .umd-layout-grid-masonry > * > * {
+      width: 100%;
+      height: 100%;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-masonry > *:nth-of-type(odd)  { margin-top: -32px; margin-bottom: 32px; }
+      .umd-layout-grid-masonry > *:nth-of-type(even) { margin-top: 0; }
+      .umd-layout-grid-masonry > *:first-child        { margin-top: 0; }
+      .umd-layout-grid-masonry > *:nth-of-type(2)    { margin-top: 32px; }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-masonry > *:nth-of-type(odd) { margin-top: -40px; margin-bottom: 40px; }
+      .umd-layout-grid-masonry > *:nth-of-type(2)   { margin-top: 40px; }
+    }
+
+    /* ====================
+       PAGE-SPECIFIC STYLES
+    ==================== */
+
+    /* Three-column news card grid */
+    .news-grid-three {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    @media (min-width: 768px) {
+      .news-grid-three { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .news-grid-three { gap: 40px; }
+    }
+
+    /* Three-column gap grid — @universityofmaryland/web-styles-library: layout.grid.gap.three */
+    .umd-layout-grid-gap-three {
+      display: grid;
+    }
+    @media (max-width: 649px) {
+      .umd-layout-grid-gap-three {
+        grid-gap: 32px;
+      }
     }
     @media (min-width: 650px) {
-      .stats-grid-three {
+      .umd-layout-grid-gap-three {
+        grid-gap: 32px;
+      }
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-gap-three {
         grid-template-columns: repeat(3, 1fr);
       }
     }
 
-    /* ====================
-       LINK CARDS GRID — three columns
-       For umd-element-card-overlay (no image) standalone link grids
-    ==================== */
-    .promise-link-cards {
+    /* Stats grid — 3 columns on tablet+ */
+    .stats-grid-three {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 16px;
+      gap: 40px 32px;
     }
     @media (min-width: 650px) {
-      .promise-link-cards {
+      .stats-grid-three {
         grid-template-columns: repeat(3, 1fr);
+        gap: 48px 32px;
       }
+    }
+
+    /* Responsive YouTube video embed */
+    .video-embed {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+    }
+    .video-embed iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
     }
   </style>
 
@@ -482,6 +582,7 @@
 
   <!-- ========================================
        1. GLOBAL UNIVERSITY HEADER
+       Hardcoded. Never modified. Zero config.
   ======================================== -->
   <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
 
@@ -489,6 +590,10 @@
 
   <!-- ========================================
        2. SITE NAVIGATION HEADER
+       Source page uses text-only site identity ("The Maryland Promise
+       Scholarship Program") — no department logo image available.
+       Using primary-logo-dark.svg fallback per RULES.md §23.
+       Sub-links use slot="sub-link" directly on <a> (RULES.md §4).
   ======================================== -->
   <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
     <a slot="logo" href="https://promise.umd.edu/">
@@ -497,30 +602,24 @@
     <nav slot="main-navigation">
       <umd-element-nav-item>
         <a slot="primary-link" href="https://promise.umd.edu/about">About</a>
-        <div slot="dropdown-links">
-          <a href="https://promise.umd.edu/about/program-components">Program Components</a>
-          <a href="https://promise.umd.edu/about/eligibility-and-requirements">Eligibility and Requirements</a>
-        </div>
+        <a slot="sub-link" href="https://promise.umd.edu/about/program-components">Program Components</a>
+        <a slot="sub-link" href="https://promise.umd.edu/about/eligibility-and-requirements">Eligibility and Requirements</a>
       </umd-element-nav-item>
       <umd-element-nav-item>
         <a slot="primary-link" href="https://promise.umd.edu/scholars">Our Scholars</a>
-        <div slot="dropdown-links">
-          <a href="https://promise.umd.edu/scholars/cohort-1">Cohort 1 (2019-20)</a>
-          <a href="https://promise.umd.edu/scholars/cohort-2">Cohort 2 (2020-21)</a>
-          <a href="https://promise.umd.edu/scholars/cohort-3">Cohort 3 (2021-22)</a>
-          <a href="https://promise.umd.edu/scholars/cohort-4">Cohort 4 (2022-23)</a>
-          <a href="https://promise.umd.edu/scholars/cohort-5">Cohort 5 (2023-24)</a>
-          <a href="https://promise.umd.edu/scholars/cohort-6">Cohort 6 (2024-25)</a>
-        </div>
+        <a slot="sub-link" href="https://promise.umd.edu/scholars/cohort-1">Cohort 1 (2019–20)</a>
+        <a slot="sub-link" href="https://promise.umd.edu/scholars/cohort-2">Cohort 2 (2020–21)</a>
+        <a slot="sub-link" href="https://promise.umd.edu/scholars/cohort-3">Cohort 3 (2021–22)</a>
+        <a slot="sub-link" href="https://promise.umd.edu/scholars/cohort-4">Cohort 4 (2022–23)</a>
+        <a slot="sub-link" href="https://promise.umd.edu/scholars/cohort-5">Cohort 5 (2023–24)</a>
+        <a slot="sub-link" href="https://promise.umd.edu/scholars/cohort-6">Cohort 6 (2024–25)</a>
       </umd-element-nav-item>
       <umd-element-nav-item>
         <a slot="primary-link" href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support the Program</a>
       </umd-element-nav-item>
       <umd-element-nav-item>
         <a slot="primary-link" href="https://promise.umd.edu/impact">Impact Stories</a>
-        <div slot="dropdown-links">
-          <a href="https://promise.umd.edu/impact/68m-gift-extend-opportunities-underserved-montgomery-county-students">$6.8M Gift to Extend Opportunities to Underserved Montgomery County Students</a>
-        </div>
+        <a slot="sub-link" href="https://promise.umd.edu/impact/68m-gift-extend-opportunities-underserved-montgomery-county-students">$6.8M Gift to Extend Opportunities</a>
       </umd-element-nav-item>
       <umd-element-nav-item>
         <a slot="primary-link" href="https://promise.umd.edu/contact-us">Contact</a>
@@ -529,13 +628,16 @@
   </umd-element-navigation-header>
 
   <!-- ========================================
-       3. PAGE CONTENT
+       3. HERO
+       Standard background image hero — no data-display (RULES.md §22).
+       Dark theme for white text. Centered text layout.
+       Actual Hornbake Plaza photo from source (promise.umd.edu).
+       Light Pines quote section follows → umd-layout-vertical-landing applied.
   ======================================== -->
-
-  <!-- HERO: Full-bleed background image of Hornbake Plaza -->
   <section class="umd-layout-vertical-landing">
-    <umd-element-hero data-display="overlay" data-theme="dark">
-      <img slot="image" src="../images/large/campus/hornbake-plaza-fall.jpg" alt="Hornbake plaza as viewed from the top of Hornbake Library. Scene includes fall colors in the trees and students walking along sidewalks on a crisp fall day." />
+    <umd-element-hero data-theme="dark" data-animation data-layout-text="center">
+      <img slot="image" src="../images/projects/promise/HornbakePlaza_11092011_6645-fixed-2-min.jpg"
+           alt="Hornbake plaza as viewed from the top of Hornbake Library. Scene includes fall colors in the trees and students walking along sidewalks on a crisp fall day." />
       <h1 slot="headline">Our Promise</h1>
       <div slot="text">
         <p>The Maryland Promise Scholarship Program provides supportive educational and financial opportunities to undergraduate students from the state of Maryland and Washington, D.C. exhibiting strong academic and leadership potential.</p>
@@ -548,170 +650,228 @@
     </umd-element-hero>
   </section>
 
-  <!-- QUOTE: President Darryll J. Pines — featured pull quote -->
+  <!-- ========================================
+       4. PRESIDENT PINES QUOTE
+       Featured quote from University of Maryland President Darryll J. Pines.
+       umd-element-quote with data-display="featured" for visual prominence.
+       Separate attribution and attribution-sub-text slots (RULES.md §5).
+       Wrapped in normal (1280px) horizontal lock per RULES.md §12.
+       Light "next generation" section follows → umd-layout-vertical-landing applied.
+  ======================================== -->
   <section class="umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-normal">
       <umd-element-quote data-display="featured">
+        <img slot="image" src="../images/projects/promise/DarryllPines_05262020_JC_7405_Final-square.jpg"
+             alt="University of Maryland President Darryll J. Pines" />
         <p slot="quote">The Maryland Promise Scholarship Program is an investment in our region's talented, hardworking students. Scholars in the program will receive support to develop academically, professionally and personally—and to ultimately become the next generation of leaders.</p>
-        <p slot="attribution">Darryll J. Pines, President, University of Maryland</p>
-        <img slot="image" src="../images/projects/promise/DarryllPines_05262020_JC_7405_Final-square_w574_h574.jpg" alt="University of Maryland President Darryll J. Pines" />
+        <p slot="attribution">Darryll J. Pines</p>
+        <p slot="attribution-sub-text">President, University of Maryland</p>
       </umd-element-quote>
     </div>
   </section>
 
-  <!-- SECTION INTRO: Program pillars -->
-  <section class="umd-layout-vertical-landing">
-    <umd-element-section-intro include-separator>
-      <h2 slot="headline">The Next Generation of Leaders</h2>
-      <div slot="text">
-        <p>The Maryland Promise Scholarship Program emphasizes four important components to help cultivate the next generation of leaders and community change agents:</p>
-        <p><strong>Academic Excellence</strong> / <strong>Professional Development</strong> / <strong>Leadership Development</strong> / <strong>Community Engagement</strong></p>
-      </div>
-    </umd-element-section-intro>
-  </section>
-
-  <!-- IMAGE EXPAND: Inaugural class group photo -->
-  <!-- No umd-layout-vertical-landing: dark section immediately follows → no white gap between them -->
-  <section style="background:#000;">
+  <!-- ========================================
+       6. INAUGURAL CLASS — IMAGE EXPAND
+       Full-bleed scroll-reveal of the inaugural class group photo.
+       Source order from promise.umd.edu: photo → stats → video.
+       Text must be explicitly white — component has no data-theme support (RULES.md §17).
+       No dark section wrapper — image-expand's own overlay handles legibility.
+       Dark stats section follows immediately → NO umd-layout-vertical-landing.
+  ======================================== -->
+  <section>
     <umd-layout-image-expand>
-      <div slot="content">
-        <div class="pl-md" style="max-width: 480px;">
-          <h2 class="umd-sans-largest-uppercase umd-adjacent-line-text text-white mb-md">
-            Our Scholars Community
-          </h2>
-          <div class="umd-text-rich-simple-large-dark mb-md">
-            <p>The inaugural class of the Maryland Promise Scholarship Program with the A. James &amp; Alice B. Clark Foundation — scholars from across all 13 colleges and schools, united by academic excellence and a commitment to leadership.</p>
-          </div>
-          <umd-element-call-to-action data-display="primary" data-theme="light">
-            <a href="https://promise.umd.edu/scholars"><span>Meet Our Scholars</span></a>
-          </umd-element-call-to-action>
+      <div slot="content" class="block max-w-[480px] w-full mr-auto">
+        <h2 class="umd-sans-largest-uppercase text-white" style="margin: 0 0 16px;">The next generation of leaders</h2>
+        <div class="umd-text-rich-advanced-dark">
+          <p>The Maryland Promise Scholarship Program emphasizes four important components to help cultivate the next generation of leaders and community change agents:</p>
+          <p><strong>Academic Excellence &nbsp;/&nbsp; Professional Development / Leadership Development &nbsp;/&nbsp; Community Engagement</strong></p>
+          <p><small>The inaugural class of the Maryland Promise Scholarship Program with the Clark Foundation Front row left to right: Winter Hawk, Rachel (Tessa) Choi, Amoni Hawkins, Amanda Hernández, Daryl Perry, Anna Phung, Vivian Le and Julian Guerra Back row left to right: Dean Bill Cohen, Danielle Hamberger (Clark Foundation), Michelle Udeli, Joe Del Guercio (Clark Foundation), Courtney Clark Pastrick (Clark Foundation), Natalie Grandison (Clark Foundation), Andrew Knutson (Clark Foundation), Diana Lanahan (Clark Foundation) and Sarah Elbert (Clark Foundation).</small></p>
         </div>
       </div>
-      <img slot="image" src="../images/projects/promise/MarylandPromise2020_02112020_JC_9982-4x3-min_w1920_h1280.jpg" alt="Maryland Promise Scholarship Program inaugural class seated and standing together at a large conference table, dressed professionally" />
+      <img slot="image" src="../images/projects/promise/MarylandPromise2020_02112020_JC_9982-4x3-min.jpg"
+           alt="The inaugural class of the Maryland Promise Scholarship Program seated and standing together with the Clark Foundation, all dressed professionally." />
     </umd-layout-image-expand>
   </section>
 
-  <!-- STATS: Three key metrics — dark section -->
-  <section class="umd-layout-vertical-landing umd-layout-background-full-dark">
-    <div class="umd-layout-space-horizontal-larger">
+  <!-- ========================================
+       7. PROGRAM STATS — DARK SECTION
+       Three program statistics on a dark background.
+       3 stats → single 3-column grid (RULES.md §9).
+       data-theme="dark" set individually on each stat (RULES.md §14).
+       Dark video section follows → NO umd-layout-vertical-landing.
+  ======================================== -->
+  <section class="umd-layout-background-full-dark">
+    <div class="umd-layout-space-horizontal-normal">
       <div class="stats-grid-three">
         <umd-element-stat data-visual-size="large" data-decoration-line data-theme="dark">
           <span slot="stat">137</span>
-          <div slot="text"><p>Total Maryland Promise Scholarship Program Scholars</p></div>
+          <div slot="text"><p>Total Maryland Promise Scholarship Program scholars</p></div>
         </umd-element-stat>
         <umd-element-stat data-visual-size="large" data-decoration-line data-theme="dark">
-          <span slot="stat">$219.5M</span>
+          <span slot="stat">$219M</span>
           <div slot="text"><p>Transformative investment to propel UMD to the forefront of education and research worldwide</p></div>
         </umd-element-stat>
         <umd-element-stat data-visual-size="large" data-decoration-line data-theme="dark">
           <span slot="stat">13</span>
-          <div slot="text"><p>Colleges and Schools represented</p></div>
+          <div slot="text"><p>Colleges and schools represented by Promise scholars</p></div>
         </umd-element-stat>
       </div>
     </div>
   </section>
 
-  <!-- QUOTE: Courtney Clark Pastrick — Clark Foundation -->
+  <!-- ========================================
+       8. VIDEO — BUILDING TOGETHER
+       YouTube embed of the "Building Together: An Investment for Maryland"
+       film from promise.umd.edu. Dark background continues the visual band.
+       LAST dark section before light content — umd-layout-vertical-landing
+       applied here to create gap before Clark quote (RULES.md §19).
+  ======================================== -->
+  <section class="umd-layout-background-full-dark umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-normal">
+      <umd-element-section-intro data-theme="dark" class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Building Together: An Investment for Maryland</h2>
+      </umd-element-section-intro>
+      <div class="video-embed">
+        <iframe src="https://www.youtube.com/embed/7K8-UbuP83U"
+                title="Building Together: An Investment for Maryland"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       9. COURTNEY CLARK PASTRICK QUOTE
+       Featured quote from the daughter of A. James Clark.
+       slot="actions" accepts a direct <a> — CTA rendered inside the quote
+       below the image, not as a separate element below (RULES.md).
+       Light support CTAs section follows → umd-layout-vertical-landing applied.
+  ======================================== -->
   <section class="umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-normal">
-      <umd-element-quote>
+      <umd-element-quote data-display="featured">
+        <img slot="image" src="../images/projects/promise/Mr_Clark-square.jpg"
+             alt="Headshot of A. James Clark — smiling man with white hair, gray suit, red tie, light blue dress shirt, and gold background." />
         <p slot="quote">My father always said that education changes lives, and his education changed his life.</p>
-        <p slot="attribution">Courtney Clark Pastrick, Daughter of A. James Clark and Board Chair, A. James &amp; Alice B. Clark Foundation</p>
-        <img slot="image" src="../images/projects/promise/Mr_Clark-square_w320_h320.jpg" alt="Headshot of A. James Clark, smiling man with white hair, gray suit, red tie, light blue dress shirt, and gold background." />
+        <p slot="attribution">Courtney Clark Pastrick</p>
+        <p slot="attribution-sub-text">Daughter of A. James Clark and Board Chair, A. James &amp; Alice B. Clark Foundation</p>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://buildingtogether.umd.edu/story-a-james-clark" target="_blank" rel="noopener">Read more about A. James Clark</a>
+          </umd-element-call-to-action>
+        </div>
       </umd-element-quote>
     </div>
   </section>
 
-  <!-- SUPPORT CTAs — card-overlay (no image) grid instead of secondary CTA row -->
+  <!-- ========================================
+       10. SUPPORT CTAS
+       Two primary giving actions from the source page. Card-overlay
+       (no image) grid provides visual weight over a plain CTA row.
+       Donor Impact Stories section follows → umd-layout-vertical-landing applied.
+  ======================================== -->
   <section class="umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-larger">
       <div class="umd-layout-grid-gap-two">
         <umd-element-card-overlay>
-          <h3 slot="headline"><a href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support the Maryland Promise Scholarship Program</a></h3>
+          <h3 slot="headline">
+            <a href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support the Maryland Promise Scholarship Program</a>
+          </h3>
           <a slot="cta-icon" href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support</a>
         </umd-element-card-overlay>
         <umd-element-card-overlay>
-          <h3 slot="headline"><a href="https://buildingtogether.umd.edu/" target="_blank" rel="noopener">Building Together: An Investment for Maryland</a></h3>
+          <h3 slot="headline">
+            <a href="https://buildingtogether.umd.edu/" target="_blank" rel="noopener">Building Together: An Investment for Maryland</a>
+          </h3>
           <a slot="cta-icon" href="https://buildingtogether.umd.edu/" target="_blank" rel="noopener">Learn More</a>
         </umd-element-card-overlay>
       </div>
     </div>
   </section>
 
-  <!-- IMPACT STORIES: hidden — feed requires *.umd.edu origin (CORS), blank locally -->
-  <section class="umd-layout-vertical-landing" hidden>
+  <!-- ========================================
+       11. DONOR IMPACT STORIES
+       Section intro wide with "Donor Impact Stories" heading and CTA.
+       Source uses umd-today-feed (categories=10476, token=7B8wU8x7V95qU8LGei4KrFn8mKfAPMKT)
+       for live news — static umd-element-card components shown here for
+       design system demonstration. Replace with umd-feed-news for production.
+       Footer utility links section follows → umd-layout-vertical-landing applied.
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-larger">
       <div class="umd-layout-vertical-landing-child">
         <umd-element-section-intro-wide>
           <h2 slot="headline">Donor Impact Stories</h2>
           <div slot="actions">
-            <umd-element-call-to-action>
-              <a href="https://today.umd.edu/initiatives/maryland-promise-program" target="_blank" rel="noopener">Read More Stories on Maryland Today</a>
+            <umd-element-call-to-action data-display="secondary">
+              <a href="https://today.umd.edu/initiatives/maryland-promise-program" target="_blank" rel="noopener">Read More on Maryland Today</a>
             </umd-element-call-to-action>
           </div>
         </umd-element-section-intro-wide>
       </div>
-      <!-- NOTE: feed requires a *.umd.edu origin — blank locally due to CORS.
-           today.umd.edu/graphql blocks non-UMD origins at the server level.
-           Token is correct; test on a deployed UMD domain. -->
-      <umd-feed-news
-        data-token="4F3TNWrvfL_HsZAms45YyzOo7OW1QUfW"
-        data-filter-group-ids="10476"
-        data-layout-column-count="3"
-        data-layout-row-count="1">
-      </umd-feed-news>
-    </div>
-  </section>
-
-  <!-- BOTTOM CTAs — card-overlay (no image) grid instead of secondary CTA row -->
-  <section class="umd-layout-vertical-landing">
-    <div class="umd-layout-space-horizontal-larger">
-      <div class="promise-link-cards">
-        <umd-element-card-overlay>
-          <h3 slot="headline"><a href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support the Program</a></h3>
-          <a slot="cta-icon" href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support</a>
-        </umd-element-card-overlay>
-        <umd-element-card-overlay>
-          <h3 slot="headline"><a href="https://promise.umd.edu/contact-us">Contact Us</a></h3>
-          <a slot="cta-icon" href="https://promise.umd.edu/contact-us">Contact</a>
-        </umd-element-card-overlay>
-        <umd-element-card-overlay>
-          <h3 slot="headline"><a href="https://promise.umd.edu/about/eligibility-and-requirements">Eligibility and Requirements</a></h3>
-          <a slot="cta-icon" href="https://promise.umd.edu/about/eligibility-and-requirements">Learn More</a>
-        </umd-element-card-overlay>
+      <div class="news-grid-three umd-layout-grid-child-fill-height">
+        <umd-element-card data-aligned>
+          <img slot="image" src="../images/small/people/student-group.jpg" alt="Group of Maryland Promise Scholars" />
+          <p slot="eyebrow">Impact</p>
+          <a slot="headline" href="https://promise.umd.edu/impact/68m-gift-extend-opportunities-underserved-montgomery-county-students">$6.8M Gift to Extend Opportunities to Underserved Montgomery County Students</a>
+          <p slot="text">A landmark gift from the A. James &amp; Alice B. Clark Foundation expands the Maryland Promise Scholarship Program to reach more talented students from underserved communities.</p>
+        </umd-element-card>
+        <umd-element-card data-aligned>
+          <img slot="image" src="../images/small/people/2-female-students-in-booth-pathway1.jpg" alt="Two students collaborating" />
+          <p slot="eyebrow">Scholars</p>
+          <a slot="headline" href="https://today.umd.edu/initiatives/maryland-promise-program">Promise Scholars Lead the Next Generation of Change</a>
+          <p slot="text">From academic excellence to community engagement, Maryland Promise Scholars are developing the skills and values to become transformative leaders in their fields and communities.</p>
+        </umd-element-card>
+        <umd-element-card data-aligned>
+          <img slot="image" src="../images/small/people/2-people-at-laptop.jpg" alt="Two students working together at a laptop" />
+          <p slot="eyebrow">Development</p>
+          <a slot="headline" href="https://today.umd.edu/initiatives/maryland-promise-program">Professional Development at the Heart of the Promise Program</a>
+          <p slot="text">Through mentorship, internships, and leadership experiences, Maryland Promise prepares scholars for successful careers and lifelong civic engagement.</p>
+        </umd-element-card>
       </div>
     </div>
   </section>
 
   <!-- ========================================
-       4. FOOTER
+       12. FOOTER UTILITY LINKS
+       Four quick-access links from the source page's bottom CTA row.
+       card-overlay (no image) grid for visual weight over plain links.
+       Visual footer follows → umd-layout-vertical-landing applied.
   ======================================== -->
-  <umd-element-footer>
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <div class="umd-layout-grid-gap-three">
+        <umd-element-card-icon data-theme="dark">
+          <img slot="image" src="../images/icons/icon-link-dark.svg" alt="" />
+          <h3 slot="headline">
+            <a href="https://promise.umd.edu/support-clark-challenge-maryland-promise">Support the Program</a>
+          </h3>
+        </umd-element-card-icon>
+        <umd-element-card-icon data-theme="dark">
+          <img slot="image" src="../images/icons/icon-link-dark.svg" alt="" />
+          <h3 slot="headline">
+            <a href="https://promise.umd.edu/contact-us">Contact Us</a>
+          </h3>
+        </umd-element-card-icon>
+        <umd-element-card-icon data-theme="dark">
+          <img slot="image" src="../images/icons/icon-link-dark.svg" alt="" />
+          <h3 slot="headline">
+            <a href="https://promise.umd.edu/about/eligibility-and-requirements">Eligibility &amp; Requirements</a>
+          </h3>
+        </umd-element-card-icon>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       13. FOOTER
+       Visual footer with campus background image per skill instructions.
+  ======================================== -->
+  <umd-element-footer data-display="visual">
     <a slot="logo" href="https://promise.umd.edu/">
-      <img src="../images/logos/footer-logo.svg" alt="The Maryland Promise Scholarship Program" />
+      <img src="../images/logos/footer-logo.svg" alt="University of Maryland" />
     </a>
-    <p slot="contact-headline">The Maryland Promise Scholarship Program</p>
-    <address slot="address">
-      1126 Campus Drive<br />
-      2223 H.J. Patterson Hall, University of Maryland<br />
-      College Park, MD 20740
-    </address>
-    <div slot="contact-links">
-      <a href="tel:3013149880">301.314.9880</a>
-      <a href="mailto:mpp@umd.edu">mpp@umd.edu</a>
-    </div>
-    <ul slot="social-links">
-      <li><a href="https://twitter.com/ugstumd">Twitter</a></li>
-      <li><a href="https://www.facebook.com/ugstumd/">Facebook</a></li>
-      <li><a href="https://www.instagram.com/marylandpromise/">Instagram</a></li>
-      <li><a href="https://www.youtube.com/user/UMD2101">YouTube</a></li>
-    </ul>
-    <div slot="utility-links">
-      <ul>
-        <li><a href="https://www.ugst.umd.edu/" target="_blank" rel="noopener">Undergraduate Studies</a></li>
-        <li><a href="https://admissions.umd.edu/" target="_blank" rel="noopener">Undergraduate Admissions</a></li>
-      </ul>
-    </div>
+    <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="" />
   </umd-element-footer>
 
 </body>

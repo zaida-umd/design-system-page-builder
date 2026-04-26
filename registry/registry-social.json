@@ -1,0 +1,69 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-04-24",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "Verified from design-system submodule source.",
+    "category": "social",
+    "components": ["social-sharing"]
+  },
+  "social-sharing": {
+    "tag": "umd-element-social-sharing",
+    "label": "Social Sharing",
+    "description": "Share/print/email buttons for a page. No slots \u2014 fully attribute-driven. Can be inline (default) or fixed to the viewport.",
+    "slots": [],
+    "attrs": [
+      {
+        "name": "data-fixed",
+        "type": "boolean",
+        "values": ["true", "false"],
+        "description": "`true` = fixed position with hide/show on scroll. Omit/false = inline within content flow (default)."
+      },
+      {
+        "name": "data-title",
+        "type": "string",
+        "description": "Custom share title. Defaults to document.title."
+      },
+      {
+        "name": "data-url",
+        "type": "string",
+        "description": "Custom URL to share. Defaults to window.location."
+      },
+      {
+        "name": "data-facebook",
+        "type": "boolean",
+        "values": ["true"],
+        "description": "Include Facebook share button."
+      },
+      {
+        "name": "data-twitter",
+        "type": "boolean",
+        "values": ["true"],
+        "description": "Include Twitter/X share button."
+      },
+      {
+        "name": "data-print",
+        "type": "boolean",
+        "values": ["true"],
+        "description": "Include print button."
+      },
+      {
+        "name": "data-email",
+        "type": "boolean",
+        "values": ["true"],
+        "description": "Include email share button."
+      }
+    ],
+    "configurable": true,
+    "page_types": ["interior"],
+    "variants": {
+      "inline": "Horizontal button group within content flow.",
+      "fixed": "Fixed to viewport; auto-hides near page bottom."
+    },
+    "notes": "Buttons only render when their respective attribute is set to 'true'. Opens native share dialogs via window.open for social platforms.",
+    "source": "npm",
+    "priority": 3
+  }
+}

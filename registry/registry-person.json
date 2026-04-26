@@ -1,0 +1,130 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-04-24",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "Verified from design-system submodule source.",
+    "category": "person",
+    "components": ["person", "person-bio", "person-hero"]
+  },
+  "person": {
+    "tag": "umd-element-person",
+    "label": "Person",
+    "description": "Compact person card for staff directories and team grids. Three display formats: block (default), list (horizontal), tabular (table row).",
+    "slots": [
+      {"name": "name", "required": true, "description": "Full name."},
+      {"name": "pronouns", "required": false, "description": "Pronouns."},
+      {"name": "job-title", "required": false, "description": "Position/title."},
+      {"name": "association", "required": false, "description": "Department or unit."},
+      {"name": "email", "required": false, "description": "Email (anchor tag)."},
+      {"name": "phone", "required": false, "description": "Phone (anchor tag)."},
+      {"name": "address", "required": false, "description": "Physical address."},
+      {"name": "linkedin", "required": false, "description": "LinkedIn profile link."},
+      {"name": "additional-contact", "required": false, "description": "Extra contact info."},
+      {"name": "image", "required": false, "description": "Portrait image."},
+      {"name": "sub-text", "required": false, "description": "Additional descriptive text."},
+      {"name": "actions", "required": false, "description": "CTA link(s)."}
+    ],
+    "attrs": [
+      {
+        "name": "data-display",
+        "type": "enum",
+        "values": ["list", "tabular"],
+        "description": "Layout. Omit for default block layout."
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark background."
+      }
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "variants": {
+      "block": "Default stacked card (image on top).",
+      "list": "Horizontal row with image on one side.",
+      "tabular": "Compact table-row-style for dense directories."
+    },
+    "notes": "Email and phone slots accept anchor tags for proper mailto:/tel: links.",
+    "source": "npm",
+    "priority": 2
+  },
+  "person-bio": {
+    "tag": "umd-element-person-bio",
+    "label": "Person Bio",
+    "description": "Full biographical profile with description paragraph(s). Use for faculty profile pages or featured staff bios.",
+    "slots": [
+      {"name": "name", "required": true, "description": "Full name."},
+      {"name": "pronouns", "required": false, "description": "Pronouns."},
+      {"name": "job-title", "required": false, "description": "Position/title."},
+      {"name": "association", "required": false, "description": "Department or unit."},
+      {"name": "email", "required": false, "description": "Email (anchor)."},
+      {"name": "phone", "required": false, "description": "Phone (anchor)."},
+      {"name": "address", "required": false, "description": "Physical address."},
+      {"name": "linkedin", "required": false, "description": "LinkedIn link."},
+      {"name": "additional-contact", "required": false, "description": "Extra contact info."},
+      {"name": "image", "required": false, "description": "Portrait."},
+      {"name": "description", "required": false, "description": "Biographical paragraphs (rich content)."},
+      {"name": "sub-text", "required": false, "description": "Additional notes."},
+      {"name": "actions", "required": false, "description": "CTA link(s)."}
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark background."
+      },
+      {
+        "name": "data-image",
+        "type": "enum",
+        "values": ["full"],
+        "description": "Use full-size image layout. Omit for small image (default)."
+      }
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "variants": {
+      "small": "Small portrait image alongside bio text (default).",
+      "full": "Large prominent image for featured bios."
+    },
+    "source": "npm",
+    "priority": 2
+  },
+  "person-hero": {
+    "tag": "umd-element-person-hero",
+    "label": "Person Hero",
+    "description": "Hero-scale individual feature for a person profile landing page. Includes a breadcrumb slot so it can replace the standard breadcrumb on the page.",
+    "slots": [
+      {"name": "name", "required": true, "description": "Full name."},
+      {"name": "pronouns", "required": false, "description": "Pronouns."},
+      {"name": "job-title", "required": false, "description": "Position/title."},
+      {"name": "association", "required": false, "description": "Department or unit."},
+      {"name": "email", "required": false, "description": "Email (anchor)."},
+      {"name": "phone", "required": false, "description": "Phone (anchor)."},
+      {"name": "address", "required": false, "description": "Physical address."},
+      {"name": "linkedin", "required": false, "description": "LinkedIn link."},
+      {"name": "additional-contact", "required": false, "description": "Extra contact info."},
+      {"name": "image", "required": false, "description": "Portrait."},
+      {"name": "sub-text", "required": false, "description": "Additional text."},
+      {"name": "actions", "required": false, "description": "CTA link(s)."},
+      {"name": "breadcrumb", "required": false, "description": "Breadcrumb nav (the component manages desktop/mobile variants internally)."}
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark background."
+      }
+    ],
+    "configurable": true,
+    "page_types": ["interior"],
+    "notes": "If using person-hero, do not also render a standalone umd-element-breadcrumb \u2014 the hero's breadcrumb slot handles it.",
+    "source": "npm",
+    "priority": 2
+  }
+}

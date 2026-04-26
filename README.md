@@ -13,13 +13,21 @@ Feed page content or a site URL into a Claude project and get back a complete, s
 ```
 design-system-page-builder/
 ├── README.md                        ← you are here
-├── registry/                        ← component registry split by category
+├── registry/                        ← component registry split by category (canonical)
 │   ├── registry-index.json          ← lightweight index of all categories
-│   ├── registry-navigation.json     ← header-utility, header-site, nav-item, footer
-│   ├── registry-heroes.json         ← hero-standard, hero-minimal, hero-expand, hero-logo, hero-grid, hero-brand-video
-│   ├── registry-cards.json          ← card-standard, card-overlay, card-icon, card-video, card-event, feed-events-list
-│   └── registry-content.json        ← pathway, pathway-highlight, section-intro, section-intro-wide, image-expand, sticky-columns
-├── umd-component-registry.json      ← legacy monolithic registry (kept for reference)
+│   ├── registry-navigation.json     ← headers, nav items, nav drawer, breadcrumb, footer
+│   ├── registry-heroes.json         ← hero + hero-minimal/expand/logo/grid/brand-video
+│   ├── registry-cards.json          ← card-standard/overlay/icon/video/event, article, call-to-action
+│   ├── registry-content.json        ← pathway, section-intro, image-expand, sticky-columns, stat, tabs, media, logo, modal
+│   ├── registry-accordion.json      ← accordion-item
+│   ├── registry-alerts.json         ← alert-page, alert-site, banner-promo
+│   ├── registry-brand.json          ← brand-card-stack, brand-logo-animation
+│   ├── registry-carousel.json       ← carousel + cards/image/image-wide/multiple-image/thumbnail
+│   ├── registry-feeds.json          ← feed-events/news/experts/in-the-news variants
+│   ├── registry-person.json         ← person, person-bio, person-hero
+│   ├── registry-quote.json          ← quote
+│   ├── registry-slider.json         ← slider-events, slider-events-feed
+│   └── registry-social.json         ← social-sharing
 ├── RULES.md                         ← composition rules, gotchas, and required CSS patterns
 ├── TEMPLATE.html                    ← copy-paste page skeleton with all critical CSS
 ├── REQUIRED-CSS.md                  ← reference: what each CSS rule does and why
@@ -58,7 +66,7 @@ git commit -m "Update design-system submodule to latest"
 ### 3. Claude project setup
 
 Add these files as project knowledge in your Claude project:
-- `registry/registry-index.json` + individual category files (or `umd-component-registry.json` for the full monolith)
+- `registry/registry-index.json` + individual category files
 - `RULES.md`
 - `TEMPLATE.html`
 - `REQUIRED-CSS.md`
@@ -67,7 +75,7 @@ The full `design-system/` directory is too large for project knowledge, but havi
 
 ## How it works
 
-1. **Registry** (`registry/`) — Every component's tag name, slots, attributes, variants, and known gotchas, verified directly from the npm package source. Split into 4 category files (~10–22KB each) for token efficiency; the legacy `umd-component-registry.json` monolith is kept for reference.
+1. **Registry** (`registry/`) — Every component's tag name, slots, attributes, variants, and known gotchas, verified directly from the npm package source. Split into category files so Claude can read only the ones relevant to a given task.
 
 2. **Rules** (`RULES.md`) — Composition patterns, CSS requirements, spacing utilities, and hard-won lessons from testing. Covers critical CSS load order, `container-type` splits, pathway background requirements, theme cascade behavior, and more.
 

@@ -13,9 +13,13 @@
     "category": "navigation",
     "components": [
       "header-utility",
+      "navigation-utility",
       "header-site",
+      "navigation-sticky",
       "nav-item",
       "nav-slider",
+      "nav-drawer",
+      "breadcrumb",
       "footer"
     ]
   },
@@ -310,5 +314,77 @@
     "source": "npm",
     "priority": 1,
     "batch": 4
+  },
+  "navigation-utility": {
+    "tag": "umd-element-navigation-utility",
+    "label": "Utility / Alert Bar",
+    "description": "Top-of-page alert and utility bar that appears above the UMD global header. Shows campus alerts plus optional search/news/events/gifts/admissions/schools quick links.",
+    "slots": [],
+    "attrs": [
+      {"name": "data-gift-url", "type": "string", "description": "Custom giving URL. Default: https://giving.umd.edu/giving."},
+      {"name": "data-alert-url", "type": "string", "description": "URL for alert / emergency information source."},
+      {"name": "data-info", "type": "enum", "values": ["search", "search-domain", "news", "events", "schools", "admissions", "gifts"], "description": "Comma-separate to enable multiple info feeds."},
+      {"name": "data-layout", "type": "enum", "values": ["lock-full", "alert-off"]},
+      {"name": "data-alert-off", "type": "boolean", "description": "Set to `true` to suppress the alert strip. Commonly set when you use umd-element-utility-header instead."},
+      {"name": "data-layout-alert-off", "type": "boolean", "description": "Observed \u2014 dynamically toggle alert section visibility."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "Distinct from umd-element-utility-header. This is the newer alert + info bar that sits at the very top of the page. role='navigation' and aria-label are auto-applied if absent.",
+    "example": "<umd-element-navigation-utility data-alert-off=\"true\" role=\"navigation\" aria-label=\"Utility navigation\"></umd-element-navigation-utility>",
+    "source": "npm",
+    "priority": 1
+  },
+  "navigation-sticky": {
+    "tag": "umd-element-navigation-sticky",
+    "label": "Sticky Navigation Wrapper",
+    "description": "Wraps arbitrary navigation content and makes it stick to the top of the viewport on scroll.",
+    "slots": [
+      {"name": "content", "required": true, "description": "Navigation markup to make sticky.", "example": "<nav slot=\"content\"><ul>...</ul></nav>"}
+    ],
+    "attrs": [],
+    "configurable": true,
+    "page_types": ["interior"],
+    "notes": "Use when you need sticky in-page section nav (e.g. anchor jumplinks). The site header has its own `sticky` attribute \u2014 don't double-wrap it with this.",
+    "source": "npm",
+    "priority": 3
+  },
+  "nav-drawer": {
+    "tag": "umd-element-nav-drawer",
+    "label": "Navigation Drawer",
+    "description": "Off-canvas navigation drawer with menu-button trigger. Holds logo, primary nav, utility nav, and footer links for mobile or compact layouts.",
+    "slots": [
+      {"name": "logo", "required": false, "description": "Site logo / branding."},
+      {"name": "main-navigation", "required": false, "description": "Primary navigation links."},
+      {"name": "utility-navigation", "required": false, "description": "Utility / secondary navigation links."},
+      {"name": "footer-navigation", "required": false, "description": "Footer-style links at the bottom of the drawer."}
+    ],
+    "attrs": [],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "Includes a built-in menu button that toggles the drawer \u2014 no separate trigger needed.",
+    "source": "npm",
+    "priority": 3
+  },
+  "breadcrumb": {
+    "tag": "umd-element-breadcrumb",
+    "label": "Breadcrumb",
+    "description": "Standard breadcrumb trail. Place near the top of interior pages, between the hero and the main content column.",
+    "slots": [
+      {
+        "name": "paths",
+        "required": true,
+        "description": "Ordered list (ol) of breadcrumb links. Mark the current page with aria-current=\"page\" and no anchor tag.",
+        "example": "<ol slot=\"paths\"><li><a href=\"/\">Home</a></li><li><a href=\"/about\">About</a></li><li aria-current=\"page\">This page</li></ol>"
+      }
+    ],
+    "attrs": [
+      {"name": "data-theme", "type": "enum", "values": ["dark"], "description": "Dark theme styling."}
+    ],
+    "configurable": true,
+    "page_types": ["interior"],
+    "notes": "If you're using umd-element-person-hero, use its built-in breadcrumb slot instead of a standalone breadcrumb.",
+    "source": "npm",
+    "priority": 2
   }
 }

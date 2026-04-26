@@ -19,13 +19,17 @@
       "card-icon",
       "card-video",
       "card-event",
+      "article",
+      "event-time",
+      "call-to-action",
       "feed-events-list",
       "feed-news-grid",
       "feed-news-list",
       "feed-news-featured",
       "event-slider",
       "events-date"
-    ]
+    ],
+    "note_on_feeds": "feed-* entries are duplicated in registry-feeds.json (which has the complete set of feed variants). Prefer registry-feeds.json when adding new feed usage."
   },
   "card-standard": {
     "tag": "umd-element-card",
@@ -848,5 +852,68 @@
     "source": "npm",
     "priority": 1,
     "batch": 7
+  },
+  "article": {
+    "tag": "umd-element-article",
+    "label": "Article Card",
+    "description": "Article-specific card with eyebrow, headline, text, date, image, and actions. Similar to card-standard but tuned for news/article listings.",
+    "slots": [
+      {"name": "headline", "required": true, "description": "Article title."},
+      {"name": "eyebrow", "required": false, "description": "Category label (e.g. 'Research', 'Campus Life')."},
+      {"name": "text", "required": false, "description": "Article excerpt."},
+      {"name": "image", "required": false, "description": "Featured image."},
+      {"name": "date", "required": false, "description": "Publication date (time element)."},
+      {"name": "actions", "required": false, "description": "Read-more / sharing links."}
+    ],
+    "attrs": [
+      {"name": "data-theme", "type": "enum", "values": ["light", "dark"], "description": "Color theme."},
+      {"name": "data-display", "type": "enum", "values": ["list"], "description": "List layout (horizontal). Omit for default block layout."},
+      {"name": "data-visual", "type": "enum", "values": ["transparent", "aligned", "bordered"], "description": "Visual treatment."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "Functionally close to card-standard. Prefer article for news/editorial contexts and card-standard for generic content cards.",
+    "source": "npm",
+    "priority": 2
+  },
+  "event-time": {
+    "tag": "umd-element-event-time",
+    "label": "Event Time Card",
+    "description": "Two-column event card emphasizing start/end time, location, and optional image. Use for time-forward event listings (lectures, workshops with specific windows).",
+    "slots": [
+      {"name": "headline", "required": false, "description": "Event title."},
+      {"name": "start-time", "required": true, "description": "Event start time (time element).", "example": "<time slot=\"start-time\" datetime=\"2026-05-01T18:00\">6:00 PM</time>"},
+      {"name": "end-time", "required": false, "description": "Event end time."},
+      {"name": "location", "required": false, "description": "Venue / location."},
+      {"name": "information", "required": false, "description": "Additional event info."},
+      {"name": "text", "required": false, "description": "Event description."},
+      {"name": "actions", "required": false, "description": "CTA links (register, learn more)."},
+      {"name": "image", "required": false, "description": "Event image."}
+    ],
+    "attrs": [
+      {"name": "data-theme", "type": "enum", "values": ["dark"], "description": "Dark theme styling."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 2
+  },
+  "call-to-action": {
+    "tag": "umd-element-call-to-action",
+    "label": "Call-to-Action Button",
+    "description": "Wraps a child <a> or <button> and applies UMD CTA styling. Use for all primary/secondary/outline CTAs \u2014 do NOT style raw buttons.",
+    "slots": [
+      {"name": "default", "required": true, "description": "A single <a> or <button> child.", "example": "<umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply now</a></umd-element-call-to-action>"}
+    ],
+    "attrs": [
+      {"name": "data-display", "type": "enum", "values": ["primary", "secondary", "outline"], "description": "Button style. Omit for default secondary-ish look."},
+      {"name": "data-visual-size", "type": "enum", "values": ["large"], "description": "Large size variant."},
+      {"name": "data-theme", "type": "enum", "values": ["dark", "gold"], "description": "Theme variant. On dark sections use data-theme=\"dark\"."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "Clones and enhances the child link/button. Always nest a real anchor or button inside \u2014 don't rely on the component as the interactive element.",
+    "source": "npm",
+    "priority": 1
   }
 }

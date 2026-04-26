@@ -1,0 +1,95 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-04-24",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "Verified from design-system submodule source.",
+    "category": "quote",
+    "components": ["quote"]
+  },
+  "quote": {
+    "tag": "umd-element-quote",
+    "label": "Quote / Testimonial",
+    "description": "Pull quote, testimonial, or statement block with optional attribution, portrait image, and CTA. Three display modes: inline (default), featured, and statement.",
+    "slots": [
+      {
+        "name": "quote",
+        "required": true,
+        "description": "The quote text content.",
+        "example": "<blockquote slot=\"quote\">Maryland pushed me to think bigger.</blockquote>"
+      },
+      {
+        "name": "attribution",
+        "required": false,
+        "description": "Person or source of the quote.",
+        "example": "<cite slot=\"attribution\">Jane Smith</cite>"
+      },
+      {
+        "name": "attribution-sub-text",
+        "required": false,
+        "description": "Title, affiliation, or secondary attribution line.",
+        "example": "<span slot=\"attribution-sub-text\">'24, Computer Science</span>"
+      },
+      {
+        "name": "image",
+        "required": false,
+        "description": "Portrait or related image.",
+        "example": "<img slot=\"image\" src=\"/portrait.jpg\" alt=\"Jane Smith\" />"
+      },
+      {
+        "name": "headline",
+        "required": false,
+        "description": "Optional headline above the quote.",
+        "example": "<h3 slot=\"headline\">In Their Words</h3>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA link(s).",
+        "example": "<div slot=\"actions\"><a href=\"/stories\">Read More</a></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-display",
+        "type": "enum",
+        "values": ["featured", "statement"],
+        "description": "Layout variant. Omit for the default inline layout.",
+        "notes": {
+          "featured": "Larger display with optional image and enhanced styling \u2014 use for a hero-scale testimonial.",
+          "statement": "Prominent standalone quote, no image focus."
+        }
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark", "maryland", "gold"],
+        "description": "Color theme for the quote container."
+      },
+      {
+        "name": "data-visual",
+        "type": "enum",
+        "values": ["transparent", "size-large"],
+        "description": "Transparent removes the background; size-large increases quote text size."
+      },
+      {
+        "name": "data-feature-animation",
+        "type": "boolean",
+        "description": "Enables an animation on load. Respects prefers-reduced-motion."
+      }
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "variants": {
+      "inline": "Default horizontal layout (quote + attribution).",
+      "featured": "Hero-scale quote with optional portrait image.",
+      "statement": "Prominent standalone quote without an image anchor."
+    },
+    "horizontal_spacing": "Wrap quote sections in `umd-layout-space-horizontal-normal` (1280px) \u2014 not `larger` (1320px). See RULES.md \u00a712.",
+    "notes": "When a source has only a quotation and attribution (no full body copy), use umd-element-quote \u2014 not umd-element-pathway-highlight (which requires substantive text). See RULES.md \u00a75.",
+    "source": "npm",
+    "priority": 2
+  }
+}

@@ -6,7 +6,7 @@ Build a complete UMD landing page HTML file and save it to `/test/` in the main 
 ## Setup
 
 1. Read `TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. Do not rebuild it. The CSS comes from `styles/critical.css` (single source of truth for all CSS rules).
-2. Registry files in `registry/` are the source of truth for all slots and attributes (already read above).
+2. Read `registry/registry-index.json` for the category map, then load only the category files you need for this page's content types.
 3. Follow every rule in `RULES.md` exactly.
 4. Read `LAYOUT-PATTERNS.md` for HTML patterns when using rich text sections, dark backgrounds, two-column grids, or inline CTA rows.
 
@@ -45,12 +45,7 @@ Use a content and images from https://gradschool.umd.edu/ as the fictional clien
 
 ## Image fallback
 
-When a real image URL is unavailable (hotlink protection, dynamically loaded content, no source image):
-1. Read `/Users/zjocson/repos/design-system-page-builder/images/images-index.json`
-2. Determine the size tier: **large** for heroes, pathways, image-expand — **small** for cards
-3. Match the content context to the closest tag (`campus`, `people`, `events`, `research`)
-4. If no tag match, collect all entries with `"default": true` in the correct tier and pick one at random
-5. Reference the image as a repo-relative path: `../images/large/campus/filename.jpg`
+See CLAUDE.md §Images for the full fallback lookup procedure.
 
 ## Output
 

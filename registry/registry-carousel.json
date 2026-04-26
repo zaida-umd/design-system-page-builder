@@ -1,0 +1,163 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-04-24",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "Verified from design-system submodule source.",
+    "category": "carousel",
+    "components": [
+      "carousel",
+      "carousel-cards",
+      "carousel-image",
+      "carousel-multiple-image",
+      "carousel-image-wide",
+      "carousel-thumbnail"
+    ]
+  },
+  "carousel": {
+    "tag": "umd-element-carousel",
+    "label": "Base Carousel",
+    "description": "Generic scrollable carousel. Wraps arbitrary child blocks in a responsive horizontal scroller with optional navigation arrows and hint.",
+    "slots": [
+      {
+        "name": "blocks",
+        "required": true,
+        "description": "Container holding one or more carousel items (any block element).",
+        "example": "<div slot=\"blocks\"><article>Slide 1</article><article>Slide 2</article></div>"
+      }
+    ],
+    "attrs": [
+      {"name": "left-button", "type": "boolean", "description": "Show the left nav button."},
+      {"name": "right-button", "type": "boolean", "description": "Show the right nav button."},
+      {"name": "mobile-hint", "type": "boolean", "description": "Show a swipe hint on mobile."},
+      {"name": "hint", "type": "boolean", "description": "Show a generic navigation hint."},
+      {"name": "data-theme", "type": "enum", "values": ["light", "dark"], "description": "Color theme."},
+      {"name": "tablet-size", "type": "number", "description": "Visible items per view on tablet."},
+      {"name": "desktop-size", "type": "number", "description": "Visible items per view on desktop."},
+      {"name": "tablet-count", "type": "number", "description": "Total item count used for tablet sizing calculations."},
+      {"name": "desktop-count", "type": "number", "description": "Total item count used for desktop sizing calculations."},
+      {"name": "max-count", "type": "number", "description": "Cap on total items displayed."},
+      {"name": "grid-gap-pixels", "type": "number", "description": "Gap between items (pixels)."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "children_expected": "Generic block elements (div, article, section).",
+    "notes": "Use this when none of the specialized carousels fit. For card grids use carousel-cards; for image galleries use carousel-image / carousel-multiple-image.",
+    "source": "npm",
+    "priority": 3
+  },
+  "carousel-cards": {
+    "tag": "umd-element-carousel-cards",
+    "label": "Card Carousel",
+    "description": "Carousel specialized for umd-element-card children. Supports an intro block (headline + text + actions) above the card track.",
+    "slots": [
+      {
+        "name": "cards",
+        "required": true,
+        "description": "Container of umd-element-card instances.",
+        "example": "<div slot=\"cards\"><umd-element-card>...</umd-element-card><umd-element-card>...</umd-element-card></div>"
+      },
+      {"name": "headline", "required": false, "description": "Section headline above the carousel."},
+      {"name": "text", "required": false, "description": "Section description."},
+      {"name": "actions", "required": false, "description": "Section-level CTA(s)."}
+    ],
+    "attrs": [
+      {"name": "data-theme", "type": "enum", "values": ["light", "dark"], "description": "Color theme."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "children_expected": "umd-element-card instances.",
+    "source": "npm",
+    "priority": 3
+  },
+  "carousel-image": {
+    "tag": "umd-element-carousel-image",
+    "label": "Single Image Carousel",
+    "description": "Displays one image at a time with optional per-image headline and caption.",
+    "slots": [
+      {
+        "name": "images",
+        "required": true,
+        "description": "Container with img elements (alt text required).",
+        "example": "<div slot=\"images\"><img src=\"/a.jpg\" alt=\"A\" /><img src=\"/b.jpg\" alt=\"B\" /></div>"
+      },
+      {"name": "headlines", "required": false, "description": "Per-image headlines (div elements, one per image)."},
+      {"name": "texts", "required": false, "description": "Per-image caption text."}
+    ],
+    "attrs": [
+      {"name": "data-theme", "type": "enum", "values": ["light", "dark"]},
+      {"name": "data-feature", "type": "enum", "values": ["fullscreen"], "description": "Enable fullscreen viewer."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "Alt text is enforced \u2014 missing alt will log a warning.",
+    "source": "npm",
+    "priority": 3
+  },
+  "carousel-multiple-image": {
+    "tag": "umd-element-carousel-multiple-image",
+    "label": "Multi-Image Gallery Carousel",
+    "description": "Gallery-style carousel showing multiple images per frame. No caption/headline slots.",
+    "slots": [
+      {
+        "name": "images",
+        "required": true,
+        "description": "Container with multiple img elements (alt text required).",
+        "example": "<div slot=\"images\"><img src=\"/1.jpg\" alt=\"...\" /><img src=\"/2.jpg\" alt=\"...\" /></div>"
+      }
+    ],
+    "attrs": [
+      {"name": "data-theme", "type": "enum", "values": ["light", "dark"]},
+      {"name": "data-feature", "type": "enum", "values": ["fullscreen"]}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 3
+  },
+  "carousel-image-wide": {
+    "tag": "umd-element-carousel-image-wide",
+    "label": "Wide / Featured Image Carousel",
+    "description": "Full-width hero carousel with slide previews. Slides use data-attributes for metadata (no slot children per caption).",
+    "slots": [
+      {
+        "name": "slides",
+        "required": true,
+        "description": "Container with figure or div slides. Inner structure: img + [data-headline] + [data-text].",
+        "example": "<div slot=\"slides\"><figure><img src=\"/hero.jpg\" alt=\"...\" /><div data-headline>Title</div><div data-text>Caption</div></figure></div>"
+      }
+    ],
+    "attrs": [
+      {"name": "title", "type": "string", "description": "Accessible carousel title. Default: 'Animated Image Carousel'."},
+      {"name": "data-theme", "type": "enum", "values": ["light", "dark"]},
+      {"name": "animation-time", "type": "number", "description": "Transition duration in ms. Default: 500."},
+      {"name": "mobile-breakpoint", "type": "number", "description": "Mobile breakpoint in px. Default: 650."}
+    ],
+    "configurable": true,
+    "page_types": ["landing"],
+    "source": "npm",
+    "priority": 3
+  },
+  "carousel-thumbnail": {
+    "tag": "umd-element-carousel-thumbnail",
+    "label": "Thumbnail Carousel",
+    "description": "Carousel with a thumbnail navigation strip. Each slide supplies its thumbnail via a `data-thumbnail` attribute.",
+    "slots": [
+      {
+        "name": "blocks",
+        "required": true,
+        "description": "Slides with data-thumbnail attributes pointing to a thumbnail image URL.",
+        "example": "<div slot=\"blocks\"><div data-thumbnail=\"/thumb1.jpg\">Slide 1 content</div></div>"
+      }
+    ],
+    "attrs": [
+      {"name": "data-theme", "type": "enum", "values": ["light", "dark"]}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 3
+  }
+}

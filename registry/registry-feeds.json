@@ -1,0 +1,248 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-04-24",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "Verified from design-system submodule source. All feed components are data-driven (no slots) and require a `data-token` to fetch from the UMD feeds API.",
+    "category": "feeds",
+    "components": [
+      "feed-events",
+      "feed-events-list",
+      "feed-events-grouped",
+      "feed-news",
+      "feed-news-grid",
+      "feed-news-list",
+      "feed-news-featured",
+      "feed-experts-grid",
+      "feed-experts-list",
+      "feed-expert-bio",
+      "feed-expert-in-the-news",
+      "feed-in-the-news-grid",
+      "feed-in-the-news-list"
+    ],
+    "shared_behavior": "All feed components self-populate from the UMD feeds API. None accept slots. All require a valid `data-token`. Grid components support `data-layout-column-count` (1\u20134) and `data-layout-row-count`; lists support only row count."
+  },
+  "feed-events": {
+    "tag": "umd-feed-events",
+    "label": "Events Grid Feed",
+    "description": "Dynamic grid of event cards fetched from the events API. Responsive columns, supports lazy loading.",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true, "description": "API authentication token."},
+      {"name": "data-filter-group-ids", "type": "string", "description": "Comma-separated category IDs."},
+      {"name": "data-layout-column-count", "type": "number", "description": "1\u20134. Default: 3."},
+      {"name": "data-layout-row-count", "type": "number", "description": "1\u20132. Default: 1."},
+      {"name": "data-theme", "type": "enum", "values": ["dark"]},
+      {"name": "data-visual-transparent", "type": "boolean"},
+      {"name": "data-lazy-load", "type": "boolean"}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 2
+  },
+  "feed-events-list": {
+    "tag": "umd-feed-events-list",
+    "label": "Events List Feed",
+    "description": "Dynamic stacked list of event cards from the events API.",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-filter-group-ids", "type": "string"},
+      {"name": "data-layout-row-count", "type": "number"},
+      {"name": "data-theme", "type": "enum", "values": ["dark"]},
+      {"name": "data-lazy-load", "type": "boolean"}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 2
+  },
+  "feed-events-grouped": {
+    "tag": "umd-feed-events-grouped",
+    "label": "Events Grouped Feed",
+    "description": "Events list grouped by date. Lazy loading is always on.",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-theme", "type": "enum", "values": ["dark"]},
+      {"name": "data-layout-row-count", "type": "number", "description": "Default: 10."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 3
+  },
+  "feed-news": {
+    "tag": "umd-feed-news",
+    "label": "News Grid Feed",
+    "description": "Dynamic grid of news articles from Maryland Today. Supports overlay card style.",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-filter-group-ids", "type": "string"},
+      {"name": "data-layout-column-count", "type": "number", "description": "1\u20134. Default: 3."},
+      {"name": "data-layout-row-count", "type": "number", "description": "1\u20132. Default: 1."},
+      {"name": "data-theme", "type": "enum", "values": ["dark"]},
+      {"name": "data-display", "type": "enum", "values": ["overlay"], "description": "Use overlay card style instead of default."},
+      {"name": "data-visual-transparent", "type": "boolean"},
+      {"name": "data-lazy-load", "type": "boolean"},
+      {"name": "data-entry-remove-ids", "type": "string", "description": "Comma-separated IDs to exclude."},
+      {"name": "data-is", "type": "enum", "values": ["union"], "description": "Filter mode."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 2
+  },
+  "feed-news-grid": {
+    "tag": "umd-feed-news-grid",
+    "label": "News Grid Feed (alias)",
+    "description": "Grid of news cards. Commonly seen alias registered in existing registry; use `umd-feed-news` going forward.",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-layout-column-count", "type": "number"},
+      {"name": "data-layout-row-count", "type": "number"}
+    ],
+    "configurable": true,
+    "page_types": ["landing"],
+    "source": "npm",
+    "priority": 3
+  },
+  "feed-news-list": {
+    "tag": "umd-feed-news-list",
+    "label": "News List Feed",
+    "description": "Dynamic stacked list of news articles.",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-layout-row-count", "type": "number"},
+      {"name": "data-theme", "type": "enum", "values": ["dark"]}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 3
+  },
+  "feed-news-featured": {
+    "tag": "umd-feed-news-featured",
+    "label": "Featured News Feed",
+    "description": "Highlights a single featured news story (typically the most recent).",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-theme", "type": "enum", "values": ["dark"]}
+    ],
+    "configurable": true,
+    "page_types": ["landing"],
+    "source": "npm",
+    "priority": 3
+  },
+  "feed-experts-grid": {
+    "tag": "umd-feed-experts-grid",
+    "label": "Experts Grid Feed",
+    "description": "Dynamic grid of expert profiles. Supports media-trained filtering and ID-based selection.",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-filter-group-ids", "type": "string"},
+      {"name": "data-layout-column-count", "type": "number", "description": "1\u20134. Default: 3."},
+      {"name": "data-layout-row-count", "type": "number", "description": "1\u20132. Default: 1."},
+      {"name": "data-theme", "type": "enum", "values": ["dark"]},
+      {"name": "data-display", "type": "enum", "values": ["overlay"]},
+      {"name": "data-visual-transparent", "type": "boolean"},
+      {"name": "data-lazy-load", "type": "boolean"},
+      {"name": "data-media-trained", "type": "boolean", "description": "Filter to media-trained experts only."},
+      {"name": "data-ids", "type": "string", "description": "Comma-separated expert IDs to pin."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 3
+  },
+  "feed-experts-list": {
+    "tag": "umd-feed-experts-list",
+    "label": "Experts List Feed",
+    "description": "Dynamic list of expert profiles (list or tabular card style).",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-filter-group-ids", "type": "string"},
+      {"name": "data-layout-row-count", "type": "number", "description": "1\u201310. Default: 5."},
+      {"name": "data-theme", "type": "enum", "values": ["dark"]},
+      {"name": "data-display", "type": "enum", "values": ["list"], "description": "List or omit for tabular style."},
+      {"name": "data-lazy-load", "type": "boolean"},
+      {"name": "data-media-trained", "type": "boolean"},
+      {"name": "data-ids", "type": "string"}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 3
+  },
+  "feed-expert-bio": {
+    "tag": "umd-feed-expert-bio",
+    "label": "Expert Bio (by ID)",
+    "description": "Single expert profile card fetched by ID.",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-id", "type": "string", "required": true, "description": "Expert ID."},
+      {"name": "data-theme", "type": "enum", "values": ["dark"]}
+    ],
+    "configurable": true,
+    "page_types": ["interior"],
+    "source": "npm",
+    "priority": 3
+  },
+  "feed-expert-in-the-news": {
+    "tag": "umd-feed-expert-in-the-news",
+    "label": "Expert In The News Feed",
+    "description": "News articles featuring a specific expert (filtered by expert ID).",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-id", "type": "string", "required": true},
+      {"name": "data-layout-row-count", "type": "number", "description": "2\u201310. Default: 5."},
+      {"name": "data-theme", "type": "enum", "values": ["dark"]},
+      {"name": "data-lazy-load", "type": "boolean"}
+    ],
+    "configurable": true,
+    "page_types": ["interior"],
+    "source": "npm",
+    "priority": 3
+  },
+  "feed-in-the-news-grid": {
+    "tag": "umd-feed-in-the-news-grid",
+    "label": "In The News Grid Feed",
+    "description": "Grid of news articles that mention UMD (broader than news from UMD itself).",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-layout-column-count", "type": "number", "description": "1\u20134. Default: 3."},
+      {"name": "data-layout-row-count", "type": "number", "description": "1\u201310. Default: 1."},
+      {"name": "data-visual-transparent", "type": "boolean"}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 3
+  },
+  "feed-in-the-news-list": {
+    "tag": "umd-feed-in-the-news-list",
+    "label": "In The News List Feed",
+    "description": "Stacked list of news articles mentioning UMD.",
+    "slots": [],
+    "attrs": [
+      {"name": "data-token", "type": "string", "required": true},
+      {"name": "data-layout-row-count", "type": "number", "description": "1\u201310. Default: 5."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 3
+  }
+}

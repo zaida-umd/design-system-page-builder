@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-04-24",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "Verified from design-system submodule source.",
+    "category": "slider",
+    "components": ["slider-events", "slider-events-feed"]
+  },
+  "slider-events": {
+    "tag": "umd-element-slider-events",
+    "label": "Event Slider (Static)",
+    "description": "Horizontal scrollable slider of event cards. You supply the event markup \u2014 use this for hand-curated event lists.",
+    "slots": [
+      {
+        "name": "event-list",
+        "required": true,
+        "description": "Container of event items (div with event markup per slide).",
+        "example": "<div slot=\"event-list\"><div>Event 1 markup</div><div>Event 2 markup</div></div>"
+      },
+      {"name": "headline", "required": false, "description": "Section headline above the slider."},
+      {"name": "actions", "required": false, "description": "Section-level CTA link(s)."}
+    ],
+    "attrs": [
+      {"name": "data-theme", "type": "enum", "values": ["dark"], "description": "Dark background."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "source": "npm",
+    "priority": 3
+  },
+  "slider-events-feed": {
+    "tag": "umd-element-slider-events-feed",
+    "label": "Event Slider (Feed)",
+    "description": "Same horizontal slider as slider-events but auto-populated from the events API. Use when events should be pulled dynamically from a feed.",
+    "slots": [
+      {"name": "headline", "required": false, "description": "Section headline."},
+      {"name": "actions", "required": false, "description": "Section-level CTA link(s)."}
+    ],
+    "attrs": [
+      {"name": "data-token", "type": "string", "description": "API authentication token (required).", "required": true},
+      {"name": "data-theme", "type": "enum", "values": ["dark"]},
+      {"name": "data-feed-type", "type": "enum", "values": ["academic"], "description": "Feed source. Omit for general events; use `academic` for the academic calendar."},
+      {"name": "data-filter-group-ids", "type": "string", "description": "Comma-separated category IDs to filter by."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "Requires a valid API token to fetch events. Without data-feed-type, fetches general events.",
+    "source": "npm",
+    "priority": 3
+  }
+}

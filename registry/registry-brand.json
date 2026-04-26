@@ -1,0 +1,54 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-04-24",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "Verified from design-system submodule source.",
+    "category": "brand",
+    "components": ["brand-card-stack", "brand-logo-animation"]
+  },
+  "brand-card-stack": {
+    "tag": "umd-element-brand-card-stack",
+    "label": "Brand Card Stack",
+    "description": "Interactive stacked media layout with one featured asset and 4\u20138 supporting assets (images or videos). Typically used as a hero-scale brand moment on landing pages.",
+    "slots": [
+      {
+        "name": "cards",
+        "required": true,
+        "description": "5\u20139 child elements. Exactly one must have `data-featured=\"true\"`. Others can be img, video, or containers wrapping an img.",
+        "example": "<div slot=\"cards\"><img data-featured=\"true\" src=\"/hero.jpg\" alt=\"...\" /><img src=\"/a.jpg\" alt=\"...\" /><img src=\"/b.jpg\" alt=\"...\" /></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-featured",
+        "type": "boolean",
+        "description": "Applied to ONE child element (not the host) to mark it as the featured card. Required."
+      },
+      {
+        "name": "data-image-expand",
+        "type": "boolean",
+        "description": "When true, the featured card expands to a full-screen viewer on interaction."
+      }
+    ],
+    "configurable": true,
+    "page_types": ["landing"],
+    "notes": "Hard min/max of 5\u20139 assets. Missing the data-featured child will fail to render correctly.",
+    "source": "npm",
+    "priority": 3
+  },
+  "brand-logo-animation": {
+    "tag": "umd-element-brand-logo-animation",
+    "label": "Brand Chevron Animation",
+    "description": "Animated UMD chevron logo scroll element. Drop-in decorative brand motion \u2014 no slots or attributes.",
+    "slots": [],
+    "attrs": [],
+    "configurable": false,
+    "page_types": ["landing"],
+    "notes": "Pure behavior component. Typically placed between sections as a scroll transition.",
+    "source": "npm",
+    "priority": 3
+  }
+}

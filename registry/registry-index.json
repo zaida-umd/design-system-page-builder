@@ -1,27 +1,29 @@
 {
   "_meta": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "components_version": "1.17.18",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-03-02",
+    "last_verified": "2026-04-24",
     "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
-    "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
-    "component_count": 23,
-    "last_updated": "2026-03-29",
-    "batch_4": "section-intro, section-intro-wide, footer",
-    "batch_5": "sticky-columns, card-event, feed-events-list"
+    "notes": "All slots and attributes verified directly from the design-system submodule source. Do not re-derive for known components \u2014 use this registry.",
+    "component_count": 60,
+    "last_updated": "2026-04-24"
   },
   "categories": {
     "navigation": {
       "file": "registry/registry-navigation.json",
       "components": [
         "header-utility",
+        "navigation-utility",
         "header-site",
+        "navigation-sticky",
         "nav-item",
         "nav-slider",
+        "nav-drawer",
+        "breadcrumb",
         "footer"
       ],
-      "description": "Global header, site header, nav items, nav slider (interior only), footer"
+      "description": "Global UMD bar, site header, main/utility nav, sticky wrapper, drawer, breadcrumb, footer"
     },
     "heroes": {
       "file": "registry/registry-heroes.json",
@@ -43,12 +45,12 @@
         "card-icon",
         "card-video",
         "card-event",
-        "feed-events-list",
-        "feed-news-grid",
-        "feed-news-list",
-        "feed-news-featured"
+        "article",
+        "event-time",
+        "call-to-action",
+        "events-date"
       ],
-      "description": "Card and feed components for content grids"
+      "description": "Cards, article cards, event cards, events-date lockup, and the call-to-action button wrapper"
     },
     "content": {
       "file": "registry/registry-content.json",
@@ -63,11 +65,82 @@
         "stat",
         "tabs"
       ],
-      "description": "Pathways, section intros, image expand, sticky columns, media inline, stats, tabs"
+      "description": "Pathways, section intros, image expand, sticky columns, media-inline, stats, tabs"
+    },
+    "feeds": {
+      "file": "registry/registry-feeds.json",
+      "components": [
+        "feed-events",
+        "feed-events-list",
+        "feed-events-grouped",
+        "feed-news",
+        "feed-news-grid",
+        "feed-news-list",
+        "feed-news-featured",
+        "feed-experts-grid",
+        "feed-experts-list",
+        "feed-expert-bio",
+        "feed-expert-in-the-news",
+        "feed-in-the-news-grid",
+        "feed-in-the-news-list"
+      ],
+      "description": "Data-driven feed components (events, news, experts, in-the-news). All require data-token."
+    },
+    "carousel": {
+      "file": "registry/registry-carousel.json",
+      "components": [
+        "carousel",
+        "carousel-cards",
+        "carousel-image",
+        "carousel-multiple-image",
+        "carousel-image-wide",
+        "carousel-thumbnail"
+      ],
+      "description": "Generic, card, image, multi-image, wide/featured, and thumbnail carousels"
+    },
+    "accordion": {
+      "file": "registry/registry-accordion.json",
+      "components": ["accordion-item"],
+      "description": "Expandable/collapsible content items \u2014 group multiple for a full accordion"
+    },
+    "alerts": {
+      "file": "registry/registry-alerts.json",
+      "components": ["alert-page", "alert-site", "banner-promo"],
+      "description": "Page alert (dismissable), site-wide alert (localStorage-persisted), and promo banner"
+    },
+    "brand": {
+      "file": "registry/registry-brand.json",
+      "components": ["brand-card-stack", "brand-logo-animation"],
+      "description": "Brand hero moments: interactive card stack and animated chevron scroll"
+    },
+    "layout": {
+      "file": "registry/registry-layout.json",
+      "components": ["modal", "scroll-top", "logo", "media-gif", "events-date"],
+      "description": "Utility layout components: modal, scroll-top, boxed logo, accessible GIF, event date lockup"
+    },
+    "person": {
+      "file": "registry/registry-person.json",
+      "components": ["person", "person-bio", "person-hero"],
+      "description": "Person card (directory), full bio, and hero-scale person feature"
+    },
+    "quote": {
+      "file": "registry/registry-quote.json",
+      "components": ["quote"],
+      "description": "Pull quote / testimonial / statement block (three display modes)"
+    },
+    "slider": {
+      "file": "registry/registry-slider.json",
+      "components": ["slider-events", "slider-events-feed"],
+      "description": "Horizontal event sliders (static markup + API-fed variants)"
+    },
+    "social": {
+      "file": "registry/registry-social.json",
+      "components": ["social-sharing"],
+      "description": "Social sharing + print/email buttons (inline or fixed)"
     }
   },
   "interior_page_layout": {
-    "description": "Rules for interior (subpage) layouts. See RULES.md §21 for full documentation.",
+    "description": "Rules for interior (subpage) layouts. See RULES.md \u00a721 for full documentation.",
     "heroes": {
       "background_hero_small": {
         "component": "hero-standard",
@@ -83,47 +156,100 @@
           "no_background": "(omit data-theme)",
           "light_background": "data-theme=light",
           "dark_background": "data-theme=dark",
-          "maryland_background": "data-theme=maryland — NOT typically used on interior pages"
+          "maryland_background": "data-theme=maryland \u2014 NOT typically used on interior pages"
         }
+      },
+      "person_hero": {
+        "component": "person-hero",
+        "notes": "For profile pages \u2014 includes a breadcrumb slot so you don't render a separate umd-element-breadcrumb."
       }
     },
-    "interior_only_feature": {
-      "left_nav_slider": "Optional left-side navigation slider — available on interior pages only. See registry/registry-navigation.json: nav-slider."
+    "interior_only_features": {
+      "left_nav_slider": "See registry-navigation.json: nav-slider (optional left-side nav).",
+      "breadcrumb": "See registry-navigation.json: breadcrumb (standard breadcrumb) or person-hero's built-in breadcrumb slot.",
+      "navigation_sticky": "See registry-navigation.json: navigation-sticky (for anchored jumplink nav)."
     },
-    "components_available": [
-      "header-utility",
-      "header-site",
-      "nav-item",
-      "nav-slider",
-      "footer",
-      "hero-standard (small variants only)",
-      "hero-minimal",
-      "media-inline",
-      "card-standard",
-      "card-overlay",
-      "card-event",
-      "feed-events-list",
-      "rich-text (umd-text-rich-advanced CSS class)",
-      "carousel (not yet in registry)",
-      "banner-promo (not yet in registry)",
-      "accordion (not yet in registry)",
-      "quote (not yet in category registry)",
-      "logo-grid (not yet in registry)",
-      "stat (umd-element-stat)",
-      "people-cards (not yet in registry)",
-      "bio-card (not yet in registry)",
-      "tabs (umd-element-tabs)"
-    ],
     "landing_page_only": [
       "pathway", "pathway-highlight", "section-intro", "section-intro-wide",
       "image-expand", "sticky-columns", "card-icon", "card-video",
-      "hero-expand", "hero-logo", "hero-grid", "hero-brand-video"
+      "hero-expand", "hero-logo", "hero-grid", "hero-brand-video",
+      "brand-card-stack", "brand-logo-animation", "carousel-image-wide", "feed-news-featured"
     ],
-    "note_on_stat_and_tabs": "umd-element-stat and umd-element-tabs are available on both landing and interior pages — see registry/registry-content.json for full documentation",
     "spacing": {
       "between_major_sections": "umd-layout-vertical-interior (56px mobile/tablet, 80px desktop)",
       "between_items_within_section": "umd-layout-vertical-interior-child (32px all breakpoints)",
       "do_not_use": "umd-layout-vertical-landing, umd-layout-vertical-landing-child"
     }
+  },
+  "lookup_by_tag": {
+    "umd-element-accordion-item": "registry-accordion.json",
+    "umd-element-alert-page": "registry-alerts.json",
+    "umd-element-alert-site": "registry-alerts.json",
+    "umd-element-article": "registry-cards.json",
+    "umd-element-banner-promo": "registry-alerts.json",
+    "umd-element-brand-card-stack": "registry-brand.json",
+    "umd-element-brand-logo-animation": "registry-brand.json",
+    "umd-element-breadcrumb": "registry-navigation.json",
+    "umd-element-call-to-action": "registry-cards.json",
+    "umd-element-card": "registry-cards.json",
+    "umd-element-card-icon": "registry-cards.json",
+    "umd-element-card-overlay": "registry-cards.json",
+    "umd-element-card-video": "registry-cards.json",
+    "umd-element-carousel": "registry-carousel.json",
+    "umd-element-carousel-cards": "registry-carousel.json",
+    "umd-element-carousel-image": "registry-carousel.json",
+    "umd-element-carousel-image-wide": "registry-carousel.json",
+    "umd-element-carousel-multiple-image": "registry-carousel.json",
+    "umd-element-carousel-thumbnail": "registry-carousel.json",
+    "umd-element-event": "registry-cards.json",
+    "umd-element-event-time": "registry-cards.json",
+    "umd-element-events-date": "registry-cards.json",
+    "umd-element-footer": "registry-navigation.json",
+    "umd-element-hero": "registry-heroes.json",
+    "umd-element-hero-brand-video": "registry-heroes.json",
+    "umd-element-hero-expand": "registry-heroes.json",
+    "umd-element-hero-grid": "registry-heroes.json",
+    "umd-element-hero-logo": "registry-heroes.json",
+    "umd-element-hero-minimal": "registry-heroes.json",
+    "umd-element-logo": "registry-layout.json",
+    "umd-element-media-gif": "registry-layout.json",
+    "umd-element-media-inline": "registry-content.json",
+    "umd-element-modal": "registry-layout.json",
+    "umd-element-nav-drawer": "registry-navigation.json",
+    "umd-element-nav-item": "registry-navigation.json",
+    "umd-element-nav-slider": "registry-navigation.json",
+    "umd-element-navigation-header": "registry-navigation.json",
+    "umd-element-navigation-sticky": "registry-navigation.json",
+    "umd-element-navigation-utility": "registry-navigation.json",
+    "umd-element-pathway": "registry-content.json",
+    "umd-element-pathway-highlight": "registry-content.json",
+    "umd-element-person": "registry-person.json",
+    "umd-element-person-bio": "registry-person.json",
+    "umd-element-person-hero": "registry-person.json",
+    "umd-element-quote": "registry-quote.json",
+    "umd-element-scroll-top": "registry-layout.json",
+    "umd-element-section-intro": "registry-content.json",
+    "umd-element-section-intro-wide": "registry-content.json",
+    "umd-element-slider-events": "registry-slider.json",
+    "umd-element-slider-events-feed": "registry-slider.json",
+    "umd-element-social-sharing": "registry-social.json",
+    "umd-element-stat": "registry-content.json",
+    "umd-element-sticky-columns": "registry-content.json",
+    "umd-element-tabs": "registry-content.json",
+    "umd-element-utility-header": "registry-navigation.json",
+    "umd-feed-events": "registry-feeds.json",
+    "umd-feed-events-grouped": "registry-feeds.json",
+    "umd-feed-events-list": "registry-feeds.json",
+    "umd-feed-expert-bio": "registry-feeds.json",
+    "umd-feed-expert-in-the-news": "registry-feeds.json",
+    "umd-feed-experts-grid": "registry-feeds.json",
+    "umd-feed-experts-list": "registry-feeds.json",
+    "umd-feed-in-the-news-grid": "registry-feeds.json",
+    "umd-feed-in-the-news-list": "registry-feeds.json",
+    "umd-feed-news": "registry-feeds.json",
+    "umd-feed-news-featured": "registry-feeds.json",
+    "umd-feed-news-grid": "registry-feeds.json",
+    "umd-feed-news-list": "registry-feeds.json",
+    "umd-layout-image-expand": "registry-content.json"
   }
 }

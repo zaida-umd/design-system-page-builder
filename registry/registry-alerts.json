@@ -1,0 +1,160 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-04-24",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "Verified from design-system submodule source.",
+    "category": "alerts",
+    "components": ["alert-page", "alert-site", "banner-promo"]
+  },
+  "alert-page": {
+    "tag": "umd-element-alert-page",
+    "label": "Page Alert",
+    "description": "Page-level alert with close button and optional warning icon. Use near the top of a page to surface critical information (weather, emergency, service disruption).",
+    "slots": [
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Alert title (h2\u2013h6 or p).",
+        "example": "<h3 slot=\"headline\">Weather Advisory</h3>"
+      },
+      {
+        "name": "text",
+        "required": true,
+        "description": "Alert body content (div or p).",
+        "example": "<p slot=\"text\">Classes before 10am are canceled today.</p>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "Optional action links/buttons.",
+        "example": "<div slot=\"actions\"><a href=\"/status\">Campus status</a></div>"
+      },
+      {
+        "name": "body",
+        "required": false,
+        "description": "Deprecated \u2014 use `text` instead.",
+        "example": null
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["light", "dark"],
+        "description": "Background theme."
+      },
+      {
+        "name": "data-visual-icon",
+        "type": "enum",
+        "values": ["show"],
+        "description": "Show the warning/alert icon indicator."
+      }
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "4px gold accent border. Always includes a close (X) button. Icon is gold and positioned absolutely on small screens. Per-session dismiss (not persisted).",
+    "source": "npm",
+    "priority": 2
+  },
+  "alert-site": {
+    "tag": "umd-element-alert-site",
+    "label": "Site Alert",
+    "description": "Persistent site-wide alert that remembers dismissal in localStorage and stays hidden for a configurable number of days.",
+    "slots": [
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Alert title.",
+        "example": "<h2 slot=\"headline\">Scheduled Maintenance</h2>"
+      },
+      {
+        "name": "text",
+        "required": true,
+        "description": "Alert body.",
+        "example": "<p slot=\"text\">Portal will be offline Sunday 2\u20134am EST.</p>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "Optional action links.",
+        "example": "<div slot=\"actions\"><a href=\"/status\">Read more</a></div>"
+      },
+      {
+        "name": "body",
+        "required": false,
+        "description": "Deprecated \u2014 use `text` instead.",
+        "example": null
+      }
+    ],
+    "attrs": [
+      {
+        "name": "days-to-hide",
+        "type": "number",
+        "description": "Days to remember dismissal. Default: 10."
+      }
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "Gold background with a red left border (4px mobile / 8px desktop). Dismissal stored under localStorage key `umd-alert-site-time`. Re-appears after `days-to-hide` elapses.",
+    "source": "npm",
+    "priority": 2
+  },
+  "banner-promo": {
+    "tag": "umd-element-banner-promo",
+    "label": "Promo Banner",
+    "description": "Marketing/announcement banner for high-visibility campaigns (applications open, flagship initiatives). Supports dark theme and optional university seal icon.",
+    "slots": [
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Banner title. Renders uppercase, weight 800.",
+        "example": "<h2 slot=\"headline\">Fall 2026 Applications Open</h2>"
+      },
+      {
+        "name": "text",
+        "required": true,
+        "description": "Banner copy.",
+        "example": "<p slot=\"text\">Apply by December 1 for priority consideration.</p>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA links (limited to 30% width on desktop).",
+        "example": "<div slot=\"actions\"><a href=\"/apply\">Apply now</a></div>"
+      },
+      {
+        "name": "body",
+        "required": false,
+        "description": "Deprecated \u2014 use `text` instead.",
+        "example": null
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["dark"],
+        "description": "Dark (black) background. Omit for default gold."
+      },
+      {
+        "name": "data-visual-icon",
+        "type": "enum",
+        "values": ["seal"],
+        "description": "Show the UMD seal icon (positioned absolutely on the right; 20% opacity on dark theme)."
+      }
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "variants": {
+      "gold": "Default gold background.",
+      "dark": "Black background, white text.",
+      "with_seal": "Adds university seal watermark."
+    },
+    "notes": "No dismissal logic (unlike alert-site). Responsive layout at 650px breakpoint. On mobile, seal is hidden and actions stack below.",
+    "source": "npm",
+    "priority": 2
+  }
+}

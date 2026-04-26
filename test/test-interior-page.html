@@ -164,6 +164,7 @@
        HORIZONTAL SPACING — page-lock classes
     ==================== */
     [class^="umd-layout-space-horizontal-"] {
+      box-sizing: border-box;
       display: block;
       margin-left: auto;
       margin-right: auto;
@@ -275,7 +276,6 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
-      justify-content: flex-start;
     }
     @media (min-width: 650px) {
       .umd-layout-grid-inline-tablet-rows {
@@ -310,6 +310,9 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 24px;
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-gap-stacked { gap: 40px; }
     }
 
     /* ====================
@@ -453,48 +456,88 @@
     ==================== */
     .mb-md { margin-bottom: 24px; }
     .mb-sm { margin-bottom: 16px; }
+
+    /* ====================
+       UTILITY NAVIGATION LINKS
+       ::slotted(*) only reaches div[slot="utility-navigation"], not
+       the <a> children — these light-DOM styles fill the gap.
+    ==================== */
+    [slot="utility-navigation"] a {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 14px;
+      color: #454545;
+      text-decoration: none;
+      line-height: 1.25;
+    }
+    [slot="utility-navigation"] a:hover,
+    [slot="utility-navigation"] a:focus {
+      color: #E21833;
+      text-decoration: underline;
+    }
+
+    /* ====================
+       MASONRY GRID (2-column stagger)
+       Source: @universityofmaryland/web-styles-library — masonary.twoColumn
+       Add min-height to direct children per use case.
+    ==================== */
+    .umd-layout-grid-masonry {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-masonry {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-masonry { gap: 40px; }
+    }
+    .umd-layout-grid-masonry > * > * {
+      width: 100%;
+      height: 100%;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-masonry > *:nth-of-type(odd)  { margin-top: -32px; margin-bottom: 32px; }
+      .umd-layout-grid-masonry > *:nth-of-type(even) { margin-top: 0; }
+      .umd-layout-grid-masonry > *:first-child        { margin-top: 0; }
+      .umd-layout-grid-masonry > *:nth-of-type(2)    { margin-top: 32px; }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-masonry > *:nth-of-type(odd) { margin-top: -40px; margin-bottom: 40px; }
+      .umd-layout-grid-masonry > *:nth-of-type(2)   { margin-top: 40px; }
+    }
   </style>
 
   <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
 </head>
 <body>
 
-  <!-- ========================================
-       1. GLOBAL UNIVERSITY NAVIGATION
-  ======================================== -->
+  <!-- 1. Global university navigation -->
   <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
 
-  <!-- ========================================
-       2. SITE HEADER
-  ======================================== -->
+  <!-- 2. Site utility header -->
   <umd-element-utility-header></umd-element-utility-header>
 
-  <!-- ========================================
-       3. NAVIGATION HEADER
-  ======================================== -->
+  <!-- 3. Site navigation header -->
   <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
-    <a slot="logo" href="/">
-      <img src="../images/logos/primary-logo-dark.svg" alt="University of Maryland" />
-    </a>
-    <nav slot="main-navigation">
-      <umd-element-nav-item>
-        <a slot="primary-link" href="/about">About</a>
-      </umd-element-nav-item>
-      <umd-element-nav-item>
-        <a slot="primary-link" href="/about/history">Traditions &amp; History</a>
-      </umd-element-nav-item>
-      <umd-element-nav-item>
-        <a slot="primary-link" href="/alumni">Alumni</a>
-      </umd-element-nav-item>
-      <umd-element-nav-item>
-        <a slot="primary-link" href="/give">Give</a>
-      </umd-element-nav-item>
-    </nav>
+    <a slot="logo" href="/"><img src="../images/logos/primary-logo-dark.svg" alt="University of Maryland" /></a>
+    <umd-element-nav-item>
+      <a slot="primary-link" href="/about">About</a>
+    </umd-element-nav-item>
+    <umd-element-nav-item>
+      <a slot="primary-link" href="/about/history" aria-current="page">Traditions &amp; History</a>
+    </umd-element-nav-item>
+    <umd-element-nav-item>
+      <a slot="primary-link" href="/alumni">Alumni</a>
+    </umd-element-nav-item>
+    <umd-element-nav-item>
+      <a slot="primary-link" href="/give">Give</a>
+    </umd-element-nav-item>
   </umd-element-navigation-header>
 
-  <!-- ========================================
-       4. HERO — background hero small, centered text
-  ======================================== -->
+  <!-- 4. Hero — small, centered, dark -->
   <section>
     <umd-element-hero data-layout-height="small" data-layout-text="center">
       <p slot="eyebrow">History &amp; Traditions</p>
@@ -503,9 +546,7 @@
     </umd-element-hero>
   </section>
 
-  <!-- ========================================
-       5. BREADCRUMB
-  ======================================== -->
+  <!-- 5. Breadcrumb -->
   <div class="umd-layout-space-horizontal-larger umd-layout-space-vertical-interior">
     <umd-element-breadcrumb>
       <div slot="paths">
@@ -516,9 +557,7 @@
     </umd-element-breadcrumb>
   </div>
 
-  <!-- ========================================
-       6. SIDEBAR + CONTENT COLUMN LAYOUT
-  ======================================== -->
+  <!-- 6. Sidebar + content column layout -->
   <div class="umd-layout-space-horizontal-larger">
     <div class="umd-layout-space-columns-left">
 
@@ -542,13 +581,9 @@
       <!-- Main content column: constrained to 800px -->
       <div id="umd-shell-content" class="max-w-[800px]">
 
-        <!-- ========================================
-             7. CONTENT SECTIONS
-        ======================================== -->
-
         <!-- Section A — Beanies (H2 + image left + text) -->
         <section class="umd-layout-space-vertical-interior">
-          <h2 class="umd-layout-space-vertical-interior-child text-black umd-sans-larger-bold">Beanies</h2>
+          <h2 class="umd-layout-space-vertical-interior-child">Beanies</h2>
           <umd-element-media-inline>
             <img slot="image" src="../images/small/people/freshman-beanie.webp" alt="Young student wearing a beanie and a sign saying I can't help it (I'm a freshman)" />
             <div slot="text" class="umd-text-rich-advanced">
@@ -559,7 +594,7 @@
 
         <!-- Section B — Byrd Beach (H3 + image right + text) -->
         <section class="umd-layout-space-vertical-interior">
-          <h3 class="umd-layout-space-vertical-interior-child text-black umd-sans-larger-bold">Byrd Beach</h3>
+          <h3 class="umd-layout-space-vertical-interior-child">Byrd Beach</h3>
           <umd-element-media-inline data-layout-alignment="right">
             <img slot="image" src="../images/small/campus/Students-at-Byrd-Beach-1985.webp" alt="Students at Byrd Beach 1985" />
             <div slot="text" class="umd-text-rich-advanced">
@@ -570,7 +605,7 @@
 
         <!-- Section C — Class Wars (H3 + image left + multi-paragraph text) -->
         <section class="umd-layout-space-vertical-interior">
-          <h3 class="umd-layout-space-vertical-interior-child text-black umd-sans-larger-bold">Class Wars</h3>
+          <h3 class="umd-layout-space-vertical-interior-child">Class Wars</h3>
           <umd-element-media-inline>
             <img slot="image" src="../images/small/people/tug-of-war2.webp" alt="Vintage photo of students playing tug of war" />
             <div slot="text" class="umd-text-rich-advanced">
@@ -583,7 +618,7 @@
 
         <!-- Section D — Kissing Tunnel (H3 + text only, no image) -->
         <section class="umd-layout-space-vertical-interior">
-          <h3 class="umd-layout-space-vertical-interior-child text-black umd-sans-larger-bold">Kissing Tunnel</h3>
+          <h3 class="umd-layout-space-vertical-interior-child">Kissing Tunnel</h3>
           <div class="umd-text-rich-advanced">
             <p>Located beneath Regents Drive south of Memorial Chapel, the historic Kissing Tunnel got its name by being a popular stop after a College Park date night back in the 1950s and 1960s, when all residence halls were single-gender.</p>
           </div>
@@ -591,7 +626,7 @@
 
         <!-- Section E — May Day (H3 + image right + text) -->
         <section class="umd-layout-space-vertical-interior">
-          <h3 class="umd-layout-space-vertical-interior-child text-black umd-sans-larger-bold">May Day</h3>
+          <h3 class="umd-layout-space-vertical-interior-child">May Day</h3>
           <umd-element-media-inline data-layout-alignment="right">
             <img slot="image" src="../images/small/people/may-day.webp" alt="Vintage photo of young women in formal light dresses seated around a woman in a large seat" />
             <div slot="text" class="umd-text-rich-advanced">
@@ -604,9 +639,7 @@
     </div>
   </div>
 
-  <!-- ========================================
-       8. FOOTER
-  ======================================== -->
+  <!-- 8. Footer -->
   <footer class="overflow-hidden">
     <umd-element-footer data-display="visual" data-theme="dark">
       <a slot="logo" href="/"><img src="../images/logos/footer-logo.svg" alt="University of Maryland" /></a>

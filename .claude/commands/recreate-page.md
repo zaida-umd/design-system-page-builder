@@ -31,17 +31,11 @@ Wait for the subagent to complete before proceeding.
 
 ## Step 2: Setup
 
-1. Read `/Users/zjocson/repos/design-system-page-builder/TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. Do not rebuild it. The CSS comes from `styles/critical.css` (single source of truth for all CSS rules).
-2. Read `/Users/zjocson/repos/design-system-page-builder/registry/registry-index.json` to see available categories and which components are in each.
-3. Read `/Users/zjocson/repos/design-system-page-builder/LAYOUT-PATTERNS.md` for HTML patterns when using rich text sections, dark backgrounds, two-column grids, or inline CTA rows.
-3. **Read `tmp/source.html`** to understand the page structure, content, and asset references. Use the downloaded files in `tmp/` as the authoritative source — do not re-fetch the live URL.
-4. Based on the content types on the page, read only the relevant category file(s):
-   - Navigation/headers/footer → `/Users/zjocson/repos/design-system-page-builder/registry/registry-navigation.json`
-   - Heroes → `/Users/zjocson/repos/design-system-page-builder/registry/registry-heroes.json`
-   - Cards and feeds → `/Users/zjocson/repos/design-system-page-builder/registry/registry-cards.json`
-   - Pathways, section intros, image expand, sticky columns → `/Users/zjocson/repos/design-system-page-builder/registry/registry-content.json`
-5. If the content type of a component is unclear, read all four files. Do not suggest components not in the registry. If there is no equivalent, skip the content but message the user that there was no match for a piece of content.
-6. Follow every rule in `/Users/zjocson/repos/design-system-page-builder/RULES.md` exactly.
+1. Read `TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. Do not rebuild it. The CSS comes from `styles/critical.css` (single source of truth for all CSS rules).
+2. Read `registry/registry-index.json` for the category map and `lookup_by_tag`. Load only the specific category files you need for the content types on this page. Do not suggest components that are not in the registry — if no equivalent exists, skip that content and tell the user.
+3. Read `LAYOUT-PATTERNS.md` for HTML patterns when using rich text sections, dark backgrounds, two-column grids, or inline CTA rows.
+4. **Read `tmp/source.html`** to understand the page structure, content, and asset references. Use the downloaded files in `tmp/` as the authoritative source — do not re-fetch the live URL.
+5. Follow every rule in `RULES.md` exactly.
 
 ## Page identity
 
@@ -117,14 +111,9 @@ For `slot="logo"` in `umd-element-navigation-header`, use a confirmed accessible
 
 ## Image fallback
 
-Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them to `/Users/zjocson/repos/design-system-page-builder/images/projects/{title}/` and reference as repo-relative paths: `../images/projects/{title}/filename.jpg`. Copy any video files to `images/media/`.
+Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them to `images/projects/{title}/` and reference as repo-relative paths: `../images/projects/{title}/filename.jpg`. Copy any video files to `images/media/`.
 
-If an image was not downloaded (listed in `tmp/skipped-assets.txt` or absent from `tmp/assets/images/`):
-1. Read `/Users/zjocson/repos/design-system-page-builder/images/images-index.json`
-2. Determine the size tier: **large** for heroes, pathways, image-expand — **small** for cards
-3. Match the content context to the closest tag (`campus`, `people`, `events`, `research`)
-4. If no tag match, collect all entries with `"default": true` in the correct tier and pick one at random
-5. Reference the image as a repo-relative path: `../images/large/campus/filename.jpg`
+If an image was not downloaded (listed in `tmp/skipped-assets.txt` or absent from `tmp/assets/images/`), fall back to the library lookup in CLAUDE.md §Images.
 
 ## Output
 

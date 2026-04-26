@@ -6,8 +6,8 @@ Build a complete UMD interior/subpage HTML file using real content from the "Tra
 ## Setup
 
 1. Read `TEMPLATE.html` — use its full `<head>` block (critical CSS + cdn.js script) verbatim. The CSS comes from `styles/critical.css` (single source of truth for all CSS rules).
-2. Registry files in `registry/` are the source of truth for all slots and attributes.
-3. Follow every rule in `RULES.md` exactly.
+2. Read `registry/registry-index.json` for the category map and `lookup_by_tag`; then load the specific category files you need (navigation, heroes, content, etc.).
+3. Follow every rule in `RULES.md` exactly — see §21 for interior-page layout rules.
 4. Read `LAYOUT-PATTERNS.md` for HTML patterns when using rich text sections, dark backgrounds, two-column grids, or inline CTA rows.
 
 ---
@@ -60,15 +60,19 @@ This is the "Traditions of the Past" subpage from `umd.edu/about/traditions-of-t
 
 Wrap in `<div class="umd-layout-space-horizontal-larger umd-layout-space-vertical-interior">`:
 
+Use the `umd-element-breadcrumb` web component — **not** a raw `<nav><ol>`. Plain HTML lists render unstyled because the design system applies all breadcrumb styling through the component's shadow DOM.
+
 ```html
-<nav aria-label="Breadcrumb">
-  <ol>
-    <li><a href="/">Home</a></li>
-    <li><a href="/about/history">Traditions &amp; History</a></li>
-    <li aria-current="page">Traditions of the Past</li>
-  </ol>
-</nav>
+<umd-element-breadcrumb>
+  <div slot="paths">
+    <a href="/" aria-label="Return Home"><span aria-hidden="true">Home</span></a>
+    <a href="/about/history"><span>Traditions &amp; History</span></a>
+    <p aria-label="Current Page"><span>Traditions of the Past</span></p>
+  </div>
+</umd-element-breadcrumb>
 ```
+
+Pattern: every link is `<a><span></span></a>`; the final crumb (current page) is a `<p aria-label="Current Page"><span></span></p>`, not an anchor.
 
 ### 6. Sidebar + content column layout
 
@@ -79,15 +83,22 @@ This is the core interior layout. Use these exact production classes — **do no
   <div class="umd-layout-space-columns-left">
 
     <!-- Sidebar: left nav (hidden below 1024px via built-in CSS) -->
+    <!-- Two-level nav-slider: primary-slide-links holds ONLY the parent;
+         child links live inside children-slides under data-active. The current
+         page is marked with data-selected. -->
     <div id="umd-shell-sidebar-container">
       <umd-element-nav-slider>
-        <nav slot="primary-slide-links">
-          <a href="/about">About UMD</a>
-          <a href="/about/history">History &amp; Traditions</a>
-          <a href="/about/traditions-of-the-past">Traditions of the Past</a>
-          <a href="/about/symbols">University Symbols</a>
-          <a href="/about/fight-song">Fight Song</a>
-        </nav>
+        <div slot="primary-slide-links">
+          <a href="/about" data-child-ref="about-umd"><span>About UMD</span></a>
+        </div>
+        <div slot="children-slides">
+          <div data-active data-parent-ref="about-umd">
+            <a href="/about/history"><span>History &amp; Traditions</span></a>
+            <a href="/about/traditions-of-the-past" data-selected><span>Traditions of the Past</span></a>
+            <a href="/about/symbols"><span>University Symbols</span></a>
+            <a href="/about/fight-song"><span>Fight Song</span></a>
+          </div>
+        </div>
       </umd-element-nav-slider>
     </div>
 

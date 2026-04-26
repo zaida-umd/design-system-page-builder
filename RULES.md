@@ -1048,34 +1048,6 @@ Only the following components are used on interior page layouts. Do not place la
 
 ---
 
-## 25. Hero section — when to add `umd-layout-vertical-landing`
-
-Hero components manage their own internal spacing but produce no external bottom margin. Whether to add `umd-layout-vertical-landing` to the hero `<section>` depends entirely on what follows it.
-
-**Add `umd-layout-vertical-landing`** when the section immediately after the hero has a light/white background (section intro, card grid, pathway, etc.) — the margin creates the expected breathing room between the hero and the next section.
-
-**Omit `umd-layout-vertical-landing`** when a dark-background section immediately follows the hero. The margin would create a visible white gap between two dark elements. Instead, let the next section provide its own spacing (see §19).
-
-```html
-<!-- ✓ Light content follows — include the spacing -->
-<section class="umd-layout-vertical-landing">
-  <umd-element-hero data-theme="dark">...</umd-element-hero>
-</section>
-<section class="umd-layout-vertical-landing">
-  <umd-element-section-intro>...</umd-element-section-intro>
-</section>
-
-<!-- ✓ Dark section follows — omit spacing on hero, keep it on the dark section -->
-<section>
-  <umd-element-hero data-theme="dark">...</umd-element-hero>
-</section>
-<section class="umd-layout-background-full-dark umd-layout-vertical-landing">
-  ...
-</section>
-```
-
----
-
 ## 22. Default hero — use the standard (background) hero
 
 The default hero for landing pages is `umd-element-hero` with **no `data-display` attribute**. In this mode the image renders as a full background behind the text. This is the standard, expected treatment.
@@ -1104,34 +1076,30 @@ The default hero for landing pages is `umd-element-hero` with **no `data-display
 
 ---
 
-## 23. Logo images — always use local fallbacks
+## 23. Hero section — when to add `umd-layout-vertical-landing`
 
-Never leave a broken or placeholder logo image in a header or footer. The following local fallback logos are always available:
+Hero components manage their own internal spacing but produce no external bottom margin. Whether to add `umd-layout-vertical-landing` to the hero `<section>` depends entirely on what follows it.
 
-| Location | Slot | File |
-|---|---|---|
-| Site navigation header | `slot="logo"` on `umd-element-navigation-header` | `../images/logos/primary-logo-dark.svg` |
-| Footer | `slot="logo"` on `umd-element-footer` | `../images/logos/footer-logo.svg` |
+**Add `umd-layout-vertical-landing`** when the section immediately after the hero has a light/white background (section intro, card grid, pathway, etc.) — the margin creates the expected breathing room between the hero and the next section.
 
-**Footer logo:** Always use `../images/logos/footer-logo.svg` as the default. Do not attempt external department logo URLs in the footer — they are frequently on light backgrounds or blocked by hotlink protection and will not render correctly against the dark footer background.
-
-**Header logo:** Use a department-specific external logo only when you have confirmed the URL is accessible and renders on a dark background. If there is any doubt, use the local fallback.
+**Omit `umd-layout-vertical-landing`** when a dark-background section immediately follows the hero. The margin would create a visible white gap between two dark elements. Instead, let the next section provide its own spacing (see §19).
 
 ```html
-<!-- ✓ Correct — local fallback always works -->
-<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
-  <a slot="logo" href="/">
-    <img src="../images/logos/primary-logo-dark.svg" alt="University of Maryland" />
-  </a>
-  ...
-</umd-element-navigation-header>
+<!-- ✓ Light content follows — include the spacing -->
+<section class="umd-layout-vertical-landing">
+  <umd-element-hero data-theme="dark">...</umd-element-hero>
+</section>
+<section class="umd-layout-vertical-landing">
+  <umd-element-section-intro>...</umd-element-section-intro>
+</section>
 
-<umd-element-footer>
-  <a slot="logo" href="/">
-    <img src="../images/logos/footer-logo.svg" alt="University of Maryland" />
-  </a>
+<!-- ✓ Dark section follows — omit spacing on hero, keep it on the dark section -->
+<section>
+  <umd-element-hero data-theme="dark">...</umd-element-hero>
+</section>
+<section class="umd-layout-background-full-dark umd-layout-vertical-landing">
   ...
-</umd-element-footer>
+</section>
 ```
 
 ---
@@ -1161,6 +1129,15 @@ Non-overlay pathway sections (`umd-element-pathway` without `data-display="overl
 This applies to: standard pathway (no `data-display`), `data-display="hero"`, `data-display="sticky"`.
 
 **Overlay pathway (`data-display="overlay"`) is exempt** — it manages its own internal padding.
+
+---
+
+## 25. Logo images — always use local fallbacks
+
+See **CLAUDE.md §Logos** for the header/footer fallback file paths. The core rule:
+
+- **Footer logo:** Always use the local `../images/logos/footer-logo.svg`. Do not attempt external department logo URLs — they typically fail on the dark footer background (wrong color or hotlink-blocked).
+- **Header logo:** A department-specific external logo is acceptable only when you have confirmed the URL is accessible and renders on a dark background. When in doubt, use the local fallback.
 
 ---
 

@@ -1,0 +1,94 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-04-24",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "Verified from design-system submodule source.",
+    "category": "layout",
+    "components": ["modal", "scroll-top", "logo", "media-gif", "events-date"]
+  },
+  "modal": {
+    "tag": "umd-element-modal",
+    "label": "Modal",
+    "description": "Overlay modal with backdrop and focus management. Programmatically controlled via observed data-visual-open / data-visual-closed attributes.",
+    "slots": [
+      {"name": "default", "required": false, "description": "Modal content (any markup). Use the default slot \u2014 no named slot.", "example": "<umd-element-modal data-layout-hidden=\"true\"><h2>Title</h2><p>Body</p></umd-element-modal>"}
+    ],
+    "attrs": [
+      {"name": "data-layout-hidden", "type": "boolean", "description": "Initial state. Set to true so the modal starts hidden."},
+      {"name": "data-visual-open", "type": "boolean", "description": "Observed \u2014 setting to true opens the modal."},
+      {"name": "data-visual-closed", "type": "boolean", "description": "Observed \u2014 setting to true closes the modal."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "Open/close by mutating the observed attributes from JS (e.g. `el.setAttribute('data-visual-open', 'true')`).",
+    "source": "npm",
+    "priority": 3
+  },
+  "scroll-top": {
+    "tag": "umd-element-scroll-top",
+    "label": "Scroll to Top",
+    "description": "Floating scroll-to-top button. Appears after the user scrolls down and smoothly returns to the top when clicked.",
+    "slots": [],
+    "attrs": [
+      {"name": "data-layout-fixed", "type": "boolean", "description": "Fixed viewport positioning when present; absolute positioning when omitted."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "Usually placed once per page, near the end of the body.",
+    "source": "npm",
+    "priority": 3
+  },
+  "logo": {
+    "tag": "umd-element-logo",
+    "label": "Boxed Logo",
+    "description": "Boxed logo display for partner logos, department logos, or sponsor grids.",
+    "slots": [
+      {"name": "image", "required": true, "description": "Logo image.", "example": "<img slot=\"image\" src=\"/partner.svg\" alt=\"Partner Name\" />"},
+      {"name": "default", "required": false, "description": "Optional text content alongside the logo."}
+    ],
+    "attrs": [
+      {"name": "data-theme", "type": "enum", "values": ["dark"], "description": "Dark background."},
+      {"name": "data-visual", "type": "enum", "values": ["bordered"], "description": "Add a border around the logo box."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "This is umd-element-logo, NOT the site header `slot=\"logo\"` anchor. Use this for logo grids, not site branding.",
+    "source": "npm",
+    "priority": 3
+  },
+  "media-gif": {
+    "tag": "umd-element-media-gif",
+    "label": "Accessible GIF",
+    "description": "Wraps an animated GIF with a play/pause toggle for accessible motion control (respects prefers-reduced-motion).",
+    "slots": [
+      {"name": "image", "required": true, "description": "Animated GIF.", "example": "<img slot=\"image\" src=\"/animation.gif\" alt=\"Short animation description\" />"}
+    ],
+    "attrs": [],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "Required whenever you embed an animated GIF on a page \u2014 users must be able to pause motion.",
+    "source": "npm",
+    "priority": 3
+  },
+  "events-date": {
+    "tag": "umd-element-events-date",
+    "label": "Event Date Lockup",
+    "description": "Formatted date sign / event date lockup that renders start and end dates in a responsive, prominent format. Typically paired with an event title. See registry-cards.json for the fuller entry \u2014 duplicated here as part of the layout utility set.",
+    "slots": [
+      {"name": "headline", "required": false, "description": "Event title.", "example": "<h3 slot=\"headline\">Homecoming Weekend</h3>"},
+      {"name": "start-date-iso", "required": false, "description": "Start date as a time element with ISO datetime.", "example": "<time slot=\"start-date-iso\" datetime=\"2026-10-17\">October 17, 2026</time>"},
+      {"name": "end-date-iso", "required": false, "description": "End date as a time element with ISO datetime.", "example": "<time slot=\"end-date-iso\" datetime=\"2026-10-19\">October 19, 2026</time>"}
+    ],
+    "attrs": [
+      {"name": "data-theme", "type": "enum", "values": ["dark"], "description": "Dark background, light text."}
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "notes": "IMPORTANT: slot names are `start-date-iso` and `end-date-iso` (NOT `date-start-iso` / `date-end-iso` as shown in the upstream JSDoc \u2014 that's a documentation bug). The component queries the former via Slots.name.DATE_START_ISO which resolves to `start-date-iso`.",
+    "source": "npm",
+    "priority": 3
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "components_version": "1.17.18",
+    "source_package": "@universityofmaryland/web-components-library",
+    "last_verified": "2026-04-24",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist",
+    "notes": "Verified from design-system submodule source. Do not re-derive \u2014 use this registry.",
+    "category": "accordion",
+    "components": ["accordion-item"]
+  },
+  "accordion-item": {
+    "tag": "umd-element-accordion-item",
+    "label": "Accordion Item",
+    "description": "Expandable/collapsible content container. Use multiple sibling instances to build a FAQ-style list. Each item is independently expandable.",
+    "slots": [
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Clickable header button content.",
+        "example": "<span slot=\"headline\">What is included in tuition?</span>"
+      },
+      {
+        "name": "text",
+        "required": true,
+        "description": "Expandable content revealed when opened.",
+        "example": "<div slot=\"text\"><p>Tuition covers instruction, campus resources, and...</p></div>"
+      },
+      {
+        "name": "body",
+        "required": false,
+        "description": "Deprecated \u2014 use `text` instead.",
+        "example": null
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": ["light", "dark"],
+        "description": "Light (default) or dark background with white/gold text and red accent."
+      },
+      {
+        "name": "data-visual-open",
+        "type": "boolean",
+        "values": ["true", "false"],
+        "description": "Initial state \u2014 true opens on load, false (default) starts closed."
+      }
+    ],
+    "configurable": true,
+    "page_types": ["landing", "interior"],
+    "variants": {
+      "light": "Light background, dark text (default)",
+      "dark": "Dark background, white/gold text with red accent"
+    },
+    "notes": "Renders headline as a button with aria-expanded. Use for FAQ sections or progressively-disclosed content. Group multiple umd-element-accordion-item siblings for a full accordion.",
+    "source": "npm",
+    "priority": 2
+  }
+}

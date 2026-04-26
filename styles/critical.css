@@ -1,6 +1,6 @@
 /*
  * UMD Design System — Critical CSS
- * Verified against @universityofmaryland/web-components-library@1.17.18
+ * Verified against @universityofmaryland/web-components-library@1.18.2
  *
  * This is the SINGLE SOURCE OF TRUTH for all CSS rules required by UMD
  * web components. TEMPLATE.html inlines this file in <head> before cdn.js.
@@ -81,7 +81,10 @@ umd-element-breadcrumb:not(:defined),
 umd-element-footer:not(:defined),
 umd-element-event:not(:defined),
 umd-element-slider-events:not(:defined),
-umd-element-events-date:not(:defined) {
+umd-element-events-date:not(:defined),
+umd-element-sticky-columns:not(:defined),
+umd-element-tabs:not(:defined),
+umd-element-nav-drawer:not(:defined) {
   content-visibility: hidden;
 }
 umd-element-hero,
@@ -108,7 +111,10 @@ umd-element-breadcrumb,
 umd-element-footer,
 umd-element-event,
 umd-element-slider-events,
-umd-element-events-date {
+umd-element-events-date,
+umd-element-sticky-columns,
+umd-element-tabs,
+umd-element-nav-drawer {
   display: block;
   container-type: inline-size;
 }
@@ -168,15 +174,17 @@ p, li, label, input, textarea, select {
    3. VERTICAL SPACING — between sections and items
    ============================================================ */
 
-/* Landing page — between sections */
+/* Landing page — between sections (both names canonical in 1.18) */
+.umd-layout-space-vertical-landing,
 .umd-layout-vertical-landing           { margin-bottom: 56px; }
-@media (min-width: 768px)  { .umd-layout-vertical-landing  { margin-bottom: 80px; } }
-@media (min-width: 1024px) { .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+@media (min-width: 768px)  { .umd-layout-space-vertical-landing, .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+@media (min-width: 1024px) { .umd-layout-space-vertical-landing, .umd-layout-vertical-landing  { margin-bottom: 120px; } }
 
-/* Landing page — between items within a section */
+/* Landing page — between items within a section (both names canonical in 1.18) */
+.umd-layout-space-vertical-landing-child,
 .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
-@media (min-width: 768px)  { .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
-@media (min-width: 1024px) { .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+@media (min-width: 768px)  { .umd-layout-space-vertical-landing-child, .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+@media (min-width: 1024px) { .umd-layout-space-vertical-landing-child, .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
 
 /* Interior page — page content area margins (both class names work) */
 .umd-layout-space-vertical-interior,

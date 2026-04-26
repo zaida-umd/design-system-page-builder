@@ -1,6 +1,6 @@
 # UMD Design System — Required CSS Reference
 
-Verified against `@universityofmaryland/web-components-library@1.17.18`.
+Verified against `@universityofmaryland/web-components-library@1.18.2`.
 
 This file explains **why** each CSS rule group is needed. The actual CSS lives in **`styles/critical.css`** (the single source of truth). `TEMPLATE.html` inlines that file in `<head>` before `cdn.js`.
 

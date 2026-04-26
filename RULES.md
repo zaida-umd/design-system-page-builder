@@ -1,6 +1,6 @@
 # UMD Page Builder — Rules
 
-Verified against `@universityofmaryland/web-components-library@1.17.18`.  
+Verified against `@universityofmaryland/web-components-library@1.18.2`.  
 Source: NPM package analysis + `beta.umd-staging.com` inspection.
 
 ---
@@ -14,7 +14,7 @@ Every standalone UMD HTML page must load these two files in `<head>`:
 <style>
   /* contents of styles/critical.css inlined here */
 </style>
-<script src="https://unpkg.com/@universityofmaryland/web-components-library@1.17.18/dist/cdn.js"></script>
+<script src="https://unpkg.com/@universityofmaryland/web-components-library@1.18.2/dist/cdn.js"></script>
 ```
 
 The canonical CSS is in **`styles/critical.css`** — the single source of truth. `TEMPLATE.html` inlines it verbatim. When updating CSS rules, edit `styles/critical.css` first, then copy changes to `TEMPLATE.html`.
@@ -201,7 +201,7 @@ Valid `data-display` values: `primary`, `secondary`. Omit for default style.
 
 ## 8. Registry is the source of truth
 
-Do not re-derive known components from NPM source or Storybook. Use the registry JSON. The registry has been verified directly from NPM package source for version `1.17.18`. Only add new components to the registry after verification — never guess slots or attribute names.
+Do not re-derive known components from NPM source or Storybook. Use the registry JSON. The registry has been verified directly from NPM package source for version `1.18.2`. Only add new components to the registry after verification — never guess slots or attribute names.
 
 ---
 

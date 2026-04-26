@@ -6,7 +6,7 @@ A Claude-assisted workflow for generating complete, valid HTML pages using the [
 
 Feed page content or a site URL into a Claude project and get back a complete, standards-compliant UMD Design System HTML page. The system is built on a verified component registry, a set of composition rules, and a ready-to-copy page template — all maintained against a specific pinned version of the design system.
 
-**Current DS version:** `@universityofmaryland/web-components-library@1.17.18`
+**Current DS version:** `@universityofmaryland/web-components-library@1.18.2`
 
 ## Repository structure
 

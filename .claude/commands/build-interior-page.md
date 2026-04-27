@@ -44,7 +44,7 @@ This is the "Traditions of the Past" subpage from `umd.edu/about/traditions-of-t
 
 `umd-element-navigation-header` with `sticky` attribute and `class="umd-layout-space-horizontal-full"`.
 
-- Logo: `slot="logo"` → `<a href="/"><img src="../images/logos/primary-logo-dark.svg" alt="University of Maryland" /></a>`
+- Logo: `slot="logo"` → `<a href="/"><img src="../images/logos/primary-logo-dark.svg" alt="University of Maryland" onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" /></a>`
 - Nav items: About, Traditions & History (active), Alumni, Give
 
 ### 4. Hero — background hero small, centered text
@@ -195,7 +195,7 @@ Use `umd-layout-space-vertical-interior` between sections and `umd-layout-space-
 ```html
 <footer class="overflow-hidden">
   <umd-element-footer data-display="visual" data-theme="dark">
-    <a slot="logo" href="/"><img src="../images/logos/footer-logo.svg" alt="University of Maryland" /></a>
+    <a slot="logo" href="/"><img src="../images/logos/footer-logo.svg" alt="University of Maryland" onerror="this.onerror=null;this.src='../images/logos/footer-logo.svg';" /></a>
   </umd-element-footer>
 </footer>
 ```

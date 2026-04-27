@@ -31,6 +31,20 @@ Never use a broken or placeholder logo image. Use these local fallbacks whenever
 - **Header** (`slot="logo"` in `umd-element-navigation-header`): `../images/logos/primary-logo-dark.svg`
 - **Footer** (`slot="logo"` in `umd-element-footer`): `../images/logos/footer-logo.svg`
 
+**Always add an `onerror` runtime fallback** when using an external logo URL — many UMD-domain URLs are hotlink-protected and 403 from local pages. The footer/header components do **not** detect a broken `src` and do **not** render the default UMD wordmark when the slot exists; they just render the broken `<img>`. Use:
+
+```html
+<!-- Header logo -->
+<img src="https://example.umd.edu/dept-logo.png" alt="…"
+  onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+
+<!-- Footer logo -->
+<img src="https://example.umd.edu/dept-logo.png" alt="…"
+  onerror="this.onerror=null;this.src='../images/logos/footer-logo.svg';" />
+```
+
+`this.onerror=null` prevents an infinite loop if the fallback also fails.
+
 ## Images
 
 When a real image URL is unavailable (hotlink protection, dynamic content):

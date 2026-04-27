@@ -102,10 +102,10 @@ Always use the visual footer:
 ```html
 <umd-element-footer data-display="visual">
   <a slot="logo" href="/"><img src="../images/logos/footer-logo.svg" alt="University of Maryland" /></a>
-  <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="" />
+  <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="University of Maryland campus" />
 </umd-element-footer>
 ```
-Do not add contact info, address, or social links — the visual variant renders the logo and image only. Do not use an external logo URL in the footer.
+Do not add contact info, address, or social links — the visual variant renders the logo and image only. Do not use an external logo URL in the footer. The `slot="image"` `alt` must be non-empty — the visual footer's image renderer drops the slotted image entirely if `alt=""` (it does not fall back to the default).
 
 For `slot="logo"` in `umd-element-navigation-header`, use a confirmed accessible URL from the downloaded source. If unavailable or uncertain, fall back to `../images/logos/primary-logo-dark.svg`.
 

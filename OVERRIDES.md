@@ -70,6 +70,7 @@ Injected after `customElements.whenDefined('umd-element-banner-promo')`.
 
 **Pages using this:**
 - [test/admissions-recreation.html](test/admissions-recreation.html)
+- [examples/admissions-academics.html](examples/admissions-academics.html)
 
 ---
 

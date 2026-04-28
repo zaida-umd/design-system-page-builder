@@ -146,6 +146,50 @@ Background panel color by theme:
 | `data-display="hero"` | No | No (padding-based) |
 | `data-display="sticky"` | No | ✓ |
 
+### Pathway CTAs — slot, display, and count
+
+CTAs belong **inside the pathway**, in `slot="actions"` — never as a sibling element rendered after the pathway. The pathway lays out actions as part of its text-column composition; siblings break the visual hierarchy and don't pick up the pathway's theme.
+
+**Allowed `data-display` values:** `primary`, `secondary` (omit for default). **Do not use `data-display="outline"` in pathways.** The outline CTA is reserved for Maryland/red overlay variants and has a hard-coded shadow-DOM `max-width: 380px` that fights pathway layouts (see [OVERRIDES.md](OVERRIDES.md) — `.umd-action-outline-block` is the page-built workaround when an outline-style block is needed elsewhere).
+
+**Maximum count:** **1 primary + up to 5 secondary** in a single pathway action slot. Beyond that, the action stack visually dominates the body copy.
+
+**When approaching 5 secondaries** — switch to the shell utility-nav pattern (separator-divided links) instead of stacking five secondary CTA components. Use `.umd-shell-utility-item` / `.umd-shell-utility-actions` from `styles/critical.css` §14:
+
+```html
+<umd-element-pathway>
+  <img slot="image" src="…" alt="…" />
+  <h2 slot="headline">Living-Learning Programs</h2>
+  <div slot="text"><p>About half of UMD's first-year students join a living-learning program.</p></div>
+  <div slot="actions">
+    <!-- 1 primary -->
+    <umd-element-call-to-action data-display="primary">
+      <a href="/learn-more">Learn About Programs</a>
+    </umd-element-call-to-action>
+    <!-- Tertiary row — utility-nav-style separators instead of 5 stacked secondaries -->
+    <div style="display:flex; flex-wrap:wrap; margin-top:16px;">
+      <div class="umd-shell-utility-item">
+        <div class="umd-shell-utility-actions"><a href="/honors">Honors</a></div>
+      </div>
+      <div class="umd-shell-utility-item">
+        <div class="umd-shell-utility-actions"><a href="/scholars">Scholars</a></div>
+      </div>
+      <div class="umd-shell-utility-item">
+        <div class="umd-shell-utility-actions"><a href="/global">Global Communities</a></div>
+      </div>
+      <div class="umd-shell-utility-item">
+        <div class="umd-shell-utility-actions"><a href="/cs">CS Connect</a></div>
+      </div>
+      <div class="umd-shell-utility-item">
+        <div class="umd-shell-utility-actions"><a href="/all">All LLPs</a></div>
+      </div>
+    </div>
+  </div>
+</umd-element-pathway>
+```
+
+The `.umd-shell-utility-item` selector is intentionally not scoped to the navigation header so it can be reused in pathway, banner-promo, and section-intro action slots.
+
 ### `umd-element-pathway-highlight` requires substantive text content
 
 `umd-element-pathway-highlight` is a two-column component: a text column on the left and a pull-quote column on the right. The `text` slot must contain real, substantive body copy — not just a restatement of the quote. If the source content is only a quote with attribution and no accompanying text, use `umd-element-quote` instead.
@@ -410,6 +454,40 @@ For card grids and body content that should not span full viewport width, apply 
 ```
 
 Pathway and hero components manage their own internal horizontal spacing — do not wrap them in a horizontal spacing class.
+
+### Carousel and banner-promo — lock matrix
+
+| Component | Wrap in lock? | Recommended lock |
+|---|---|---|
+| `umd-element-carousel-cards` | ✗ No | Component is full-bleed and provides its own black background + internal lock. Wrapping in a horizontal lock breaks the bleed. |
+| `umd-element-carousel-thumbnail` | ✓ Yes | `umd-layout-space-horizontal-larger` (1600px) |
+| `umd-element-carousel-image` / `-image-wide` / `-multiple-image` | ✓ Yes | `umd-layout-space-horizontal-larger` (1600px) |
+| `umd-element-carousel` (standard) | ✓ Yes | `umd-layout-space-horizontal-larger` (1600px) |
+| `umd-element-banner-promo` | ✓ Yes | `umd-layout-space-horizontal-larger` (1600px) |
+
+```html
+<!-- ✓ Card carousel — full-bleed, no wrapper -->
+<section class="umd-layout-vertical-landing">
+  <umd-element-carousel-cards>
+    <h2 slot="headline">Resources</h2>
+    <div slot="cards">…</div>
+  </umd-element-carousel-cards>
+</section>
+
+<!-- ✓ Thumbnail carousel — wrapped in larger lock -->
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-larger">
+    <umd-element-carousel-thumbnail>…</umd-element-carousel-thumbnail>
+  </div>
+</section>
+
+<!-- ✓ Banner-promo — wrapped in larger lock -->
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-larger">
+    <umd-element-banner-promo>…</umd-element-banner-promo>
+  </div>
+</section>
+```
 
 ### Quote uses `umd-layout-space-horizontal-normal`
 
@@ -1166,3 +1244,76 @@ See **CLAUDE.md §Logos** for the header/footer fallback file paths. The core ru
 The `promo` display renders text overlaid on the background image (overlay card style) — it requires `slot="image"`. The `feature` display uses a large date sign with an eyebrow ribbon.
 
 Note: `data-display="list"` on `umd-element-event` works correctly with `data-display` (it has both old and new attribute support).
+
+---
+
+## 27. Carousel slot patterns — which card to use where
+
+The carousel components do not enforce child types in the DS source — slots accept any block element. But the visual treatment of each carousel only fits certain cards. Use this matrix.
+
+### `umd-element-carousel-cards` — built-in dark texture surface
+
+The carousel ships its own dark SVG-textured background, so slotted cards must be designed for a dark surface. Two options:
+
+| Card | When to use |
+|---|---|
+| `umd-element-card` with `data-theme="dark"` | Standard text + image card on the dark texture. Use when each card has body copy beyond the headline. |
+| `umd-element-card-overlay data-theme="dark"` | Image-overlay card. Use when each card is primarily image-driven and the headline overlays the image. |
+
+Do **not** use light-theme standard cards — they render a white block on the dark texture.
+
+```html
+<!-- ✓ Standard dark cards -->
+<umd-element-carousel-cards>
+  <h2 slot="headline">Resources</h2>
+  <div slot="cards">
+    <umd-element-card data-theme="dark">
+      <img slot="image" src="/img.jpg" alt="…" />
+      <h3 slot="headline"><a href="/x">Title</a></h3>
+      <p slot="text">Supporting copy.</p>
+    </umd-element-card>
+  </div>
+</umd-element-carousel-cards>
+
+<!-- ✓ Image-overlay cards -->
+<umd-element-carousel-cards>
+  <div slot="cards">
+    <umd-element-card-overlay data-theme="dark">
+      <p slot="headline"><a href="/x"><span>Title</span></a></p>
+      <div slot="text"><p>Supporting copy.</p></div>
+    </umd-element-card-overlay>
+  </div>
+</umd-element-carousel-cards>
+```
+
+### `umd-element-carousel-thumbnail` — transparent slot surface
+
+The thumbnail carousel reads `data-thumbnail` from the **host element** of each block (not a child). The visible card sits on the carousel's own surface, so use card variants that don't paint their own background.
+
+| Card | How |
+|---|---|
+| `umd-element-card` | Set `data-visual-transparent="true"`, `data-visual-image-aligned="true"`, and `data-thumbnail="<url>"` on the host. |
+| `umd-element-person-bio` | Set `data-thumbnail="<url>"` on the host. The person-bio's natural layout (image + name + role) suits a thumbnail strip. |
+
+Do **not** use `umd-element-card-overlay` — overlay cards always render their own background, which conflicts with the carousel's surface.
+
+```html
+<umd-element-carousel-thumbnail>
+  <div slot="blocks">
+    <umd-element-card
+      data-visual-transparent="true"
+      data-visual-image-aligned="true"
+      data-thumbnail="/portrait-thumb.jpg">
+      <img slot="image" src="/portrait.jpg" alt="Person Name" />
+      <p slot="headline">Person Name '00</p>
+      <div slot="text"><p>Title or accomplishment</p></div>
+    </umd-element-card>
+  </div>
+</umd-element-carousel-thumbnail>
+```
+
+### Other carousels
+
+- `umd-element-carousel-image` / `-multiple-image`: slot accepts plain `<img>` elements only — alt text is enforced by a runtime warning. No card components.
+- `umd-element-carousel-image-wide`: slot expects `<figure>` or `<div>` with an inner `<img>` plus `data-headline` / `data-text` divs for caption metadata. No card components.
+- `umd-element-carousel` (base): generic — accepts any block. Use only when none of the specialized carousels fit.

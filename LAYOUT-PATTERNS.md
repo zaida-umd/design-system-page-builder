@@ -648,6 +648,10 @@ Include both variants when either may appear in the page.
 
 ## Horizontal Rules
 
+Two distinct uses:
+
+### Inside rich text — auto-styled
+
 Use a plain `<hr>` directly inside `umd-text-rich-advanced` or `umd-text-rich-advanced-dark`. No extra class needed — the rich text class styles it automatically.
 
 ```html
@@ -656,6 +660,29 @@ Use a plain `<hr>` directly inside `umd-text-rich-advanced` or `umd-text-rich-ad
   <p>Content following the rule.</p>
 </div>
 ```
+
+### Standalone — section divider above an editorial block
+
+When the rule sits **above** the rich-text wrapper (as a section eyebrow divider), use `.umd-text-divider`. It is independent of the rich text class — applying `.umd-text-rich-advanced` is **not** required for the divider to render correctly. Add `.dark` for white-on-black sections.
+
+```html
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-small">
+    <hr class="umd-text-divider" />
+    <p class="umd-sans-larger-bold mb-md" style="text-transform:uppercase;">Study Here</p>
+    <div class="umd-text-rich-advanced">
+      <p>Body copy goes here.</p>
+    </div>
+    <div style="margin-top:24px;">
+      <umd-element-call-to-action data-display="primary">
+        <a href="/programs">Explore All Programs</a>
+      </umd-element-call-to-action>
+    </div>
+  </div>
+</section>
+```
+
+The divider is **optional** — only use it where the design calls for an explicit horizontal rule above the eyebrow. A bare eyebrow + body without the divider is also valid.
 
 ---
 

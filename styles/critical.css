@@ -100,7 +100,14 @@ umd-element-slider-events:not(:defined),
 umd-element-events-date:not(:defined),
 umd-element-sticky-columns:not(:defined),
 umd-element-tabs:not(:defined),
-umd-element-nav-drawer:not(:defined) {
+umd-element-nav-drawer:not(:defined),
+umd-element-carousel:not(:defined),
+umd-element-carousel-cards:not(:defined),
+umd-element-carousel-thumbnail:not(:defined),
+umd-element-carousel-image:not(:defined),
+umd-element-carousel-image-wide:not(:defined),
+umd-element-carousel-multiple-image:not(:defined),
+umd-element-banner-promo:not(:defined) {
   content-visibility: hidden;
 }
 umd-element-hero,
@@ -130,7 +137,14 @@ umd-element-slider-events,
 umd-element-events-date,
 umd-element-sticky-columns,
 umd-element-tabs,
-umd-element-nav-drawer {
+umd-element-nav-drawer,
+umd-element-carousel,
+umd-element-carousel-cards,
+umd-element-carousel-thumbnail,
+umd-element-carousel-image,
+umd-element-carousel-image-wide,
+umd-element-carousel-multiple-image,
+umd-element-banner-promo {
   display: block;
   container-type: inline-size;
 }
@@ -691,22 +705,96 @@ p, li, label, input, textarea, select {
 
 /* ============================================================
    14. UTILITY NAVIGATION LINK STYLES
-   umd-element-navigation-header applies ::slotted(*) flex layout
-   only to the direct child div[slot="utility-navigation"], not to
-   the <a> elements inside it. These light-DOM styles must be added
-   explicitly for correct link appearance.
+   umd-element-navigation-header applies ::slotted(*) only to the
+   direct child div[slot="utility-navigation"], not to descendants.
+   These light-DOM styles fill that gap.
+
+   Two layouts are supported:
+
+   (A) Plain anchor list — flex row of <a> children, no separators.
+       Mirrors the simpler admissions-style utility nav.
+
+   (B) Shell-style item list — wrap each link in
+         <div class="umd-shell-utility-item">
+           <div class="umd-shell-utility-actions"><a>…</a></div>
+         </div>
+       to get the umd.edu shell's separator rule (1px right border
+       between items) and tight icon+label spacing (gap:4px).
+       The same .umd-shell-utility-* classes are reusable in
+       pathway/banner-promo "actions" slots when a row of tertiary
+       links reads better than stacked secondary CTAs (RULES.md §5).
    ============================================================ */
+[slot="utility-navigation"] {
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+}
 [slot="utility-navigation"] a {
   font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
   font-size: 14px;
-  color: #454545;
+  font-weight: 400;
+  color: #242424;
   text-decoration: none;
   line-height: 1.25;
+  transition: color 0.3s ease-in-out;
 }
 [slot="utility-navigation"] a:hover,
 [slot="utility-navigation"] a:focus {
   color: #E21833;
   text-decoration: underline;
+}
+
+/* Shell-style item list — separators + tight icon+label gap.
+   Selectors are NOT scoped to umd-element-navigation-header so the
+   same classes can be reused in pathway/banner-promo action rows. */
+.umd-shell-utility-item .umd-shell-utility-actions {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+}
+.umd-shell-utility-item:not(:last-child) .umd-shell-utility-actions {
+  border-right: 1px solid #E6E6E6;
+  margin-right: 16px;
+  padding-right: 16px;
+}
+
+
+/* ============================================================
+   14a. BANNER-PROMO STACKED ACTIONS — light-DOM column flex
+   When primary + secondary CTAs are stacked vertically inside
+   slot="actions" on umd-element-banner-promo, the host reprojects
+   them into shadow DOM under .banner-promo-actions with no gap.
+   This light-DOM rule sets the column flex; it pairs with the
+   shadow-DOM injection documented in OVERRIDES.md so the gap is
+   visible regardless of where the children render.
+   ============================================================ */
+.banner-promo-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+
+/* ============================================================
+   14b. SECTION DIVIDER — standalone <hr> utility
+   For a thin black rule used as a section eyebrow divider above
+   a label or block of content. Standalone — does NOT require a
+   .umd-text-rich-advanced wrapper. Pair with mb-md (or page-level
+   margin) for the gap to the element below.
+
+   Usage:
+     <hr class="umd-text-divider" />
+     <p class="umd-sans-larger-bold mb-md" style="text-transform:uppercase;">Study Here</p>
+     <div class="umd-text-rich-advanced">…</div>
+   ============================================================ */
+.umd-text-divider {
+  border: none;
+  border-top: 1px solid #000000;
+  margin: 0 0 24px 0;
+}
+.umd-text-divider.dark {
+  border-top-color: #ffffff;
 }
 
 

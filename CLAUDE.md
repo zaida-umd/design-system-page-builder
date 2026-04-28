@@ -6,13 +6,22 @@ The `.claude/commands/` directory contains slash commands for this project. **Be
 
 | Task | Command file |
 |---|---|
-| Build a test landing page | `.claude/commands/build-landing-page.md` |
-| Build a test interior page | `.claude/commands/build-interior-page.md` |
+| Build a sample/test landing page (fixed recipe) | `.claude/commands/sample-landing-page.md` |
+| Build a sample/test interior page (fixed recipe) | `.claude/commands/sample-interior-page.md` |
+| Build a fresh landing page from a brief | `.claude/commands/build-landing-page.md` |
+| Build a fresh interior page from a brief | `.claude/commands/build-interior-page.md` |
 | Evaluate a design | `.claude/commands/evaluate-design.md` |
 | Recommend a component | `.claude/commands/recommend-component.md` |
 | Recreate an existing page | `.claude/commands/recreate-page.md` |
 
 **Do not build pages from scratch** when a command file covers the task. The command file defines the required sections, content source, file naming, image sources, spacing rules, and output path. Follow it exactly.
+
+To choose between the four page-building commands:
+- **`/recreate-page <url>`** — convert a real existing page (downloads source assets first, mirrors structure).
+- **`/build-landing-page <brief>`** / **`/build-interior-page <brief>`** — fresh pages from a topic/audience brief; output to `examples/`.
+- **`/sample-landing-page`** / **`/sample-interior-page`** — fixed-recipe showcase pages (no brief, no inputs); output to `test/`. Use only for fixture/test work.
+
+The three brief- or URL-driven commands all run a final harvest step that updates `OVERRIDES.md` with any shadow injections or page-built classes the new page introduced. The two `sample-*` commands skip this step because they reuse the same fixed recipe each time.
 
 ## Source of truth hierarchy
 

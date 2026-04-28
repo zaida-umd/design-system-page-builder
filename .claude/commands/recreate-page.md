@@ -126,3 +126,19 @@ After the output file is confirmed written, delete the `tmp/` directory:
 ```bash
 rm -rf /Users/zjocson/repos/design-system-page-builder/tmp
 ```
+
+## Harvest overrides (final step)
+
+After cleanup, spawn an `Explore` subagent to scan the new HTML file and update `OVERRIDES.md`. Brief it like this:
+
+> Scan `<output-path>` for two things:
+> 1. **Shadow injections** — IIFEs that call `el.shadowRoot.appendChild(<style>)`. Capture the target component tag, the CSS string injected, and the leading comment that explains why.
+> 2. **Page-built components** — light-DOM CSS classes defined in the inline `<style>` block whose names are NOT present in `styles/critical.css` (e.g. `.umd-action-outline-block`, `.umd-layout-grid-cards-no-gap`, `.umd-text-line-trailing`). For each, capture the class name, its DS counterpart (if any), and why a page-built version was needed (read the leading comment).
+>
+> Then read `OVERRIDES.md`. For each item found:
+> - If an entry already exists, append `<output-path>` to the "Pages using this" list (only if not already listed).
+> - If no entry exists, append a new entry under the correct heading (Shadow overrides / Page-built components) using the existing entry format.
+>
+> Do NOT add entries for classes already in `styles/critical.css` — those are sanctioned, not overrides. Do NOT modify the preamble.
+>
+> Report a one-line summary: `OVERRIDES.md: +N new entries, +M pages added to existing entries`.

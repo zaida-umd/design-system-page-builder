@@ -154,6 +154,30 @@ Injected after `customElements.whenDefined('umd-element-navigation-header')`.
 
 ---
 
+## .umd-layout-background-full-dark-arrow-right — dark section with right-arrow watermark
+
+**DS counterpart:** `umd-layout-background-full-dark` (canonical dark band). No DS variant layers a brand background image inside the band.
+
+**Why a page-built version was needed:** The "Information For" band on admissions calls for the FearlesslyForward right-arrow PNG anchored at `-420px 0` so only the right tail of the arrow shows behind the 4-up CTA grid. Bottom padding bumps to 160px on desktop (≥1024px) so the arrow has visual breathing room before the next section.
+
+**Class definition:** Modifier on `.umd-layout-background-full-dark`. Sets `background: #000 url(https://fearlesslyforward.umd.edu/images/arrows/bg-arrow-right-white.png) no-repeat -420px 0` and overrides `padding-bottom: 160px` at desktop only.
+
+**Pages using this:**
+- [test/admissions-recreation.html](test/admissions-recreation.html) — Information For dark band
+
+---
+
+## .umd-layout-background-full-dark-no-top — dark section with no top padding
+
+**DS counterpart:** `umd-layout-background-full-dark` (canonical dark band always carries top + bottom padding).
+
+**Why a page-built version was needed:** When a dark band immediately follows another dark band that already has a generous bottom pad (e.g. Information For → About UMD pathway on admissions), keeping the second band's top padding stacks empty space. This modifier zeros the top pad while preserving the bottom pad for downstream rhythm.
+
+**Pages using this:**
+- [test/admissions-recreation.html](test/admissions-recreation.html) — About UMD pathway dark band, sitting below the Information For band
+
+---
+
 ## .deadlines-table — minimal date/event two-column rows
 
 **DS counterpart:** `umd-element-event` displays exist but render as cards. No DS component exists for compact tabular date listings.

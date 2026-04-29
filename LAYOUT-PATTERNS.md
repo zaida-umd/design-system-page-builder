@@ -112,6 +112,47 @@ An alternative to a flat 3-column grid when you want visual interest. Use for 3 
 
 ---
 
+## Stat Card Grid (block stats in a grid)
+
+**Use only when the user asks for the "card" version of stats** — `umd-element-stat data-display="block"`. The block variant renders each stat as a filled card with a red top border, gray background, and a watermark texture. For the plain (non-card) stat layout, use the default `umd-element-stat` in any grid or sticky-columns layout — both are valid.
+
+**Required pieces for a stat card grid:**
+- `data-display="block"` on every `umd-element-stat`
+- `class="umd-layout-grid-child-fill-height"` on every stat so cards equalize height
+- A grid container — `umd-layout-grid-gap-three` for 3 stats, `umd-layout-grid-gap-two` for 2
+- **Do not** add `data-decoration-line` — the red top border is built into block display; the accent line is for the non-card variant only
+- **Do not** add `data-visual-size="large"` — block already implies large sizing
+
+**Slot names:**
+- `slot="stat"` — the number (`<span>` recommended)
+- `slot="text"` — the descriptive label (this is the named default slot — a plain `<p>` with no slot attribute will not render)
+- `slot="sub-text"` — optional source/citation line
+
+```html
+<div class="umd-layout-grid-gap-three">
+  <umd-element-stat data-display="block" class="umd-layout-grid-child-fill-height">
+    <span slot="stat">100+</span>
+    <p slot="text">Undergraduate Majors</p>
+  </umd-element-stat>
+  <umd-element-stat data-display="block" class="umd-layout-grid-child-fill-height">
+    <span slot="stat">18:1</span>
+    <p slot="text">Student-to-Faculty Ratio</p>
+  </umd-element-stat>
+  <umd-element-stat data-display="block" class="umd-layout-grid-child-fill-height">
+    <span slot="stat">69</span>
+    <p slot="text">Colleges, schools and programs ranked in the top 25 nationwide</p>
+    <p slot="sub-text">2025 U.S. News &amp; World Report</p>
+  </umd-element-stat>
+</div>
+```
+
+**When to choose card grid vs. sticky-columns vs. plain stat grid:**
+- **Card grid (block)** — homogenous stats, no editorial framing column needed, want strong visual presence.
+- **Sticky-columns** — there's a meaningful intro paragraph that should sit alongside the stats while scrolling. Works for stats *and* events; the deciding factor is whether you have enough text to justify the sticky column. Sparse intros look weak in a sticky column.
+- **Plain stat grid (default `umd-element-stat`, no `data-display`)** — minimalist, text-only stats; use `data-decoration-line` here if you want the accent line.
+
+---
+
 ## Section-Intro to Content Spacing
 
 `umd-element-section-intro` and `umd-element-section-intro-wide` have no built-in bottom margin. Place the spacing class **directly on the section-intro component** to create the gap between the heading and the content (cards, list, feed) below it.

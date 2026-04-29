@@ -1182,31 +1182,39 @@ Hero components manage their own internal spacing but produce no external bottom
 
 ---
 
-## 24. Pathway section padding — 80px top and bottom
+## 24. Pathway section padding — only when on a dark/colored band
 
-Non-overlay pathway sections (`umd-element-pathway` without `data-display="overlay"`) require explicit vertical padding on the section wrapper. The pathway component itself does not provide internal top/bottom breathing room — without wrapper padding the component sits flush against adjacent content.
+Pathway components do not provide internal top/bottom breathing room. **However, `umd-layout-vertical-landing` already provides the section-level rhythm** that pathways need when they sit on the page's default background. Don't double up.
 
-**Rule:** Wrap standard, hero, and sticky pathway variants in a `<section>` with `padding: 80px 0`. Apply this alongside any background color:
+**Rule:**
+
+- **Default (light page background):** Wrap the pathway in a `<section class="umd-layout-vertical-landing">` and **do not** add inline `padding: 80px 0`. The vertical-landing margin handles spacing.
+- **Dark or colored band:** When the pathway sits inside a section with its own background (e.g. `background: #000`, `umd-layout-background-full-dark`), `umd-layout-vertical-landing` margins collapse against the band edges and the pathway looks flush against the colored boundary. Add `padding: 80px 0` to the section so the pathway has internal breathing room inside the band.
 
 ```html
-<!-- ✓ Correct — 80px padding on dark pathway section -->
-<section style="background: #000; padding: 80px 0;">
+<!-- ✓ Default — vertical-landing only, no inline padding -->
+<section class="umd-layout-vertical-landing">
+  <umd-element-pathway>
+    ...
+  </umd-element-pathway>
+</section>
+
+<!-- ✓ Dark band — inline 80px padding required -->
+<section class="umd-layout-background-full-dark" style="padding: 80px 0;">
   <umd-element-pathway data-theme="dark">
     ...
   </umd-element-pathway>
 </section>
 
-<!-- ✗ Wrong — no padding, pathway sits flush -->
-<section style="background: #000;">
-  <umd-element-pathway data-theme="dark">
-    ...
-  </umd-element-pathway>
+<!-- ✗ Wrong — stacks vertical-landing margin AND 80px inline padding on a default-bg section -->
+<section class="umd-layout-vertical-landing" style="padding: 80px 0;">
+  <umd-element-pathway>...</umd-element-pathway>
 </section>
 ```
 
 This applies to: standard pathway (no `data-display`), `data-display="hero"`, `data-display="sticky"`.
 
-**Overlay pathway (`data-display="overlay"`) is exempt** — it manages its own internal padding.
+**Overlay pathway (`data-display="overlay"`) is exempt** — it manages its own internal padding regardless of band background.
 
 ---
 

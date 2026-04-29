@@ -872,7 +872,7 @@ umd-element-card-overlay.size-large {
 
   <!-- 3. HERO — small background -->
   <section class="umd-layout-vertical-landing">
-    <umd-element-hero data-layout-height="small">
+    <umd-element-hero data-layout-height="small" data-layout-text="center">
       <img slot="image" src="../images/projects/admissions-academics/academics-hero_2023-04-03-163443_qvqg-3117fef3.jpg" alt="Students wearing virtual reality headsets" />
       <h1 slot="headline">Academics</h1>
       <div slot="text"><p>The University of Maryland (UMD) is consistently recognized as one of the preeminent public research universities in the United States.</p></div>
@@ -883,7 +883,7 @@ umd-element-card-overlay.size-large {
   <section class="umd-layout-vertical-landing">
     <div class="umd-layout-space-horizontal-small">
       <hr style="border:none;border-top:1px solid #000000;margin:0 0 24px 0;" />
-      <p class="umd-sans-larger-bold mb-md" style="text-transform:uppercase;">Study Here</p>
+      <p class="umd-sans-large mb-md" style="text-transform:uppercase;">Study Here</p>
       <div class="umd-text-rich-advanced">
         <p>Our Terps are fearless innovators across every discipline — Nobel laureates, Pulitzer Prize winners, members of the national academies, MacArthur Fellows, and Pell Scholars among them. Whether your passion is computer science, journalism, public health, or the performing arts, you'll find faculty mentors and classmates pushing the boundaries of what's possible.</p>
       </div>
@@ -895,32 +895,30 @@ umd-element-card-overlay.size-large {
     </div>
   </section>
 
-  <!-- 5. BY THE NUMBERS — sticky columns with stats -->
+  <!-- 5. BY THE NUMBERS — stat cards in a grid -->
   <section class="umd-layout-vertical-landing">
-    <umd-element-sticky-columns class="umd-layout-space-horizontal-larger" data-layout-position="100px">
-      <div slot="sticky-column">
-        <h2 class="umd-sans-largest-uppercase mb-md">By the Numbers</h2>
-        <div class="umd-text-rich-advanced mb-sm">
-          <p>UMD's scale and momentum show up in the numbers. Our breadth of programs and our investment in faculty give every student a path to discover what they're great at.</p>
-        </div>
+    <div class="umd-layout-space-horizontal-larger umd-layout-vertical-landing-child">
+      <h2 class="umd-sans-largest-uppercase" style="margin-bottom: 40px;">By the Numbers</h2>
+      <div class="umd-layout-grid-gap-three">
+        <umd-element-stat data-display="block" class="umd-layout-grid-child-fill-height">
+          <span slot="stat">100+</span>
+          <p slot="text">Undergraduate Majors</p>
+        </umd-element-stat>
+        <umd-element-stat data-display="block" class="umd-layout-grid-child-fill-height">
+          <span slot="stat">18:1</span>
+          <p slot="text">Student-to-Faculty Ratio</p>
+        </umd-element-stat>
+        <umd-element-stat data-display="block" class="umd-layout-grid-child-fill-height">
+          <span slot="stat">69</span>
+          <p slot="text">Colleges, schools and programs ranked in the top 25 nationwide</p>
+          <p slot="sub-text">2025 U.S. News &amp; World Report</p>
+        </umd-element-stat>
       </div>
-      <div slot="static-column">
-        <div class="umd-layout-grid-gap-stacked">
-          <umd-element-stat data-visual-size="large" data-decoration-line data-animation="offset">
-            <span slot="stat">100+</span>
-            <div slot="text"><p>Undergraduate Majors</p></div>
-          </umd-element-stat>
-          <umd-element-stat data-visual-size="large" data-decoration-line data-animation="offset">
-            <span slot="stat">18:1</span>
-            <div slot="text"><p>Student-to-Faculty Ratio</p></div>
-          </umd-element-stat>
-        </div>
-      </div>
-    </umd-element-sticky-columns>
+    </div>
   </section>
 
   <!-- 6. CHOOSING A MAJOR — pathway, image left -->
-  <section class="umd-layout-vertical-landing" style="padding: 80px 0;">
+  <section class="umd-layout-vertical-landing">
     <umd-element-pathway data-layout-image-position="left">
       <img slot="image" src="../images/projects/admissions-academics/students-studying-table-c5f3b2f9.jpg" alt="Students studying together at a table" />
       <h2 slot="headline">Choosing a Major</h2>
@@ -986,7 +984,7 @@ umd-element-card-overlay.size-large {
   </section>
 
   <!-- 9. LIVING-LEARNING PROGRAMS — pathway -->
-  <section class="umd-layout-vertical-landing" style="padding: 80px 0;">
+  <section class="umd-layout-vertical-landing">
     <umd-element-pathway>
       <img slot="image" src="../images/projects/admissions-academics/Scholars-Students-d2a6bf3e.PNG" alt="Scholars program students" />
       <h2 slot="headline">Living-Learning Programs</h2>
@@ -1155,6 +1153,17 @@ umd-element-card-overlay.size-large {
        SHADOW OVERRIDES
   ============================================================ -->
   <script>
+    // umd-element-pathway — force 1:1 image aspect ratio.
+    // No CSS variable / ::part hook for the pathway image container; inject
+    // shadow CSS to override intrinsic image ratio.
+    customElements.whenDefined('umd-element-pathway').then(() => {
+      document.querySelectorAll('umd-element-pathway').forEach(el => {
+        const style = document.createElement('style');
+        style.textContent = '.pathway-image-container,.image-container,.umd-asset-image-wrapper-scaled{aspect-ratio:1/1!important;height:auto!important}.pathway-image-container img,.image-container img,.umd-asset-image-wrapper-scaled img{width:100%!important;height:100%!important;object-fit:cover!important}';
+        el.shadowRoot && el.shadowRoot.appendChild(style);
+      });
+    });
+
     // umd-element-banner-promo — stack actions vertically with 8px gap.
     // Banner-promo reprojects slot="actions" into shadow DOM under
     // .banner-promo-actions with no gap when stacked.

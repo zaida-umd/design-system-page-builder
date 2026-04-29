@@ -53,6 +53,7 @@ The `/recreate-page`, `/build-landing-page`, and `/build-interior-page` commands
 
 **Pages using this:**
 - [test/admissions-recreation.html](test/admissions-recreation.html)
+- [examples/admissions-academics.html](examples/admissions-academics.html)
 
 ---
 
@@ -103,6 +104,7 @@ Injected after `customElements.whenDefined('umd-element-navigation-header')`.
 
 **Pages using this:**
 - [test/admissions-recreation.html](test/admissions-recreation.html) — "Information For" 4-up row in the dark section after the hero
+- [examples/search.html](examples/search.html) — "Show more / Show less" toggle for the AI Summary block (full-width outline button)
 
 ---
 

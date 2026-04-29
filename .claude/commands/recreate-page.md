@@ -41,6 +41,21 @@ Wait for the subagent to complete before proceeding.
 
 Use content and images from the source page as the fictional client. Shorten the page title used in the command and name the output file `examples/{title}.html`.
 
+## Copy fidelity (mandatory)
+
+**Never paraphrase, summarize, or invent body copy, headlines, attributions, stats, or CTA labels.** All visible text must be lifted verbatim from `tmp/source.html`.
+
+For every text-bearing component (hero body, pathway body, quote, attribution + sub-text, stat label, CTA label, card headline + body, banner copy, deadline list, breadcrumb labels):
+
+1. **Locate the source string** in `tmp/source.html`. If you can't find it, do not write placeholder copy — flag the missing copy in your summary and ask the user.
+2. **Copy it verbatim** into the corresponding slot. Preserve apostrophes, em dashes, ampersands, casing, line breaks, hashtags (e.g. `#BeATerp`), and trailing punctuation. Encode `&` as `&amp;`, `<`/`>` as entities only as required by HTML.
+3. **Do not "improve" the wording.** No compression for length, no rewrites for tone, no synthesized paraphrases that "sound right." If the source copy doesn't fit the component, raise it instead of paraphrasing.
+4. **Verify before writing.** When in doubt about a string, re-read the relevant block of `tmp/source.html` rather than guessing from memory.
+
+If a section on the source page has no DS-equivalent component and the user hasn't directed how to handle it, omit it and note the omission in your summary — do not invent substitute copy.
+
+This rule applies during the initial build *and* every later edit to a recreate-page output. When the user asks for a copy change without supplying the new text, ask for the verbatim string before editing.
+
 **Images:** Extract actual image paths from `tmp/source.html` — do not guess or construct URLs. For the generated page, copy the downloaded images from `tmp/assets/images/` into `/Users/zjocson/repos/design-system-page-builder/images/projects/{title}/` (where `{title}` matches the output filename, e.g. `images/projects/ischool/`) and reference them as repo-relative paths: `../images/projects/{title}/filename.jpg`. Videos go into `images/media/`.
 
 

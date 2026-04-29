@@ -804,6 +804,39 @@ umd-element-card-overlay.size-large {
   </style>
 
   <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.18.2/dist/cdn.js"></script>
+
+  <style>
+    /* Brand chevron animation flanking the Study Here rich text and
+       overlapping ~120px up into the hero above. Hidden below tablet
+       to avoid crowding the single-column stacked content. */
+    .study-here-section {
+      position: relative;
+      overflow: visible;
+      z-index: 100;
+    }
+    .study-here-content {
+      position: relative;
+      z-index: 2;
+    }
+    /* The brand-logo-animation hardcodes its inner container to
+       width:100vw, height:50vw and anchors chevrons to right:0. So
+       the host must span full width — sizing/clipping won't work. */
+    .study-here-chevron {
+      position: absolute;
+      top: -180px;
+      left: 0;
+      right: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .study-here-chevron > umd-element-brand-logo-animation {
+      display: block;
+    }
+    @media (max-width: 1023px) {
+      .study-here-chevron { display: none; }
+    }
+  </style>
 </head>
 <body>
 
@@ -880,8 +913,11 @@ umd-element-card-overlay.size-large {
   </section>
 
   <!-- 4. STUDY HERE — eyebrow headline + rich text + CTA pulled from hero -->
-  <section class="umd-layout-vertical-landing">
-    <div class="umd-layout-space-horizontal-small">
+  <section class="umd-layout-vertical-landing study-here-section">
+    <div class="study-here-chevron" aria-hidden="true">
+      <umd-element-brand-logo-animation></umd-element-brand-logo-animation>
+    </div>
+    <div class="umd-layout-space-horizontal-small study-here-content">
       <hr style="border:none;border-top:1px solid #000000;margin:0 0 24px 0;" />
       <p class="umd-sans-large mb-md" style="text-transform:uppercase;">Study Here</p>
       <div class="umd-text-rich-advanced">

@@ -99,16 +99,16 @@
         "description": "Color theme."
       },
       {
-        "name": "data-aligned",
+        "name": "data-visual-image-aligned",
         "type": "boolean",
-        "description": "Force consistent aspect ratio on images across a group of cards."
+        "description": "Force consistent aspect ratio on images across a group of cards. Set to \"true\"."
       }
     ],
     "aliases": {
       "card": {
         "description": "Standard card with aligned image (consistent image height across grid)",
         "attrs": {
-          "data-aligned": ""
+          "data-visual-image-aligned": "true"
         }
       },
       "card list": {
@@ -142,7 +142,7 @@
     "source": "npm",
     "priority": 2,
     "batch": 2,
-    "notes": " Use data-aligned for card grids so all images crop to the same height."
+    "notes": " Use data-visual-image-aligned=\"true\" for card grids so all images crop to the same height."
   },
   "card-overlay": {
     "tag": "umd-element-card-overlay",

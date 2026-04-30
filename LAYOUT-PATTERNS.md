@@ -175,8 +175,8 @@ An alternative to a flat 3-column grid when you want visual interest. Use for 3 
     </umd-element-section-intro-wide>
 
     <div class="umd-layout-grid-columns-four">
-      <umd-element-card data-aligned>...</umd-element-card>
-      <umd-element-card data-aligned>...</umd-element-card>
+      <umd-element-card data-visual-image-aligned="true">...</umd-element-card>
+      <umd-element-card data-visual-image-aligned="true">...</umd-element-card>
     </div>
 
   </div>

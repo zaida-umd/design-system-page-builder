@@ -28,25 +28,7 @@ The `<section>` that wraps a hero **must carry `umd-layout-vertical-landing`** (
 
 ### Exception: adjacent dark sections
 
-If the hero is dark **and** the first content section is also a full dark section, omit the spacing class from the hero's `<section>`. The two dark blocks merge visually and no gap is needed.
-
-```html
-<!-- ✓ Dark hero directly above dark section — no gap needed -->
-<section>
-  <umd-element-hero data-theme="dark" data-animation>...</umd-element-hero>
-</section>
-<section class="umd-layout-vertical-landing umd-layout-background-full-dark">
-  <!-- stats, events, cards on dark background -->
-</section>
-
-<!-- ✗ Wrong — adding spacing here creates a white gap between two dark blocks -->
-<section class="umd-layout-vertical-landing">
-  <umd-element-hero data-theme="dark" data-animation>...</umd-element-hero>
-</section>
-<section class="umd-layout-vertical-landing umd-layout-background-full-dark">
-  ...
-</section>
-```
+If the hero is dark **and** the first content section is also a full dark section, omit `umd-layout-vertical-landing` from the hero's `<section>` to eliminate the white gap. See `RULES.md §19` for the canonical rule and full examples.
 
 ---
 
@@ -119,7 +101,11 @@ An alternative to a flat 3-column grid when you want visual interest. Use for 3 
 **Required pieces for a stat card grid:**
 - `data-display="block"` on every `umd-element-stat`
 - `class="umd-layout-grid-child-fill-height"` on every stat so cards equalize height
-- A grid container — `umd-layout-grid-gap-three` for 3 stats, `umd-layout-grid-gap-two` for 2
+- A grid container — use a **standard grid utility**, not a custom CSS grid:
+  - `umd-layout-grid-gap-two` for 2 stats
+  - `umd-layout-grid-gap-three` for 3 stats
+  - `umd-layout-grid-columns-four` for 4 stats
+  - Custom grids (e.g. `news-grid-three`) won't be picked up by the grid entry-animation script and will need an explicit `umd-animation-grid` opt-in marker to animate. Prefer the standard utility so animations work automatically.
 - **Do not** add `data-decoration-line` — the red top border is built into block display; the accent line is for the non-card variant only
 - **Do not** add `data-visual-size="large"` — block already implies large sizing
 
@@ -517,28 +503,7 @@ Stacks CTAs vertically on mobile, switches to a flex row at 650px+. Use to wrap 
 
 ### Adjacent dark sections — eliminating white gaps
 
-When two dark-background sections appear next to each other, `umd-layout-vertical-landing` on the first section creates a white `margin-bottom` gap between them. Omit `umd-layout-vertical-landing` from the first section to merge them visually.
-
-```html
-<!-- ✓ Correct — no white gap between dark sections -->
-<section style="background:#000;">
-  <umd-layout-image-expand>...</umd-layout-image-expand>
-</section>
-<section class="umd-layout-vertical-landing umd-layout-background-full-dark">
-  <!-- stats, cards, or other dark content -->
-</section>
-
-<!-- ✗ Wrong — umd-layout-vertical-landing on the first dark section
-     produces a white margin gap before the second dark section -->
-<section class="umd-layout-vertical-landing" style="background:#000;">
-  <umd-layout-image-expand>...</umd-layout-image-expand>
-</section>
-<section class="umd-layout-vertical-landing umd-layout-background-full-dark">
-  ...
-</section>
-```
-
-**Rule:** The section that provides the spacing gap to the next section should always be the LAST dark section in the group — it carries `umd-layout-vertical-landing` to push away from the following light section. All preceding dark sections in the group omit it.
+See `RULES.md §19` for the canonical rule and full examples. Short version: omit `umd-layout-vertical-landing` from every dark section *except the last one in the group* — that last one carries the margin to push away from the next light section.
 
 ---
 

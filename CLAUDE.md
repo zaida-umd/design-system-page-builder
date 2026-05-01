@@ -25,13 +25,17 @@ The three brief- or URL-driven commands all run a final harvest step that update
 
 ## Source of truth hierarchy
 
-1. `.claude/commands/*.md` — task instructions (check first)
-2. `RULES.md` — layout, spacing, and component usage rules
-3. `registry/` — component slots and attributes (verified from NPM)
-4. `styles/critical.css` — **single source of truth for all CSS rules** (canonical file)
-5. `TEMPLATE.html` — inlines `styles/critical.css` verbatim + HTML skeleton (copy `<head>` block verbatim)
-6. `LAYOUT-PATTERNS.md` — CSS-only utility class HTML patterns and examples
-7. `REQUIRED-CSS.md` — explains *why* each CSS rule group is needed (commentary, no CSS to copy)
+Each file has a distinct role — don't duplicate rules across them. When a topic could fit two files, prefer the higher-priority one and reference it from the others.
+
+1. **`.claude/commands/*.md`** — task instructions for each slash command. Check first.
+2. **`RULES.md`** — hard mechanical rules: required structure, slot names, attribute requirements, spacing classes, component-specific gotchas (things that fail silently or render wrong if violated). Build commands enforce these.
+3. **`registry/`** — component slots and attributes verified from NPM. Source of truth for what a component accepts.
+4. **`styles/critical.css`** — **single source of truth for all CSS rules** (canonical file).
+5. **`TEMPLATE.html`** — inlines `styles/critical.css` verbatim + HTML skeleton (copy `<head>` block verbatim).
+6. **`LAYOUT-PATTERNS.md`** — HTML pattern recipes for utility classes and multi-component layouts (rich text, masonry, grids, sticky columns, link-card grids). Reference, not enforcement.
+7. **`.claude/commands/evaluate-design.md`** — design-judgment checks for catching design mistakes (variety, rhythm, dark-theme overuse, watermark adjacency). Not a hard-rule enforcer; complements `RULES.md`.
+8. **`OVERRIDES.md`** — page-specific deviations (shadow injections, page-built classes). Append-only log, not a rule source.
+9. **`REQUIRED-CSS.md`** — commentary on *why* each CSS rule group is needed (no CSS to copy).
 
 ## Logos
 

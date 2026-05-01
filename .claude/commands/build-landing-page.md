@@ -4,7 +4,25 @@ Build a fresh UMD landing page from the user's brief. Use this when the user wan
 
 ## Brief intake
 
-The user's `$ARGUMENTS` should describe: page topic/audience, key sections needed, any required CTAs or links, image direction (campus/people/research/events). If the brief is too thin to act on (e.g. "build a landing page" with no topic), ask one clarifying question covering all gaps at once before building.
+The user's `$ARGUMENTS` should describe: page topic/audience, key sections needed, any required CTAs or links, image direction (campus/people/research/events). If the brief is too thin to act on (e.g. "build a landing page" with no topic), ask one clarifying question covering all gaps at once before building. If there are reference pages, go to the Optional Reference page step.
+
+## Optional reference page(s) step (skip if no URL reference)
+
+Before doing any analysis or building, spawn a subagent to download the source page assets into `/Users/zjocson/repos/design-system-page-builder/tmp/`. The subagent should:
+
+1. Create the directory `/Users/zjocson/repos/design-system-page-builder/tmp/` if it does not exist.
+2. Download the full HTML of the source URL and save it as `tmp/source.html`.
+3. Parse `tmp/source.html` and download all referenced assets:
+   - Images (`<img src>`, `srcset`, CSS `background-image` URLs, `<picture><source srcset>`)
+   - Videos (`<video src>`, `<source src>`)
+   - Linked CSS files (`<link rel="stylesheet" href>`)
+   - Inline and linked JavaScript files (`<script src>`)
+4. Save each asset into a mirrored subdirectory under `tmp/` (e.g. `tmp/assets/images/`, `tmp/assets/css/`, `tmp/assets/js/`, `tmp/assets/video/`).
+5. Use `curl` or `wget` for downloads. Skip assets that return non-200 status — log skipped URLs to `tmp/skipped-assets.txt`.
+6. Return a summary of what was downloaded.
+
+Wait for the subagent to complete before proceeding.
+
 
 ## Setup
 
@@ -28,11 +46,12 @@ Use the cheat-sheet from `/recreate-page` for first-pass component matching. For
 ## Spacing and layout
 
 Same rules as `/recreate-page`:
-- Every top-level `<section>` gets `class="umd-layout-vertical-landing"` — except dark sections immediately followed by another dark section (omit on the preceding ones).
+- Every top-level `<section>` gets `class="umd-layout-vertical-landing"` — except dark sections immediately followed by another dark section (see `RULES.md §19`).
 - Pathway and hero are full-bleed — do NOT wrap in a horizontal spacing class.
 - Card grids and section intros go inside a `umd-layout-space-horizontal-larger` wrapper.
 - `umd-element-quote` uses `umd-layout-space-horizontal-normal` (1280px).
-- `data-theme` does not cascade — set it on every child component that needs it.
+- All other layout/component rules: see `RULES.md` (theming, slot patterns, spacing, component-specific gotchas).
+- Run the design-judgment checks in `/evaluate-design` Step 3 against the plan before writing HTML.
 
 ## Required page chrome
 
@@ -54,6 +73,13 @@ No source page to download from — pull from the local library:
 ## Output
 
 Write the completed HTML file to `/Users/zjocson/repos/design-system-page-builder/examples/{slug}.html`. Confirm the filename when done. If a preview server is running, verify the page renders before reporting success.
+
+## Cleanup
+
+After the output file is confirmed written, delete the `tmp/` directory:
+```bash
+rm -rf /Users/zjocson/repos/design-system-page-builder/tmp
+```
 
 ## Harvest overrides (final step)
 

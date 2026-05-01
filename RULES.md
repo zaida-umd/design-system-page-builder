@@ -1325,3 +1325,77 @@ Do **not** use `umd-element-card-overlay` — overlay cards always render their 
 - `umd-element-carousel-image` / `-multiple-image`: slot accepts plain `<img>` elements only — alt text is enforced by a runtime warning. No card components.
 - `umd-element-carousel-image-wide`: slot expects `<figure>` or `<div>` with an inner `<img>` plus `data-headline` / `data-text` divs for caption metadata. No card components.
 - `umd-element-carousel` (base): generic — accepts any block. Use only when none of the specialized carousels fit.
+
+---
+
+## 28. Quote `data-display="featured"` — CTA placement
+
+A CTA for the quote subject must use `slot="actions"` **inside** the component — not a sibling element after it. The component lays out actions as part of its internal text composition; siblings render outside the styled card and lose theme context.
+
+The action slot also requires a `<div>` wrapper. A bare `<a slot="actions">` renders as unstyled plain text — `umd-element-call-to-action`'s styling targets a wrapped child link, not a slotted bare anchor.
+
+```html
+<!-- ✓ Correct — div wrapper around the CTA inside the actions slot -->
+<umd-element-quote data-display="featured" data-theme="dark">
+  <p slot="quote">Quote text.</p>
+  <p slot="attribution">Person Name</p>
+  <div slot="actions">
+    <umd-element-call-to-action data-display="primary" data-theme="dark">
+      <a href="/profile">Read More</a>
+    </umd-element-call-to-action>
+  </div>
+</umd-element-quote>
+
+<!-- ✗ Wrong — bare anchor in actions slot renders as plain text -->
+<umd-element-quote data-display="featured">
+  <p slot="quote">Quote text.</p>
+  <a slot="actions" href="/profile">Read More</a>
+</umd-element-quote>
+
+<!-- ✗ Wrong — CTA placed as sibling, outside the quote card -->
+<umd-element-quote data-display="featured">...</umd-element-quote>
+<umd-element-call-to-action><a href="/profile">Read More</a></umd-element-call-to-action>
+```
+
+---
+
+## 29. Footer visual variant — `slot="image"` requires non-empty `alt`
+
+`umd-element-footer` with `data-display="visual"` renders a background image inside `.umd-footer-background-image-container`. The component reads both `src` and `alt` from the slotted image and **bails silently if `alt` is an empty string** — no fallback to the default UMD campus image, no warning. The visual layout still renders, but with no background image at all.
+
+```html
+<!-- ✓ Correct — non-empty alt, image renders -->
+<umd-element-footer data-display="visual">
+  <a slot="logo" href="/"><img src="../images/logos/footer-logo.svg" alt="University of Maryland" /></a>
+  <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="University of Maryland campus" />
+</umd-element-footer>
+
+<!-- ✗ Wrong — empty alt, background image silently dropped -->
+<umd-element-footer data-display="visual">
+  <a slot="logo" href="/"><img src="../images/logos/footer-logo.svg" alt="University of Maryland" /></a>
+  <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="" />
+</umd-element-footer>
+```
+
+The visual variant renders only the logo + image. Do not slot contact info, address, or social links — they will not render. To include those, use `data-display="mega"` instead.
+
+---
+
+## 30. Standard cards default to `data-visual-image-aligned="true"`
+
+`umd-element-card` should almost always carry `data-visual-image-aligned="true"`. The unaligned default lets each card's image render at its native aspect ratio, which produces a ragged top edge across the row and a visibly accidental layout. The aligned variant constrains all card images to a shared height and tightens the row.
+
+```html
+<!-- ✓ Default — aligned images, clean row -->
+<umd-element-card data-visual-image-aligned="true">
+  <img slot="image" src="/news.jpg" alt="" />
+  <h3 slot="headline"><a href="/article">Headline</a></h3>
+  <div slot="text"><p>Supporting copy.</p></div>
+</umd-element-card>
+```
+
+Only omit `data-visual-image-aligned` when intentionally varying image heights for visual effect (e.g. masonry-adjacent layouts). Call that intent out explicitly when you do — it is the exception, not the default.
+
+This default does not apply to:
+- Cards inside `umd-element-carousel-thumbnail` — that pattern uses `data-visual-image-aligned="true"` for a different reason (see §27 thumbnail carousel pattern).
+- `umd-element-card-overlay` — overlay cards composite text over a full-bleed image and have no separate image column to align.

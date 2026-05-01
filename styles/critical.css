@@ -1,207 +1,96 @@
 /*
- * UMD Design System — Critical CSS
+ * UMD Design System — Local-Only Critical CSS
  * Verified against @universityofmaryland/web-components-library@1.18.2
  *
- * This is the SINGLE SOURCE OF TRUTH for all CSS rules required by UMD
- * web components. TEMPLATE.html inlines this file in <head> before cdn.js.
+ * This file is the LOCAL portion of our critical CSS. It is inlined into
+ * TEMPLATE.html alongside <link rel="stylesheet"> tags pointing at the
+ * published @universityofmaryland/web-styles-library bundles:
  *
- * LOAD ORDER: inline <style> (this file) -> <script> cdn.js -> </head>
- * If cdn.js loads first, elements upgrade before :defined rules exist
- * and container-type never gets set.
+ *   - css/font-faces.min.css     → @font-face declarations
+ *   - css/tokens.min.css         → CSS custom properties
+ *   - css/base.min.css           → DS reset + tokens + base type
+ *   - css/typography.min.css     → .umd-sans-* / .umd-campaign-* utilities
+ *   - css/web-components.min.css → :defined / container-type rules for
+ *                                  most umd-element-* custom elements
  *
- * Sections:
- *   1. Component registration (container-type)
- *      GROUP 1 — container-type: normal (nav, CTA)
- *      GROUP 2 — container-type: inline-size (hero, cards, quote, stat, etc.)
- *      GROUP 3 — full-bleed (image-expand)
- *      GROUP 4 — feed components (news feed)
- *   2. Fonts
- *   3. Vertical spacing
- *   4. Horizontal spacing (page locks)
- *   5. Watermark decoration
- *   6. Section-intro-wide wrapper
- *   7. Grid utilities
- *   8. Layout patterns (grids, dark sections, alignment)
- *   9. Typography (inline headlines, color utilities)
- *  10. Rich text advanced (light + dark)
- *  11. Interior page layout (columns, sidebar, content width)
- *  12. Image-expand content utilities (pl-md, umd-adjacent-line-text, umd-text-rich-simple-large-dark)
- *  13. Sticky columns utilities
+ * What stays here (and why):
+ *   - Layout utilities (grids, vertical/horizontal spacing, dark band,
+ *     masonry, etc.): the upstream layout.min.css has a serialization
+ *     bug that renders desktop-breakpoint media queries as
+ *     `@media([object Object])`. Cannot use upstream layout CSS until
+ *     fixed.
+ *   - Gap-fills for components missing from web-components.min.css:
+ *     umd-element-utility-header, umd-element-carousel*.
+ *   - Project-specific overrides and patterns:
+ *     - umd-element-breadcrumb default top margin
+ *     - watermark decoration + scroll animation
+ *     - section-intro-wide stacking context wrapper
+ *     - rich-text-advanced (light + dark)
+ *     - interior page columns-left
+ *     - image-expand content utilities
+ *     - sticky-columns spacing tokens
+ *     - utility-navigation light-DOM link styles
+ *     - banner-promo stacked actions
+ *     - section divider, trailing-line label, no-gap card grid,
+ *       overlay-card .size-large min-height, tuition 2-column grid,
+ *       action-outline-block utility, color utilities (.text-*)
+ *
+ * LOAD ORDER in TEMPLATE.html:
+ *   <link rel="stylesheet"> CDN bundles
+ *   <style> this file </style>
+ *   <script src="…cdn.js">
+ *
+ * Browsers block on stylesheet fetches before parsing the script tag,
+ * so all CSS — both upstream and local — applies before custom elements
+ * upgrade and container-type / content-visibility rules take effect.
  */
 
 
 /* ============================================================
-   0. DS RESET
-   Mirrors @universityofmaryland/web-styles-library `root.ts`
-   reset (packages/styles/source/root.ts:19). The DS components
-   assume a zeroed UA baseline — without this, body inherits the
-   browser default 8px margin and pages have an unexpected gutter.
-   ============================================================ */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  overscroll-behavior: none;
-}
-
-/* ============================================================
-   1. COMPONENT REGISTRATION
+   1. COMPONENT REGISTRATION GAP-FILLS
+   Re-add :defined rules for components missing from upstream
+   web-components.min.css. As those land upstream, drop these.
    ============================================================ */
 
-/* GROUP 1: container-type: normal
-   These components use grid-auto-flow / internal layout that
-   breaks under inline-size containment. Do NOT move to GROUP 2. */
-umd-element-navigation-utility:not(:defined),
-umd-element-utility-header:not(:defined),
-umd-element-navigation-header:not(:defined),
-umd-element-nav-item:not(:defined),
-umd-element-call-to-action:not(:defined) {
-  content-visibility: hidden;
-}
-umd-element-navigation-utility,
-umd-element-utility-header,
-umd-element-navigation-header,
-umd-element-nav-item,
-umd-element-call-to-action {
-  display: block;
-  container-type: normal;
-}
+/* umd-element-utility-header — present on every page (band above the
+   nav header). Not in upstream bundle as of v1.8.6. */
+umd-element-utility-header:not(:defined) { content-visibility: hidden; }
+umd-element-utility-header { display: block; container-type: normal; }
 
-/* GROUP 2: container-type: inline-size
-   These components use shadow DOM @container queries that fire
-   against the host element. Without inline-size on the host,
-   two-column layouts collapse to stacked. */
-umd-element-hero:not(:defined),
-umd-element-hero-minimal:not(:defined),
-umd-element-hero-expand:not(:defined),
-umd-element-hero-logo:not(:defined),
-umd-element-hero-grid:not(:defined),
-umd-element-hero-brand-video:not(:defined),
-umd-element-pathway:not(:defined),
-umd-element-pathway-highlight:not(:defined),
-umd-element-section-intro:not(:defined),
-umd-element-section-intro-wide:not(:defined),
-umd-element-card:not(:defined),
-umd-element-card-overlay:not(:defined),
-umd-element-card-icon:not(:defined),
-umd-element-card-video:not(:defined),
-umd-element-quote:not(:defined),
-umd-element-stat:not(:defined),
-umd-element-person-bio:not(:defined),
-umd-element-accordion-item:not(:defined),
-umd-element-nav-slider:not(:defined),
-umd-element-media-inline:not(:defined),
-umd-element-breadcrumb:not(:defined),
-umd-element-footer:not(:defined),
-umd-element-event:not(:defined),
-umd-element-slider-events:not(:defined),
-umd-element-events-date:not(:defined),
-umd-element-sticky-columns:not(:defined),
-umd-element-tabs:not(:defined),
-umd-element-nav-drawer:not(:defined),
+/* umd-element-carousel* — not in upstream bundle. */
 umd-element-carousel:not(:defined),
 umd-element-carousel-cards:not(:defined),
 umd-element-carousel-thumbnail:not(:defined),
 umd-element-carousel-image:not(:defined),
 umd-element-carousel-image-wide:not(:defined),
-umd-element-carousel-multiple-image:not(:defined),
-umd-element-banner-promo:not(:defined) {
+umd-element-carousel-multiple-image:not(:defined) {
   content-visibility: hidden;
 }
-umd-element-hero,
-umd-element-hero-minimal,
-umd-element-hero-expand,
-umd-element-hero-logo,
-umd-element-hero-grid,
-umd-element-hero-brand-video,
-umd-element-pathway,
-umd-element-pathway-highlight,
-umd-element-section-intro,
-umd-element-section-intro-wide,
-umd-element-card,
-umd-element-card-overlay,
-umd-element-card-icon,
-umd-element-card-video,
-umd-element-quote,
-umd-element-stat,
-umd-element-person-bio,
-umd-element-accordion-item,
-umd-element-nav-slider,
-umd-element-media-inline,
-umd-element-breadcrumb,
-umd-element-footer,
-umd-element-event,
-umd-element-slider-events,
-umd-element-events-date,
-umd-element-sticky-columns,
-umd-element-tabs,
-umd-element-nav-drawer,
 umd-element-carousel,
 umd-element-carousel-cards,
 umd-element-carousel-thumbnail,
 umd-element-carousel-image,
 umd-element-carousel-image-wide,
-umd-element-carousel-multiple-image,
-umd-element-banner-promo {
+umd-element-carousel-multiple-image {
   display: block;
   container-type: inline-size;
 }
-umd-element-breadcrumb:defined {
-  margin-top: 16px;
-}
 
-/* GROUP 3: Full-bleed components
-   umd-layout-image-expand collapses to content width without
-   explicit width: 100%. Do NOT wrap in a horizontal spacing class.
-   Do NOT set max-width on host — shadow DOM applies 1600px internally.
-   Content slot text must be explicitly white (color:white) —
-   the component has no data-theme support. See RULES.md §17. */
-umd-layout-image-expand:not(:defined) {
-  content-visibility: hidden;
-}
+/* umd-layout-image-expand — full-bleed pseudo-component.
+   Width:100% is project-specific (collapses without it). */
+umd-layout-image-expand:not(:defined) { content-visibility: hidden; }
 umd-layout-image-expand {
   display: block;
   container-type: inline-size;
   width: 100%;
 }
 
-/* GROUP 4: Feed components
-   Use contain-intrinsic-size + min-height to prevent layout shift
-   while components fetch data. The :not(:defined) block reserves
-   space so page doesn't reflow once the feed loads. */
-umd-feed-news:not(:defined),
-umd-feed-news-list:not(:defined),
-umd-feed-news-featured:not(:defined) {
-  content-visibility: hidden;
-  contain-intrinsic-size: auto 10vh;
-  min-height: 10vh;
-}
-umd-feed-news,
-umd-feed-news-list,
-umd-feed-news-featured {
-  display: block;
-  container-type: inline-size;
-}
+/* Project-specific spacing for breadcrumb (not a default in upstream). */
+umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   2. FONTS
-   Interstate is licensed. These declarations set the stack but
-   do NOT embed the font. Without @font-face, falls back to
-   Helvetica/Arial. Layouts and sizing are unaffected.
-   ============================================================ */
-:root {
-  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
-}
-p, li, label, input, textarea, select {
-  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
-}
-
-
-/* ============================================================
-   3. VERTICAL SPACING — between sections and items
+   2. VERTICAL SPACING — between sections and items
    ============================================================ */
 
 /* Landing page — between sections (both names canonical in 1.18) */
@@ -236,7 +125,7 @@ p, li, label, input, textarea, select {
 
 
 /* ============================================================
-   4. HORIZONTAL SPACING — page-lock classes
+   3. HORIZONTAL SPACING — page-lock classes
    ============================================================ */
 [class^="umd-layout-space-horizontal-"] {
   box-sizing: border-box;
@@ -267,7 +156,7 @@ p, li, label, input, textarea, select {
 
 
 /* ============================================================
-   5. WATERMARK DECORATION
+   4. WATERMARK DECORATION
    ============================================================ */
 :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
   position: absolute;
@@ -308,7 +197,7 @@ p, li, label, input, textarea, select {
 
 
 /* ============================================================
-   6. SECTION-INTRO-WIDE WRAPPER
+   5. SECTION-INTRO-WIDE WRAPPER
    Required when .umd-layout-space-horizontal-larger wraps
    umd-element-section-intro-wide. position:relative for
    watermark positioning, container-type for internal @container
@@ -322,22 +211,16 @@ p, li, label, input, textarea, select {
 
 
 /* ============================================================
-   7. GRID UTILITIES
+   6. GRID UTILITIES
    ============================================================ */
 
-/* Equal-height card grid children — @universityofmaryland/web-styles-library: layout.grid.child.fillHeight */
+/* Equal-height card grid children */
 @media (min-width: 768px) {
   .umd-layout-grid-child-fill-height,
   .umd-layout-grid-child-fill-height > * {
     height: 100%;
   }
 }
-
-
-/* ============================================================
-   8. LAYOUT PATTERNS — grids, dark sections, alignment
-   Source: @universityofmaryland/web-styles-library
-   ============================================================ */
 
 /* Two-column grid — stacks mobile, 2 columns at 650px+ */
 .umd-layout-grid-gap-two {
@@ -353,19 +236,10 @@ p, li, label, input, textarea, select {
   .umd-layout-grid-gap-two { gap: 40px; }
 }
 
-/* Three-column gap grid — @universityofmaryland/web-styles-library: layout.grid.gap.three */
+/* Three-column gap grid */
 .umd-layout-grid-gap-three {
   display: grid;
-}
-@media (max-width: 649px) {
-  .umd-layout-grid-gap-three {
-    grid-gap: 32px;
-  }
-}
-@media (min-width: 650px) {
-  .umd-layout-grid-gap-three {
-    grid-gap: 32px;
-  }
+  grid-gap: 32px;
 }
 @media (min-width: 768px) {
   .umd-layout-grid-gap-three {
@@ -373,14 +247,10 @@ p, li, label, input, textarea, select {
   }
 }
 
-/* Four-column grid — @universityofmaryland/web-styles-library: layout.grid.columnsFour */
+/* Four-column grid — 1col mobile, 2col at 650px, 4col at 1024px */
 .umd-layout-grid-columns-four {
   display: grid;
-}
-@media (max-width: 649px) {
-  .umd-layout-grid-columns-four {
-    grid-gap: 32px;
-  }
+  grid-gap: 32px;
 }
 @media (min-width: 650px) {
   .umd-layout-grid-columns-four {
@@ -393,7 +263,7 @@ p, li, label, input, textarea, select {
   }
 }
 
-/* Inline CTA row — @universityofmaryland/web-styles-library: layout.grid.inline.tabletRows */
+/* Inline CTA row — stacks mobile, flex row at 650px+ */
 .umd-layout-grid-inline-tablet-rows {
   align-items: flex-start;
   display: flex;
@@ -409,6 +279,21 @@ p, li, label, input, textarea, select {
   }
 }
 
+/* Single-column stacked grid (sticky-columns static slot) */
+.umd-layout-grid-gap-stacked {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 1024px) {
+  .umd-layout-grid-gap-stacked { gap: 40px; }
+}
+
+
+/* ============================================================
+   7. LAYOUT PATTERNS — dark band, alignment
+   ============================================================ */
+
 /* Full-width dark section with responsive padding */
 .umd-layout-background-full-dark {
   background-color: #000000;
@@ -416,6 +301,9 @@ p, li, label, input, textarea, select {
 }
 @media (min-width: 768px) {
   .umd-layout-background-full-dark { padding: 80px 0; }
+}
+@media (min-width: 1200px) {
+  .umd-layout-background-full-dark { padding: 104px 0; }
 }
 
 /* Stacked figure content — for <figure> inside rich text */
@@ -426,19 +314,12 @@ p, li, label, input, textarea, select {
 .umd-layout-alignment-block-stacked > * { margin-top: 16px; }
 .umd-layout-alignment-block-stacked > *:first-child { margin-top: 0; }
 
-/* Single-column stacked grid — @universityofmaryland/web-styles-library: layout.grid.gap.stacked */
-.umd-layout-grid-gap-stacked {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-@media (min-width: 1024px) {
-  .umd-layout-grid-gap-stacked { gap: 40px; }
-}
 
-/* Staggered two-column masonry grid — @universityofmaryland/web-styles-library: masonary.twoColumn
-   Odd children shift up, even children shift down, creating a visual zigzag stagger.
-   Use for 4 image-overlay cards. Direct children need a defined height. */
+/* ============================================================
+   8. MASONRY GRID (2-column stagger)
+   Source: @universityofmaryland/web-styles-library — masonary.twoColumn
+   Add min-height to direct children per use case.
+   ============================================================ */
 .umd-layout-grid-masonry {
   display: grid;
   grid-template-columns: 1fr;
@@ -468,11 +349,7 @@ p, li, label, input, textarea, select {
   .umd-layout-grid-masonry > *:nth-of-type(2)   { margin-top: 40px; }
 }
 
-/* Masonry + section-intro compensation
-   The masonry stagger uses negative margin-top on odd items (-32px tablet, -40px desktop).
-   Those negative margins pull row-2 cards upward, consuming the section-intro's
-   umd-layout-vertical-landing-child margin-bottom. Add matching padding-top to the
-   masonry container so the visual gap is preserved. */
+/* Masonry + section-intro compensation */
 @media (min-width: 768px) {
   umd-element-section-intro + .umd-layout-grid-masonry,
   umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 32px; }
@@ -482,10 +359,7 @@ p, li, label, input, textarea, select {
   umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 40px; }
 }
 
-/* Three-column offset grid — staggered cascade for 3 cards
-   @universityofmaryland/web-styles-library: offset.threeColumn
-   Card 1: no offset. Card 2: +48px. Card 3: +104px.
-   Use for 3 image-overlay or stat cards on landing pages. */
+/* Three-column offset grid — staggered cascade for 3 cards */
 .umd-layout-grid-offset-three {
   display: grid;
   gap: 32px;
@@ -510,57 +384,8 @@ p, li, label, input, textarea, select {
 
 
 /* ============================================================
-   9. TYPOGRAPHY — inline headlines and color utilities
-   Used inside umd-text-rich-advanced for in-content headlines.
-   Apply to <p> elements, not heading tags.
+   9. COLOR UTILITIES — not in upstream tokens or typography bundles
    ============================================================ */
-
-.umd-sans-large {
-  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 1.25em;
-}
-
-.umd-sans-larger-bold {
-  font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.4em;
-  text-wrap: pretty;
-}
-@media (min-width: 650px) {
-  .umd-sans-larger-bold { font-size: calc(18px + .5vw); }
-}
-@media (min-width: 1024px) {
-  .umd-sans-larger-bold { font-size: 22px; line-height: 1.25em; }
-}
-
-.umd-sans-extralarge-bold {
-  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 1.25em;
-  text-wrap: pretty;
-}
-@media (min-width: 650px) {
-  .umd-sans-extralarge-bold { font-size: calc(18px + 1.16vw); }
-}
-@media (min-width: 1024px) {
-  .umd-sans-extralarge-bold { font-size: 32px; line-height: 1.125em; }
-}
-
-.umd-sans-largest-uppercase {
-  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
-  font-weight: 800;
-  text-transform: uppercase;
-  font-size: 32px;
-  line-height: 1.1em;
-}
-@media (min-width: 768px)  { .umd-sans-largest-uppercase { font-size: 40px; } }
-@media (min-width: 1024px) { .umd-sans-largest-uppercase { font-size: 44px; } }
-
-/* Color utilities */
 .text-black { color: #000; }
 .text-white { color: #ffffff; }
 
@@ -625,8 +450,6 @@ p, li, label, input, textarea, select {
    11. INTERIOR PAGE LAYOUT
    Sidebar + content column. Not in cdn.js — must be local.
    ============================================================ */
-
-/* Sidebar + content column flex layout */
 @media (min-width: 768px) {
   .umd-layout-space-columns-left { display: flex; align-items: flex-start; }
   .umd-layout-space-columns-left > *:first-child { width: 242px; flex-shrink: 0; margin-right: 120px; }
@@ -643,21 +466,12 @@ p, li, label, input, textarea, select {
 /* ============================================================
    12. IMAGE-EXPAND CONTENT UTILITIES
    Classes for div[slot="content"] inside umd-layout-image-expand.
-   The component has no data-theme — text must be styled explicitly.
-   Pattern: outer div gets pl-md (24px left padding for red bar),
-   h2 gets umd-adjacent-line-text (::before draws the red bar at left:-24px),
-   body copy gets umd-text-rich-simple-large-dark (white, 18px/1.5em).
    ============================================================ */
-
-/* Alignment and sizing */
 .max-w-\[480px\] { max-width: 480px; }
 .w-full          { width: 100%; }
 .block           { display: block; }
 .mr-auto         { margin-right: auto; }
-
-/* Left-border accent — creates the red vertical bar to the left of headings.
-   Wrap content in a .pl-md div; apply this class to the heading element. */
-.pl-md { padding-left: 24px; }
+.pl-md           { padding-left: 24px; }
 
 .umd-adjacent-line-text { position: relative; }
 .umd-adjacent-line-text::before {
@@ -705,24 +519,8 @@ p, li, label, input, textarea, select {
 
 /* ============================================================
    14. UTILITY NAVIGATION LINK STYLES
-   umd-element-navigation-header applies ::slotted(*) only to the
-   direct child div[slot="utility-navigation"], not to descendants.
-   These light-DOM styles fill that gap.
-
-   Two layouts are supported:
-
-   (A) Plain anchor list — flex row of <a> children, no separators.
-       Mirrors the simpler admissions-style utility nav.
-
-   (B) Shell-style item list — wrap each link in
-         <div class="umd-shell-utility-item">
-           <div class="umd-shell-utility-actions"><a>…</a></div>
-         </div>
-       to get the umd.edu shell's separator rule (1px right border
-       between items) and tight icon+label spacing (gap:4px).
-       The same .umd-shell-utility-* classes are reusable in
-       pathway/banner-promo "actions" slots when a row of tertiary
-       links reads better than stacked secondary CTAs (RULES.md §5).
+   ::slotted(*) only reaches div[slot="utility-navigation"], not
+   descendants — these light-DOM styles fill that gap.
    ============================================================ */
 [slot="utility-navigation"] {
   display: flex;
@@ -744,9 +542,7 @@ p, li, label, input, textarea, select {
   text-decoration: underline;
 }
 
-/* Shell-style item list — separators + tight icon+label gap.
-   Selectors are NOT scoped to umd-element-navigation-header so the
-   same classes can be reused in pathway/banner-promo action rows. */
+/* Shell-style item list — separators + tight icon+label gap. */
 .umd-shell-utility-item .umd-shell-utility-actions {
   align-items: center;
   display: flex;
@@ -760,13 +556,9 @@ p, li, label, input, textarea, select {
 
 
 /* ============================================================
-   14a. BANNER-PROMO STACKED ACTIONS — light-DOM column flex
-   When primary + secondary CTAs are stacked vertically inside
-   slot="actions" on umd-element-banner-promo, the host reprojects
-   them into shadow DOM under .banner-promo-actions with no gap.
-   This light-DOM rule sets the column flex; it pairs with the
-   shadow-DOM injection documented in OVERRIDES.md so the gap is
-   visible regardless of where the children render.
+   15. BANNER-PROMO STACKED ACTIONS — light-DOM column flex.
+   Pairs with the shadow-DOM injection in OVERRIDES.md so the 8px
+   gap is visible regardless of where children render.
    ============================================================ */
 .banner-promo-actions {
   display: flex;
@@ -777,16 +569,7 @@ p, li, label, input, textarea, select {
 
 
 /* ============================================================
-   14b. SECTION DIVIDER — standalone <hr> utility
-   For a thin black rule used as a section eyebrow divider above
-   a label or block of content. Standalone — does NOT require a
-   .umd-text-rich-advanced wrapper. Pair with mb-md (or page-level
-   margin) for the gap to the element below.
-
-   Usage:
-     <hr class="umd-text-divider" />
-     <p class="umd-sans-larger-bold mb-md" style="text-transform:uppercase;">Study Here</p>
-     <div class="umd-text-rich-advanced">…</div>
+   16. SECTION DIVIDER — standalone <hr> utility.
    ============================================================ */
 .umd-text-divider {
   border: none;
@@ -799,12 +582,8 @@ p, li, label, input, textarea, select {
 
 
 /* ============================================================
-   15. TRAILING-LINE LABEL — section eyebrow with horizontal line
+   17. TRAILING-LINE LABEL — section eyebrow with horizontal line
    Source: @universityofmaryland/web-styles-library: element.text.line.trailing
-   Wrap label text in <span> so the ::before line trails to the right.
-   The span has background-color:inherit and z-index:2 so it covers
-   the line behind the text. Default has a white background; dark
-   variant uses #000 to match umd-layout-background-full-dark.
    ============================================================ */
 .umd-text-line-trailing,
 .umd-text-line-trailing-dark {
@@ -850,10 +629,7 @@ p, li, label, input, textarea, select {
 
 
 /* ============================================================
-   16. NO-GAP CARD GRID — 3 columns flush together (no spacing)
-   Use for image-overlay cards that visually merge into a single
-   banded row. Cards stack on mobile, then split into 3 columns
-   at 768px+ with zero gap so adjacent edges touch.
+   18. NO-GAP CARD GRID — 3 columns flush together
    ============================================================ */
 .umd-layout-grid-cards-no-gap {
   display: grid;
@@ -870,12 +646,9 @@ p, li, label, input, textarea, select {
 
 
 /* ============================================================
-   16a. OVERLAY CARD .size-large MIN-HEIGHT
+   19. OVERLAY CARD .size-large MIN-HEIGHT
    Source: design-system/packages/styles/source/web-components.ts
            (cardOverlay custom rules — umd-element-card-overlay.size-large)
-   Required whenever an overlay card sits in a no-gap row or
-   alongside a feature card so the tile fills its allotted space
-   instead of collapsing to its content height.
    ============================================================ */
 umd-element-card-overlay.size-large {
   min-height: 320px;
@@ -888,10 +661,8 @@ umd-element-card-overlay.size-large {
 
 
 /* ============================================================
-   17. TUITION & AID 2-COLUMN GRID
-   Asymmetric content split: left column = headline + body + primary CTA,
-   right column = "Resources" heading + stacked secondary CTA links.
-   Stacks on mobile, splits 1.5:1 at 1024px+.
+   20. TUITION & AID 2-COLUMN GRID
+   Asymmetric content split: 1.5fr / 1fr at 1024px+.
    ============================================================ */
 .umd-layout-grid-tuition-two {
   display: grid;
@@ -907,15 +678,10 @@ umd-element-card-overlay.size-large {
 
 
 /* ============================================================
-   17a. FULL-WIDTH OUTLINE BUTTON — light-DOM utility class
+   21. FULL-WIDTH OUTLINE BUTTON — light-DOM utility class
    Visually mirrors umd-element-call-to-action data-display="outline"
-   (border, padding, type, hover) but stretches to fill its grid cell.
-   The DS web component's inner <a> lives in Shadow DOM with
-   max-width:380px and display:inline-block (see _base.ts), so it
-   cannot be made full-width from light-DOM CSS. Use this class on a
-   plain <a> when you need a row of equally-sized stretched buttons
-   (e.g. an "Information For" audience selector). The .dark modifier
-   inverts the border + text for dark backgrounds.
+   but stretches to fill its grid cell. Use when the DS web component's
+   shadow-DOM max-width:380px would fight against your layout.
    ============================================================ */
 .umd-action-outline-block {
   display: block;
@@ -948,18 +714,3 @@ umd-element-card-overlay.size-large {
   background-color: #ffffff;
   color: #000000;
 }
-
-
-/* ============================================================
-   18. FOOTER ADDRESS MARKUP NOTE (no CSS needed here)
-   umd-element-footer uses extract-and-append (not slot projection).
-   The footer component moves slot="address" into the shadow DOM,
-   so light-DOM CSS targeting [slot="address"] has NO effect.
-   Shadow DOM applies color:white only to p, a, and span children.
-
-   CORRECT markup — use <span> per line, not raw text with <br>:
-     <address slot="address">
-       <span>1101 Engineering Building</span>
-       <span>College Park, MD 20742</span>
-     </address>
-   ============================================================ */

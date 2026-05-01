@@ -3,25 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{PAGE_TITLE}} — {{SITE_NAME}} | University of Maryland</title>
+  <title>Quantum at UMD — Division of Research | University of Maryland</title>
 
-  <!-- ============================================================
-       UMD Critical CSS — Hybrid CDN + Local
-       MUST precede cdn.js. If cdn.js loads first, elements upgrade
-       before :defined rules exist and container-type never gets set.
-
-       Load order:
-         <link> CDN bundles → <style> local subset → <script> cdn.js
-
-       Browsers block on stylesheet fetches before parsing the script
-       tag, so all CSS — both upstream and local — applies before
-       custom elements upgrade.
-
-       SOURCE OF TRUTH: styles/critical.css
-       The inline <style> block is a verbatim copy of styles/critical.css.
-       When updating, edit styles/critical.css first, then copy here.
-       See REQUIRED-CSS.md for what each rule does and why.
-  ============================================================ -->
   <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/font-faces.min.css">
   <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/tokens.min.css">
   <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/base.min.css">
@@ -30,16 +13,10 @@
   <style>
     /* ============================================================
        1. COMPONENT REGISTRATION GAP-FILLS
-       Re-add :defined rules for components missing from upstream
-       web-components.min.css. As those land upstream, drop these.
        ============================================================ */
-
-    /* umd-element-utility-header — present on every page (band above
-       the nav header). Not in upstream bundle as of v1.8.6. */
     umd-element-utility-header:not(:defined) { content-visibility: hidden; }
     umd-element-utility-header { display: block; container-type: normal; }
 
-    /* umd-element-carousel* — not in upstream bundle. */
     umd-element-carousel:not(:defined),
     umd-element-carousel-cards:not(:defined),
     umd-element-carousel-thumbnail:not(:defined),
@@ -58,8 +35,6 @@
       container-type: inline-size;
     }
 
-    /* umd-layout-image-expand — full-bleed pseudo-component.
-       Width:100% is project-specific (collapses without it). */
     umd-layout-image-expand:not(:defined) { content-visibility: hidden; }
     umd-layout-image-expand {
       display: block;
@@ -67,27 +42,22 @@
       width: 100%;
     }
 
-    /* Project-specific spacing for breadcrumb (not a default upstream). */
     umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
     /* ============================================================
-       2. VERTICAL SPACING — between sections and items
+       2. VERTICAL SPACING
        ============================================================ */
-
-    /* Landing page — between sections (both names canonical in 1.18) */
     .umd-layout-space-vertical-landing,
     .umd-layout-vertical-landing           { margin-bottom: 56px; }
     @media (min-width: 768px)  { .umd-layout-space-vertical-landing, .umd-layout-vertical-landing  { margin-bottom: 80px; } }
     @media (min-width: 1024px) { .umd-layout-space-vertical-landing, .umd-layout-vertical-landing  { margin-bottom: 120px; } }
 
-    /* Landing page — between items within a section */
     .umd-layout-space-vertical-landing-child,
     .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
     @media (min-width: 768px)  { .umd-layout-space-vertical-landing-child, .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
     @media (min-width: 1024px) { .umd-layout-space-vertical-landing-child, .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
 
-    /* Interior page — page content area margins */
     .umd-layout-space-vertical-interior,
     .umd-layout-vertical-interior          { margin-bottom: 56px; }
     @media (min-width: 1024px) {
@@ -95,11 +65,9 @@
       .umd-layout-vertical-interior        { margin-bottom: 80px; }
     }
 
-    /* Interior page — between items within a section */
     .umd-layout-space-vertical-interior-child,
     .umd-layout-vertical-interior-child    { margin-bottom: 32px; }
 
-    /* Headline bottom spacing — above a content grid */
     .umd-layout-space-vertical-headline-large { margin-bottom: 16px; }
     @media (min-width: 1024px) {
       .umd-layout-space-vertical-headline-large { margin-bottom: 24px; }
@@ -107,7 +75,7 @@
 
 
     /* ============================================================
-       3. HORIZONTAL SPACING — page-lock classes
+       3. HORIZONTAL SPACING
        ============================================================ */
     [class^="umd-layout-space-horizontal-"] {
       box-sizing: border-box;
@@ -138,7 +106,7 @@
 
 
     /* ============================================================
-       4. WATERMARK DECORATION
+       4. WATERMARK
        ============================================================ */
     :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
       position: absolute;
@@ -180,10 +148,6 @@
 
     /* ============================================================
        5. SECTION-INTRO-WIDE WRAPPER
-       Required when .umd-layout-space-horizontal-larger wraps
-       umd-element-section-intro-wide. position:relative for
-       watermark positioning, container-type for internal @container
-       query, isolation for watermark z-index stacking context.
        ============================================================ */
     .umd-layout-space-horizontal-larger {
       position: relative;
@@ -195,8 +159,6 @@
     /* ============================================================
        6. GRID UTILITIES
        ============================================================ */
-
-    /* Equal-height card grid children */
     @media (min-width: 768px) {
       .umd-layout-grid-child-fill-height,
       .umd-layout-grid-child-fill-height > * {
@@ -204,48 +166,27 @@
       }
     }
 
-    /* Two-column grid — stacks mobile, 2 columns at 650px+ */
-    .umd-layout-grid-gap-two {
-      display: grid;
-    }
+    .umd-layout-grid-gap-two { display: grid; }
     @media (min-width: 650px) {
-      .umd-layout-grid-gap-two {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 32px;
-      }
+      .umd-layout-grid-gap-two { grid-template-columns: repeat(2, 1fr); gap: 32px; }
     }
     @media (min-width: 1024px) {
       .umd-layout-grid-gap-two { gap: 40px; }
     }
 
-    /* Three-column gap grid */
-    .umd-layout-grid-gap-three {
-      display: grid;
-      grid-gap: 32px;
-    }
+    .umd-layout-grid-gap-three { display: grid; grid-gap: 32px; }
     @media (min-width: 768px) {
-      .umd-layout-grid-gap-three {
-        grid-template-columns: repeat(3, 1fr);
-      }
+      .umd-layout-grid-gap-three { grid-template-columns: repeat(3, 1fr); }
     }
 
-    /* Four-column grid — 1col mobile, 2col at 650px, 4col at 1024px */
-    .umd-layout-grid-columns-four {
-      display: grid;
-      grid-gap: 32px;
-    }
+    .umd-layout-grid-columns-four { display: grid; grid-gap: 32px; }
     @media (min-width: 650px) {
-      .umd-layout-grid-columns-four {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .umd-layout-grid-columns-four { grid-template-columns: repeat(2, 1fr); }
     }
     @media (min-width: 1024px) {
-      .umd-layout-grid-columns-four {
-        grid-template-columns: repeat(4, 1fr);
-      }
+      .umd-layout-grid-columns-four { grid-template-columns: repeat(4, 1fr); }
     }
 
-    /* Inline CTA row — stacks mobile, flex row at 650px+ */
     .umd-layout-grid-inline-tablet-rows {
       align-items: flex-start;
       display: flex;
@@ -261,7 +202,6 @@
       }
     }
 
-    /* Single-column stacked grid (sticky-columns static slot) */
     .umd-layout-grid-gap-stacked {
       display: grid;
       grid-template-columns: 1fr;
@@ -273,10 +213,8 @@
 
 
     /* ============================================================
-       7. LAYOUT PATTERNS — dark band, alignment
+       7. LAYOUT PATTERNS
        ============================================================ */
-
-    /* Full-width dark section with responsive padding */
     .umd-layout-background-full-dark {
       background-color: #000000;
       padding: 48px 0;
@@ -288,17 +226,13 @@
       .umd-layout-background-full-dark { padding: 104px 0; }
     }
 
-    /* Stacked figure content — for <figure> inside rich text */
-    .umd-layout-alignment-block-stacked {
-      display: flex;
-      flex-direction: column;
-    }
+    .umd-layout-alignment-block-stacked { display: flex; flex-direction: column; }
     .umd-layout-alignment-block-stacked > * { margin-top: 16px; }
     .umd-layout-alignment-block-stacked > *:first-child { margin-top: 0; }
 
 
     /* ============================================================
-       8. MASONRY GRID (2-column stagger)
+       8. MASONRY
        ============================================================ */
     .umd-layout-grid-masonry {
       display: grid;
@@ -306,30 +240,22 @@
       gap: 24px;
     }
     @media (min-width: 768px) {
-      .umd-layout-grid-masonry {
-        grid-template-columns: 1fr 1fr;
-        gap: 32px;
-      }
+      .umd-layout-grid-masonry { grid-template-columns: 1fr 1fr; gap: 32px; }
     }
     @media (min-width: 1024px) {
       .umd-layout-grid-masonry { gap: 40px; }
     }
-    .umd-layout-grid-masonry > * > * {
-      width: 100%;
-      height: 100%;
-    }
+    .umd-layout-grid-masonry > * > * { width: 100%; height: 100%; }
     @media (min-width: 768px) {
       .umd-layout-grid-masonry > *:nth-of-type(odd)  { margin-top: -32px; margin-bottom: 32px; }
       .umd-layout-grid-masonry > *:nth-of-type(even) { margin-top: 0; }
-      .umd-layout-grid-masonry > *:first-child        { margin-top: 0; }
+      .umd-layout-grid-masonry > *:first-child       { margin-top: 0; }
       .umd-layout-grid-masonry > *:nth-of-type(2)    { margin-top: 32px; }
     }
     @media (min-width: 1024px) {
       .umd-layout-grid-masonry > *:nth-of-type(odd) { margin-top: -40px; margin-bottom: 40px; }
       .umd-layout-grid-masonry > *:nth-of-type(2)   { margin-top: 40px; }
     }
-
-    /* Masonry + section-intro compensation */
     @media (min-width: 768px) {
       umd-element-section-intro + .umd-layout-grid-masonry,
       umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 32px; }
@@ -339,57 +265,27 @@
       umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 40px; }
     }
 
-    /* Three-column offset grid — staggered cascade for 3 cards */
-    .umd-layout-grid-offset-three {
-      display: grid;
-      gap: 32px;
-    }
+    /* Masonry-specific min-height for overlay cards in this layout */
+    .umd-layout-grid-masonry umd-element-card-overlay { min-height: 420px; }
     @media (min-width: 768px) {
-      .umd-layout-grid-offset-three {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-    @media (min-width: 1024px) {
-      .umd-layout-grid-offset-three {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 40px;
-      }
-      .umd-layout-grid-offset-three > * {
-        align-self: start;
-        min-height: 400px;
-      }
-      .umd-layout-grid-offset-three > *:first-child  { margin-top: 48px; }
-      .umd-layout-grid-offset-three > *:nth-child(2) { margin-top: 104px; }
+      .umd-layout-grid-masonry umd-element-card-overlay { min-height: 480px; }
     }
 
 
     /* ============================================================
-       9. COLOR UTILITIES — not in upstream tokens or typography
+       9. COLOR UTILITIES
        ============================================================ */
     .text-black { color: #000; }
     .text-white { color: #ffffff; }
 
 
     /* ============================================================
-       10. RICH TEXT ADVANCED — editorial body copy
-       Light and dark variants. 18px/1.5em with link hover styles.
+       10. RICH TEXT ADVANCED
        ============================================================ */
-
-    /* Light variant */
-    .umd-text-rich-advanced {
-      font-size: 18px;
-      line-height: 1.5em;
-    }
-    .umd-text-rich-advanced * {
-      color: #454545;
-    }
-    .umd-text-rich-advanced > * {
-      font-size: 18px;
-      margin-top: 24px;
-    }
-    .umd-text-rich-advanced > *:first-child {
-      margin-top: 0;
-    }
+    .umd-text-rich-advanced { font-size: 18px; line-height: 1.5em; }
+    .umd-text-rich-advanced * { color: #454545; }
+    .umd-text-rich-advanced > * { font-size: 18px; margin-top: 24px; }
+    .umd-text-rich-advanced > *:first-child { margin-top: 0; }
     .umd-text-rich-advanced a {
       color: #000000;
       background-image: linear-gradient(#000000, #000000);
@@ -400,15 +296,9 @@
       transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
     }
     .umd-text-rich-advanced a:hover,
-    .umd-text-rich-advanced a:focus {
-      background-image: linear-gradient(#E21833, #E21833);
-    }
+    .umd-text-rich-advanced a:focus { background-image: linear-gradient(#E21833, #E21833); }
 
-    /* Dark variant */
-    .umd-text-rich-advanced-dark {
-      font-size: 18px;
-      line-height: 1.5em;
-    }
+    .umd-text-rich-advanced-dark { font-size: 18px; line-height: 1.5em; }
     .umd-text-rich-advanced-dark p,
     .umd-text-rich-advanced-dark li { color: #ffffff; }
     .umd-text-rich-advanced-dark a {
@@ -421,14 +311,11 @@
       transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
     }
     .umd-text-rich-advanced-dark a:hover,
-    .umd-text-rich-advanced-dark a:focus {
-      background-image: linear-gradient(#FFD200, #FFD200);
-    }
+    .umd-text-rich-advanced-dark a:focus { background-image: linear-gradient(#FFD200, #FFD200); }
 
 
     /* ============================================================
        11. INTERIOR PAGE LAYOUT
-       Sidebar + content column. Not in cdn.js — must be local.
        ============================================================ */
     @media (min-width: 768px) {
       .umd-layout-space-columns-left { display: flex; align-items: flex-start; }
@@ -439,13 +326,11 @@
       .umd-layout-space-columns-left > *:first-child { display: none; }
     }
 
-    /* Content column max-width */
     .max-w-\[800px\] { max-width: 800px; }
 
 
     /* ============================================================
        12. IMAGE-EXPAND CONTENT UTILITIES
-       Classes for div[slot="content"] inside umd-layout-image-expand.
        ============================================================ */
     .max-w-\[480px\] { max-width: 480px; }
     .w-full          { width: 100%; }
@@ -453,45 +338,9 @@
     .mr-auto         { margin-right: auto; }
     .pl-md           { padding-left: 24px; }
 
-    .umd-adjacent-line-text { position: relative; }
-    .umd-adjacent-line-text::before {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 0;
-      width: 2px;
-      height: 100%;
-      background-color: #E21833;
-      left: -24px;
-    }
-
-    /* Body copy on dark/image backgrounds */
-    .umd-text-rich-simple-large-dark {
-      font-size: 18px;
-      line-height: 1.5em;
-      color: #ffffff;
-    }
-    .umd-text-rich-simple-large-dark * { color: #ffffff; }
-    .umd-text-rich-simple-large-dark > * { font-size: 18px; margin-top: 24px; }
-    .umd-text-rich-simple-large-dark > *:first-child { margin-top: 0; }
-    .umd-text-rich-simple-large-dark a {
-      color: #ffffff;
-      background-image: linear-gradient(#ffffff, #ffffff);
-      position: relative;
-      background-position: left calc(100% - 1px);
-      background-repeat: no-repeat;
-      background-size: 100% 1px;
-      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
-    }
-    .umd-text-rich-simple-large-dark a:hover,
-    .umd-text-rich-simple-large-dark a:focus {
-      background-image: linear-gradient(#FFD200, #FFD200);
-    }
-
 
     /* ============================================================
        13. STICKY COLUMNS UTILITIES
-       Spacing tokens for slot content inside umd-element-sticky-columns.
        ============================================================ */
     .mb-md { margin-bottom: 24px; }
     .mb-sm { margin-bottom: 16px; }
@@ -499,8 +348,6 @@
 
     /* ============================================================
        14. UTILITY NAVIGATION LINK STYLES
-       ::slotted(*) only reaches div[slot="utility-navigation"], not
-       descendants — these light-DOM styles fill that gap.
        ============================================================ */
     [slot="utility-navigation"] {
       display: flex;
@@ -521,283 +368,223 @@
       color: #E21833;
       text-decoration: underline;
     }
-
-    /* Shell-style item list — separators + tight icon+label gap. */
-    .umd-shell-utility-item .umd-shell-utility-actions {
-      align-items: center;
-      display: flex;
-      gap: 4px;
-    }
-    .umd-shell-utility-item:not(:last-child) .umd-shell-utility-actions {
-      border-right: 1px solid #E6E6E6;
-      margin-right: 16px;
-      padding-right: 16px;
-    }
-
-
-    /* ============================================================
-       15. BANNER-PROMO STACKED ACTIONS — light-DOM column flex.
-       Pairs with shadow-DOM injection in OVERRIDES.md so the 8px
-       gap is visible regardless of where children render.
-       ============================================================ */
-    .banner-promo-actions {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 8px;
-    }
-
-
-    /* ============================================================
-       16. SECTION DIVIDER — standalone <hr> utility.
-       ============================================================ */
-    .umd-text-divider {
-      border: none;
-      border-top: 1px solid #000000;
-      margin: 0 0 24px 0;
-    }
-    .umd-text-divider.dark {
-      border-top-color: #ffffff;
-    }
-
-
-    /* ============================================================
-       17. TRAILING-LINE LABEL — section eyebrow with horizontal line
-       ============================================================ */
-    .umd-text-line-trailing,
-    .umd-text-line-trailing-dark {
-      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: 0.16em;
-      line-height: 1.42em;
-      text-transform: uppercase;
-      position: relative;
-      overflow: hidden;
-      background-color: #ffffff;
-    }
-    .umd-text-line-trailing::before,
-    .umd-text-line-trailing-dark::before {
-      content: "";
-      position: absolute;
-      top: 9px;
-      right: 0;
-      width: 100vw;
-      height: 1px;
-      background: #000000;
-      z-index: 1;
-    }
-    .umd-text-line-trailing > span,
-    .umd-text-line-trailing-dark > span {
-      position: relative;
-      background-color: inherit;
-      padding-right: 8px;
-      z-index: 2;
-    }
-    .umd-text-line-trailing + *,
-    .umd-text-line-trailing-dark + * {
-      margin-top: 40px;
-    }
-    .umd-text-line-trailing-dark {
-      background-color: #000000;
-      color: #ffffff;
-    }
-    .umd-text-line-trailing-dark::before {
-      background: #ffffff;
-    }
-
-
-    /* ============================================================
-       18. NO-GAP CARD GRID — 3 columns flush together
-       ============================================================ */
-    .umd-layout-grid-cards-no-gap {
-      display: grid;
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 768px) {
-      .umd-layout-grid-cards-no-gap {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-    .umd-layout-grid-cards-no-gap > * {
-      height: 100%;
-    }
-
-
-    /* ============================================================
-       19. OVERLAY CARD .size-large MIN-HEIGHT
-       ============================================================ */
-    umd-element-card-overlay.size-large {
-      min-height: 320px;
-    }
-    @media (min-width: 768px) {
-      umd-element-card-overlay.size-large {
-        min-height: 560px;
-      }
-    }
-
-
-    /* ============================================================
-       20. TUITION & AID 2-COLUMN GRID
-       Asymmetric content split: 1.5fr / 1fr at 1024px+.
-       ============================================================ */
-    .umd-layout-grid-tuition-two {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 32px;
-    }
-    @media (min-width: 1024px) {
-      .umd-layout-grid-tuition-two {
-        grid-template-columns: 1.5fr 1fr;
-        gap: 80px;
-      }
-    }
-
-
-    /* ============================================================
-       21. FULL-WIDTH OUTLINE BUTTON — light-DOM utility class
-       Visually mirrors umd-element-call-to-action data-display="outline"
-       but stretches to fill its grid cell.
-       ============================================================ */
-    .umd-action-outline-block {
-      display: block;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 12px 24px;
-      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
-      font-size: 16px;
-      font-weight: 800;
-      line-height: 1.28em;
-      text-align: center;
-      text-decoration: none;
-      background-color: #ffffff;
-      border: 1px solid #242424;
-      color: #000000;
-      transition: background 0.5s ease-in-out, border 0.5s ease-in-out, color 0.5s ease-in-out;
-    }
-    .umd-action-outline-block:hover,
-    .umd-action-outline-block:focus {
-      background-color: #242424;
-      color: #ffffff;
-    }
-    .umd-action-outline-block.dark {
-      background-color: transparent;
-      border: 1px solid #ffffff;
-      color: #ffffff;
-    }
-    .umd-action-outline-block.dark:hover,
-    .umd-action-outline-block.dark:focus {
-      background-color: #ffffff;
-      color: #000000;
-    }
   </style>
 
   <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.18.2/dist/cdn.js"></script>
 </head>
 <body>
 
-  <!-- ========================================
-       1. GLOBAL UNIVERSITY HEADER
-       Hardcoded. Never modified. Zero config.
-  ======================================== -->
+  <!-- Global UMD utility nav + header -->
   <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
-
   <umd-element-utility-header></umd-element-utility-header>
 
-  <!-- ========================================
-       2. SITE NAVIGATION HEADER
-       Replace logo, nav items, and utility links.
-  ======================================== -->
-  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
-    <a slot="logo" href="{{SITE_URL}}">
-      <img src="{{LOGO_URL}}" alt="{{SITE_NAME}}" />
+  <!-- Site navigation (Division of Research) -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full" search-url="https://search.umd.edu">
+    <a slot="logo" href="https://research.umd.edu/" aria-label="Division of Research">
+      <img src="https://umd-research.files.svdcdn.com/production/logos/default/umd-division-of-research.svg?dm=1738723951"
+           alt="University of Maryland Division of Research"
+           onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
     </a>
     <nav slot="main-navigation">
-      <!-- Repeat umd-element-nav-item for each top-level link -->
       <umd-element-nav-item>
-        <a slot="primary-link" href="{{NAV_HREF}}">{{NAV_LABEL}}</a>
-        <!-- Optional dropdown: add <a slot="sub-link"> children -->
+        <a slot="primary-link" href="https://research.umd.edu/about">Who We Are</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://research.umd.edu/capabilities">Capabilities</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://research.umd.edu/partnerships">Partnerships</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://research.umd.edu/resources">Resources</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://research.umd.edu/news">News</a>
       </umd-element-nav-item>
     </nav>
-    <!-- Optional utility nav -->
-    <!--
-    <div slot="utility-navigation">
-      <a href="/give">Give</a>
-    </div>
-    -->
   </umd-element-navigation-header>
 
   <!-- ========================================
-       3. PAGE CONTENT
-       Replace the sections below with actual content.
-       Use umd-layout-vertical-landing on each <section>.
-       Use umd-layout-space-horizontal-* wrappers for content width.
+       1. HERO — "Quantum at UMD"
   ======================================== -->
-
-  <!-- HERO SECTION (if needed) -->
-  <!--
   <section class="umd-layout-vertical-landing">
-    <umd-element-hero data-display="stacked">
-      <h1 slot="headline">{{HEADLINE}}</h1>
-      <p slot="text">{{SUBHEAD}}</p>
-      <img slot="image" src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" />
-      <umd-element-call-to-action data-display="primary" slot="actions">
-        <a href="{{CTA_URL}}">{{CTA_TEXT}}</a>
-      </umd-element-call-to-action>
+    <umd-element-hero data-theme="dark" data-animation>
+      <img slot="image" src="../images/projects/quantum/hero.jpg" alt="Quantum research equipment at the University of Maryland" />
+      <h1 slot="headline">Quantum at UMD</h1>
+      <div slot="text">
+        <p>An established powerhouse of quantum discovery and innovation — leading the United States and the global community into a quantum future.</p>
+      </div>
     </umd-element-hero>
   </section>
-  -->
-
-  <!-- CONTENT SECTION EXAMPLE -->
-  <!--
-  <section class="umd-layout-vertical-landing">
-    <div class="umd-layout-space-horizontal-larger">
-      <umd-element-section-intro-wide>
-        <h2 slot="headline">{{SECTION_TITLE}}</h2>
-        <umd-element-call-to-action data-display="secondary" slot="actions">
-          <a href="{{LINK}}">{{LINK_TEXT}}</a>
-        </umd-element-call-to-action>
-      </umd-element-section-intro-wide>
-    </div>
-  </section>
-  -->
-
-  <!-- PATHWAY EXAMPLE (standard — requires dark wrapper) -->
-  <!--
-  <section class="umd-layout-vertical-landing" style="background: #000;">
-    <umd-element-pathway data-theme="dark">
-      <h2 slot="headline">{{HEADLINE}}</h2>
-      <p slot="text">{{BODY_TEXT}}</p>
-      <img slot="image" src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" />
-      <umd-element-call-to-action data-display="primary" data-theme="dark" slot="actions">
-        <a href="{{CTA_URL}}">{{CTA_TEXT}}</a>
-      </umd-element-call-to-action>
-    </umd-element-pathway>
-  </section>
-  -->
 
   <!-- ========================================
-       4. FOOTER
-       Visual footer with campus background image.
-       Default image: ../images/large/campus/footer-campus.jpg
+       2. PATHWAY — "The Capital of Quantum"
+       Standard pathway on white, image on the LEFT for variety
+       (hero text is on the left; flipping the image breaks symmetry).
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-pathway data-layout-image-position="left">
+      <img slot="image" src="../images/projects/quantum/C1_EnTERPrise25_Cover_FINAL_REV2_1920x1080.webp" alt="Quantum research collaboration at the University of Maryland" />
+      <h2 slot="headline">The Capital of Quantum</h2>
+      <div slot="text">
+        <p>With more than 200 researchers on campus and a 15-year head start in collaboration with NIST, the University of Maryland sits at the center of the nation's quantum corridor — building the discoveries, the workforce, and the partnerships that will define the next era of computing, sensing, and communication.</p>
+      </div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary">
+          <a href="https://quantum.umd.edu/">Explore Quantum at UMD</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+  <!-- ========================================
+       3. LABS — three standard cards
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Labs Driving Quantum Discovery</h2>
+        <div slot="text">
+          <p>From superconducting circuits to topological materials, UMD's quantum labs are designing the hardware, software, and theory of tomorrow's quantum technologies.</p>
+        </div>
+      </umd-element-section-intro-wide>
+
+      <div class="umd-layout-grid-gap-three">
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/projects/quantum/QuantumChip_KollarLab_02182022_JC_3857-Final.webp" alt="Quantum chip in the Kollár Lab" />
+          <p slot="eyebrow">Hardware</p>
+          <h3 slot="headline"><a href="https://quantum.umd.edu/">Kollár Lab</a></h3>
+          <div slot="text"><p>Engineering superconducting circuit lattices to simulate exotic quantum phases of light and matter.</p></div>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/projects/quantum/many-body_topological_invariants_from_randomized_measurements_final.webp" alt="Visualization of many-body topological invariants" />
+          <p slot="eyebrow">Theory</p>
+          <h3 slot="headline"><a href="https://quantum.umd.edu/">Many-Body Theory Group</a></h3>
+          <div slot="text"><p>Developing randomized measurement protocols to extract topological invariants from real quantum hardware.</p></div>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay type="image">
+          <img slot="image" src="../images/projects/quantum/quantum-information-computing-hero_0.webp" alt="Quantum information and computing research at UMD" />
+          <p slot="eyebrow">Computing</p>
+          <h3 slot="headline"><a href="https://quantum.umd.edu/">Quantum Information &amp; Computing</a></h3>
+          <div slot="text"><p>Building algorithms, error correction, and applications that turn early quantum hardware into useful tools.</p></div>
+        </umd-element-card-overlay>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       4. CENTERS & INSTITUTES — masonry of overlay cards
+  ======================================== -->
+  <section class="umd-layout-vertical-landing umd-layout-background-full-dark">
+    <div class="umd-layout-space-horizontal-normal">
+
+      <umd-element-section-intro data-theme="dark" include-separator class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Centers &amp; Institutes</h2>
+        <div slot="text">
+          <p>UMD anchors a constellation of quantum centers, joint institutes, and federal partnerships — the largest concentration of quantum research and education in the country.</p>
+        </div>
+      </umd-element-section-intro>
+
+      <div class="umd-layout-grid-masonry">
+        <umd-element-card-overlay data-theme="dark">
+          <p slot="eyebrow">Joint Institute</p>
+          <h3 slot="headline"><a href="https://jqi.umd.edu/">Joint Quantum Institute (JQI)</a></h3>
+          <div slot="text"><p>A collaboration between UMD and NIST exploring the coherent control of light and matter at the quantum level.</p></div>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay data-theme="dark">
+          <p slot="eyebrow">Joint Center</p>
+          <h3 slot="headline"><a href="https://quics.umd.edu/">Joint Center for Quantum Information &amp; Computer Science (QuICS)</a></h3>
+          <div slot="text"><p>UMD–NIST partnership advancing the theory and practice of quantum computation, communication, and information science.</p></div>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay data-theme="dark">
+          <p slot="eyebrow">NSF Institute</p>
+          <h3 slot="headline"><a href="https://rqs.umd.edu/">Robust Quantum Simulation (RQS)</a></h3>
+          <div slot="text"><p>An NSF Quantum Leap Challenge Institute developing programmable quantum simulators that solve problems beyond the reach of classical machines.</p></div>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay data-theme="dark">
+          <p slot="eyebrow">National Lab</p>
+          <h3 slot="headline"><a href="https://quantum.umd.edu/">National Quantum Laboratory (Q-Lab)</a></h3>
+          <div slot="text"><p>A first-of-its-kind partnership with IonQ giving researchers and students hands-on access to leading commercial quantum hardware.</p></div>
+        </umd-element-card-overlay>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================
+       5. NEWS — three standard cards
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+        <h2 slot="headline">Quantum in the News</h2>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary" slot="actions">
+            <a href="https://research.umd.edu/news">View All News</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro-wide>
+
+      <div class="umd-layout-grid-gap-three">
+        <umd-element-card data-visual-image-aligned="true">
+          <img slot="image" src="../images/projects/quantum/Research-quantum.webp" alt="Researcher at work in a UMD quantum lab" />
+          <p slot="eyebrow">Leadership</p>
+          <p slot="date">April 2026</p>
+          <h3 slot="headline"><a href="https://research.umd.edu/news">Gretchen Campbell Named AVP for Quantum Research and Education</a></h3>
+          <p slot="text">UMD names a longtime JQI fellow to lead the next phase of campus-wide quantum strategy.</p>
+        </umd-element-card>
+        <umd-element-card data-visual-image-aligned="true">
+          <img slot="image" src="../images/projects/quantum/21378229a93584a11fb4115cb32e69f9.webp" alt="UMD quantum computing research" />
+          <p slot="eyebrow">Research</p>
+          <p slot="date">March 2026</p>
+          <h3 slot="headline"><a href="https://research.umd.edu/news">Quantum Computers Run on Just the Right Amount of Connectivity</a></h3>
+          <p slot="text">A new study from QuICS clarifies how qubit topology shapes the boundary between classical and quantum advantage.</p>
+        </umd-element-card>
+        <umd-element-card data-visual-image-aligned="true">
+          <img slot="image" src="../images/large/research/Quantum-Computing-RachelRoss.jpg"
+               alt="Quantum computing research"
+               onerror="this.onerror=null;this.src='../images/large/default/CampusSpring-students.jpg';" />
+          <p slot="eyebrow">Theory</p>
+          <p slot="date">February 2026</p>
+          <h3 slot="headline"><a href="https://research.umd.edu/news">Simulating Time-Reversal in the Lab</a></h3>
+          <p slot="text">QuICS Fellow Nicole Yunger Halpern explores how entanglement and information theory illuminate the arrow of time.</p>
+        </umd-element-card>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       6. PARTNER WITH US — banner promo
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <umd-element-banner-promo data-theme="dark">
+        <p slot="eyebrow">Partner With Us</p>
+        <h2 slot="headline">Help Build the Quantum Future at Maryland</h2>
+        <div slot="text">
+          <p>Investing in quantum at UMD means investing in the discoveries, the talent, and the infrastructure that will power the next century of science and industry. Our development team works directly with foundations, corporations, and individuals to design partnerships that match your priorities.</p>
+        </div>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="primary" data-theme="dark">
+            <a href="https://research.umd.edu/resources/development">Connect With Development</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-banner-promo>
+    </div>
+  </section>
+
+  <!-- ========================================
+       FOOTER
   ======================================== -->
   <umd-element-footer data-display="visual">
-    <a slot="logo" href="{{SITE_URL}}">
-      <img src="../images/logos/footer-logo.svg" alt="{{SITE_NAME}}" />
+    <a slot="logo" href="https://research.umd.edu/">
+      <img src="../images/logos/footer-logo.svg" alt="University of Maryland Division of Research" />
     </a>
-    <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="" />
+    <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="University of Maryland campus" />
   </umd-element-footer>
 
   <!-- ========================================
        GRID ENTRY ANIMATIONS
-       On by default for all layout grid utilities — children fade
-       in from below as they cross 35% visibility. Row-aware
-       staggering: siblings sharing a row get +350ms delay.
-       Bails out under prefers-reduced-motion: reduce.
-
-       OPT OUT per grid by adding data-animation="off" on the grid
-       container (e.g. for single-row CTA rows or stacks where the
-       fade reads as noise).
   ======================================== -->
   <script>
     (function () {
@@ -849,9 +636,7 @@
         if (!grids.length) return;
 
         grids.forEach(tagRowOffsets);
-        window.addEventListener('resize', function () {
-          grids.forEach(tagRowOffsets);
-        });
+        window.addEventListener('resize', function () { grids.forEach(tagRowOffsets); });
 
         var observer = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {

@@ -6,6 +6,12 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["serve", "-l", "3800", "."],
       "port": 3800
+    },
+    {
+      "name": "umd-search",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "5180", "--directory", "/Users/zjocson/repos/umd-search"],
+      "port": 5180
     }
   ]
 }

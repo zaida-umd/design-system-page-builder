@@ -640,6 +640,43 @@ All watermark rules are defined in `styles/critical.css` — section 5. They are
 
 Note: This uses the deprecated `type` attribute, not `data-type`. The attribute name is confirmed from cdn.js source.
 
+### CTA pattern: pick one, apply uniformly across the row
+
+Overlay cards in a grid must use **one** of the following CTA patterns, applied consistently to every card in the row. Do not mix patterns within a single grid.
+
+| Pattern | When to use | Implementation |
+|---|---|---|
+| **Headline link only** | Editorial / news lists where the headline is the affordance | `<h3 slot="headline"><a href="…">Title</a></h3>` and **omit** `slot="actions"` and `slot="cta-icon"` |
+| **Icon CTA** | Compact link rows (no body copy) | `<a slot="cta-icon" href="…">Read more</a>` on every card |
+| **Secondary CTA** | Featured cards with body copy that need an explicit button | `<umd-element-call-to-action data-display="secondary">` on every card |
+
+Do **not** use `data-display="primary"` or `data-display="outline"` inside `umd-element-card-overlay`. Primary buttons fight the image for attention; outline (white-fill) reads as a different component class than its neighbors and breaks row rhythm. Secondary is the only button display sanctioned for overlay cards.
+
+### `data-theme="dark"` must be set on both the card AND the CTA
+
+Image-overlay cards render a dark scrim over the image, so text/icons must be white. `data-theme="dark"` does **not** propagate from the host card through to slotted children — each `umd-element-call-to-action` inside `slot="actions"` needs its own `data-theme="dark"`, otherwise the CTA label/icon render in their default light-theme black and become illegible against the scrim.
+
+```html
+<!-- ✓ Correct — theme set on both card and CTA -->
+<umd-element-card-overlay type="image" data-theme="dark">
+  <img slot="image" src="/img.jpg" alt="" />
+  <h3 slot="headline"><a href="/">Title</a></h3>
+  <div slot="actions">
+    <umd-element-call-to-action data-display="secondary" data-theme="dark">
+      <a href="/">Learn more</a>
+    </umd-element-call-to-action>
+  </div>
+</umd-element-card-overlay>
+
+<!-- ✗ Wrong — CTA missing data-theme="dark" → black text on dark scrim -->
+<umd-element-card-overlay type="image" data-theme="dark">
+  …
+  <umd-element-call-to-action data-display="secondary">
+    <a href="/">Learn more</a>
+  </umd-element-call-to-action>
+</umd-element-card-overlay>
+```
+
 ---
 
 ## 17. Image expand (`umd-layout-image-expand`)

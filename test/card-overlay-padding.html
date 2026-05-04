@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Overlay Padding Test — University of Maryland</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/font-faces.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/tokens.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/base.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/typography.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/web-components.min.css">
+
+  <style>
+    umd-element-card-overlay:not(:defined) { content-visibility: hidden; }
+    umd-element-card-overlay,
+    umd-element-call-to-action {
+      display: block;
+      container-type: inline-size;
+    }
+    :root { font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif; }
+
+    body { margin: 0; background: #f1f1f1; }
+    .section { padding: 40px 0; }
+    .section + .section { border-top: 1px solid #ccc; }
+    .section-header { padding: 0 40px; max-width: 1600px; margin: 0 auto 24px; }
+    .section-header.full { max-width: none; }
+    .test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .test-grid.full {
+      max-width: none;
+      gap: 0;
+      padding: 0;
+    }
+    .test-grid > umd-element-card-overlay { height: 560px; }
+    h1 { font-size: 20px; margin: 0 0 8px; }
+    h2 { font-size: 16px; margin: 0 0 8px; font-weight: 600; }
+    .note { font-size: 14px; color: #555; margin: 0; }
+  </style>
+</head>
+<body>
+  <section class="section">
+    <div class="section-header">
+      <h1>umd-element-card-overlay — horizontal padding override</h1>
+      <h2>Variant A: 1600px max-width container, 32px grid gap</h2>
+      <p class="note">
+        Shadow injection bumps <code>.card-overlay-image-container</code> horizontal padding
+        from a flat 24px to 24/32/48px at <code>highDef.min</code> (1200px) and
+        <code>maximum.min</code> (1500px). Resize viewport to verify breakpoints.
+      </p>
+    </div>
+
+    <div class="test-grid">
+    <umd-element-card-overlay type="image" class="size-large" data-theme="dark">
+      <img slot="image" src="../images/large/campus/Testudo_Students_03042022_SC_9823.webp" alt="" />
+      <p slot="eyebrow">Research</p>
+      <h3 slot="headline"><a href="#">Discoveries that shape the future of every field</a></h3>
+      <p slot="text">Faculty and students at Maryland tackle the questions that matter most.</p>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="secondary" data-theme="dark"><a href="#">Learn more</a></umd-element-call-to-action>
+      </div>
+    </umd-element-card-overlay>
+
+    <umd-element-card-overlay type="image" class="size-large" data-theme="dark">
+      <img slot="image" src="../images/large/campus/PaintBranchBridge_Lights_07152018_6745_Final.jpg" alt="" />
+      <p slot="eyebrow">Campus</p>
+      <h3 slot="headline"><a href="#">A community where bold thinking thrives</a></h3>
+      <p slot="text">From historic landmarks to modern research hubs, every corner of campus invites exploration.</p>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="secondary" data-theme="dark"><a href="#">Visit campus</a></umd-element-call-to-action>
+      </div>
+    </umd-element-card-overlay>
+
+    <umd-element-card-overlay type="image" class="size-large" data-theme="dark">
+      <img slot="image" src="../images/large/campus/FirstDayofClasses_01242024_DS_3248_BYNDER.webp" alt="" />
+      <p slot="eyebrow">Student Life</p>
+      <h3 slot="headline"><a href="#">Where ambition meets opportunity</a></h3>
+      <p slot="text">Students arrive ready to lead, and leave prepared to change the world.</p>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="secondary" data-theme="dark"><a href="#">Apply now</a></umd-element-call-to-action>
+      </div>
+    </umd-element-card-overlay>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header full">
+      <h2>Variant B: full-bleed (no max-width), no grid gap</h2>
+      <p class="note">
+        Same shadow override, but the grid stretches edge-to-edge with <code>gap: 0</code>.
+        Cards butt against each other so the only horizontal whitespace inside each card
+        comes from the shadow-DOM padding itself.
+      </p>
+    </div>
+
+    <div class="test-grid full">
+      <umd-element-card-overlay type="image" class="size-large" data-theme="dark">
+        <img slot="image" src="../images/large/campus/Testudo_Students_03042022_SC_9823.webp" alt="" />
+        <p slot="eyebrow">Research</p>
+        <h3 slot="headline"><a href="#">Discoveries that shape the future of every field</a></h3>
+        <p slot="text">Faculty and students at Maryland tackle the questions that matter most.</p>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary" data-theme="dark"><a href="#">Learn more</a></umd-element-call-to-action>
+        </div>
+      </umd-element-card-overlay>
+
+      <umd-element-card-overlay type="image" class="size-large" data-theme="dark">
+        <img slot="image" src="../images/large/campus/PaintBranchBridge_Lights_07152018_6745_Final.jpg" alt="" />
+        <p slot="eyebrow">Campus</p>
+        <h3 slot="headline"><a href="#">A community where bold thinking thrives</a></h3>
+        <p slot="text">From historic landmarks to modern research hubs, every corner of campus invites exploration.</p>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary" data-theme="dark"><a href="#">Visit campus</a></umd-element-call-to-action>
+        </div>
+      </umd-element-card-overlay>
+
+      <umd-element-card-overlay type="image" class="size-large" data-theme="dark">
+        <img slot="image" src="../images/large/campus/FirstDayofClasses_01242024_DS_3248_BYNDER.webp" alt="" />
+        <p slot="eyebrow">Student Life</p>
+        <h3 slot="headline"><a href="#">Where ambition meets opportunity</a></h3>
+        <p slot="text">Students arrive ready to lead, and leave prepared to change the world.</p>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary" data-theme="dark"><a href="#">Apply now</a></umd-element-call-to-action>
+        </div>
+      </umd-element-card-overlay>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library/dist/cdn.js"></script>
+
+  <!-- ============================================================
+       SHADOW OVERRIDE — card-overlay horizontal padding
+       Upstream styles only step up padding-top at medium.min and
+       leave horizontal padding at 24px from mobile through 4K.
+       Add highDef.min (1200px) and maximum.min (1500px) breakpoints
+       so wide cards don't crowd the headline against the edges.
+       Tracked in OVERRIDES.md → "Card-overlay horizontal padding".
+  ============================================================ -->
+  <script>
+    customElements.whenDefined('umd-element-card-overlay').then(() => {
+      const css = `
+        .card-overlay-image-container {
+          padding-left: 24px !important;
+          padding-right: 24px !important;
+        }
+        @media (min-width: 1200px) {
+          .card-overlay-image-container {
+            padding-left: 32px !important;
+            padding-right: 32px !important;
+          }
+        }
+        @media (min-width: 1500px) {
+          .card-overlay-image-container {
+            padding-left: 48px !important;
+            padding-right: 48px !important;
+          }
+        }
+      `;
+      document.querySelectorAll('umd-element-card-overlay').forEach((el) => {
+        if (!el.shadowRoot) return;
+        const style = document.createElement('style');
+        style.textContent = css;
+        el.shadowRoot.appendChild(style);
+      });
+    });
+  </script>
+</body>
+</html>

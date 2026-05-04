@@ -23,7 +23,7 @@ Slug from the brief title (e.g. "Honors program admissions" → `honors-program-
 Open with the same three nav elements as `/build-landing-page` (utility nav, utility header, navigation header).
 
 For interior pages specifically (RULES.md §21):
-- **Hero** must use `umd-element-hero data-layout-height="small"` — never the default landing-size hero.
+- **Hero** must use `umd-element-hero-minimal` or `umd-element-hero data-layout-height="small"` — never the default landing-size hero. 
 - **Breadcrumb** comes after the hero, inside the outer page wrapper, before the column layout.
 - **Sidebar + content** uses the documented `umd-layout-space-columns-left` pattern with `max-w-[800px]` content column. Omit the sidebar only if the brief explicitly says single-column.
 - **Footer** — visual footer (same snippet as `/build-landing-page`).

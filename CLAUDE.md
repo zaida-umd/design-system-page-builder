@@ -30,7 +30,7 @@ Each file has a distinct role — don't duplicate rules across them. When a topi
 1. **`.claude/commands/*.md`** — task instructions for each slash command. Check first.
 2. **`RULES.md`** — hard mechanical rules: required structure, slot names, attribute requirements, spacing classes, component-specific gotchas (things that fail silently or render wrong if violated). Build commands enforce these.
 3. **`registry/`** — component slots and attributes verified from NPM. Source of truth for what a component accepts.
-4. **`styles/critical.css`** — **single source of truth for all CSS rules** (canonical file).
+4. **`styles/critical.css`** — **single source of truth for all CSS rules** (canonical file). When inlining into a page, copy verbatim — never trim "unused" rules. Animation/keyframe rules and feature-specific utilities pair with each other; dropping one silently breaks the related feature when used later (e.g. trimming `@keyframes slide-in-from-left` + `@supports (animation-timeline: scroll())` breaks every `.umd-watermark` animation).
 5. **`TEMPLATE.html`** — inlines `styles/critical.css` verbatim + HTML skeleton (copy `<head>` block verbatim).
 6. **`LAYOUT-PATTERNS.md`** — HTML pattern recipes for utility classes and multi-component layouts (rich text, masonry, grids, sticky columns, link-card grids). Reference, not enforcement.
 7. **`.claude/commands/evaluate-design.md`** — design-judgment checks for catching design mistakes (variety, rhythm, dark-theme overuse, watermark adjacency). Not a hard-rule enforcer; complements `RULES.md`.

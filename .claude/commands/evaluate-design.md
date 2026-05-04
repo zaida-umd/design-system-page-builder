@@ -64,7 +64,21 @@ Walk the plan against these design-judgment checks. Each is a *mistake to catch*
 ### Component-context judgment
 
 - **`umd-layout-image-expand` background context.** Wrap in a dark section (`background:#000` or `umd-layout-background-full-dark`) only when image-expand sits between other dark sections. On a predominantly light page, the built-in dark overlay is sufficient — adding a dark wrapper creates an isolated dark island. (For text-color rules inside the content slot, see `RULES.md §17`.)
-- **Hero variant fit.** `umd-element-hero` (no `data-display`) is the default. `data-display="overlay"` is a specific design choice for a composited overlay panel — flag it if it's been chosen by default rather than for the overlay effect. (See `RULES.md §22`.)
+- **Hero variant fit.** `data-display="standard"` is the default. `data-display="overlay"` is a specific design choice for a composited overlay panel — flag it if it's been chosen by default rather than for the overlay effect. (See `RULES.md §22`.)
+- **Hero size: home vs landing.** A full-height standard hero belongs on the site home page only. On any other landing (department, program, sub-section), use `data-layout-height="small"` — a full-height hero on a non-home landing reads as a homepage and over-emphasizes the section. Flag full-height heroes on non-home landings.
+- **Hero text alignment continuity.** When the element directly below the hero is centered (a `umd-element-section-intro`, which is always centered), the hero should also be centered (`data-layout-text="center"`). Mismatched alignment between hero and the section directly under it reads as accidentally inconsistent. Flag a left-aligned hero followed immediately by a centered section-intro (or vice versa).
+- **Hero stuffing — pull body copy into a section-intro.** Flag heroes that try to carry: a multi-line subhead in `slot="text"`, hierarchical text (separate title + body + tagline), or more than 2 CTAs in `slot="actions"`. Move the body copy and CTA row into a `umd-element-section-intro` directly below the hero. Hero keeps the page title (and at most one primary CTA). See `RULES.md §22` and `LAYOUT-PATTERNS.md` "Hero + section-intro split".
+
+### Dark theme — when to use it (positive triggers)
+
+Beyond avoiding overuse (above), use a dark section deliberately when:
+
+- **Connecting a dark hero to the section right under it.** Especially on the home page, a dark hero followed by a dark section feels like one continuous brand band — intentional and correct.
+- **Calling attention to a single section.** One dark band on an otherwise light page acts as a visual exclamation point for the section's content.
+- **Highlighting video content.** Video posters and players read better against dark surrounds.
+- **Breaking up a long page.** When a landing has many light sections in a row, a single dark band mid-page resets the rhythm.
+
+Avoid dark theme as a *default* for weighty sections (stats, large card grids) on non-home landings — it stacks visual weight without serving any of the triggers above. The user feedback that drove this rule: "This isn't a home page so we don't need that weighted top section."
 
 ---
 

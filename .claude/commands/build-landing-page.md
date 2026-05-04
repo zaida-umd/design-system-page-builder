@@ -43,6 +43,19 @@ Use the cheat-sheet from `/recreate-page` for first-pass component matching. For
 - If no DS component fits a content need, check `OVERRIDES.md` for a documented page-built class first. Only invent a new one if nothing in either source fits.
 - Distinguish close alternatives (e.g. `umd-element-hero` vs `umd-element-hero-minimal`) and pick consciously, not by default.
 
+### Hero defaults for landing pages
+
+Unless the brief specifies the **site home page**, use a small + centered standard hero:
+
+```html
+<umd-element-hero data-display="standard" data-layout-height="small" data-layout-text="center">
+  <h1 slot="headline">Page Title</h1>
+  <img slot="image" src="…" alt="…" />
+</umd-element-hero>
+```
+
+A full-height hero (omit `data-layout-height`) is reserved for the site home. If the brief includes a long subhead, hierarchical text, or more than 2 CTAs, pull that into a separate `umd-element-section-intro` directly below the hero — see `RULES.md §22` and `LAYOUT-PATTERNS.md` "Hero + section-intro split".
+
 ## Spacing and layout
 
 Same rules as `/recreate-page`:

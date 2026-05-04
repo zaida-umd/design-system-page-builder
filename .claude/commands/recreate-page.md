@@ -67,9 +67,13 @@ This rule applies during the initial build *and* every later edit to a recreate-
    - Where does it appear? (top of page, mid-page section, sidebar, full-width band, etc.)
    - Are there constraints? (must have image, needs a CTA, has a lot of text, etc.)
 
-2. **Match to registry** — scan the registry for candidates and narrow to the best option.
+2. **Inventory carousels and side navigation in the source** — before mapping content to components, scan the source for these two patterns specifically:
+   - **Carousels / sliders** (Slick, Owl, Revolution, Gavias slider-layer, Swiper, etc. — often `<ul>`/`<div>` with `data-` attributes for animation). If the source uses a carousel for a content set, recreate it with the matching DS carousel — do **not** flatten to a grid. Mapping: image slider → `umd-element-carousel-image-wide` or `-image`; thumbnail-driven people/photo carousel → `umd-element-carousel-thumbnail`; row of cards → `umd-element-carousel-cards`. Flattening a carousel to a grid changes the page rhythm and over-emphasizes content the source intentionally treated as supplementary.
+   - **Side / left-rail navigation.** Many CMS templates render a sub-section nav rail. Don't drop it. Recreate it as `umd-element-accordion-item` groups near the bottom of the page — one accordion per natural parent section — unless the user directs otherwise. See `LAYOUT-PATTERNS.md` "Side Navigation as Accordion Stack" and `RULES.md §32` for the wrap and gap.
 
-3. **Recommend** — for each component:
+3. **Match to registry** — scan the registry for candidates and narrow to the best option.
+
+4. **Recommend** — for each component:
    - Component tag name
    - Why it fits this content
    - Any variants or attributes to use (`data-display`, `data-theme`, etc.)
@@ -82,8 +86,9 @@ This rule applies during the initial build *and* every later edit to a recreate-
 
 | Content type | First component to consider |
 |---|---|
-| Top-of-page hero with image (landing page) | `umd-element-hero` (no `data-display` for standard background image; `data-display="overlay"` only for an explicit color-panel overlay effect) |
-| Top-of-page hero with image (interior page) | `umd-element-hero data-layout-height="small"` — **always use the small height on interior pages** (RULES.md §21) |
+| Top-of-page hero (site home page) | `umd-element-hero data-display="standard"` — full-height; centered text by default (RULES.md §22) |
+| Top-of-page hero (any other landing) | `umd-element-hero data-display="standard" data-layout-height="small" data-layout-text="center"` — small + centered is the default for non-home landings (RULES.md §22). Pull body copy + multi-CTA rows into a section-intro below. |
+| Top-of-page hero with image (interior page) | `umd-element-hero data-display="standard" data-layout-height="small"` — small on interior pages (RULES.md §21) |
 | Page title / section header bar | `umd-element-hero-minimal` |
 | Split image + text feature | `umd-element-pathway` (`data-display="overlay"` for emphasized content, standard for typical use) |
 | Stats / metrics | `umd-element-stat` with grid wrapper or `umd-element-stat` in a `sticky-column` when a text introduction is needed |
@@ -95,7 +100,7 @@ This rule applies during the initial build *and* every later edit to a recreate-
 | Full-bleed image scroll effect | `umd-layout-image-expand` for high visual |
 | Row of 2–4 standalone navigation links | `umd-element-card-overlay` (no image, `slot="cta-icon"`) in a grid — NOT secondary CTAs |
 | FAQ / expandable content | `umd-element-accordion-item` |
-| Person profile | `umd-element-person-bio` |
+| Person profile (standalone bio page or featured person section) | `umd-element-person-bio`. **Do NOT use inside `umd-element-carousel-thumbnail`** — that carousel only takes `umd-element-card` slides (RULES.md §27). |
 | Icon + text card | `umd-element-card-icon` |
 | Video card | `umd-element-card-video` |
 | Grid of logo | `umd-element-hero-grid` |

@@ -716,7 +716,13 @@
       <!-- Repeat umd-element-nav-item for each top-level link -->
       <umd-element-nav-item>
         <a slot="primary-link" href="{{NAV_HREF}}">{{NAV_LABEL}}</a>
-        <!-- Optional dropdown: add <a slot="sub-link"> children -->
+        <!-- Optional dropdown: wrap bare <a> children in <div slot="dropdown-links"> -->
+        <!--
+        <div slot="dropdown-links">
+          <a href="{{SUB_HREF}}">{{SUB_LABEL}}</a>
+          <a href="{{SUB_HREF}}">{{SUB_LABEL}}</a>
+        </div>
+        -->
       </umd-element-nav-item>
     </nav>
     <!-- Optional utility nav -->

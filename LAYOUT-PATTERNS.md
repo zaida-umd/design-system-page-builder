@@ -692,11 +692,103 @@ The divider is **optional** — only use it where the design calls for an explic
 
 ---
 
+## Hero + Section-Intro Split
+
+When a hero would otherwise carry a multi-line subhead, hierarchical text (title + body), or more than 2 CTAs, pull the body copy and CTA row into a `umd-element-section-intro` directly below the hero. The hero keeps just the page title; the section-intro carries the lede + actions. See `RULES.md §22` for the rule.
+
+```html
+<!-- Hero — page title only -->
+<section class="umd-layout-vertical-landing">
+  <umd-element-hero data-display="standard" data-layout-height="small" data-layout-text="center">
+    <h1 slot="headline">Page Title</h1>
+    <img slot="image" src="/hero.jpg" alt="…" />
+  </umd-element-hero>
+</section>
+
+<!-- Section-intro (text-only variant — see RULES.md §31) carries the lede + CTA row -->
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-larger">
+    <umd-element-section-intro>
+      <div slot="text">
+        <p>The long body sentence the page leads with — one paragraph, no separate title.</p>
+      </div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="secondary">
+          <a href="/path-a">First action</a>
+        </umd-element-call-to-action>
+        <umd-element-call-to-action data-display="secondary">
+          <a href="/path-b">Second action</a>
+        </umd-element-call-to-action>
+        <umd-element-call-to-action data-display="secondary">
+          <a href="/path-c">Third action</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-section-intro>
+  </div>
+</section>
+```
+
+When the body sentence has a separate section title, use the standard headline + text combination instead. The text-only variant is specifically for "lede paragraph, no title."
+
+---
+
+## Side Navigation as Accordion Stack (landing pages)
+
+When recreating a source page that uses left-rail / side navigation, drop it into `umd-element-accordion-item` groups near the bottom of the landing page (above the footer). One accordion per natural parent section (e.g. "Future Students", "Current Students"). See `RULES.md §32` for the wrap and gap tokens.
+
+```html
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-small">
+    <div style="display: grid; gap: var(--umd-space-min);">
+      <umd-element-accordion-item>
+        <p slot="headline">Future Students</p>
+        <div slot="text">
+          <ul style="list-style:none; padding:0; margin:0;">
+            <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;">
+              <a href="/path-a" style="color:#000; text-decoration:none;">Page A</a>
+            </li>
+            <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;">
+              <a href="/path-b" style="color:#000; text-decoration:none;">Page B</a>
+            </li>
+            <li style="padding:8px 0;">
+              <a href="/path-c" style="color:#000; text-decoration:none;">Page C</a>
+            </li>
+          </ul>
+        </div>
+      </umd-element-accordion-item>
+
+      <umd-element-accordion-item>
+        <p slot="headline">Current Students</p>
+        <div slot="text">…</div>
+      </umd-element-accordion-item>
+    </div>
+  </div>
+</section>
+```
+
+Why a list with `border-bottom` instead of plain `<ul>`: the accordion body has no built-in list styling — the inline padding/border per `<li>` produces a clean clickable row.
+
+---
+
 ## Link Cards Grid (`umd-element-card-overlay` without image)
 
 When a section contains only a row of standalone links — no supporting body copy, no images, just navigation destinations — use `umd-element-card-overlay` without an image slot instead of a row of secondary CTAs. Without `type="image"` and without a `slot="image"`, the card renders as a text-only dark card. Use `slot="cta-icon"` for the arrow link.
 
-**When to use this pattern:** A row of 2–4 links that each represent a destination (topic, program, action). The cards provide visual weight and a dark card grid is more scannable than a row of pill buttons.
+**When to use this pattern:** A row of 2–4 links that each represent a destination (topic, program, action) **and the source has no image** for them. The cards provide visual weight and a dark card grid is more scannable than a row of pill buttons.
+
+**If the source has any image (icon, photo, banner crop) for these cards:** use the image-overlay variant instead — see `RULES.md §16` "When the source has any image, use the image variant". The image is part of the navigational affordance and a text-only card loses that signal.
+
+```html
+<!-- ✓ With source image — image-overlay variant -->
+<div class="umd-layout-grid-columns-four umd-layout-grid-child-fill-height">
+  <umd-element-card-overlay type="image" data-theme="dark">
+    <img slot="image" src="../images/projects/example/destination-a.jpg" alt="" />
+    <h3 slot="headline"><a href="/path-a">Destination A</a></h3>
+    <a slot="cta-icon" href="/path-a">Explore</a>
+  </umd-element-card-overlay>
+  <!-- repeat for each destination -->
+</div>
+```
 
 **When NOT to use:** If links have supporting descriptions, use `umd-element-card` (standard). If links are secondary actions accompanying a primary button, keep using `umd-layout-grid-inline-tablet-rows` with CTAs.
 

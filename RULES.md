@@ -640,6 +640,10 @@ All watermark rules are defined in `styles/critical.css` — section 5. They are
 
 Note: This uses the deprecated `type` attribute, not `data-type`. The attribute name is confirmed from cdn.js source.
 
+### When the source has any image, use the image variant
+
+When recreating an existing page, if a destination/link card on the source has any accompanying icon, photo, or banner crop, use `umd-element-card-overlay type="image"` and put the source image in `slot="image"` — even when the card has no body copy. The image is part of the navigational affordance and a text-only card loses that signal. Only fall back to text-only link cards (the no-image overlay card pattern in `LAYOUT-PATTERNS.md` "Link Cards Grid") when no image is available.
+
 ### CTA pattern: pick one, apply uniformly across the row
 
 Overlay cards in a grid must use **one** of the following CTA patterns, applied consistently to every card in the row. Do not mix patterns within a single grid.
@@ -1163,21 +1167,46 @@ Only the following components are used on interior page layouts. Do not place la
 
 ---
 
-## 22. Default hero — use the standard (background) hero
+## 22. Default hero — standard, small on non-home landings, centered text
 
-The default hero for landing pages is `umd-element-hero` with **no `data-display` attribute**. In this mode the image renders as a full background behind the text. This is the standard, expected treatment.
+The default hero for landing pages is `umd-element-hero` with `data-display="standard"`. In this mode the image renders as a full background behind the text. **Do not default to `data-display="overlay"`** — the overlay variant is a specific design choice with different visual behavior (composited color overlay panel) and is reserved for when that effect is explicitly desired.
 
-**Do not default to `data-display="overlay"`** — the overlay variant is a specific design choice with different visual behavior (composited color overlay on the image). Use it only when a true text-over-image overlay effect is explicitly desired.
+### Home vs. non-home landing
 
-| Intent | Correct |
+| Page type | Hero |
 |---|---|
-| Standard page opener with background image | *(no `data-display`)* |
-| Text-over-image with color overlay panel | `data-display="overlay"` |
-| Shorter version for interior pages | `data-display="default-interior"` or `data-layout-height="small"` |
+| **Site home page** | Full-height standard hero (omit `data-layout-height`). The home page can carry homepage-scale visual weight. |
+| **Any other landing** (department, program, sub-section) | `data-display="standard" data-layout-height="small"`. A full-height hero on a non-home landing reads as a homepage and over-emphasizes the section. |
+| **Interior page** | `data-display="standard" data-layout-height="small"` (same as non-home landing). See §21. |
+| **Text-over-image with overlay panel** | `data-display="overlay"` (any page type) — explicit design choice only. |
+
+### Text alignment
+
+`data-layout-text="center"` is the default in most cases. Use centered text when:
+
+- The element directly below the hero is centered (e.g. a `umd-element-section-intro`, which is always centered). Vertical alignment continuity reads cleaner.
+- The site has chosen centered as its default treatment.
+
+Use left-aligned (omit `data-layout-text`) only when the hero contains its own subhead/CTAs that read better flush-left, or when an asymmetric composition is the intent.
 
 ```html
-<!-- ✓ Default — background image hero -->
-<umd-element-hero data-theme="dark" data-animation>
+<!-- ✓ Non-home landing default -->
+<section class="umd-layout-vertical-landing">
+  <umd-element-hero data-display="standard" data-layout-height="small" data-layout-text="center">
+    <h1 slot="headline">Page Title</h1>
+    <img slot="image" src="/hero.jpg" alt="…" />
+  </umd-element-hero>
+</section>
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-larger">
+    <umd-element-section-intro>
+      <div slot="text"><p>Body sentence the page leads with.</p></div>
+    </umd-element-section-intro>
+  </div>
+</section>
+
+<!-- ✓ Home page — full-height -->
+<umd-element-hero data-display="standard" data-theme="dark" data-animation>
   <img slot="image" src="/hero.jpg" alt="" />
   <h1 slot="headline">Fearless Ideas Start Here</h1>
 </umd-element-hero>
@@ -1188,6 +1217,16 @@ The default hero for landing pages is `umd-element-hero` with **no `data-display
   <h1 slot="headline">Fearless Ideas Start Here</h1>
 </umd-element-hero>
 ```
+
+### When to pull body text and CTAs OUT of the hero
+
+Put body copy and CTA rows in a separate `umd-element-section-intro` directly below the hero (not in the hero's slots) when **any** of the following apply:
+
+- The subhead is more than one line.
+- The text has hierarchy (a separate title plus body copy plus tagline).
+- There are more than 2 CTAs.
+
+Stuffing all of that into the hero clutters the visual and crowds the page title. The hero should carry the page title + (optionally) one primary CTA. See `LAYOUT-PATTERNS.md` "Hero + section-intro split".
 
 ---
 
@@ -1337,10 +1376,9 @@ The thumbnail carousel reads `data-thumbnail` from the **host element** of each 
 
 | Card | How |
 |---|---|
-| `umd-element-card` | Set `data-visual-transparent="true"`, `data-visual-image-aligned="true"`, and `data-thumbnail="<url>"` on the host. |
-| `umd-element-person-bio` | Set `data-thumbnail="<url>"` on the host. The person-bio's natural layout (image + name + role) suits a thumbnail strip. |
+| `umd-element-card` | Set `data-visual-transparent="true"`, `data-visual-image-aligned="true"`, and `data-thumbnail="<url>"` on the host. **This is the only sanctioned slide for thumbnail carousels.** |
 
-Do **not** use `umd-element-card-overlay` — overlay cards always render their own background, which conflicts with the carousel's surface.
+Do **not** use `umd-element-person-bio` — even for ambassador / people content. Use `umd-element-card` (with the attributes above) and put the person's name in `slot="headline"` and bio details in `slot="text"`. Do **not** use `umd-element-card-overlay` — overlay cards always render their own background, which conflicts with the carousel's surface.
 
 ```html
 <umd-element-carousel-thumbnail>
@@ -1436,3 +1474,60 @@ Only omit `data-visual-image-aligned` when intentionally varying image heights f
 This default does not apply to:
 - Cards inside `umd-element-carousel-thumbnail` — that pattern uses `data-visual-image-aligned="true"` for a different reason (see §27 thumbnail carousel pattern).
 - `umd-element-card-overlay` — overlay cards composite text over a full-bleed image and have no separate image column to align.
+
+---
+
+## 31. Section-intro — text-only variant for body sentences
+
+`umd-element-section-intro` has a built-in "text-only" treatment: when only `slot="text"` is provided (no `slot="headline"`), the component automatically renders the text larger and bolder. This is the right component for a long body sentence that functions as a section's lede with no separate title above it.
+
+Use the text-only variant when:
+- The section has a long body sentence (one paragraph, no heading) followed by CTAs.
+- You're pulling a hero subhead into a separate section below the hero (see §22).
+- The source page has body copy without a section title.
+
+```html
+<!-- ✓ Text-only — body renders larger/bolder automatically -->
+<umd-element-section-intro>
+  <div slot="text">
+    <p>The lede paragraph that introduces the section.</p>
+  </div>
+  <div slot="actions">
+    <umd-element-call-to-action data-display="primary">
+      <a href="/">Primary CTA</a>
+    </umd-element-call-to-action>
+  </div>
+</umd-element-section-intro>
+```
+
+Do **not** force a body sentence into `<h2 slot="headline">` to "fill" the headline slot — the headline-only treatment renders uppercase/bold/large-sans and over-emphasizes a sentence that's actually body copy.
+
+---
+
+## 32. Landing-page accordion stack
+
+A vertical stack of `umd-element-accordion-item` siblings on a landing page uses two specific layout choices.
+
+| Property | Value | Token |
+|---|---|---|
+| Horizontal wrap | `umd-layout-space-horizontal-small` (992px max-width) | — |
+| Gap between items | 8px | `var(--umd-space-min)` |
+
+```html
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-small">
+    <div style="display: grid; gap: var(--umd-space-min);">
+      <umd-element-accordion-item>
+        <p slot="headline">Section A</p>
+        <div slot="text">…</div>
+      </umd-element-accordion-item>
+      <umd-element-accordion-item>
+        <p slot="headline">Section B</p>
+        <div slot="text">…</div>
+      </umd-element-accordion-item>
+    </div>
+  </div>
+</section>
+```
+
+Why narrow: accordion bodies are text-list-heavy and read better at a constrained measure. `-larger`/`-normal` produce overly wide rows that scan poorly. Why 8px: `--umd-space-min` is the DS token for the smallest spacing step (verified in `tokens.min.css`). The default `umd-layout-grid-gap-stacked` (24px+) puts too much air between collapsed accordion headers.

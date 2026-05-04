@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undergraduate — College of Computer, Mathematical, and Natural Sciences | University of Maryland</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/font-faces.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/tokens.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/base.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/typography.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/web-components.min.css">
+  <style>
+    umd-element-utility-header:not(:defined) { content-visibility: hidden; }
+    umd-element-utility-header { display: block; container-type: normal; }
+
+    umd-element-carousel:not(:defined),
+    umd-element-carousel-cards:not(:defined),
+    umd-element-carousel-thumbnail:not(:defined),
+    umd-element-carousel-image:not(:defined),
+    umd-element-carousel-image-wide:not(:defined),
+    umd-element-carousel-multiple-image:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-carousel,
+    umd-element-carousel-cards,
+    umd-element-carousel-thumbnail,
+    umd-element-carousel-image,
+    umd-element-carousel-image-wide,
+    umd-element-carousel-multiple-image {
+      display: block;
+      container-type: inline-size;
+    }
+
+    umd-layout-image-expand:not(:defined) { content-visibility: hidden; }
+    umd-layout-image-expand {
+      display: block;
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    umd-element-breadcrumb:defined { margin-top: 16px; }
+
+    .umd-layout-space-vertical-landing,
+    .umd-layout-vertical-landing           { margin-bottom: 56px; }
+    @media (min-width: 768px)  { .umd-layout-space-vertical-landing, .umd-layout-vertical-landing  { margin-bottom: 80px; } }
+    @media (min-width: 1024px) { .umd-layout-space-vertical-landing, .umd-layout-vertical-landing  { margin-bottom: 120px; } }
+
+    .umd-layout-space-vertical-landing-child,
+    .umd-layout-vertical-landing-child     { margin-bottom: 32px; }
+    @media (min-width: 768px)  { .umd-layout-space-vertical-landing-child, .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
+    @media (min-width: 1024px) { .umd-layout-space-vertical-landing-child, .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
+
+    .umd-layout-space-vertical-headline-large { margin-bottom: 16px; }
+    @media (min-width: 1024px) {
+      .umd-layout-space-vertical-headline-large { margin-bottom: 24px; }
+    }
+
+    [class^="umd-layout-space-horizontal-"] {
+      box-sizing: border-box;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+    @media (min-width: 768px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 48px;
+        padding-right: 48px;
+      }
+    }
+    @media (min-width: 1200px) {
+      [class^="umd-layout-space-horizontal-"] {
+        padding-left: 64px;
+        padding-right: 64px;
+      }
+    }
+    .umd-layout-space-horizontal-full     { max-width: 100%;   }
+    .umd-layout-space-horizontal-larger   { max-width: 1600px; }
+    .umd-layout-space-horizontal-large    { max-width: 1400px; }
+    .umd-layout-space-horizontal-normal   { max-width: 1280px; }
+    .umd-layout-space-horizontal-small    { max-width: 992px;  }
+    .umd-layout-space-horizontal-smallest { max-width: 800px;  }
+
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      color: #f1f1f1;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: min(calc(44px + 13vw), 240px);
+      line-height: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    :is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+      opacity: 0.6;
+      z-index: -1;
+    }
+    .umd-watermark-dark > * {
+      opacity: 0.12;
+      z-index: inherit;
+    }
+    @keyframes slide-in-from-left {
+      from { transform: translate(-15vw); }
+      to   { transform: translate(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+          animation: slide-in-from-left forwards;
+          animation-timeline: view();
+          animation-range-start: 0;
+          animation-range-end: 100vh;
+          transform: translate(-15vw);
+        }
+      }
+    }
+
+    .umd-layout-space-horizontal-larger {
+      position: relative;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    @media (min-width: 768px) {
+      .umd-layout-grid-child-fill-height,
+      .umd-layout-grid-child-fill-height > * {
+        height: 100%;
+      }
+    }
+
+    .umd-layout-grid-gap-three {
+      display: grid;
+      grid-gap: 32px;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-gap-three {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .umd-layout-grid-columns-four {
+      display: grid;
+      grid-gap: 32px;
+    }
+    @media (min-width: 650px) {
+      .umd-layout-grid-columns-four {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-columns-four {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .umd-layout-grid-inline-tablet-rows {
+      align-items: flex-start;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: flex-start;
+    }
+    @media (min-width: 650px) {
+      .umd-layout-grid-inline-tablet-rows {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+    }
+
+    .umd-layout-grid-gap-stacked {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-gap-stacked { gap: 40px; }
+    }
+
+    [slot="utility-navigation"] {
+      display: flex;
+      justify-content: flex-end;
+      gap: 24px;
+    }
+    [slot="utility-navigation"] a {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #242424;
+      text-decoration: none;
+      line-height: 1.25;
+      transition: color 0.3s ease-in-out;
+    }
+    [slot="utility-navigation"] a:hover,
+    [slot="utility-navigation"] a:focus {
+      color: #E21833;
+      text-decoration: underline;
+    }
+
+    /* Accordion stack — 8px gap between siblings (--umd-space-min). */
+    .umd-layout-grid-gap-min {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--umd-space-min, 8px);
+    }
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.18.2/dist/cdn.js"></script>
+</head>
+<body>
+
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="https://cmns.umd.edu/">
+      <img src="../images/projects/cmns-undergraduate/UMD_CMNS_Left_Color_1.png" alt="College of Computer, Mathematical, and Natural Sciences"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://cmns.umd.edu/about">About</a>
+      <div slot="dropdown-links">
+        <a href="https://cmns.umd.edu/about/dean">Meet the Dean</a>
+        <a href="https://cmns.umd.edu/about/administration">College Administration</a>
+        <a href="https://cmns.umd.edu/about/strategic-plan">Strategic Plan</a>
+        <a href="https://cmns.umd.edu/about/belonging-community">Belonging &amp; Community</a>
+        <a href="https://cmns.umd.edu/about/alumni">Alumni</a>
+        <a href="https://cmns.umd.edu/about/giving">Giving</a>
+      </div>
+    </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://cmns.umd.edu/undergraduate">Undergraduate</a>
+      <div slot="dropdown-links">
+        <a href="https://cmns.umd.edu/undergraduate/future-students">Future Students</a>
+        <a href="https://cmns.umd.edu/undergraduate/future-students/majors-minors">Majors &amp; Minors</a>
+        <a href="https://cmns.umd.edu/undergraduate/future-students/admissions">Admissions</a>
+        <a href="https://cmns.umd.edu/undergraduate/future-students/visit">Plan a Visit</a>
+        <a href="https://cmns.umd.edu/undergraduate/future-students/recruitment-ambassadors">Recruitment Ambassadors</a>
+        <a href="https://cmns.umd.edu/undergraduate/current-students">Current Students</a>
+        <a href="https://cmns.umd.edu/undergraduate/current-students/scholarships">Scholarships</a>
+      </div>
+    </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://cmns.umd.edu/graduate">Graduate</a>
+      <div slot="dropdown-links">
+        <a href="https://cmns.umd.edu/graduate/degree-programs">Degree Programs</a>
+        <a href="https://cmns.umd.edu/graduate/science-academy">Science Academy</a>
+        <a href="https://cmns.umd.edu/graduate/admissions">Admissions</a>
+        <a href="https://cmns.umd.edu/graduate/fellowships">Graduate Fellowships</a>
+      </div>
+    </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://cmns.umd.edu/departments">Departments</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://cmns.umd.edu/research">Research</a>
+      <div slot="dropdown-links">
+        <a href="https://cmns.umd.edu/research/institutes-centers">Research Institutes &amp; Centers</a>
+        <a href="https://cmns.umd.edu/research/partnerships">Partnerships</a>
+        <a href="https://cmns.umd.edu/research/solving-grand-challenges">Solving Grand Challenges</a>
+        <a href="https://cmns.umd.edu/research/shared-facilities">Shared Research Facilities</a>
+      </div>
+    </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="https://cmns.umd.edu/news-events">News &amp; Events</a>
+      <div slot="dropdown-links">
+        <a href="https://cmns.umd.edu/news-events/news">News</a>
+        <a href="https://cmns.umd.edu/news-events/events">Events</a>
+        <a href="https://cmns.umd.edu/news-events/odyssey">Odyssey Magazine</a>
+        <a href="https://cmns.umd.edu/news-events/newsletters">Newsletters</a>
+      </div>
+    </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+
+  <!-- ========================================
+       HERO — small background-overlay (non-homepage landing).
+       Page title only; subhead + CTAs handled by the section-intro below.
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-hero data-display="standard" data-layout-height="small" data-layout-text="center">
+      <h1 slot="headline">Undergraduate</h1>
+      <img slot="image" src="../images/projects/cmns-undergraduate/banner-ug-vr-class.jpg" alt="Several undergraduate students, two wearing virtual reality headsets, working in a classroom" />
+    </umd-element-hero>
+  </section>
+
+  <!-- ========================================
+       SECTION INTRO — long subhead + 5 CTAs (was hero text/actions in v1).
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <umd-element-section-intro>
+        <div slot="text"><p>We provide our undergraduates with a rigorous, high-quality education and exceptional research opportunities in a challenging, supportive environment.</p></div>
+        <div slot="actions">
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://cmns.umd.edu/undergraduate/future-students/majors-minors">Explore Our Majors &amp; Minors</a>
+          </umd-element-call-to-action>
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://cmns.umd.edu/undergraduate/future-students/visit">Plan a Visit - Virtual or In Person</a>
+          </umd-element-call-to-action>
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://go.umd.edu/CMNSprospective">Fill Out Our Interest Form</a>
+          </umd-element-call-to-action>
+          <umd-element-call-to-action data-display="secondary">
+            <a href="https://cmns.umd.edu/sites/default/files/undergrad/UMD-CMNS-Freshmen-Fall2025.pdf">See Our Freshmen Fact Sheet</a>
+          </umd-element-call-to-action>
+        </div>
+      </umd-element-section-intro>
+    </div>
+  </section>
+
+  <!-- ========================================
+       PROMOTIONAL IMAGE CAROUSEL — matches the source's gavias_sliderlayer
+       (2 image-only slides: "Become a Science Terp" + a campus map).
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <umd-element-carousel-image-wide title="Undergraduate highlights">
+      <div slot="slides">
+        <figure>
+          <img src="../images/projects/cmns-undergraduate/hero-become-a-science-terp-3-sckrqx.jpg" alt="Become a Science Terp" />
+        </figure>
+        <figure>
+          <img src="../images/projects/cmns-undergraduate/hero-ug-map-8gbkyz.jpg" alt="Map of College of Computer, Mathematical, and Natural Sciences departments" />
+        </figure>
+      </div>
+    </umd-element-carousel-image-wide>
+  </section>
+
+  <!-- ========================================
+       STATS — light theme (non-homepage landing).
+       6 stats in two rows of three (RULES.md §9).
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <div class="umd-watermark"><span>Fall 2025</span></div>
+      <div class="umd-layout-vertical-landing-child">
+        <umd-element-section-intro-wide>
+          <h2 slot="headline">New First-Time Students</h2>
+          <umd-element-call-to-action data-display="secondary" slot="actions">
+            <a href="https://cmns.umd.edu/sites/default/files/undergrad/UMD-CMNS-Freshmen-Fall2025.pdf">See our freshmen fact sheet</a>
+          </umd-element-call-to-action>
+        </umd-element-section-intro-wide>
+      </div>
+
+      <div class="umd-layout-grid-gap-three" style="row-gap:48px;">
+        <umd-element-stat data-visual-size="large" data-decoration-line>
+          <span slot="stat">1,496</span>
+          <div slot="text"><p>New Students</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line>
+          <span slot="stat">33</span>
+          <div slot="text"><p>States</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line>
+          <span slot="stat">9</span>
+          <div slot="text"><p>Countries</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line>
+          <span slot="stat">12%</span>
+          <div slot="text"><p>First-Generation College Students</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line>
+          <span slot="stat">14%</span>
+          <div slot="text"><p>From Groups Underrepresented in the Sciences</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-visual-size="large" data-decoration-line>
+          <span slot="stat">69%</span>
+          <div slot="text"><p>Participating in Living &amp; Learning and Special Programs</p></div>
+        </umd-element-stat>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       RECRUITMENT AMBASSADORS — thumbnail carousel (matches source slider).
+       Each slide carries data-thumbnail; content is a one-up bio block.
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <div class="umd-layout-vertical-landing-child">
+        <umd-element-section-intro>
+          <h2 slot="headline">Meet Our Recruitment Ambassadors</h2>
+          <p slot="text">Want to get in touch with a recruitment ambassador? Email <a href="mailto:egarosi@umd.edu">egarosi@umd.edu</a></p>
+          <umd-element-call-to-action data-display="secondary" slot="actions">
+            <a href="https://cmns.umd.edu/undergraduate/future-students/recruitment-ambassadors">See all of our recruitment ambassadors</a>
+          </umd-element-call-to-action>
+        </umd-element-section-intro>
+      </div>
+
+      <umd-element-carousel-thumbnail>
+        <div slot="blocks">
+          <umd-element-card data-visual-transparent="true" data-visual-image-aligned="true" data-thumbnail="../images/projects/cmns-undergraduate/amb-lilian-wang.jpg">
+            <img slot="image" src="../images/projects/cmns-undergraduate/amb-lilian-wang.jpg" alt="Profile photo of Lilian Wang" />
+            <p slot="headline"><a href="https://cmns.umd.edu/people/lilian-wang">Lilian Wang</a></p>
+            <div slot="text"><p>Biological Sciences and Psychology Dual Degree<br>Boyds, MD<br>Integrated Life Sciences (ILS)</p></div>
+          </umd-element-card>
+          <umd-element-card data-visual-transparent="true" data-visual-image-aligned="true" data-thumbnail="../images/projects/cmns-undergraduate/amb-ava-allen.jpg">
+            <img slot="image" src="../images/projects/cmns-undergraduate/amb-ava-allen.jpg" alt="Ava Allen" />
+            <p slot="headline"><a href="https://cmns.umd.edu/people/ava-allen">Ava Allen</a></p>
+            <div slot="text"><p>Physics and Astronomy Double Major<br>Annapolis, MD<br>University Honors Program</p></div>
+          </umd-element-card>
+          <umd-element-card data-visual-transparent="true" data-visual-image-aligned="true" data-thumbnail="../images/projects/cmns-undergraduate/amb-laurel-sun.jpg">
+            <img slot="image" src="../images/projects/cmns-undergraduate/amb-laurel-sun.jpg" alt="Photo of Laurel Sun" />
+            <p slot="headline"><a href="https://cmns.umd.edu/people/laurel-sun">Laurel Sun</a></p>
+            <div slot="text"><p>Computer Science Major<br>Mathematics Minor<br>Saratoga, CA<br>College Park Scholars</p></div>
+          </umd-element-card>
+          <umd-element-card data-visual-transparent="true" data-visual-image-aligned="true" data-thumbnail="../images/projects/cmns-undergraduate/amb-sai-naraharisetti.jpg">
+            <img slot="image" src="../images/projects/cmns-undergraduate/amb-sai-naraharisetti.jpg" alt="photo of sai Naraharisetti" />
+            <p slot="headline"><a href="https://cmns.umd.edu/people/sai-naraharisetti">Sai Naraharisetti</a></p>
+            <div slot="text"><p>Computer Science Major<br>Statistics Minor<br>Ellicott City, MD<br>College Park Scholars</p></div>
+          </umd-element-card>
+          <umd-element-card data-visual-transparent="true" data-visual-image-aligned="true" data-thumbnail="../images/projects/cmns-undergraduate/amb-aarushi-gupta.jpg">
+            <img slot="image" src="../images/projects/cmns-undergraduate/amb-aarushi-gupta.jpg" alt="Profile photo of Aarushi Gupta" />
+            <p slot="headline"><a href="https://cmns.umd.edu/people/aarushi-gupta">Aarushi Gupta</a></p>
+            <div slot="text"><p>Biological Sciences Major<br>Humanities, Health, and Medicine (HHM) and Disabilities Studies minors<br>Clarksburg, MD<br>Integrated Life Sciences (ILS)</p></div>
+          </umd-element-card>
+          <umd-element-card data-visual-transparent="true" data-visual-image-aligned="true" data-thumbnail="../images/projects/cmns-undergraduate/amb-ariel-abraham.jpg">
+            <img slot="image" src="../images/projects/cmns-undergraduate/amb-ariel-abraham.jpg" alt="Picture of Ariel Abraham" />
+            <p slot="headline"><a href="https://cmns.umd.edu/people/ariel-abraham">Ariel Abraham</a></p>
+            <div slot="text"><p>Biological Sciences<br>Cell Biology &amp; Genetics track<br>Data Science Minor</p></div>
+          </umd-element-card>
+          <umd-element-card data-visual-transparent="true" data-visual-image-aligned="true" data-thumbnail="../images/projects/cmns-undergraduate/amb-srinidhi-arumugam.jpg">
+            <img slot="image" src="../images/projects/cmns-undergraduate/amb-srinidhi-arumugam.jpg" alt="Profile photo of Srinidhi Arumugam" />
+            <p slot="headline"><a href="https://cmns.umd.edu/people/srinidhi-arumugam">Srinidhi Arumugam</a></p>
+            <div slot="text"><p>Computer Science and Biological Sciences double major<br>Ellicott City, MD<br>Integrated Life Sciences Honors College</p></div>
+          </umd-element-card>
+          <umd-element-card data-visual-transparent="true" data-visual-image-aligned="true" data-thumbnail="../images/projects/cmns-undergraduate/amb-kian-mercado.jpg">
+            <img slot="image" src="../images/projects/cmns-undergraduate/amb-kian-mercado.jpg" alt="Profile photo of Kian Mercado" />
+            <p slot="headline"><a href="https://cmns.umd.edu/people/kian-mercado">Kian Mercado</a></p>
+            <div slot="text"><p>Dual Degree in Biochemistry and Biological Sciences<br>General Business Minor<br>Rockville, MD<br>Integrated Life Sciences (ILS)<br>Graduating early</p></div>
+          </umd-element-card>
+        </div>
+      </umd-element-carousel-thumbnail>
+    </div>
+  </section>
+
+  <!-- ========================================
+       SIDE-NAV ACCORDIONS — preserve the source's left-rail sub-navigation
+       as two collapsed sections near the bottom of the page.
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-small">
+      <div class="umd-layout-grid-gap-min">
+        <umd-element-accordion-item>
+          <p slot="headline">Future Students</p>
+          <div slot="text">
+            <ul style="list-style:none; padding:0; margin:0;">
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/future-students" style="color:#000; text-decoration:none;">Future Students</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/future-students/majors-minors" style="color:#000; text-decoration:none;">Majors &amp; Minors</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/future-students/admissions" style="color:#000; text-decoration:none;">Admissions</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/future-students/visit" style="color:#000; text-decoration:none;">Plan a Visit</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/future-students/recruitment-ambassadors" style="color:#000; text-decoration:none;">Recruitment Ambassadors</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/future-students/living-learning-special-programs" style="color:#000; text-decoration:none;">Living &amp; Learning Programs</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/future-students/living-learning-special-programs/biofire" style="color:#000; text-decoration:none;">BioFIRE</a></li>
+              <li style="padding:8px 0;"><a href="https://cmns.umd.edu/undergraduate/future-students/living-learning-special-programs/biofire/curriculum" style="color:#000; text-decoration:none;">BioFIRE Curriculum</a></li>
+            </ul>
+          </div>
+        </umd-element-accordion-item>
+
+        <umd-element-accordion-item>
+          <p slot="headline">Current Students</p>
+          <div slot="text">
+            <ul style="list-style:none; padding:0; margin:0;">
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/current-students" style="color:#000; text-decoration:none;">Current Students</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/current-students/advising-academic-planning" style="color:#000; text-decoration:none;">Advising and Academic Planning</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/current-students/career-ready" style="color:#000; text-decoration:none;">Career Ready</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/current-students/student-organizations" style="color:#000; text-decoration:none;">Student Organizations</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/current-students/academic-support-tutoring" style="color:#000; text-decoration:none;">Academic Support &amp; Tutoring</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/current-students/scholarships" style="color:#000; text-decoration:none;">Scholarships</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/current-students/graduation-information" style="color:#000; text-decoration:none;">Graduation Information</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/current-students/teaching-opportunities" style="color:#000; text-decoration:none;">Undergraduate Teaching Opportunities</a></li>
+              <li style="padding:8px 0; border-bottom:1px solid #e6e6e6;"><a href="https://cmns.umd.edu/undergraduate/current-students/undergrad-news" style="color:#000; text-decoration:none;">Undergraduate Listserv</a></li>
+              <li style="padding:8px 0;"><a href="https://cmns.umd.edu/undergraduate/current-students/program-staff" style="color:#000; text-decoration:none;">Undergraduate Program Staff</a></li>
+            </ul>
+          </div>
+        </umd-element-accordion-item>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================
+       QUICK LINKS — 4 image-overlay cards using midpage banners.
+       type="image" required so slot=image renders (RULES.md §6).
+  ======================================== -->
+  <section class="umd-layout-vertical-landing">
+    <div class="umd-layout-space-horizontal-larger">
+      <div class="umd-layout-grid-columns-four umd-layout-grid-child-fill-height">
+        <umd-element-card-overlay type="image" data-theme="dark">
+          <img slot="image" src="../images/projects/cmns-undergraduate/midpage-sandbox.jpg" alt="" />
+          <h3 slot="headline"><a href="https://cmns.umd.edu/taxonomy/term/student-stories">Student Stories</a></h3>
+          <a slot="cta-icon" href="https://cmns.umd.edu/taxonomy/term/student-stories">Read</a>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay type="image" data-theme="dark">
+          <img slot="image" src="../images/projects/cmns-undergraduate/midpage-ug-research.jpg" alt="" />
+          <h3 slot="headline"><a href="https://cmns.umd.edu/undergraduate/current-students/career-ready/research-internships">Research Opportunities</a></h3>
+          <a slot="cta-icon" href="https://cmns.umd.edu/undergraduate/current-students/career-ready/research-internships">Explore</a>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay type="image" data-theme="dark">
+          <img slot="image" src="../images/projects/cmns-undergraduate/midpage-ug-research-2.jpg" alt="" />
+          <h3 slot="headline"><a href="https://cmns.umd.edu/undergraduate/current-students/career-ready">Career Ready</a></h3>
+          <a slot="cta-icon" href="https://cmns.umd.edu/undergraduate/current-students/career-ready">Explore</a>
+        </umd-element-card-overlay>
+        <umd-element-card-overlay type="image" data-theme="dark">
+          <img slot="image" src="../images/projects/cmns-undergraduate/midpage-living-learning-3.jpg" alt="" />
+          <h3 slot="headline"><a href="https://cmns.umd.edu/undergraduate/future-students/living-learning-special-programs">Living &amp; Learning Programs</a></h3>
+          <a slot="cta-icon" href="https://cmns.umd.edu/undergraduate/future-students/living-learning-special-programs">Explore</a>
+        </umd-element-card-overlay>
+      </div>
+    </div>
+  </section>
+
+  <umd-element-footer data-display="visual">
+    <a slot="logo" href="https://cmns.umd.edu/">
+      <img src="../images/logos/footer-logo.svg" alt="College of Computer, Mathematical, and Natural Sciences" />
+    </a>
+    <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="University of Maryland campus" />
+  </umd-element-footer>
+
+  <script>
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var GRID_SELECTORS = [
+        '.umd-layout-grid-gap-two',
+        '.umd-layout-grid-gap-three',
+        '.umd-layout-grid-gap-stacked',
+        '.umd-layout-grid-columns-four',
+        '.umd-layout-grid-masonry',
+        '.umd-layout-grid-inline-tablet-rows',
+        '.umd-animation-grid',
+        '.umd-grid-animation'
+      ].map(function (sel) { return sel + ':not([data-animation="off"])'; });
+      var style = document.createElement('style');
+      style.textContent = [
+        '@keyframes fade-in-from-bottom {',
+        '  from { opacity: 0; transform: translateY(50px); }',
+        '  to   { opacity: 1; transform: translateY(0); }',
+        '}',
+        ':where(' + GRID_SELECTORS.join(',') + ') > * {',
+        '  opacity: 0;',
+        '  transform: translateY(50px);',
+        '}',
+        '.umd-animation-transition-fade-bottom {',
+        '  animation: fade-in-from-bottom 1s forwards;',
+        '}'
+      ].join('\n');
+      document.head.appendChild(style);
+      function tagRowOffsets(grid) {
+        var children = Array.prototype.slice.call(grid.children);
+        var prevTop = null;
+        children.forEach(function (child) {
+          var top = child.getBoundingClientRect().top;
+          if (prevTop !== null && Math.abs(top - prevTop) < 1) {
+            child.dataset.animation = 'offset';
+          } else {
+            delete child.dataset.animation;
+          }
+          prevTop = top;
+        });
+      }
+      function init() {
+        var grids = document.querySelectorAll(GRID_SELECTORS.join(','));
+        if (!grids.length) return;
+        grids.forEach(tagRowOffsets);
+        window.addEventListener('resize', function () { grids.forEach(tagRowOffsets); });
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            el.style.animationDelay = el.dataset.animation === 'offset' ? '350ms' : '0ms';
+            el.classList.add('umd-animation-transition-fade-bottom');
+            observer.unobserve(el);
+          });
+        }, { threshold: 0.35 });
+        grids.forEach(function (grid) {
+          Array.prototype.forEach.call(grid.children, function (child) {
+            observer.observe(child);
+          });
+        });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+
+</body>
+</html>

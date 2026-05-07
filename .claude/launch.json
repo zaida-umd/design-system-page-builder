@@ -4,8 +4,9 @@
     {
       "name": "test-server",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "3800", "."],
-      "port": 3800
+      "runtimeArgs": ["serve", "."],
+      "port": 3800,
+      "autoPort": true
     },
     {
       "name": "umd-search",

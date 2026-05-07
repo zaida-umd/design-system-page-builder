@@ -1531,3 +1531,28 @@ A vertical stack of `umd-element-accordion-item` siblings on a landing page uses
 ```
 
 Why narrow: accordion bodies are text-list-heavy and read better at a constrained measure. `-larger`/`-normal` produce overly wide rows that scan poorly. Why 8px: `--umd-space-min` is the DS token for the smallest spacing step (verified in `tokens.min.css`). The default `umd-layout-grid-gap-stacked` (24px+) puts too much air between collapsed accordion headers.
+
+## 33. Inline link styling — always use the gradient underline pattern
+
+When writing page-built CSS for inline `<a>` links inside body copy, AI summaries, custom content divs, or any non-component text area, **never use `text-decoration: underline` or a custom `color`**. Always copy the `umd-text-rich-advanced a` gradient underline pattern from `LAYOUT-PATTERNS.md` (or from `styles/critical.css`):
+
+```css
+.your-container a {
+  color: #000000;
+  text-decoration: none;
+  background-image: linear-gradient(#000000, #000000);
+  position: relative;
+  background-position: left calc(100% - 1px);
+  background-repeat: no-repeat;
+  background-size: 100% 1px;
+  transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+}
+.your-container a:hover,
+.your-container a:focus {
+  background-image: linear-gradient(#E21833, #E21833);
+}
+```
+
+For dark backgrounds, use white (`#ffffff`) instead of black, and gold (`#FFD200`) on hover — see `umd-text-rich-advanced-dark a` in `LAYOUT-PATTERNS.md`.
+
+**Why:** `text-decoration: underline` renders the browser's default underline on top of the gradient and prevents the red hover animation from being visible. The design system never uses browser-native underlines for body links.

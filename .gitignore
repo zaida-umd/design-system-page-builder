@@ -3,3 +3,6 @@
 
 # Claude worktrees (ephemeral working directories)
 .claude/worktrees/
+
+# Claude local settings (machine-specific permission approvals, not for version control)
+.claude/settings.local.json

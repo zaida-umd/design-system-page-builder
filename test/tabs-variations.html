@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tabs Variations Prototype — UMD Design System</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/font-faces.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/tokens.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/base.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/typography.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/layout.min.css">
+
+  <style>
+    /* ── Page scaffold ─────────────────────────────────────────── */
+    body {
+      font-family: 'Interstate', Helvetica, Arial, Verdana, sans-serif;
+      color: #242424;
+      background: #fff;
+      margin: 0;
+      padding: 64px 0 120px;
+    }
+
+    .page-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7F7F7F;
+      margin: 0 0 8px;
+    }
+
+    .set-heading {
+      font-size: 14px;
+      font-weight: 600;
+      color: #454545;
+      margin: 0 0 4px;
+    }
+
+    .set-description {
+      font-size: 13px;
+      color: #7F7F7F;
+      margin: 0 0 24px;
+    }
+
+    /* ── Spacer between sets ──────────────────────────────────── */
+    .set-gap {
+      height: 120px;
+    }
+
+    /* ── Base tab component styles ────────────────────────────── */
+    /*
+     * These mirror the DS component internals from
+     * packages/elements/source/composite/tabs/standard.ts
+     *
+     * Button padding: spacing.sm (16px) / spacing.md (24px)
+     * Font: sans.large = 18px / 1.25em
+     * Track: gray.light (#E6E6E6) 2px strip across full tab-bar width
+     * Indicator: red (#E21833) 2px, translates to active tab position
+     */
+    .tabs-demo {
+      position: relative;
+    }
+
+    .tabs-bar {
+      position: relative;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .tab-btn {
+      position: relative;
+      display: inline-block;
+      padding: 16px 24px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: #242424;
+      text-align: left;
+      white-space: nowrap;
+      outline: none;
+    }
+
+    .tab-btn:focus-visible {
+      outline: 2px solid #2F7EDA;
+      outline-offset: -2px;
+    }
+
+    /* Gray track that spans the full width of all tabs */
+    .tabs-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: #E6E6E6;
+      /* width is set by JS to match the tab-bar inner width */
+      width: 100%;
+      pointer-events: none;
+    }
+
+    /* Red indicator that moves to the active tab */
+    .tabs-indicator {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: #E21833;
+      transition: width 0.4s ease, transform 0.4s ease;
+      pointer-events: none;
+    }
+
+    /* Tab panels */
+    .tabs-content {
+      position: relative;
+      padding-top: 24px;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.is-active {
+      display: block;
+    }
+
+    .tab-panel p {
+      font-size: 16px;
+      line-height: 1.5em;
+      color: #454545;
+      margin: 0;
+    }
+
+    /* ── Variation 1: hover = red text ───────────────────────── */
+    /*
+     * Default state: dark text, gray track, sliding red indicator
+     * Hover state:   red text only — track and indicator unchanged
+     * Selected:      default DS active (red indicator under active tab)
+     */
+    .tabs-v1 .tab-btn:hover {
+      color: #E21833;
+    }
+
+    /* ── Variation 2: selected = red border + red text ────────── */
+    /*
+     * Hover:    red text + default gray track line visible (no indicator change)
+     * Selected: red bottom border on button + red text
+     *           (replaces the sliding indicator — indicator hidden on this set)
+     */
+    .tabs-v2 .tab-btn:hover {
+      color: #E21833;
+      /* Gray track is still visible (default, unchanged) */
+    }
+
+    .tabs-v2 .tab-btn[aria-selected="true"] {
+      color: #E21833;
+      /* z-index: 1 lifts the button above the gray track (z-index: auto),
+         so the ::after red line paints on top of it */
+      z-index: 1;
+    }
+
+    .tabs-v2 .tab-btn[aria-selected="true"]::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: #E21833;
+    }
+  </style>
+</head>
+<body>
+
+<div class="umd-layout-space-horizontal-small">
+
+  <p class="page-label">Design System — Prototype</p>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SET 1 — Hover: red text
+  ════════════════════════════════════════════════════════════════ -->
+  <p class="set-heading">Set 1 — Hover: red text</p>
+  <p class="set-description">
+    Default state is unchanged. On hover, tab label turns red. Selected tab uses the default DS indicator (red sliding underline).
+  </p>
+
+  <div class="tabs-demo tabs-v1" id="tabs-1" role="tablist" aria-label="Set 1 tabs">
+    <div class="tabs-bar">
+      <button class="tab-btn umd-sans-large" role="tab" aria-selected="true"  aria-controls="panel-1-0" id="tab-1-0">Lorem ipsum</button>
+      <button class="tab-btn umd-sans-large" role="tab" aria-selected="false" aria-controls="panel-1-1" id="tab-1-1">Lorem consectetur</button>
+      <button class="tab-btn umd-sans-large" role="tab" aria-selected="false" aria-controls="panel-1-2" id="tab-1-2">Lorem adipiscing</button>
+      <button class="tab-btn umd-sans-large" role="tab" aria-selected="false" aria-controls="panel-1-3" id="tab-1-3">Lorem elit sed</button>
+      <div class="tabs-track">
+        <div class="tabs-indicator" id="indicator-1"></div>
+      </div>
+    </div>
+    <div class="tabs-content">
+      <div class="tab-panel is-active" id="panel-1-0" role="tabpanel" aria-labelledby="tab-1-0">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+      </div>
+      <div class="tab-panel" id="panel-1-1" role="tabpanel" aria-labelledby="tab-1-1">
+        <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+      </div>
+      <div class="tab-panel" id="panel-1-2" role="tabpanel" aria-labelledby="tab-1-2">
+        <p>Adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+      <div class="tab-panel" id="panel-1-3" role="tabpanel" aria-labelledby="tab-1-3">
+        <p>Elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sit amet.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="set-gap"></div>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SET 2 — Selected: red border + red text; Hover: red text + gray line
+  ════════════════════════════════════════════════════════════════ -->
+  <p class="set-heading">Set 2 — Selected: red border + red text &nbsp;·&nbsp; Hover: red text + gray line</p>
+  <p class="set-description">
+    On hover, label turns red while the default gray track remains. Selected tab shows a red bottom border and red text (no sliding indicator).
+  </p>
+
+  <div class="tabs-demo tabs-v2" id="tabs-2" role="tablist" aria-label="Set 2 tabs">
+    <div class="tabs-bar">
+      <button class="tab-btn umd-sans-large" role="tab" aria-selected="true"  aria-controls="panel-2-0" id="tab-2-0">Lorem ipsum</button>
+      <button class="tab-btn umd-sans-large" role="tab" aria-selected="false" aria-controls="panel-2-1" id="tab-2-1">Lorem consectetur</button>
+      <button class="tab-btn umd-sans-large" role="tab" aria-selected="false" aria-controls="panel-2-2" id="tab-2-2">Lorem adipiscing</button>
+      <button class="tab-btn umd-sans-large" role="tab" aria-selected="false" aria-controls="panel-2-3" id="tab-2-3">Lorem elit sed</button>
+      <div class="tabs-track">
+        <div class="tabs-indicator" id="indicator-2"></div>
+      </div>
+    </div>
+    <div class="tabs-content">
+      <div class="tab-panel is-active" id="panel-2-0" role="tabpanel" aria-labelledby="tab-2-0">
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+      </div>
+      <div class="tab-panel" id="panel-2-1" role="tabpanel" aria-labelledby="tab-2-1">
+        <p>Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+      </div>
+      <div class="tab-panel" id="panel-2-2" role="tabpanel" aria-labelledby="tab-2-2">
+        <p>Adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+      </div>
+      <div class="tab-panel" id="panel-2-3" role="tabpanel" aria-labelledby="tab-2-3">
+        <p>Elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat sit amet.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function initTabs(demoEl) {
+      const buttons = Array.from(demoEl.querySelectorAll('.tab-btn'));
+      const panels  = Array.from(demoEl.querySelectorAll('.tab-panel'));
+      const indicator = demoEl.querySelector('.tabs-indicator');
+      const tabsBar   = demoEl.querySelector('.tabs-bar');
+
+      function positionIndicator(activeBtn) {
+        if (!indicator) return;
+        indicator.style.width     = activeBtn.offsetWidth + 'px';
+        indicator.style.transform = 'translateX(' + activeBtn.offsetLeft + 'px)';
+      }
+
+      function activate(index) {
+        buttons.forEach((btn, i) => {
+          const isActive = i === index;
+          btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+        });
+        panels.forEach((panel, i) => {
+          panel.classList.toggle('is-active', i === index);
+        });
+        positionIndicator(buttons[index]);
+      }
+
+      buttons.forEach((btn, i) => {
+        btn.addEventListener('click', () => activate(i));
+      });
+
+      // Keyboard nav: arrow keys move focus & activate
+      demoEl.addEventListener('keydown', (e) => {
+        const focused = document.activeElement;
+        const idx = buttons.indexOf(focused);
+        if (idx === -1) return;
+        if (e.key === 'ArrowRight') {
+          const next = (idx + 1) % buttons.length;
+          buttons[next].focus();
+          activate(next);
+          e.preventDefault();
+        } else if (e.key === 'ArrowLeft') {
+          const prev = (idx - 1 + buttons.length) % buttons.length;
+          buttons[prev].focus();
+          activate(prev);
+          e.preventDefault();
+        }
+      });
+
+      // Set initial indicator on load (after layout)
+      requestAnimationFrame(() => {
+        const activeBtn = buttons.find(b => b.getAttribute('aria-selected') === 'true') || buttons[0];
+        positionIndicator(activeBtn);
+      });
+    }
+
+    document.querySelectorAll('.tabs-demo').forEach(initTabs);
+  </script>
+
+</div><!-- /.umd-layout-space-horizontal-small -->
+</body>
+</html>

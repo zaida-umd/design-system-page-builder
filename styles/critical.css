@@ -1,6 +1,6 @@
 /*
  * UMD Design System — Local-Only Critical CSS
- * Verified against @universityofmaryland/web-components-library@1.18.2
+ * Verified against @universityofmaryland/web-components-library@1.18.10
  *
  * This file is the LOCAL portion of our critical CSS. It is inlined into
  * TEMPLATE.html alongside <link rel="stylesheet"> tags pointing at the
@@ -10,23 +10,30 @@
  *   - css/tokens.min.css         → CSS custom properties
  *   - css/base.min.css           → DS reset + tokens + base type
  *   - css/typography.min.css     → .umd-sans-* / .umd-campaign-* utilities
+ *   - css/layout.min.css         → layout grids, spacing, background utilities
+ *                                  (Note: @media([object Object]) bug in
+ *                                  background/full.ts:42 affects the
+ *                                  umd-layout-background-full-dark highDef
+ *                                  breakpoint — fixed by section 4 below.)
  *   - css/web-components.min.css → :defined / container-type rules for
  *                                  most umd-element-* custom elements
  *
  * What stays here (and why):
- *   - Layout utilities (grids, vertical/horizontal spacing, dark band,
- *     masonry, etc.): the upstream layout.min.css has a serialization
- *     bug that renders desktop-breakpoint media queries as
- *     `@media([object Object])`. Cannot use upstream layout CSS until
- *     fixed.
  *   - Gap-fills for components missing from web-components.min.css:
  *     umd-element-utility-header, umd-element-carousel*.
- *   - Project-specific overrides and patterns:
- *     - umd-element-breadcrumb default top margin
+ *   - Bug fix: umd-layout-background-full-dark — upstream layout.min.css
+ *     serializes the highDef breakpoint as @media([object Object]) because
+ *     background/full.ts:42 passes the whole media.queries.highDef object
+ *     instead of media.queries.highDef.min. Our rule cascades over the
+ *     broken upstream with the correct @media (min-width: 1200px).
+ *   - Augmentations for upstream layout classes:
+ *     - .umd-layout-space-horizontal-larger: adds position/container/isolation
+ *       for watermark z-index stacking and section-intro-wide @container query.
+ *     - .umd-layout-space-columns-left: adds align-items/flex-shrink upstream omits.
+ *   - Project-specific patterns not in any upstream bundle:
  *     - watermark decoration + scroll animation
- *     - section-intro-wide stacking context wrapper
+ *     - masonry + section-intro companion offset rules
  *     - rich-text-advanced (light + dark)
- *     - interior page columns-left
  *     - image-expand content utilities
  *     - sticky-columns spacing tokens
  *     - utility-navigation light-DOM link styles
@@ -36,7 +43,7 @@
  *       action-outline-block utility, color utilities (.text-*)
  *
  * LOAD ORDER in TEMPLATE.html:
- *   <link rel="stylesheet"> CDN bundles
+ *   <link rel="stylesheet"> CDN bundles (including layout.min.css)
  *   <style> this file </style>
  *   <script src="…cdn.js">
  *
@@ -53,7 +60,7 @@
    ============================================================ */
 
 /* umd-element-utility-header — present on every page (band above the
-   nav header). Not in upstream bundle as of v1.8.6. */
+   nav header). Not in upstream bundle as of v1.8.11. */
 umd-element-utility-header:not(:defined) { content-visibility: hidden; }
 umd-element-utility-header { display: block; container-type: normal; }
 
@@ -90,73 +97,7 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   2. VERTICAL SPACING — between sections and items
-   ============================================================ */
-
-/* Landing page — between sections (both names canonical in 1.18) */
-.umd-layout-space-vertical-landing,
-.umd-layout-vertical-landing           { margin-bottom: 56px; }
-@media (min-width: 768px)  { .umd-layout-space-vertical-landing, .umd-layout-vertical-landing  { margin-bottom: 80px; } }
-@media (min-width: 1024px) { .umd-layout-space-vertical-landing, .umd-layout-vertical-landing  { margin-bottom: 120px; } }
-
-/* Landing page — between items within a section (both names canonical in 1.18) */
-.umd-layout-space-vertical-landing-child,
-.umd-layout-vertical-landing-child     { margin-bottom: 32px; }
-@media (min-width: 768px)  { .umd-layout-space-vertical-landing-child, .umd-layout-vertical-landing-child { margin-bottom: 40px; } }
-@media (min-width: 1024px) { .umd-layout-space-vertical-landing-child, .umd-layout-vertical-landing-child { margin-bottom: 48px; } }
-
-/* Interior page — page content area margins (both class names work) */
-.umd-layout-space-vertical-interior,
-.umd-layout-vertical-interior          { margin-bottom: 56px; }
-@media (min-width: 1024px) {
-  .umd-layout-space-vertical-interior,
-  .umd-layout-vertical-interior        { margin-bottom: 80px; }
-}
-
-/* Interior page — between items within a section */
-.umd-layout-space-vertical-interior-child,
-.umd-layout-vertical-interior-child    { margin-bottom: 32px; }
-
-/* Headline bottom spacing — above a content grid */
-.umd-layout-space-vertical-headline-large { margin-bottom: 16px; }
-@media (min-width: 1024px) {
-  .umd-layout-space-vertical-headline-large { margin-bottom: 24px; }
-}
-
-
-/* ============================================================
-   3. HORIZONTAL SPACING — page-lock classes
-   ============================================================ */
-[class^="umd-layout-space-horizontal-"] {
-  box-sizing: border-box;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 24px;
-  padding-right: 24px;
-}
-@media (min-width: 768px) {
-  [class^="umd-layout-space-horizontal-"] {
-    padding-left: 48px;
-    padding-right: 48px;
-  }
-}
-@media (min-width: 1200px) {
-  [class^="umd-layout-space-horizontal-"] {
-    padding-left: 64px;
-    padding-right: 64px;
-  }
-}
-.umd-layout-space-horizontal-full     { max-width: 100%;   }
-.umd-layout-space-horizontal-larger   { max-width: 1600px; }
-.umd-layout-space-horizontal-large    { max-width: 1400px; }
-.umd-layout-space-horizontal-normal   { max-width: 1280px; }
-.umd-layout-space-horizontal-small    { max-width: 992px;  }
-.umd-layout-space-horizontal-smallest { max-width: 800px;  }
-
-
-/* ============================================================
-   4. WATERMARK DECORATION
+   2. WATERMARK DECORATION
    ============================================================ */
 :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
   position: absolute;
@@ -197,104 +138,37 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   5. SECTION-INTRO-WIDE WRAPPER
-   Required when .umd-layout-space-horizontal-larger wraps
-   umd-element-section-intro-wide. position:relative for
-   watermark positioning, container-type for internal @container
-   query, isolation for watermark z-index stacking context.
+   3. LAYOUT AUGMENTATIONS
+   Extra properties on upstream layout classes that layout.min.css
+   doesn't include. These cascade over the upstream rules.
    ============================================================ */
+
+/* Upstream sets max-width/padding correctly. These extra properties are
+   required for watermark positioning and the internal @container query
+   used by umd-element-section-intro-wide. */
 .umd-layout-space-horizontal-larger {
   position: relative;
   container-type: inline-size;
   isolation: isolate;
 }
 
-
-/* ============================================================
-   6. GRID UTILITIES
-   ============================================================ */
-
-/* Equal-height card grid children */
+/* Upstream omits align-items and flex-shrink on the columns-left layout.
+   align-items: flex-start prevents variable-height sidebar from stretching;
+   flex-shrink: 0 keeps the fixed 242px sidebar width under constraint. */
 @media (min-width: 768px) {
-  .umd-layout-grid-child-fill-height,
-  .umd-layout-grid-child-fill-height > * {
-    height: 100%;
-  }
-}
-
-/* Two-column grid — stacks mobile, 2 columns at 650px+ */
-.umd-layout-grid-gap-two {
-  display: grid;
-}
-@media (min-width: 650px) {
-  .umd-layout-grid-gap-two {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 32px;
-  }
-}
-@media (min-width: 1024px) {
-  .umd-layout-grid-gap-two { gap: 40px; }
-}
-
-/* Three-column gap grid */
-.umd-layout-grid-gap-three {
-  display: grid;
-  grid-gap: 32px;
-}
-@media (min-width: 768px) {
-  .umd-layout-grid-gap-three {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-/* Four-column grid — 1col mobile, 2col at 650px, 4col at 1024px */
-.umd-layout-grid-columns-four {
-  display: grid;
-  grid-gap: 32px;
-}
-@media (min-width: 650px) {
-  .umd-layout-grid-columns-four {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-@media (min-width: 1024px) {
-  .umd-layout-grid-columns-four {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* Inline CTA row — stacks mobile, flex row at 650px+ */
-.umd-layout-grid-inline-tablet-rows {
-  align-items: flex-start;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  justify-content: flex-start;
-}
-@media (min-width: 650px) {
-  .umd-layout-grid-inline-tablet-rows {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-}
-
-/* Single-column stacked grid (sticky-columns static slot) */
-.umd-layout-grid-gap-stacked {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-@media (min-width: 1024px) {
-  .umd-layout-grid-gap-stacked { gap: 40px; }
+  .umd-layout-space-columns-left { align-items: flex-start; }
+  .umd-layout-space-columns-left > *:first-child { flex-shrink: 0; }
 }
 
 
 /* ============================================================
-   7. LAYOUT PATTERNS — dark band, alignment
+   4. BACKGROUND-FULL-DARK BUG FIX
+   layout.min.css serializes the highDef breakpoint as
+   @media([object Object]) — ignored by browsers — because
+   background/full.ts:42 uses media.queries.highDef (the whole
+   object) instead of media.queries.highDef.min. This rule
+   cascades over the broken upstream with the correct breakpoint.
    ============================================================ */
-
-/* Full-width dark section with responsive padding */
 .umd-layout-background-full-dark {
   background-color: #000000;
   padding: 48px 0;
@@ -306,50 +180,13 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
   .umd-layout-background-full-dark { padding: 104px 0; }
 }
 
-/* Stacked figure content — for <figure> inside rich text */
-.umd-layout-alignment-block-stacked {
-  display: flex;
-  flex-direction: column;
-}
-.umd-layout-alignment-block-stacked > * { margin-top: 16px; }
-.umd-layout-alignment-block-stacked > *:first-child { margin-top: 0; }
-
 
 /* ============================================================
-   8. MASONRY GRID (2-column stagger)
-   Source: @universityofmaryland/web-styles-library — masonary.twoColumn
-   Add min-height to direct children per use case.
+   5. MASONRY SECTION-INTRO COMPANION
+   Compensates for masonry's negative top margin when a section
+   intro immediately precedes it. The base .umd-layout-grid-masonry
+   class comes from layout.min.css.
    ============================================================ */
-.umd-layout-grid-masonry {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-@media (min-width: 768px) {
-  .umd-layout-grid-masonry {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-  }
-}
-@media (min-width: 1024px) {
-  .umd-layout-grid-masonry { gap: 40px; }
-}
-.umd-layout-grid-masonry > * > * {
-  width: 100%;
-  height: 100%;
-}
-@media (min-width: 768px) {
-  .umd-layout-grid-masonry > *:nth-of-type(odd)  { margin-top: -32px; margin-bottom: 32px; }
-  .umd-layout-grid-masonry > *:nth-of-type(even) { margin-top: 0; }
-  .umd-layout-grid-masonry > *:first-child        { margin-top: 0; }
-  .umd-layout-grid-masonry > *:nth-of-type(2)    { margin-top: 32px; }
-}
-@media (min-width: 1024px) {
-  .umd-layout-grid-masonry > *:nth-of-type(odd) { margin-top: -40px; margin-bottom: 40px; }
-  .umd-layout-grid-masonry > *:nth-of-type(2)   { margin-top: 40px; }
-}
-
-/* Masonry + section-intro compensation */
 @media (min-width: 768px) {
   umd-element-section-intro + .umd-layout-grid-masonry,
   umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 32px; }
@@ -359,39 +196,16 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
   umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 40px; }
 }
 
-/* Three-column offset grid — staggered cascade for 3 cards */
-.umd-layout-grid-offset-three {
-  display: grid;
-  gap: 32px;
-}
-@media (min-width: 768px) {
-  .umd-layout-grid-offset-three {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-@media (min-width: 1024px) {
-  .umd-layout-grid-offset-three {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-  }
-  .umd-layout-grid-offset-three > * {
-    align-self: start;
-    min-height: 400px;
-  }
-  .umd-layout-grid-offset-three > *:first-child  { margin-top: 48px; }
-  .umd-layout-grid-offset-three > *:nth-child(2) { margin-top: 104px; }
-}
-
 
 /* ============================================================
-   9. COLOR UTILITIES — not in upstream tokens or typography bundles
+   6. COLOR UTILITIES — not in upstream tokens or typography bundles
    ============================================================ */
 .text-black { color: #000; }
 .text-white { color: #ffffff; }
 
 
 /* ============================================================
-   10. RICH TEXT ADVANCED — editorial body copy
+   7. RICH TEXT ADVANCED — editorial body copy
    Light and dark variants. 18px/1.5em with link hover styles.
    ============================================================ */
 
@@ -447,24 +261,15 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   11. INTERIOR PAGE LAYOUT
-   Sidebar + content column. Not in cdn.js — must be local.
+   8. INTERIOR PAGE LAYOUT UTILITIES
    ============================================================ */
-@media (min-width: 768px) {
-  .umd-layout-space-columns-left { display: flex; align-items: flex-start; }
-  .umd-layout-space-columns-left > *:first-child { width: 242px; flex-shrink: 0; margin-right: 120px; }
-  .umd-layout-space-columns-left > *:last-child { width: calc(100% - 242px); }
-}
-@media (max-width: 1023px) {
-  .umd-layout-space-columns-left > *:first-child { display: none; }
-}
 
 /* Content column max-width (Tailwind utility) */
 .max-w-\[800px\] { max-width: 800px; }
 
 
 /* ============================================================
-   12. IMAGE-EXPAND CONTENT UTILITIES
+   9. IMAGE-EXPAND CONTENT UTILITIES
    Classes for div[slot="content"] inside umd-layout-image-expand.
    ============================================================ */
 .max-w-\[480px\] { max-width: 480px; }
@@ -510,7 +315,7 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   13. STICKY COLUMNS UTILITIES
+   10. STICKY COLUMNS UTILITIES
    Spacing tokens for slot content inside umd-element-sticky-columns.
    ============================================================ */
 .mb-md { margin-bottom: 24px; }
@@ -518,7 +323,7 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   14. UTILITY NAVIGATION LINK STYLES
+   11. UTILITY NAVIGATION LINK STYLES
    ::slotted(*) only reaches div[slot="utility-navigation"], not
    descendants — these light-DOM styles fill that gap.
    ============================================================ */
@@ -556,7 +361,7 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   15. BANNER-PROMO STACKED ACTIONS — light-DOM column flex.
+   12. BANNER-PROMO STACKED ACTIONS — light-DOM column flex.
    Pairs with the shadow-DOM injection in OVERRIDES.md so the 8px
    gap is visible regardless of where children render.
    ============================================================ */
@@ -569,7 +374,7 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   16. SECTION DIVIDER — standalone <hr> utility.
+   13. SECTION DIVIDER — standalone <hr> utility.
    ============================================================ */
 .umd-text-divider {
   border: none;
@@ -582,7 +387,7 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   17. TRAILING-LINE LABEL — section eyebrow with horizontal line
+   14. TRAILING-LINE LABEL — section eyebrow with horizontal line
    Source: @universityofmaryland/web-styles-library: element.text.line.trailing
    ============================================================ */
 .umd-text-line-trailing,
@@ -629,7 +434,7 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   18. NO-GAP CARD GRID — 3 columns flush together
+   15. NO-GAP CARD GRID — 3 columns flush together
    ============================================================ */
 .umd-layout-grid-cards-no-gap {
   display: grid;
@@ -646,7 +451,7 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   19. OVERLAY CARD .size-large MIN-HEIGHT
+   16. OVERLAY CARD .size-large MIN-HEIGHT
    Source: design-system/packages/styles/source/web-components.ts
            (cardOverlay custom rules — umd-element-card-overlay.size-large)
    ============================================================ */
@@ -661,7 +466,7 @@ umd-element-card-overlay.size-large {
 
 
 /* ============================================================
-   20. TUITION & AID 2-COLUMN GRID
+   17. TUITION & AID 2-COLUMN GRID
    Asymmetric content split: 1.5fr / 1fr at 1024px+.
    ============================================================ */
 .umd-layout-grid-tuition-two {
@@ -678,7 +483,7 @@ umd-element-card-overlay.size-large {
 
 
 /* ============================================================
-   21. FULL-WIDTH OUTLINE BUTTON — light-DOM utility class
+   18. FULL-WIDTH OUTLINE BUTTON — light-DOM utility class
    Visually mirrors umd-element-call-to-action data-display="outline"
    but stretches to fill its grid cell. Use when the DS web component's
    shadow-DOM max-width:380px would fight against your layout.

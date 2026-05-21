@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{PAGE_TITLE}} — {{SITE_NAME}} | University of Maryland</title>
+  <title>Traditions of the Past — University of Maryland</title>
 
   <!-- ============================================================
        UMD Critical CSS — Hybrid CDN + Local
@@ -503,191 +503,153 @@
 
   <!-- ========================================
        1. GLOBAL UNIVERSITY HEADER
-       Hardcoded. Never modified. Zero config.
   ======================================== -->
   <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
 
+  <!-- ========================================
+       2. SITE UTILITY HEADER
+  ======================================== -->
   <umd-element-utility-header></umd-element-utility-header>
 
   <!-- ========================================
-       2. SITE NAVIGATION HEADER
-       Replace logo, nav items, and utility links.
+       3. NAVIGATION HEADER
   ======================================== -->
   <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
-    <a slot="logo" href="{{SITE_URL}}">
-      <img src="{{LOGO_URL}}" alt="{{SITE_NAME}}" />
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="University of Maryland" onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
     </a>
     <nav slot="main-navigation">
-      <!-- Repeat umd-element-nav-item for each top-level link -->
       <umd-element-nav-item>
-        <a slot="primary-link" href="{{NAV_HREF}}">{{NAV_LABEL}}</a>
-        <!-- Optional dropdown: wrap bare <a> children in <div slot="dropdown-links"> -->
-        <!--
-        <div slot="dropdown-links">
-          <a href="{{SUB_HREF}}">{{SUB_LABEL}}</a>
-          <a href="{{SUB_HREF}}">{{SUB_LABEL}}</a>
-        </div>
-        -->
+        <a slot="primary-link" href="/about">About</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/about/history">Traditions &amp; History</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/alumni">Alumni</a>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/give">Give</a>
       </umd-element-nav-item>
     </nav>
-    <!-- Optional utility nav -->
-    <!--
-    <div slot="utility-navigation">
-      <a href="/give">Give</a>
-    </div>
-    -->
   </umd-element-navigation-header>
 
   <!-- ========================================
-       3. PAGE CONTENT
-       Replace the sections below with actual content.
-       Use umd-layout-vertical-landing on each <section>.
-       Use umd-layout-space-horizontal-* wrappers for content width.
+       4. HERO — small height, centered text
   ======================================== -->
-
-  <!-- HERO SECTION (if needed) -->
-  <!--
-  <section class="umd-layout-vertical-landing">
-    <umd-element-hero data-display="stacked">
-      <h1 slot="headline">{{HEADLINE}}</h1>
-      <p slot="text">{{SUBHEAD}}</p>
-      <img slot="image" src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" />
-      <umd-element-call-to-action data-display="primary" slot="actions">
-        <a href="{{CTA_URL}}">{{CTA_TEXT}}</a>
-      </umd-element-call-to-action>
+  <section>
+    <umd-element-hero data-layout-height="small" data-layout-text="center">
+      <p slot="eyebrow">History &amp; Traditions</p>
+      <h1 slot="headline">Traditions of the Past</h1>
+      <img slot="image" src="../images/large/campus/shaking.webp" alt="Students holding newspapers up during a game" />
     </umd-element-hero>
   </section>
-  -->
-
-  <!-- CONTENT SECTION EXAMPLE -->
-  <!--
-  <section class="umd-layout-vertical-landing">
-    <div class="umd-layout-space-horizontal-larger">
-      <umd-element-section-intro-wide>
-        <h2 slot="headline">{{SECTION_TITLE}}</h2>
-        <umd-element-call-to-action data-display="secondary" slot="actions">
-          <a href="{{LINK}}">{{LINK_TEXT}}</a>
-        </umd-element-call-to-action>
-      </umd-element-section-intro-wide>
-    </div>
-  </section>
-  -->
-
-  <!-- PATHWAY EXAMPLE (standard — requires dark wrapper) -->
-  <!--
-  <section class="umd-layout-vertical-landing" style="background: #000;">
-    <umd-element-pathway data-theme="dark">
-      <h2 slot="headline">{{HEADLINE}}</h2>
-      <p slot="text">{{BODY_TEXT}}</p>
-      <img slot="image" src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" />
-      <umd-element-call-to-action data-display="primary" data-theme="dark" slot="actions">
-        <a href="{{CTA_URL}}">{{CTA_TEXT}}</a>
-      </umd-element-call-to-action>
-    </umd-element-pathway>
-  </section>
-  -->
 
   <!-- ========================================
-       4. FOOTER
-       Visual footer with campus background image.
-       Default image: ../images/large/campus/footer-campus.jpg
+       5. BREADCRUMB
   ======================================== -->
-  <umd-element-footer data-display="visual">
-    <a slot="logo" href="{{SITE_URL}}">
-      <img src="../images/logos/footer-logo.svg" alt="{{SITE_NAME}}" />
-    </a>
-    <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="" />
-  </umd-element-footer>
+  <div class="umd-layout-space-horizontal-larger umd-layout-space-vertical-interior">
+    <umd-element-breadcrumb>
+      <div slot="paths">
+        <a href="/" aria-label="Return Home"><span aria-hidden="true">Home</span></a>
+        <a href="/about/history"><span>Traditions &amp; History</span></a>
+        <p aria-label="Current Page"><span>Traditions of the Past</span></p>
+      </div>
+    </umd-element-breadcrumb>
+  </div>
 
   <!-- ========================================
-       GRID ENTRY ANIMATIONS
-       On by default for all layout grid utilities — children fade
-       in from below as they cross 35% visibility. Row-aware
-       staggering: siblings sharing a row get +350ms delay.
-       Bails out under prefers-reduced-motion: reduce.
-
-       OPT OUT per grid by adding data-animation="off" on the grid
-       container (e.g. for single-row CTA rows or stacks where the
-       fade reads as noise).
+       6. SIDEBAR + CONTENT COLUMNS
   ======================================== -->
-  <script>
-    (function () {
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  <div class="umd-layout-space-horizontal-larger">
+    <div class="umd-layout-space-columns-left">
 
-      var GRID_SELECTORS = [
-        '.umd-layout-grid-gap-two',
-        '.umd-layout-grid-gap-three',
-        '.umd-layout-grid-gap-stacked',
-        '.umd-layout-grid-columns-four',
-        '.umd-layout-grid-masonry',
-        '.umd-layout-grid-inline-tablet-rows',
-        '.umd-animation-grid',
-        '.umd-grid-animation'
-      ].map(function (sel) { return sel + ':not([data-animation="off"])'; });
+      <!-- Sidebar: left nav -->
+      <div id="umd-shell-sidebar-container">
+        <umd-element-nav-slider>
+          <div slot="primary-slide-links">
+            <a href="/about" data-child-ref="about-umd"><span>About UMD</span></a>
+          </div>
+          <div slot="children-slides">
+            <div data-active data-parent-ref="about-umd">
+              <a href="/about/history"><span>History &amp; Traditions</span></a>
+              <a href="/about/traditions-of-the-past" data-selected><span>Traditions of the Past</span></a>
+              <a href="/about/symbols"><span>University Symbols</span></a>
+              <a href="/about/fight-song"><span>Fight Song</span></a>
+            </div>
+          </div>
+        </umd-element-nav-slider>
+      </div>
 
-      var style = document.createElement('style');
-      style.textContent = [
-        '@keyframes fade-in-from-bottom {',
-        '  from { opacity: 0; transform: translateY(50px); }',
-        '  to   { opacity: 1; transform: translateY(0); }',
-        '}',
-        ':where(' + GRID_SELECTORS.join(',') + ') > * {',
-        '  opacity: 0;',
-        '  transform: translateY(50px);',
-        '}',
-        '.umd-animation-transition-fade-bottom {',
-        '  animation: fade-in-from-bottom 1s forwards;',
-        '}'
-      ].join('\n');
-      document.head.appendChild(style);
+      <!-- Main content column -->
+      <div id="umd-shell-content" class="max-w-[800px]">
 
-      function tagRowOffsets(grid) {
-        var children = Array.prototype.slice.call(grid.children);
-        var prevTop = null;
-        children.forEach(function (child) {
-          var top = child.getBoundingClientRect().top;
-          if (prevTop !== null && Math.abs(top - prevTop) < 1) {
-            child.dataset.animation = 'offset';
-          } else {
-            delete child.dataset.animation;
-          }
-          prevTop = top;
-        });
-      }
+        <!-- Section A — Beanies -->
+        <section class="umd-layout-space-vertical-interior">
+          <h2 class="umd-layout-space-vertical-interior-child">Beanies</h2>
+          <umd-element-media-inline>
+            <img slot="image" src="../images/small/people/freshman-beanie.webp" alt="Young student wearing a beanie and a sign saying I can't help it (I'm a freshman)" />
+            <div slot="text" class="umd-text-rich-advanced">
+              <p>From the 1910s to the 1960s, freshman students were required to wear beanies everywhere they went on campus, from their first day of school until the freshmen-sophomore tug-of-war, held during the spring semester. The beanies were known as "rat caps" for the men, and "rabbit caps" for the women.</p>
+            </div>
+          </umd-element-media-inline>
+        </section>
 
-      function init() {
-        var grids = document.querySelectorAll(GRID_SELECTORS.join(','));
-        if (!grids.length) return;
+        <!-- Section B — Byrd Beach -->
+        <section class="umd-layout-space-vertical-interior">
+          <h3 class="umd-layout-space-vertical-interior-child">Byrd Beach</h3>
+          <umd-element-media-inline data-layout-alignment="right">
+            <img slot="image" src="../images/small/campus/Students-at-Byrd-Beach-1985.webp" alt="Students at Byrd Beach 1985" />
+            <div slot="text" class="umd-text-rich-advanced">
+              <p>For decades, until everyday access to the football stadium was cut off, students greeted the return of springtime warmth by donning their bathing suits and stretching out along the bleachers in then-Byrd Stadium to study, tan and people-watch.</p>
+            </div>
+          </umd-element-media-inline>
+        </section>
 
-        grids.forEach(tagRowOffsets);
-        window.addEventListener('resize', function () {
-          grids.forEach(tagRowOffsets);
-        });
+        <!-- Section C — Class Wars -->
+        <section class="umd-layout-space-vertical-interior">
+          <h3 class="umd-layout-space-vertical-interior-child">Class Wars</h3>
+          <umd-element-media-inline>
+            <img slot="image" src="../images/small/people/tug-of-war2.webp" alt="Vintage photo of students playing tug of war" />
+            <div slot="text" class="umd-text-rich-advanced">
+              <p>What happened when the beanie-wearing freshmen squared off against their arch-nemesis, the sophomore class? In the early part of the 20th century, the competition involved first- and second-year students playing King of the Mountain on a 120-foot iron water tower located on campus.</p>
+              <p>This tradition continued until 1913 when wily sophomore Robert McCutcheon knocked down the freshman flag with a well-aimed rifle shot that severed its staff.</p>
+              <p>This annual struggle between the freshman and sophomore classes during the spring semester marked the end of the beanie-wearing season for the freshman. The traditional contest over Paint Branch Creek began about 1915 and continued into the early 1950s.</p>
+            </div>
+          </umd-element-media-inline>
+        </section>
 
-        var observer = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (!entry.isIntersecting) return;
-            var el = entry.target;
-            el.style.animationDelay = el.dataset.animation === 'offset' ? '350ms' : '0ms';
-            el.classList.add('umd-animation-transition-fade-bottom');
-            observer.unobserve(el);
-          });
-        }, { threshold: 0.35 });
+        <!-- Section D — Kissing Tunnel -->
+        <section class="umd-layout-space-vertical-interior">
+          <h3 class="umd-layout-space-vertical-interior-child">Kissing Tunnel</h3>
+          <div class="umd-text-rich-advanced">
+            <p>Located beneath Regents Drive south of Memorial Chapel, the historic Kissing Tunnel got its name by being a popular stop after a College Park date night back in the 1950s and 1960s, when all residence halls were single-gender.</p>
+          </div>
+        </section>
 
-        grids.forEach(function (grid) {
-          Array.prototype.forEach.call(grid.children, function (child) {
-            observer.observe(child);
-          });
-        });
-      }
+        <!-- Section E — May Day -->
+        <section class="umd-layout-space-vertical-interior">
+          <h3 class="umd-layout-space-vertical-interior-child">May Day</h3>
+          <umd-element-media-inline data-layout-alignment="right">
+            <img slot="image" src="../images/small/people/may-day.webp" alt="Vintage photo of young women in formal light dresses seated around a woman in a large seat" />
+            <div slot="text" class="umd-text-rich-advanced">
+              <p>Adele H. Stamp, the university's dean of women from 1922 to 1960, began the tradition of celebrating May Day at Maryland. The ceremony, last held in 1961, featured a Maypole dance, pageant, Mortar Board tapping for senior women and crowning of the queen.</p>
+            </div>
+          </umd-element-media-inline>
+        </section>
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-      } else {
-        init();
-      }
-    })();
-  </script>
+      </div><!-- /#umd-shell-content -->
+    </div><!-- /.umd-layout-space-columns-left -->
+  </div><!-- /.umd-layout-space-horizontal-larger -->
+
+  <!-- ========================================
+       8. FOOTER
+  ======================================== -->
+  <footer class="overflow-hidden">
+    <umd-element-footer data-display="visual" data-theme="dark">
+      <a slot="logo" href="/"><img src="../images/logos/footer-logo.svg" alt="University of Maryland" onerror="this.onerror=null;this.src='../images/logos/footer-logo.svg';" /></a>
+    </umd-element-footer>
+  </footer>
 
 </body>
 </html>

@@ -154,8 +154,10 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 /* Upstream omits align-items and flex-shrink on the columns-left layout.
    align-items: flex-start prevents variable-height sidebar from stretching;
-   flex-shrink: 0 keeps the fixed 242px sidebar width under constraint. */
-@media (min-width: 768px) {
+   flex-shrink: 0 keeps the fixed 242px sidebar width under constraint.
+   Breakpoint matches upstream desktop.min (1024px) after DSYS-3063 fix —
+   sidebar width/margin moved from tablet.min (768px) to desktop.min. */
+@media (min-width: 1024px) {
   .umd-layout-space-columns-left { align-items: flex-start; }
   .umd-layout-space-columns-left > *:first-child { flex-shrink: 0; }
 }

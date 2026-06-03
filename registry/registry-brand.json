@@ -1,10 +1,10 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "components_version": "1.18.2",
+    "components_version": "1.18.12",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-04-24",
-    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.2/dist",
+    "last_verified": "2026-06-03",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist",
     "notes": "Verified from design-system submodule source.",
     "category": "brand",
     "components": ["brand-card-stack", "brand-logo-animation"]
@@ -12,12 +12,12 @@
   "brand-card-stack": {
     "tag": "umd-element-brand-card-stack",
     "label": "Brand Card Stack",
-    "description": "Interactive stacked media layout with one featured asset and 4\u20138 supporting assets (images or videos). Typically used as a hero-scale brand moment on landing pages.",
+    "description": "Interactive stacked media layout with one featured asset and supporting images or videos. Scroll-driven animation spreads cards out; the featured asset can expand to full-screen. Typically used as a hero-scale brand moment on landing pages.",
     "slots": [
       {
         "name": "cards",
         "required": true,
-        "description": "5\u20139 child elements. Exactly one must have `data-featured=\"true\"`. Others can be img, video, or containers wrapping an img.",
+        "description": "5\u20138 child elements (5 minimum enforced by the component, 8 recommended max). Exactly one must have `data-featured=\"true\"` \u2014 this can be a video element (all others should be still images in that case). Others can be img or containers wrapping an img.",
         "example": "<div slot=\"cards\"><img data-featured=\"true\" src=\"/hero.jpg\" alt=\"...\" /><img src=\"/a.jpg\" alt=\"...\" /><img src=\"/b.jpg\" alt=\"...\" /></div>"
       }
     ],
@@ -25,17 +25,23 @@
       {
         "name": "data-featured",
         "type": "boolean",
-        "description": "Applied to ONE child element (not the host) to mark it as the featured card. Required."
+        "description": "Applied to ONE child element inside the cards slot (not the host) to mark it as the featured asset. Required \u2014 component will not render correctly without it."
       },
       {
         "name": "data-image-expand",
         "type": "boolean",
-        "description": "When true, the featured card expands to a full-screen viewer on interaction."
+        "values": ["true", "false"],
+        "default": "true",
+        "description": "Full-screen expand is ON by default. Set to `\"false\"` to disable the full-screen takeover; the scroll-spread animation still plays."
       }
     ],
+    "image_dimensions": {
+      "recommended": "1640px \u00d7 1090px",
+      "notes": "Applies to both featured and supporting assets."
+    },
     "configurable": true,
     "page_types": ["landing"],
-    "notes": "Hard min/max of 5\u20139 assets. Missing the data-featured child will fail to render correctly.",
+    "notes": "Hard minimum of 5 assets (component logs a warning and renders empty if fewer). Recommended count is 5\u20136; supports up to 8. Video supported only as the featured element; all other slots should be still images.",
     "source": "npm",
     "priority": 3
   },

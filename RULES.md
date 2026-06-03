@@ -1045,7 +1045,7 @@ Rules for `slot="paths"` content:
 
 ### Sidebar + content column layout
 
-Interior pages that include a left nav use **`umd-layout-space-columns-left`** — a production UMD layout class. Do **not** write a custom CSS grid. This class is not in `cdn.js` — it must be defined in the page's critical CSS (see above).
+Interior pages that include a left nav use **`umd-layout-space-columns-left`** — a production UMD layout class. Do **not** write a custom CSS grid. The base flex and column-width rules come from `layout.min.css` via CDN; critical CSS adds `align-items: flex-start` and `flex-shrink: 0` as supplements that upstream omits.
 
 | Breakpoint | Behaviour |
 |---|---|

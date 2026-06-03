@@ -1,10 +1,10 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "components_version": "1.18.2",
+    "components_version": "1.18.12",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-04-24",
-    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.2/dist",
+    "last_verified": "2026-06-03",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist",
     "notes": "Verified from design-system submodule source. All feed components are data-driven (no slots) and require a `data-token` to fetch from the UMD feeds API.",
     "category": "feeds",
     "components": [

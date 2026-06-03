@@ -1,10 +1,10 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "components_version": "1.18.2",
+    "components_version": "1.18.12",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-03-02",
-    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.2/dist",
+    "last_verified": "2026-06-03",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist",
     "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
     "component_count": 21,
     "last_updated": "2026-03-29",
@@ -45,7 +45,7 @@
       {
         "name": "image",
         "required": false,
-        "description": "Background or featured image.",
+        "description": "Background or featured image. Animated GIFs are supported; the component renders a built-in pause button when a GIF is detected.",
         "example": "<img slot=\"image\" src=\"/hero.jpg\" alt=\"Campus aerial view\" />"
       },
       {
@@ -57,8 +57,8 @@
       {
         "name": "actions",
         "required": false,
-        "description": "CTA buttons. Wrap in a div for multiple actions.",
-        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply Now</a></umd-element-call-to-action></div>"
+        "description": "CTA buttons. Wrap in a div for multiple actions. Both data-display=\"primary\" and data-display=\"secondary\" are valid on umd-element-call-to-action.",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply Now</a></umd-element-call-to-action><umd-element-call-to-action data-display=\"secondary\"><a href=\"/learn\">Learn More</a></umd-element-call-to-action></div>"
       }
     ],
     "attrs": [
@@ -202,13 +202,13 @@
         }
       },
       "stacked hero": {
-        "description": "Image above, text below (two-column on desktop)",
+        "description": "Image above, text below (two-column on desktop). Image is optional — headline alone is the minimum valid content. Actions slot accepts both primary and secondary CTA styles.",
         "attrs": {
           "data-display": "stacked"
         }
       },
       "stacked hero interior": {
-        "description": "Shorter stacked variant for interior pages",
+        "description": "Shorter stacked variant for interior pages. Image is optional.",
         "attrs": {
           "data-display": "stacked-interior"
         }

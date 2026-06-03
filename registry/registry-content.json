@@ -1,10 +1,10 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "components_version": "1.18.2",
+    "components_version": "1.18.12",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-03-02",
-    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.2/dist",
+    "last_verified": "2026-06-03",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist",
     "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
     "component_count": 21,
     "last_updated": "2026-03-29",
@@ -130,10 +130,11 @@
         }
       },
       "pathway maryland": {
-        "description": "Standard pathway, Maryland red theme \u2014 sets the text column background to solid red (#e21833) with white text. No other styling differences. Avoid for quote/feature content; prefer dark theme instead.",
+        "description": "DO NOT USE on standard pathway \u2014 maryland theme on the standard (no data-display) variant is not a real use case. Use data-theme=\"maryland\" only with data-display=\"overlay\". See 'pathway overlay' alias.",
         "attrs": {
           "data-theme": "maryland"
-        }
+        },
+        "deprecated_context": "standard pathway only"
       },
       "pathway image left": {
         "description": "Standard pathway with image on left",

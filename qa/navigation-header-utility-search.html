@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA: Navigation Header Rules — University of Maryland</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/font-faces.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/tokens.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/base.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/typography.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/web-components.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/layout.min.css">
+  <style>
+    umd-element-utility-header:not(:defined) { content-visibility: hidden; }
+    umd-element-utility-header { display: block; container-type: normal; }
+
+    umd-element-carousel:not(:defined),
+    umd-element-carousel-cards:not(:defined),
+    umd-element-carousel-thumbnail:not(:defined),
+    umd-element-carousel-image:not(:defined),
+    umd-element-carousel-image-wide:not(:defined),
+    umd-element-carousel-multiple-image:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-carousel,
+    umd-element-carousel-cards,
+    umd-element-carousel-thumbnail,
+    umd-element-carousel-image,
+    umd-element-carousel-image-wide,
+    umd-element-carousel-multiple-image {
+      display: block;
+      container-type: inline-size;
+    }
+
+    umd-layout-image-expand:not(:defined) { content-visibility: hidden; }
+    umd-layout-image-expand {
+      display: block;
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    umd-element-breadcrumb:defined { margin-top: 16px; }
+
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      color: #f1f1f1;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: min(calc(44px + 13vw), 240px);
+      line-height: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    :is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+      opacity: 0.6;
+      z-index: -1;
+    }
+    .umd-watermark-dark > * {
+      opacity: 0.12;
+      z-index: inherit;
+    }
+    @keyframes slide-in-from-left {
+      from { transform: translate(-15vw); }
+      to   { transform: translate(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+          animation: slide-in-from-left forwards;
+          animation-timeline: view();
+          animation-range-start: 0;
+          animation-range-end: 100vh;
+          transform: translate(-15vw);
+        }
+      }
+    }
+
+    .umd-layout-space-horizontal-larger {
+      position: relative;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    @media (min-width: 1024px) {
+      .umd-layout-space-columns-left { align-items: flex-start; }
+      .umd-layout-space-columns-left > *:first-child { flex-shrink: 0; }
+    }
+
+    .umd-layout-background-full-dark {
+      background-color: #000000;
+      padding: 48px 0;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-background-full-dark { padding: 80px 0; }
+    }
+    @media (min-width: 1200px) {
+      .umd-layout-background-full-dark { padding: 104px 0; }
+    }
+
+    @media (min-width: 768px) {
+      umd-element-section-intro + .umd-layout-grid-masonry,
+      umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 32px; }
+    }
+    @media (min-width: 1024px) {
+      umd-element-section-intro + .umd-layout-grid-masonry,
+      umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 40px; }
+    }
+
+    .text-black { color: #000; }
+    .text-white { color: #ffffff; }
+
+    .umd-text-rich-advanced {
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    .umd-text-rich-advanced * { color: #454545; }
+    .umd-text-rich-advanced > * { font-size: 18px; margin-top: 24px; }
+    .umd-text-rich-advanced > *:first-child { margin-top: 0; }
+    .umd-text-rich-advanced a {
+      color: #000000;
+      background-image: linear-gradient(#000000, #000000);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-advanced a:hover,
+    .umd-text-rich-advanced a:focus {
+      background-image: linear-gradient(#E21833, #E21833);
+    }
+
+    .umd-text-rich-advanced-dark { font-size: 18px; line-height: 1.5em; }
+    .umd-text-rich-advanced-dark p,
+    .umd-text-rich-advanced-dark li { color: #ffffff; }
+    .umd-text-rich-advanced-dark a {
+      color: #ffffff;
+      background-image: linear-gradient(#ffffff, #ffffff);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-advanced-dark a:hover,
+    .umd-text-rich-advanced-dark a:focus {
+      background-image: linear-gradient(#FFD200, #FFD200);
+    }
+
+    .max-w-\[800px\] { max-width: 800px; }
+    .max-w-\[480px\] { max-width: 480px; }
+    .w-full { width: 100%; }
+    .block { display: block; }
+    .mr-auto { margin-right: auto; }
+    .pl-md { padding-left: 24px; }
+
+    .umd-adjacent-line-text { position: relative; }
+    .umd-adjacent-line-text::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background-color: #E21833;
+      left: -24px;
+    }
+
+    .umd-text-rich-simple-large-dark { font-size: 18px; line-height: 1.5em; color: #ffffff; }
+    .umd-text-rich-simple-large-dark * { color: #ffffff; }
+    .umd-text-rich-simple-large-dark > * { font-size: 18px; margin-top: 24px; }
+    .umd-text-rich-simple-large-dark > *:first-child { margin-top: 0; }
+    .umd-text-rich-simple-large-dark a {
+      color: #ffffff;
+      background-image: linear-gradient(#ffffff, #ffffff);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-simple-large-dark a:hover,
+    .umd-text-rich-simple-large-dark a:focus {
+      background-image: linear-gradient(#FFD200, #FFD200);
+    }
+
+    .mb-md { margin-bottom: 24px; }
+    .mb-sm { margin-bottom: 16px; }
+
+    /* Utility nav — production-accurate styles from umdApp-release-116.css */
+    umd-element-navigation-header div[slot="utility-navigation"] {
+      gap: 0;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item {
+      position: relative;
+      z-index: 99999;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item .umd-shell-utility-actions {
+      align-items: center;
+      display: flex;
+      gap: 4px;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item:not(:last-child) .umd-shell-utility-actions {
+      border-right: 1px solid #E6E6E6;
+      margin-right: 16px;
+      padding-right: 16px;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item a {
+      color: #242424;
+      text-decoration: none;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item a:hover,
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item a:focus {
+      color: #E21833;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item button {
+      align-items: center;
+      color: #242424;
+      display: flex;
+      gap: 4px;
+      text-decoration: none;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item button svg {
+      fill: #7f7f7f;
+      margin-top: 1px;
+      transform: rotate(0);
+      transition: fill .5s, transform .5s;
+      width: 16px;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item button:hover svg,
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item button:focus svg {
+      fill: #E21833;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item button[aria-expanded="true"] svg {
+      fill: #E21833;
+      transform: rotate(180deg);
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item .umd-shell-utility-links {
+      display: none;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item .umd-shell-utility-links > * {
+      color: #242424;
+      display: block;
+      padding: 12px;
+      text-align: right;
+      text-decoration: none;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item .umd-shell-utility-links a:hover,
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item .umd-shell-utility-links a:focus {
+      color: #a90007;
+    }
+    umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item .umd-shell-utility-links[aria-hidden="false"] {
+      align-items: flex-end;
+      background-color: #fafafa;
+      box-shadow: -1px 9px 32px -10px rgba(0,0,0,.19);
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      right: 0;
+      top: 16px;
+      width: 200px;
+      max-width: 80vw;
+    }
+
+    .banner-promo-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .umd-text-divider {
+      border: none;
+      border-top: 1px solid #000000;
+      margin: 0 0 24px 0;
+    }
+    .umd-text-divider.dark { border-top-color: #ffffff; }
+
+    .umd-text-line-trailing,
+    .umd-text-line-trailing-dark {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      line-height: 1.42em;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      background-color: #ffffff;
+    }
+    .umd-text-line-trailing::before,
+    .umd-text-line-trailing-dark::before {
+      content: "";
+      position: absolute;
+      top: 9px;
+      right: 0;
+      width: 100vw;
+      height: 1px;
+      background: #000000;
+      z-index: 1;
+    }
+    .umd-text-line-trailing > span,
+    .umd-text-line-trailing-dark > span {
+      position: relative;
+      background-color: inherit;
+      padding-right: 8px;
+      z-index: 2;
+    }
+    .umd-text-line-trailing + *,
+    .umd-text-line-trailing-dark + * { margin-top: 40px; }
+    .umd-text-line-trailing-dark { background-color: #000000; color: #ffffff; }
+    .umd-text-line-trailing-dark::before { background: #ffffff; }
+
+    .umd-layout-grid-cards-no-gap {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-cards-no-gap { grid-template-columns: repeat(3, 1fr); }
+    }
+    .umd-layout-grid-cards-no-gap > * { height: 100%; }
+
+    umd-element-card-overlay.size-large { min-height: 320px; }
+    @media (min-width: 768px) {
+      umd-element-card-overlay.size-large { min-height: 560px; }
+    }
+
+    .umd-layout-grid-tuition-two {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-tuition-two { grid-template-columns: 1.5fr 1fr; gap: 80px; }
+    }
+
+    .umd-action-outline-block {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 24px;
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.28em;
+      text-align: center;
+      text-decoration: none;
+      background-color: #ffffff;
+      border: 1px solid #242424;
+      color: #000000;
+      transition: background 0.5s ease-in-out, border 0.5s ease-in-out, color 0.5s ease-in-out;
+    }
+    .umd-action-outline-block:hover,
+    .umd-action-outline-block:focus { background-color: #242424; color: #ffffff; }
+    .umd-action-outline-block.dark { background-color: transparent; border: 1px solid #ffffff; color: #ffffff; }
+    .umd-action-outline-block.dark:hover,
+    .umd-action-outline-block.dark:focus { background-color: #ffffff; color: #000000; }
+
+    /* QA-specific styles */
+    .qa-case-meta {
+      background: #242424;
+      color: #fff;
+      padding: 10px 24px;
+      font: 12px/1.5 monospace;
+    }
+    .qa-case-meta strong { color: #FFD200; }
+    .qa-divider {
+      height: 48px;
+      background: #f0f0f0;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+    }
+
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist/cdn.js"></script>
+
+  <!-- QA Banner -->
+  <div style="background:#ffeb3b;color:#000;padding:8px 16px;font:13px/1.4 monospace;border-bottom:2px solid rgba(0,0,0,.2);position:sticky;top:0;z-index:999999;">
+    QA: umd-element-navigation-header | Search in utility-nav (icon right of text, DS SVG) &mdash; utility link combinations with CSS dropdown
+  </div>
+
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <!-- Intro -->
+  <div style="padding:0 32px;max-width:1060px;margin:64px auto;">
+    <h1 class="umd-campaign-small" style="text-transform:uppercase;margin:0 0 12px;">Navigation Header &mdash; Utility Nav Search</h1>
+    <p style="margin:32px 0;font-size:16px;line-height:1.6;font-family:'Interstate',Helvetica,Arial,Verdana,sans-serif;">Search placed in <code>slot="utility-navigation"</code> using the DS magnifying-glass SVG (from <code>search-url</code> shadow DOM), icon right of text. Because utility nav is a separate row above the nav bar, it does not consume horizontal space alongside nav items &mdash; same char counts as the no-search equivalents. Dropdown case (5D) uses the <strong>production <code>aria-hidden</code> JS toggle pattern</strong> matching umd.edu &mdash; click to open, click outside to close; no native DS dropdown for this slot.</p>
+  </div>
+
+  <div style="background:#242424;color:#fff;padding:14px 24px;font:700 13px/1 monospace;letter-spacing:0.08em;text-transform:uppercase;">
+    &#9658; 5 Nav Items — All With Dropdown Arrows
+  </div>
+  <!-- Case 5A -->
+  <h2 class="qa-case-meta">
+    <strong>Case 5A</strong> — 5 items / No CTA / Utility nav: Search only · Target: ~14 chars/item<br>
+    Labels: "Lorem Sit Amet" (14) · "Ut Consectetur" (14) · "Dolor Eiusmod" (13) · "Sed Do Tempore" (14) · "Magna Laboris" (13)
+  </h2>
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-navigation-header class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="UMD Alumni Association"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <div slot="utility-navigation">
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#search" style="display:inline-flex;align-items:center;gap:5px;">Search <svg aria-hidden="true" width="14" height="14" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M79.3401 42.2306C79.3401 54.1438 69.6826 63.8013 57.7694 63.8013C45.8562 63.8013 36.1987 54.1438 36.1987 42.2306C36.1987 30.3174 45.8562 20.6599 57.7694 20.6599C69.6826 20.6599 79.3401 30.3174 79.3401 42.2306ZM91 42.2306C91 60.5833 76.1222 75.4612 57.7694 75.4612C51.3447 75.4612 45.3458 73.6379 40.2619 70.4806L24.2216 86.5209H5L30.2245 60.8255C26.6351 55.5189 24.5388 49.1195 24.5388 42.2306C24.5388 23.8778 39.4167 9 57.7694 9C76.1222 9 91 23.8778 91 42.2306Z"/></svg></a>
+      </div>
+    </div>
+    </div>
+    <div slot="primary-slide-links">
+      <a href="#"><span>Lorem Sit Amet</span></a>
+      <a href="#"><span>Ut Consectetur</span></a>
+      <a href="#"><span>Dolor Eiusmod</span></a>
+      <a href="#"><span>Sed Do Tempore</span></a>
+      <a href="#"><span>Magna Laboris</span></a>
+    </div>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Lorem Sit Amet</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Ut Consectetur</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Dolor Eiusmod</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Sed Do Tempore</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Magna Laboris</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+  <div class="qa-divider"></div>
+  <!-- Case 5B -->
+  <h2 class="qa-case-meta">
+    <strong>Case 5B</strong> — 5 items / No CTA / Utility nav: "Give" + Search · Target: ~14 chars/item<br>
+    Labels: "Lorem Sit Amet" (14) · "Ut Consectetur" (14) · "Dolor Eiusmod" (13) · "Sed Do Tempore" (14) · "Magna Laboris" (13)
+  </h2>
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-navigation-header class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="UMD Alumni Association"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <div slot="utility-navigation">
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#give">Give</a>
+      </div>
+    </div>
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#search" style="display:inline-flex;align-items:center;gap:5px;">Search <svg aria-hidden="true" width="14" height="14" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M79.3401 42.2306C79.3401 54.1438 69.6826 63.8013 57.7694 63.8013C45.8562 63.8013 36.1987 54.1438 36.1987 42.2306C36.1987 30.3174 45.8562 20.6599 57.7694 20.6599C69.6826 20.6599 79.3401 30.3174 79.3401 42.2306ZM91 42.2306C91 60.5833 76.1222 75.4612 57.7694 75.4612C51.3447 75.4612 45.3458 73.6379 40.2619 70.4806L24.2216 86.5209H5L30.2245 60.8255C26.6351 55.5189 24.5388 49.1195 24.5388 42.2306C24.5388 23.8778 39.4167 9 57.7694 9C76.1222 9 91 23.8778 91 42.2306Z"/></svg></a>
+      </div>
+    </div>
+    </div>
+    <div slot="primary-slide-links">
+      <a href="#"><span>Lorem Sit Amet</span></a>
+      <a href="#"><span>Ut Consectetur</span></a>
+      <a href="#"><span>Dolor Eiusmod</span></a>
+      <a href="#"><span>Sed Do Tempore</span></a>
+      <a href="#"><span>Magna Laboris</span></a>
+    </div>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Lorem Sit Amet</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Ut Consectetur</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Dolor Eiusmod</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Sed Do Tempore</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Magna Laboris</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+  <div class="qa-divider"></div>
+  <!-- Case 5C -->
+  <h2 class="qa-case-meta">
+    <strong>Case 5C</strong> — 5 items / No CTA / Utility nav: "Give" + "myUMD" + Search · Target: ~14 chars/item<br>
+    Labels: "Lorem Sit Amet" (14) · "Ut Consectetur" (14) · "Dolor Eiusmod" (13) · "Sed Do Tempore" (14) · "Magna Laboris" (13)
+  </h2>
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-navigation-header class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="UMD Alumni Association"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <div slot="utility-navigation">
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#give">Give</a>
+      </div>
+    </div>
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#myumd">myUMD</a>
+      </div>
+    </div>
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#search" style="display:inline-flex;align-items:center;gap:5px;">Search <svg aria-hidden="true" width="14" height="14" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M79.3401 42.2306C79.3401 54.1438 69.6826 63.8013 57.7694 63.8013C45.8562 63.8013 36.1987 54.1438 36.1987 42.2306C36.1987 30.3174 45.8562 20.6599 57.7694 20.6599C69.6826 20.6599 79.3401 30.3174 79.3401 42.2306ZM91 42.2306C91 60.5833 76.1222 75.4612 57.7694 75.4612C51.3447 75.4612 45.3458 73.6379 40.2619 70.4806L24.2216 86.5209H5L30.2245 60.8255C26.6351 55.5189 24.5388 49.1195 24.5388 42.2306C24.5388 23.8778 39.4167 9 57.7694 9C76.1222 9 91 23.8778 91 42.2306Z"/></svg></a>
+      </div>
+    </div>
+    </div>
+    <div slot="primary-slide-links">
+      <a href="#"><span>Lorem Sit Amet</span></a>
+      <a href="#"><span>Ut Consectetur</span></a>
+      <a href="#"><span>Dolor Eiusmod</span></a>
+      <a href="#"><span>Sed Do Tempore</span></a>
+      <a href="#"><span>Magna Laboris</span></a>
+    </div>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Lorem Sit Amet</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Ut Consectetur</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Dolor Eiusmod</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Sed Do Tempore</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Magna Laboris</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+  <div class="qa-divider"></div>
+  <!-- Case 5D -->
+  <h2 class="qa-case-meta">
+    <strong>Case 5D</strong> — 5 items / No CTA / Utility nav: "Giving ▾" (production aria-hidden dropdown) + Search — click to open · Target: ~14 chars/item<br>
+    Labels: "Lorem Sit Amet" (14) · "Ut Consectetur" (14) · "Dolor Eiusmod" (13) · "Sed Do Tempore" (14) · "Magna Laboris" (13)
+  </h2>
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-navigation-header class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="UMD Alumni Association"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <div slot="utility-navigation">
+      <div class="umd-shell-utility-item">
+        <div class="umd-shell-utility-actions">
+          <button class="umd-sans-smaller"
+                  aria-controls="case5d-giving-dropdown"
+                  aria-expanded="false"
+                  aria-label="Toggle for Giving links">
+            <span aria-hidden="true">Giving</span>
+            <svg aria-hidden="true" width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M5.3136 3.70222L8.16278 0.5L10.625 0.500009L6.63731 5.18995L6.63916 5.19202L5.31635 6.75L5.3136 6.74677L5.31086 6.74999L3.98805 5.19201L3.98989 5.18995L0.00221157 0.500005L2.46443 0.500007L5.3136 3.70222Z"/>
+            </svg>
+          </button>
+        </div>
+        <div id="case5d-giving-dropdown" class="umd-shell-utility-links" aria-hidden="true">
+          <a class="umd-sans-smaller" href="#"><span>Make a Gift</span></a>
+          <a class="umd-sans-smaller" href="#"><span>Athletics Fund</span></a>
+          <a class="umd-sans-smaller" href="#"><span>Scholarship Fund</span></a>
+        </div>
+      </div>
+      <div class="umd-shell-utility-item">
+        <div class="umd-shell-utility-actions">
+          <a class="umd-sans-smaller" href="#search" style="display:inline-flex;align-items:center;gap:5px;">Search <svg aria-hidden="true" width="14" height="14" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M79.3401 42.2306C79.3401 54.1438 69.6826 63.8013 57.7694 63.8013C45.8562 63.8013 36.1987 54.1438 36.1987 42.2306C36.1987 30.3174 45.8562 20.6599 57.7694 20.6599C69.6826 20.6599 79.3401 30.3174 79.3401 42.2306ZM91 42.2306C91 60.5833 76.1222 75.4612 57.7694 75.4612C51.3447 75.4612 45.3458 73.6379 40.2619 70.4806L24.2216 86.5209H5L30.2245 60.8255C26.6351 55.5189 24.5388 49.1195 24.5388 42.2306C24.5388 23.8778 39.4167 9 57.7694 9C76.1222 9 91 23.8778 91 42.2306Z"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <div slot="primary-slide-links">
+      <a href="#"><span>Lorem Sit Amet</span></a>
+      <a href="#"><span>Ut Consectetur</span></a>
+      <a href="#"><span>Dolor Eiusmod</span></a>
+      <a href="#"><span>Sed Do Tempore</span></a>
+      <a href="#"><span>Magna Laboris</span></a>
+    </div>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Lorem Sit Amet</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Ut Consectetur</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Dolor Eiusmod</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Sed Do Tempore</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Magna Laboris</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+  <div class="qa-divider"></div>
+  <!-- Case 5E -->
+  <h2 class="qa-case-meta">
+    <strong>Case 5E</strong> — 5 items / CTA "Apply Here" (10) / Utility nav: Search only (CTA is header attr) · Target: ~12 chars/item<br>
+    Labels: "Lorem Tempor" (12) · "Ipsum Dolore" (12) · "Commodo Amet" (12) · "Veniam Nulla" (12) · "Laboris Elit" (12)
+  </h2>
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-navigation-header class="umd-layout-space-horizontal-full"
+    cta-text="Apply Here"
+    cta-url="#apply">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="UMD Alumni Association"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <div slot="utility-navigation">
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#search" style="display:inline-flex;align-items:center;gap:5px;">Search <svg aria-hidden="true" width="14" height="14" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M79.3401 42.2306C79.3401 54.1438 69.6826 63.8013 57.7694 63.8013C45.8562 63.8013 36.1987 54.1438 36.1987 42.2306C36.1987 30.3174 45.8562 20.6599 57.7694 20.6599C69.6826 20.6599 79.3401 30.3174 79.3401 42.2306ZM91 42.2306C91 60.5833 76.1222 75.4612 57.7694 75.4612C51.3447 75.4612 45.3458 73.6379 40.2619 70.4806L24.2216 86.5209H5L30.2245 60.8255C26.6351 55.5189 24.5388 49.1195 24.5388 42.2306C24.5388 23.8778 39.4167 9 57.7694 9C76.1222 9 91 23.8778 91 42.2306Z"/></svg></a>
+      </div>
+    </div>
+    </div>
+    <div slot="primary-slide-links">
+      <a href="#"><span>Lorem Tempor</span></a>
+      <a href="#"><span>Ipsum Dolore</span></a>
+      <a href="#"><span>Commodo Amet</span></a>
+      <a href="#"><span>Veniam Nulla</span></a>
+      <a href="#"><span>Laboris Elit</span></a>
+    </div>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Lorem Tempor</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Ipsum Dolore</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Commodo Amet</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Veniam Nulla</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Laboris Elit</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+  <div class="qa-divider"></div>
+  <!-- Case 5F -->
+  <h2 class="qa-case-meta">
+    <strong>Case 5F</strong> — 5 items / CTA "Apply Here" (10) / Utility nav: "Give" + Search (CTA is header attr) · Target: ~12 chars/item<br>
+    Labels: "Lorem Tempor" (12) · "Ipsum Dolore" (12) · "Commodo Amet" (12) · "Veniam Nulla" (12) · "Laboris Elit" (12)
+  </h2>
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-navigation-header class="umd-layout-space-horizontal-full"
+    cta-text="Apply Here"
+    cta-url="#apply">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="UMD Alumni Association"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <div slot="utility-navigation">
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#give">Give</a>
+      </div>
+    </div>
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#search" style="display:inline-flex;align-items:center;gap:5px;">Search <svg aria-hidden="true" width="14" height="14" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M79.3401 42.2306C79.3401 54.1438 69.6826 63.8013 57.7694 63.8013C45.8562 63.8013 36.1987 54.1438 36.1987 42.2306C36.1987 30.3174 45.8562 20.6599 57.7694 20.6599C69.6826 20.6599 79.3401 30.3174 79.3401 42.2306ZM91 42.2306C91 60.5833 76.1222 75.4612 57.7694 75.4612C51.3447 75.4612 45.3458 73.6379 40.2619 70.4806L24.2216 86.5209H5L30.2245 60.8255C26.6351 55.5189 24.5388 49.1195 24.5388 42.2306C24.5388 23.8778 39.4167 9 57.7694 9C76.1222 9 91 23.8778 91 42.2306Z"/></svg></a>
+      </div>
+    </div>
+    </div>
+    <div slot="primary-slide-links">
+      <a href="#"><span>Lorem Tempor</span></a>
+      <a href="#"><span>Ipsum Dolore</span></a>
+      <a href="#"><span>Commodo Amet</span></a>
+      <a href="#"><span>Veniam Nulla</span></a>
+      <a href="#"><span>Laboris Elit</span></a>
+    </div>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Lorem Tempor</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Ipsum Dolore</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Commodo Amet</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Veniam Nulla</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Laboris Elit</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+  <div class="qa-divider"></div>
+  <div style="background:#242424;color:#fff;padding:14px 24px;font:700 13px/1 monospace;letter-spacing:0.08em;text-transform:uppercase;">
+    &#9658; 4 Nav Items — CTA + Utility Combinations
+  </div>
+  <!-- Case 4A -->
+  <h2 class="qa-case-meta">
+    <strong>Case 4A</strong> — 4 items / No CTA / Utility nav: Search only · Target: ~18 chars/item<br>
+    Labels: "Incididunt Dolores" (18) · "Exercitation Lorem" (18) · "Adipiscing Tempore" (18) · "Incididunt Laborem" (18)
+  </h2>
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-navigation-header class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="UMD Alumni Association"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <div slot="utility-navigation">
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#search" style="display:inline-flex;align-items:center;gap:5px;">Search <svg aria-hidden="true" width="14" height="14" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M79.3401 42.2306C79.3401 54.1438 69.6826 63.8013 57.7694 63.8013C45.8562 63.8013 36.1987 54.1438 36.1987 42.2306C36.1987 30.3174 45.8562 20.6599 57.7694 20.6599C69.6826 20.6599 79.3401 30.3174 79.3401 42.2306ZM91 42.2306C91 60.5833 76.1222 75.4612 57.7694 75.4612C51.3447 75.4612 45.3458 73.6379 40.2619 70.4806L24.2216 86.5209H5L30.2245 60.8255C26.6351 55.5189 24.5388 49.1195 24.5388 42.2306C24.5388 23.8778 39.4167 9 57.7694 9C76.1222 9 91 23.8778 91 42.2306Z"/></svg></a>
+      </div>
+    </div>
+    </div>
+    <div slot="primary-slide-links">
+      <a href="#"><span>Incididunt Dolores</span></a>
+      <a href="#"><span>Exercitation Lorem</span></a>
+      <a href="#"><span>Adipiscing Tempore</span></a>
+      <a href="#"><span>Incididunt Laborem</span></a>
+    </div>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Incididunt Dolores</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Exercitation Lorem</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Adipiscing Tempore</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Incididunt Laborem</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+  <div class="qa-divider"></div>
+  <!-- Case 4B -->
+  <h2 class="qa-case-meta">
+    <strong>Case 4B</strong> — 4 items / CTA "Apply Here" (10) / Utility nav: "Give" + Search (CTA is header attr) · Target: ~15 chars/item<br>
+    Labels: "Adipiscing Enim" (15) · "Adipiscing Aute" (15) · "Adipiscing Quis" (15) · "Adipiscing Duis" (15)
+  </h2>
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-navigation-header class="umd-layout-space-horizontal-full"
+    cta-text="Apply Here"
+    cta-url="#apply">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="UMD Alumni Association"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <div slot="utility-navigation">
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#give">Give</a>
+      </div>
+    </div>
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#search" style="display:inline-flex;align-items:center;gap:5px;">Search <svg aria-hidden="true" width="14" height="14" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M79.3401 42.2306C79.3401 54.1438 69.6826 63.8013 57.7694 63.8013C45.8562 63.8013 36.1987 54.1438 36.1987 42.2306C36.1987 30.3174 45.8562 20.6599 57.7694 20.6599C69.6826 20.6599 79.3401 30.3174 79.3401 42.2306ZM91 42.2306C91 60.5833 76.1222 75.4612 57.7694 75.4612C51.3447 75.4612 45.3458 73.6379 40.2619 70.4806L24.2216 86.5209H5L30.2245 60.8255C26.6351 55.5189 24.5388 49.1195 24.5388 42.2306C24.5388 23.8778 39.4167 9 57.7694 9C76.1222 9 91 23.8778 91 42.2306Z"/></svg></a>
+      </div>
+    </div>
+    </div>
+    <div slot="primary-slide-links">
+      <a href="#"><span>Adipiscing Enim</span></a>
+      <a href="#"><span>Adipiscing Aute</span></a>
+      <a href="#"><span>Adipiscing Quis</span></a>
+      <a href="#"><span>Adipiscing Duis</span></a>
+    </div>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Adipiscing Enim</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Adipiscing Aute</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Adipiscing Quis</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Adipiscing Duis</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+  <div class="qa-divider"></div>
+  <div style="background:#242424;color:#fff;padding:14px 24px;font:700 13px/1 monospace;letter-spacing:0.08em;text-transform:uppercase;">
+    &#9658; 3 Nav Items — CTA + Utility Combinations
+  </div>
+  <!-- Case 3A -->
+  <h2 class="qa-case-meta">
+    <strong>Case 3A</strong> — 3 items / No CTA / Utility nav: Search only · Target: ~25 chars/item<br>
+    Labels: "Lorem Ipsum Dolor Sit Amet" (26) · "Consectetur Adipiscing Et" (25) · "Eiusmod Tempor Incididunt" (25)
+  </h2>
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-navigation-header class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="UMD Alumni Association"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <div slot="utility-navigation">
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#search" style="display:inline-flex;align-items:center;gap:5px;">Search <svg aria-hidden="true" width="14" height="14" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M79.3401 42.2306C79.3401 54.1438 69.6826 63.8013 57.7694 63.8013C45.8562 63.8013 36.1987 54.1438 36.1987 42.2306C36.1987 30.3174 45.8562 20.6599 57.7694 20.6599C69.6826 20.6599 79.3401 30.3174 79.3401 42.2306ZM91 42.2306C91 60.5833 76.1222 75.4612 57.7694 75.4612C51.3447 75.4612 45.3458 73.6379 40.2619 70.4806L24.2216 86.5209H5L30.2245 60.8255C26.6351 55.5189 24.5388 49.1195 24.5388 42.2306C24.5388 23.8778 39.4167 9 57.7694 9C76.1222 9 91 23.8778 91 42.2306Z"/></svg></a>
+      </div>
+    </div>
+    </div>
+    <div slot="primary-slide-links">
+      <a href="#"><span>Lorem Ipsum Dolor Sit Amet</span></a>
+      <a href="#"><span>Consectetur Adipiscing Et</span></a>
+      <a href="#"><span>Eiusmod Tempor Incididunt</span></a>
+    </div>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Lorem Ipsum Dolor Sit Amet</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Consectetur Adipiscing Et</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Eiusmod Tempor Incididunt</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+  <div class="qa-divider"></div>
+  <!-- Case 3B -->
+  <h2 class="qa-case-meta">
+    <strong>Case 3B</strong> — 3 items / CTA "Apply Here" (10) / Utility nav: "Give" + Search (CTA is header attr) · Target: ~22 chars/item<br>
+    Labels: "Lorem Ipsum Dolor Amet" (22) · "Consectetur Adipiscing" (22) · "Eiusmod Tempor Labore" (21)
+  </h2>
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-navigation-header class="umd-layout-space-horizontal-full"
+    cta-text="Apply Here"
+    cta-url="#apply">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="UMD Alumni Association"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <div slot="utility-navigation">
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#give">Give</a>
+      </div>
+    </div>
+    <div class="umd-shell-utility-item">
+      <div class="umd-shell-utility-actions">
+        <a class="umd-sans-smaller" href="#search" style="display:inline-flex;align-items:center;gap:5px;">Search <svg aria-hidden="true" width="14" height="14" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" fill="currentColor" style="flex-shrink:0;"><path fill-rule="evenodd" clip-rule="evenodd" d="M79.3401 42.2306C79.3401 54.1438 69.6826 63.8013 57.7694 63.8013C45.8562 63.8013 36.1987 54.1438 36.1987 42.2306C36.1987 30.3174 45.8562 20.6599 57.7694 20.6599C69.6826 20.6599 79.3401 30.3174 79.3401 42.2306ZM91 42.2306C91 60.5833 76.1222 75.4612 57.7694 75.4612C51.3447 75.4612 45.3458 73.6379 40.2619 70.4806L24.2216 86.5209H5L30.2245 60.8255C26.6351 55.5189 24.5388 49.1195 24.5388 42.2306C24.5388 23.8778 39.4167 9 57.7694 9C76.1222 9 91 23.8778 91 42.2306Z"/></svg></a>
+      </div>
+    </div>
+    </div>
+    <div slot="primary-slide-links">
+      <a href="#"><span>Lorem Ipsum Dolor Amet</span></a>
+      <a href="#"><span>Consectetur Adipiscing</span></a>
+      <a href="#"><span>Eiusmod Tempor Labore</span></a>
+    </div>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Lorem Ipsum Dolor Amet</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Consectetur Adipiscing</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="#">Eiusmod Tempor Labore</a>
+        <div slot="dropdown-links">
+          <a href="#">Sit Amet</a>
+          <a href="#">Do Eiusmod</a>
+          <a href="#">Ut Labore</a>
+          <a href="#">Dolore Magna</a>
+        </div>
+      </umd-element-nav-item>
+    </nav>
+  </umd-element-navigation-header>
+  <div class="qa-divider"></div>
+  <div style="height:64px;"></div>
+
+    <a slot="logo" href="/">
+      <img src="../images/logos/footer-logo.svg" alt="University of Maryland" />
+    </a>
+  </umd-element-footer>
+
+  <script>
+    (function () {
+      document.addEventListener('click', function (e) {
+        var btn = e.target.closest('button[aria-controls]');
+        if (btn) {
+          var panelId = btn.getAttribute('aria-controls');
+          var panel = document.getElementById(panelId);
+          if (!panel) return;
+          var isOpen = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+          panel.setAttribute('aria-hidden', isOpen ? 'true' : 'false');
+          e.stopPropagation();
+          return;
+        }
+        document.querySelectorAll('.umd-shell-utility-links[aria-hidden="false"]').forEach(function (panel) {
+          panel.setAttribute('aria-hidden', 'true');
+          var ctrl = document.querySelector('[aria-controls="' + panel.id + '"]');
+          if (ctrl) ctrl.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+  </script>
+
+  <script>
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var GRID_SELECTORS = [
+        '.umd-layout-grid-gap-two',
+        '.umd-layout-grid-gap-three',
+        '.umd-layout-grid-gap-stacked',
+        '.umd-layout-grid-columns-four',
+        '.umd-layout-grid-masonry',
+        '.umd-layout-grid-inline-tablet-rows',
+        '.umd-animation-grid',
+        '.umd-grid-animation'
+      ].map(function (sel) { return sel + ':not([data-animation="off"])'; });
+
+      var style = document.createElement('style');
+      style.textContent = [
+        '@keyframes fade-in-from-bottom {',
+        '  from { opacity: 0; transform: translateY(50px); }',
+        '  to   { opacity: 1; transform: translateY(0); }',
+        '}',
+        ':where(' + GRID_SELECTORS.join(',') + ') > * {',
+        '  opacity: 0;',
+        '  transform: translateY(50px);',
+        '}',
+        '.umd-animation-transition-fade-bottom {',
+        '  animation: fade-in-from-bottom 1s forwards;',
+        '}'
+      ].join('\n');
+      document.head.appendChild(style);
+
+      function tagRowOffsets(grid) {
+        var children = Array.prototype.slice.call(grid.children);
+        var prevTop = null;
+        children.forEach(function (child) {
+          var top = child.getBoundingClientRect().top;
+          if (prevTop !== null && Math.abs(top - prevTop) < 1) {
+            child.dataset.animation = 'offset';
+          } else {
+            delete child.dataset.animation;
+          }
+          prevTop = top;
+        });
+      }
+
+      function init() {
+        var grids = document.querySelectorAll(GRID_SELECTORS.join(','));
+        if (!grids.length) return;
+
+        grids.forEach(tagRowOffsets);
+        window.addEventListener('resize', function () { grids.forEach(tagRowOffsets); });
+
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            el.style.animationDelay = el.dataset.animation === 'offset' ? '350ms' : '0ms';
+            el.classList.add('umd-animation-transition-fade-bottom');
+            observer.unobserve(el);
+          });
+        }, { threshold: 0.35 });
+
+        grids.forEach(function (grid) {
+          Array.prototype.forEach.call(grid.children, function (child) { observer.observe(child); });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+
+</body>
+</html>

@@ -55,8 +55,8 @@
       {
         "name": "utility-navigation",
         "required": false,
-        "description": "Optional utility row shown above the nav row on desktop.",
-        "example": "<div slot=\"utility-navigation\"><a href=\"/give\">Give</a><a href=\"/myum\">myUMD</a></div>"
+        "description": "Optional utility row rendered above the nav row on desktop (right-aligned). Use the umd-shell-utility-item / umd-shell-utility-actions wrapper pattern with class='umd-sans-smaller' on each anchor. This creates a border-right separator between items. CRITICAL: The shadow DOM ::slotted() only reaches the direct slotted child div — it cannot style descendants — so the separator borders/spacing only work via light-DOM critical CSS (umd-shell-utility-item and umd-shell-utility-actions must be defined on the page). When using the wrapper pattern, set gap:0 on the slot div (the wrapper margins handle spacing); gap:24px is only for bare <a> patterns.",
+        "example": "<div slot=\"utility-navigation\" style=\"gap:0\">\n  <div class=\"umd-shell-utility-item\">\n    <div class=\"umd-shell-utility-actions\">\n      <a class=\"umd-sans-smaller\" href=\"/give\">Give</a>\n    </div>\n  </div>\n  <div class=\"umd-shell-utility-item\">\n    <div class=\"umd-shell-utility-actions\">\n      <a class=\"umd-sans-smaller\" href=\"/search\">Search</a>\n    </div>\n  </div>\n</div>"
       },
       {
         "name": "primary-slide-links",

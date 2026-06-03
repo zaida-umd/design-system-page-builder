@@ -325,7 +325,7 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   11. UTILITY NAVIGATION LINK STYLES
+   11. UTILITY NAVIGATION / SHELL-ITEM LINK STYLES
    The shadow DOM ::slotted(*) only reaches div[slot="utility-navigation"],
    NOT descendants — all link and separator styles must live here.
 
@@ -335,11 +335,38 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
                 > a.umd-sans-smaller (or button for dropdowns)
    - Dropdown: sibling div.umd-shell-utility-links[aria-hidden] panel
 
-   The shadow DOM forces gap:24px on ::slotted(*). The scoped
-   umd-element-navigation-header rule below overrides it to 0.
+   TWO LAYERS — keep them separate:
+   A. BASE (unscoped) — the reusable .umd-shell-utility-item pattern.
+      Used in the nav-header utility slot AND reused in pathway /
+      banner-promo / section-intro action slots (RULES.md §5). These
+      rules MUST stay unscoped or the reuse renders unstyled.
+   B. NAV-HEADER (scoped) — overrides the shadow ::slotted(*) gap:24px
+      and adds dropdown anchoring + panel. Only meaningful in the slot.
    ============================================================ */
 
-/* Scoped to match production and override ::slotted(*) gap */
+/* ---- A. BASE: reusable shell-item pattern (do NOT scope) ---- */
+.umd-shell-utility-item .umd-shell-utility-actions {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+}
+.umd-shell-utility-item:not(:last-child) .umd-shell-utility-actions {
+  border-right: 1px solid #E6E6E6;
+  margin-right: 16px;
+  padding-right: 16px;
+}
+.umd-shell-utility-item a {
+  color: #242424;
+  text-decoration: none;
+}
+.umd-shell-utility-item a:hover,
+.umd-shell-utility-item a:focus {
+  color: #E21833;
+}
+
+/* ---- B. NAV-HEADER: scoped to the utility-navigation slot ---- */
+/* Override the shadow ::slotted(*) gap:24px (the wrapper margins above
+   handle item spacing in the shell pattern). */
 umd-element-navigation-header div[slot="utility-navigation"] {
   gap: 0;
 }
@@ -347,26 +374,11 @@ umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-
   position: relative;
   z-index: 99999;
 }
-umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item .umd-shell-utility-actions {
-  align-items: center;
-  display: flex;
-  gap: 4px;
-}
-umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item:not(:last-child) .umd-shell-utility-actions {
-  border-right: 1px solid #E6E6E6;
-  margin-right: 16px;
-  padding-right: 16px;
-}
-umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item a,
 umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item button {
   color: #242424;
   text-decoration: none;
 }
-umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item a:hover,
-umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item a:focus {
-  color: #E21833;
-}
-/* Dropdown panel */
+/* Dropdown panel (shown via JS toggling aria-hidden — see LAYOUT-PATTERNS.md) */
 umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item .umd-shell-utility-links {
   display: none;
 }

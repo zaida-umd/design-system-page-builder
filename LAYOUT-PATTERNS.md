@@ -862,3 +862,74 @@ Wrap one or more `umd-element-call-to-action` in `umd-layout-grid-inline-tablet-
   </umd-element-call-to-action>
 </div>
 ```
+
+## Utility Navigation Slot (`slot="utility-navigation"`)
+
+The canonical production pattern (matches umd.edu). CSS lives in `critical.css` §11 — see RULES.md §4 for the gotchas (link color reset + `gap:0` override are mandatory). Each item is `.umd-shell-utility-item` → `.umd-shell-utility-actions` → `<a class="umd-sans-smaller">`. The `:not(:last-child)` separator border comes for free from the base layer.
+
+```html
+<div slot="utility-navigation">
+  <!-- Plain link item -->
+  <div class="umd-shell-utility-item">
+    <div class="umd-shell-utility-actions">
+      <a class="umd-sans-smaller" href="/give">Give</a>
+    </div>
+  </div>
+
+  <!-- Search item — DS magnifying-glass SVG, icon right of text -->
+  <div class="umd-shell-utility-item">
+    <div class="umd-shell-utility-actions">
+      <a class="umd-sans-smaller" href="/search" style="display:inline-flex;align-items:center;gap:5px;">
+        Search
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 96 96" fill="currentColor" style="flex-shrink:0;">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M79.3401 42.2306C79.3401 54.1438 69.6826 63.8013 57.7694 63.8013C45.8562 63.8013 36.1987 54.1438 36.1987 42.2306C36.1987 30.3174 45.8562 20.6599 57.7694 20.6599C69.6826 20.6599 79.3401 30.3174 79.3401 42.2306ZM91 42.2306C91 60.5833 76.1222 75.4612 57.7694 75.4612C51.3447 75.4612 45.3458 73.6379 40.2619 70.4806L24.2216 86.5209H5L30.2245 60.8255C26.6351 55.5189 24.5388 49.1195 24.5388 42.2306C24.5388 23.8778 39.4167 9 57.7694 9C76.1222 9 91 23.8778 91 42.2306Z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+```
+
+### Dropdown item (production `aria-hidden` toggle)
+
+The DS has **no native dropdown** for this slot. Production uses a `<button>` toggle + a sibling `.umd-shell-utility-links[aria-hidden]` panel, with JS flipping `aria-hidden` / `aria-expanded`. The panel CSS (positioning, show/hide, chevron rotation) is already in `critical.css` §11.
+
+```html
+<div class="umd-shell-utility-item">
+  <div class="umd-shell-utility-actions">
+    <button class="umd-sans-smaller" aria-controls="giving-dropdown" aria-expanded="false" aria-label="Toggle for Giving links">
+      <span aria-hidden="true">Giving</span>
+      <svg aria-hidden="true" width="11" height="7" viewBox="0 0 11 7" fill="none">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M5.3136 3.70222L8.16278 0.5L10.625 0.500009L6.63731 5.18995L6.63916 5.19202L5.31635 6.75L5.3136 6.74677L5.31086 6.74999L3.98805 5.19201L3.98989 5.18995L0.00221157 0.500005L2.46443 0.500007L5.3136 3.70222Z"/>
+      </svg>
+    </button>
+  </div>
+  <div id="giving-dropdown" class="umd-shell-utility-links" aria-hidden="true">
+    <a class="umd-sans-smaller" href="#"><span>Make a Gift</span></a>
+    <a class="umd-sans-smaller" href="#"><span>Scholarship Fund</span></a>
+  </div>
+</div>
+```
+
+```html
+<!-- Toggle script: click opens, click outside closes -->
+<script>
+  document.addEventListener('click', function (e) {
+    var btn = e.target.closest('button[aria-controls]');
+    if (btn) {
+      var panel = document.getElementById(btn.getAttribute('aria-controls'));
+      if (!panel) return;
+      var open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      panel.setAttribute('aria-hidden', open ? 'true' : 'false');
+      e.stopPropagation();
+      return;
+    }
+    document.querySelectorAll('.umd-shell-utility-links[aria-hidden="false"]').forEach(function (panel) {
+      panel.setAttribute('aria-hidden', 'true');
+      var ctrl = document.querySelector('[aria-controls="' + panel.id + '"]');
+      if (ctrl) ctrl.setAttribute('aria-expanded', 'false');
+    });
+  });
+</script>
+```

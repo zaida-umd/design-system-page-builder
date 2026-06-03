@@ -97,6 +97,15 @@ Nav items must be placed inside a `<nav slot="main-navigation">` wrapper, not sl
 
 `sticky` is a boolean attribute — use `sticky` not `sticky="true"`.
 
+### Utility navigation slot — link styling is mandatory (recurring bug)
+
+The `slot="utility-navigation"` content is styled almost entirely by light-DOM CSS, **not** the shadow DOM. The component's shadow only does `.element-header-utility-row ::slotted(*) { display:flex; justify-content:flex-end; gap:24px }` — and `::slotted()` reaches **only the direct slotted `<div>`, never its descendants**. Two things fail silently if you forget them:
+
+1. **Links render browser-default blue + underlined** unless you set `color` and `text-decoration: none` on the `<a>`/`<button>` descendants. This is already in `styles/critical.css` §11 / `TEMPLATE.html` — so any page built from the template gets it. **Do not write a narrower scoped override that omits the color/decoration reset** (this is exactly how the bug keeps coming back).
+2. **Items are spaced ~57px apart, not ~33px,** if you use the `.umd-shell-utility-item` separator pattern without killing the shadow's `gap:24px`. The fix is the scoped rule `umd-element-navigation-header div[slot="utility-navigation"] { gap: 0 }` (already in §11). The `.umd-shell-utility-item` margins/border then provide the 16+1+16px separator.
+
+Use the canonical production markup (matches umd.edu): plain `<div slot="utility-navigation">` → one `.umd-shell-utility-item` per link → `.umd-shell-utility-actions` → `<a class="umd-sans-smaller">`. For a dropdown item, use a `<button>` toggle + sibling `.umd-shell-utility-links[aria-hidden]` panel — see [LAYOUT-PATTERNS.md](LAYOUT-PATTERNS.md) for the full recipe + JS.
+
 ---
 
 ## 5. Pathway usage rules
@@ -154,7 +163,7 @@ CTAs belong **inside the pathway**, in `slot="actions"` — never as a sibling e
 
 **Maximum count:** **1 primary + up to 5 secondary** in a single pathway action slot. Beyond that, the action stack visually dominates the body copy.
 
-**When approaching 5 secondaries** — switch to the shell utility-nav pattern (separator-divided links) instead of stacking five secondary CTA components. Use `.umd-shell-utility-item` / `.umd-shell-utility-actions` from `styles/critical.css` §14:
+**When approaching 5 secondaries** — switch to the shell utility-nav pattern (separator-divided links) instead of stacking five secondary CTA components. Use `.umd-shell-utility-item` / `.umd-shell-utility-actions` from `styles/critical.css` §11 (layer A — the unscoped base; see §4 for the nav-header utility slot):
 
 ```html
 <umd-element-pathway>

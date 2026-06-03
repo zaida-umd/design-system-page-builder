@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA: Pathway Variants — University of Maryland</title>
+
+  <!-- ============================================================
+       UMD Critical CSS — Hybrid CDN + Local
+       MUST precede cdn.js. If cdn.js loads first, elements upgrade
+       before :defined rules exist and container-type never gets set.
+
+       Load order:
+         <link> CDN bundles → <style> local subset → <script> cdn.js
+
+       Browsers block on stylesheet fetches before parsing the script
+       tag, so all CSS — both upstream and local — applies before
+       custom elements upgrade.
+
+       SOURCE OF TRUTH: styles/critical.css
+       The inline <style> block is a verbatim copy of styles/critical.css.
+       When updating, edit styles/critical.css first, then copy here.
+       See REQUIRED-CSS.md for what each rule does and why.
+  ============================================================ -->
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/font-faces.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/tokens.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/base.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/typography.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/web-components.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library/css/layout.min.css">
+  <style>
+    /* ============================================================
+       1. COMPONENT REGISTRATION GAP-FILLS
+       Re-add :defined rules for components missing from upstream
+       web-components.min.css. As those land upstream, drop these.
+       ============================================================ */
+
+    /* umd-element-utility-header — present on every page (band above the
+       nav header). Not in upstream bundle as of v1.8.11. */
+    umd-element-utility-header:not(:defined) { content-visibility: hidden; }
+    umd-element-utility-header { display: block; container-type: normal; }
+
+    /* umd-element-carousel* — not in upstream bundle. */
+    umd-element-carousel:not(:defined),
+    umd-element-carousel-cards:not(:defined),
+    umd-element-carousel-thumbnail:not(:defined),
+    umd-element-carousel-image:not(:defined),
+    umd-element-carousel-image-wide:not(:defined),
+    umd-element-carousel-multiple-image:not(:defined) {
+      content-visibility: hidden;
+    }
+    umd-element-carousel,
+    umd-element-carousel-cards,
+    umd-element-carousel-thumbnail,
+    umd-element-carousel-image,
+    umd-element-carousel-image-wide,
+    umd-element-carousel-multiple-image {
+      display: block;
+      container-type: inline-size;
+    }
+
+    /* umd-layout-image-expand — full-bleed pseudo-component.
+       Width:100% is project-specific (collapses without it). */
+    umd-layout-image-expand:not(:defined) { content-visibility: hidden; }
+    umd-layout-image-expand {
+      display: block;
+      container-type: inline-size;
+      width: 100%;
+    }
+
+    /* Project-specific spacing for breadcrumb (not a default in upstream). */
+    umd-element-breadcrumb:defined { margin-top: 16px; }
+
+
+    /* ============================================================
+       2. WATERMARK DECORATION
+       ============================================================ */
+    :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+      position: absolute;
+      top: 20px;
+      left: -2%;
+      color: #f1f1f1;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: min(calc(44px + 13vw), 240px);
+      line-height: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+    :is(.umd-text-decoration-watermark, .umd-watermark):not(.umd-watermark-dark) > * {
+      opacity: 0.6;
+      z-index: -1;
+    }
+    .umd-watermark-dark > * {
+      opacity: 0.12;
+      z-index: inherit;
+    }
+    @keyframes slide-in-from-left {
+      from { transform: translate(-15vw); }
+      to   { transform: translate(0); }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        :is(.umd-text-decoration-watermark, .umd-watermark, .umd-watermark-dark) > * {
+          animation: slide-in-from-left forwards;
+          animation-timeline: view();
+          animation-range-start: 0;
+          animation-range-end: 100vh;
+          transform: translate(-15vw);
+        }
+      }
+    }
+
+
+    /* ============================================================
+       3. LAYOUT AUGMENTATIONS
+       Extra properties on upstream layout classes that layout.min.css
+       doesn't include. These cascade over the upstream rules.
+       ============================================================ */
+
+    /* Upstream sets max-width/padding correctly. These extra properties are
+       required for watermark positioning and the internal @container query
+       used by umd-element-section-intro-wide. */
+    .umd-layout-space-horizontal-larger {
+      position: relative;
+      container-type: inline-size;
+      isolation: isolate;
+    }
+
+    /* Upstream omits align-items and flex-shrink on the columns-left layout.
+       align-items: flex-start prevents variable-height sidebar from stretching;
+       flex-shrink: 0 keeps the fixed 242px sidebar width under constraint. */
+    @media (min-width: 768px) {
+      .umd-layout-space-columns-left { align-items: flex-start; }
+      .umd-layout-space-columns-left > *:first-child { flex-shrink: 0; }
+    }
+
+
+    /* ============================================================
+       4. BACKGROUND-FULL-DARK BUG FIX
+       layout.min.css serializes the highDef breakpoint as
+       @media([object Object]) — ignored by browsers — because
+       background/full.ts:42 uses media.queries.highDef (the whole
+       object) instead of media.queries.highDef.min. This rule
+       cascades over the broken upstream with the correct breakpoint.
+       ============================================================ */
+    .umd-layout-background-full-dark {
+      background-color: #000000;
+      padding: 48px 0;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-background-full-dark { padding: 80px 0; }
+    }
+    @media (min-width: 1200px) {
+      .umd-layout-background-full-dark { padding: 104px 0; }
+    }
+
+
+    /* ============================================================
+       5. MASONRY SECTION-INTRO COMPANION
+       Compensates for masonry's negative top margin when a section
+       intro immediately precedes it. The base .umd-layout-grid-masonry
+       class comes from layout.min.css.
+       ============================================================ */
+    @media (min-width: 768px) {
+      umd-element-section-intro + .umd-layout-grid-masonry,
+      umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 32px; }
+    }
+    @media (min-width: 1024px) {
+      umd-element-section-intro + .umd-layout-grid-masonry,
+      umd-element-section-intro-wide + .umd-layout-grid-masonry { padding-top: 40px; }
+    }
+
+
+    /* ============================================================
+       6. COLOR UTILITIES — not in upstream tokens or typography bundles
+       ============================================================ */
+    .text-black { color: #000; }
+    .text-white { color: #ffffff; }
+
+
+    /* ============================================================
+       7. RICH TEXT ADVANCED — editorial body copy
+       Light and dark variants. 18px/1.5em with link hover styles.
+       ============================================================ */
+
+    /* Light variant */
+    .umd-text-rich-advanced {
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    .umd-text-rich-advanced * {
+      color: #454545;
+    }
+    .umd-text-rich-advanced > * {
+      font-size: 18px;
+      margin-top: 24px;
+    }
+    .umd-text-rich-advanced > *:first-child {
+      margin-top: 0;
+    }
+    .umd-text-rich-advanced a {
+      color: #000000;
+      background-image: linear-gradient(#000000, #000000);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-advanced a:hover,
+    .umd-text-rich-advanced a:focus {
+      background-image: linear-gradient(#E21833, #E21833);
+    }
+
+    /* Dark variant */
+    .umd-text-rich-advanced-dark {
+      font-size: 18px;
+      line-height: 1.5em;
+    }
+    .umd-text-rich-advanced-dark p,
+    .umd-text-rich-advanced-dark li { color: #ffffff; }
+    .umd-text-rich-advanced-dark a {
+      color: #ffffff;
+      background-image: linear-gradient(#ffffff, #ffffff);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-advanced-dark a:hover,
+    .umd-text-rich-advanced-dark a:focus {
+      background-image: linear-gradient(#FFD200, #FFD200);
+    }
+
+
+    /* ============================================================
+       8. INTERIOR PAGE LAYOUT UTILITIES
+       ============================================================ */
+
+    /* Content column max-width (Tailwind utility) */
+    .max-w-\[800px\] { max-width: 800px; }
+
+
+    /* ============================================================
+       9. IMAGE-EXPAND CONTENT UTILITIES
+       Classes for div[slot="content"] inside umd-layout-image-expand.
+       ============================================================ */
+    .max-w-\[480px\] { max-width: 480px; }
+    .w-full          { width: 100%; }
+    .block           { display: block; }
+    .mr-auto         { margin-right: auto; }
+    .pl-md           { padding-left: 24px; }
+
+    .umd-adjacent-line-text { position: relative; }
+    .umd-adjacent-line-text::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background-color: #E21833;
+      left: -24px;
+    }
+
+    /* Body copy on dark/image backgrounds — white text, animated underline links */
+    .umd-text-rich-simple-large-dark {
+      font-size: 18px;
+      line-height: 1.5em;
+      color: #ffffff;
+    }
+    .umd-text-rich-simple-large-dark * { color: #ffffff; }
+    .umd-text-rich-simple-large-dark > * { font-size: 18px; margin-top: 24px; }
+    .umd-text-rich-simple-large-dark > *:first-child { margin-top: 0; }
+    .umd-text-rich-simple-large-dark a {
+      color: #ffffff;
+      background-image: linear-gradient(#ffffff, #ffffff);
+      position: relative;
+      background-position: left calc(100% - 1px);
+      background-repeat: no-repeat;
+      background-size: 100% 1px;
+      transition: color 0.5s, background-size 0.5s, background-image 0.5s, background-position 0.5s;
+    }
+    .umd-text-rich-simple-large-dark a:hover,
+    .umd-text-rich-simple-large-dark a:focus {
+      background-image: linear-gradient(#FFD200, #FFD200);
+    }
+
+
+    /* ============================================================
+       10. STICKY COLUMNS UTILITIES
+       Spacing tokens for slot content inside umd-element-sticky-columns.
+       ============================================================ */
+    .mb-md { margin-bottom: 24px; }
+    .mb-sm { margin-bottom: 16px; }
+
+
+    /* ============================================================
+       11. UTILITY NAVIGATION LINK STYLES
+       ::slotted(*) only reaches div[slot="utility-navigation"], not
+       descendants — these light-DOM styles fill that gap.
+       ============================================================ */
+    [slot="utility-navigation"] {
+      display: flex;
+      justify-content: flex-end;
+      gap: 24px;
+    }
+    [slot="utility-navigation"] a {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #242424;
+      text-decoration: none;
+      line-height: 1.25;
+      transition: color 0.3s ease-in-out;
+    }
+    [slot="utility-navigation"] a:hover,
+    [slot="utility-navigation"] a:focus {
+      color: #E21833;
+      text-decoration: underline;
+    }
+
+    /* Shell-style item list — separators + tight icon+label gap. */
+    .umd-shell-utility-item .umd-shell-utility-actions {
+      align-items: center;
+      display: flex;
+      gap: 4px;
+    }
+    .umd-shell-utility-item:not(:last-child) .umd-shell-utility-actions {
+      border-right: 1px solid #E6E6E6;
+      margin-right: 16px;
+      padding-right: 16px;
+    }
+
+
+    /* ============================================================
+       12. BANNER-PROMO STACKED ACTIONS — light-DOM column flex.
+       Pairs with the shadow-DOM injection in OVERRIDES.md so the 8px
+       gap is visible regardless of where children render.
+       ============================================================ */
+    .banner-promo-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+
+    /* ============================================================
+       13. SECTION DIVIDER — standalone <hr> utility.
+       ============================================================ */
+    .umd-text-divider {
+      border: none;
+      border-top: 1px solid #000000;
+      margin: 0 0 24px 0;
+    }
+    .umd-text-divider.dark {
+      border-top-color: #ffffff;
+    }
+
+
+    /* ============================================================
+       14. TRAILING-LINE LABEL — section eyebrow with horizontal line
+       Source: @universityofmaryland/web-styles-library: element.text.line.trailing
+       ============================================================ */
+    .umd-text-line-trailing,
+    .umd-text-line-trailing-dark {
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      line-height: 1.42em;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      background-color: #ffffff;
+    }
+    .umd-text-line-trailing::before,
+    .umd-text-line-trailing-dark::before {
+      content: "";
+      position: absolute;
+      top: 9px;
+      right: 0;
+      width: 100vw;
+      height: 1px;
+      background: #000000;
+      z-index: 1;
+    }
+    .umd-text-line-trailing > span,
+    .umd-text-line-trailing-dark > span {
+      position: relative;
+      background-color: inherit;
+      padding-right: 8px;
+      z-index: 2;
+    }
+    .umd-text-line-trailing + *,
+    .umd-text-line-trailing-dark + * {
+      margin-top: 40px;
+    }
+    .umd-text-line-trailing-dark {
+      background-color: #000000;
+      color: #ffffff;
+    }
+    .umd-text-line-trailing-dark::before {
+      background: #ffffff;
+    }
+
+
+    /* ============================================================
+       15. NO-GAP CARD GRID — 3 columns flush together
+       ============================================================ */
+    .umd-layout-grid-cards-no-gap {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 768px) {
+      .umd-layout-grid-cards-no-gap {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .umd-layout-grid-cards-no-gap > * {
+      height: 100%;
+    }
+
+
+    /* ============================================================
+       16. OVERLAY CARD .size-large MIN-HEIGHT
+       Source: design-system/packages/styles/source/web-components.ts
+               (cardOverlay custom rules — umd-element-card-overlay.size-large)
+       ============================================================ */
+    umd-element-card-overlay.size-large {
+      min-height: 320px;
+    }
+    @media (min-width: 768px) {
+      umd-element-card-overlay.size-large {
+        min-height: 560px;
+      }
+    }
+
+
+    /* ============================================================
+       17. TUITION & AID 2-COLUMN GRID
+       Asymmetric content split: 1.5fr / 1fr at 1024px+.
+       ============================================================ */
+    .umd-layout-grid-tuition-two {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    @media (min-width: 1024px) {
+      .umd-layout-grid-tuition-two {
+        grid-template-columns: 1.5fr 1fr;
+        gap: 80px;
+      }
+    }
+
+
+    /* ============================================================
+       18. FULL-WIDTH OUTLINE BUTTON — light-DOM utility class
+       Visually mirrors umd-element-call-to-action data-display="outline"
+       but stretches to fill its grid cell. Use when the DS web component's
+       shadow-DOM max-width:380px would fight against your layout.
+       ============================================================ */
+    .umd-action-outline-block {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 24px;
+      font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.28em;
+      text-align: center;
+      text-decoration: none;
+      background-color: #ffffff;
+      border: 1px solid #242424;
+      color: #000000;
+      transition: background 0.5s ease-in-out, border 0.5s ease-in-out, color 0.5s ease-in-out;
+    }
+    .umd-action-outline-block:hover,
+    .umd-action-outline-block:focus {
+      background-color: #242424;
+      color: #ffffff;
+    }
+    .umd-action-outline-block.dark {
+      background-color: transparent;
+      border: 1px solid #ffffff;
+      color: #ffffff;
+    }
+    .umd-action-outline-block.dark:hover,
+    .umd-action-outline-block.dark:focus {
+      background-color: #ffffff;
+      color: #000000;
+    }
+  </style>
+
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.18.10/dist/cdn.js"></script>
+</head>
+<body>
+
+  <!-- QA label banner — sticky, identifies what is being tested -->
+  <div style="background:#ffeb3b;color:#000;padding:8px 16px;font:13px/1.4 monospace;border-bottom:2px solid rgba(0,0,0,.2);position:sticky;top:0;z-index:9999;">
+    QA: umd-element-pathway | overlay variants (no-theme, dark, light, maryland, image-left) + standard variants (dark, maryland, image-left) + hero display
+  </div>
+
+  <!-- ========================================
+       GLOBAL UNIVERSITY HEADER
+  ======================================== -->
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <!-- ========================================
+       SITE NAVIGATION HEADER
+       Includes dropdown to test mobile open/close and scroll behavior
+  ======================================== -->
+  <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">
+    <a slot="logo" href="/">
+      <img src="../images/logos/primary-logo-dark.svg" alt="University of Maryland"
+        onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" />
+    </a>
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/research">Research</a>
+        <div slot="dropdown-links">
+          <a href="/research/areas">Research Areas</a>
+          <a href="/research/centers">Centers &amp; Institutes</a>
+          <a href="/research/funding">Funding Opportunities</a>
+          <a href="/research/impact">Research Impact</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/academics">Academics</a>
+        <div slot="dropdown-links">
+          <a href="/academics/undergraduate">Undergraduate</a>
+          <a href="/academics/graduate">Graduate</a>
+          <a href="/academics/colleges">Colleges &amp; Schools</a>
+        </div>
+      </umd-element-nav-item>
+      <umd-element-nav-item>
+        <a slot="primary-link" href="/about">About</a>
+      </umd-element-nav-item>
+    </nav>
+    <div slot="utility-navigation">
+      <a href="/apply">Apply</a>
+      <a href="/give">Give</a>
+    </div>
+  </umd-element-navigation-header>
+
+
+  <!-- ============================================================
+       OVERLAY PATHWAY VARIANTS
+       data-display="overlay" — self-contained, no dark wrapper needed
+       Background panel color depends on data-theme:
+         (none)      → white panel
+         dark        → black panel (recommended for photography)
+         light       → light gray panel
+         maryland    → red panel (#e21833)
+  ============================================================ -->
+
+  <div role="presentation" aria-hidden="true" style="background:#e8e8e8;padding:10px 24px;border-left:4px solid #c00;font:700 13px/1.4 monospace;color:#333;">
+    OVERLAY PATHWAYS — data-display="overlay" — self-contained, no dark wrapper required
+  </div>
+
+  <!-- Test 1: Overlay — no theme (white panel) -->
+  <div role="presentation" aria-hidden="true" style="background:#f5f5f5;padding:8px 24px;font:13px/1.4 monospace;color:#555;border-bottom:1px solid #ddd;">
+    Test 1: Overlay, no theme → white panel on right, image fills full width
+  </div>
+  <section class="umd-layout-vertical-landing">
+    <umd-element-pathway data-display="overlay">
+      <img slot="image" src="../images/large/campus/hornbake-plaza-fall.jpg" alt="Hornbake Plaza with fall foliage and students walking" />
+      <p slot="eyebrow">Featured</p>
+      <h2 slot="headline">Advancing Research at Maryland</h2>
+      <div slot="text"><p>Our researchers tackle the defining challenges of our time — from climate solutions to breakthrough medicine and quantum computing.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary">
+          <a href="/research">Explore Research</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+  <!-- Test 2: Overlay — dark theme (black panel, recommended for photography) -->
+  <div role="presentation" aria-hidden="true" style="background:#f5f5f5;padding:8px 24px;font:13px/1.4 monospace;color:#555;border-bottom:1px solid #ddd;">
+    Test 2: Overlay, data-theme="dark" → black panel (recommended for photography) | CTA must also carry data-theme="dark"
+  </div>
+  <section class="umd-layout-vertical-landing">
+    <umd-element-pathway data-display="overlay" data-theme="dark">
+      <img slot="image" src="../images/large/default/CampusSpring-students.jpg" alt="Students walking across campus in spring" />
+      <p slot="eyebrow">Graduate School</p>
+      <h2 slot="headline">Choose Maryland for Graduate Study</h2>
+      <div slot="text"><p>With over 100 graduate programs and world-class faculty, Maryland prepares students to lead and innovate in their fields.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
+          <a href="/graduate/apply">Apply Now</a>
+        </umd-element-call-to-action>
+        <umd-element-call-to-action data-display="secondary" data-theme="dark">
+          <a href="/graduate/programs">Browse Programs</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+  <!-- Test 3: Overlay — light theme (gray panel) -->
+  <div role="presentation" aria-hidden="true" style="background:#f5f5f5;padding:8px 24px;font:13px/1.4 monospace;color:#555;border-bottom:1px solid #ddd;">
+    Test 3: Overlay, data-theme="light" → light gray panel
+  </div>
+  <section class="umd-layout-vertical-landing">
+    <umd-element-pathway data-display="overlay" data-theme="light">
+      <img slot="image" src="../images/large/people/umd-smiling-graduates.jpg" alt="Smiling UMD graduates at commencement" />
+      <h2 slot="headline">A Tradition of Excellence</h2>
+      <div slot="text"><p>For over 175 years, Maryland graduates have gone on to shape science, business, policy, and culture around the world.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary">
+          <a href="/about/history">Our Story</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+  <!-- Test 4: Overlay — Maryland theme (red panel) -->
+  <div role="presentation" aria-hidden="true" style="background:#f5f5f5;padding:8px 24px;font:13px/1.4 monospace;color:#555;border-bottom:1px solid #ddd;">
+    Test 4: Overlay, data-theme="maryland" → red panel (#e21833) | avoid for quote/feature content; prefer dark
+  </div>
+  <section class="umd-layout-vertical-landing">
+    <umd-element-pathway data-display="overlay" data-theme="maryland">
+      <img slot="image" src="../images/large/events/0381_UMD Comencement 2024.jpg" alt="University of Maryland Commencement ceremony 2024" />
+      <h2 slot="headline">Fearlessly Forward</h2>
+      <div slot="text"><p>Bold ideas, fearless action, and a commitment to the public good — that is what Maryland is built on.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
+          <a href="/fearlessly-forward">Our Vision</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+  <!-- Test 5: Overlay — dark theme, image left -->
+  <div role="presentation" aria-hidden="true" style="background:#f5f5f5;padding:8px 24px;font:13px/1.4 monospace;color:#555;border-bottom:1px solid #ddd;">
+    Test 5: Overlay, data-theme="dark" + data-layout-image-position="left" → black panel on right, image on left
+  </div>
+  <section class="umd-layout-vertical-landing">
+    <umd-element-pathway data-display="overlay" data-theme="dark" data-layout-image-position="left">
+      <img slot="image" src="../images/large/people/ENGR_LabShots_Battery_02222024_JC_9717.jpg" alt="Engineering researcher working on battery technology in a lab" />
+      <p slot="eyebrow">Research</p>
+      <h2 slot="headline">Battery Technology Breakthrough</h2>
+      <div slot="text"><p>Maryland engineers are developing next-generation battery materials that could transform how we store and use energy at scale.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
+          <a href="/research/energy">Explore the Research</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+
+  <!-- ============================================================
+       STANDARD PATHWAY VARIANTS
+       No data-display (or omitted) — two-column layout where only
+       the TEXT COLUMN gets a theme background. Image column is
+       always transparent. MUST be wrapped in a dark section.
+       Rule: dark section wrapper requires padding: 80px 0 (§24)
+  ============================================================ -->
+
+  <div role="presentation" aria-hidden="true" style="background:#e8e8e8;padding:10px 24px;border-left:4px solid #c00;font:700 13px/1.4 monospace;color:#333;">
+    STANDARD PATHWAYS — no data-display — image column is transparent, MUST be inside dark section wrapper with padding: 80px 0
+  </div>
+
+  <!-- Test 6: Standard — dark theme, image right (default) -->
+  <div role="presentation" aria-hidden="true" style="background:#f5f5f5;padding:8px 24px;font:13px/1.4 monospace;color:#555;border-bottom:1px solid #ddd;">
+    Test 6: Standard, data-theme="dark" → black text column, image right (default). Dark section wrapper required.
+  </div>
+  <section class="umd-layout-background-full-dark" style="padding: 80px 0;">
+    <umd-element-pathway data-theme="dark">
+      <img slot="image" src="../images/large/campus/hornbake-plaza.jpg" alt="Hornbake Plaza on the University of Maryland campus" />
+      <h2 slot="headline">Building Tomorrow's Leaders</h2>
+      <div slot="text"><p>Maryland's programs combine rigorous scholarship with real-world impact. Our faculty are innovators. Our students are change-makers.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
+          <a href="/academics">Explore Academics</a>
+        </umd-element-call-to-action>
+        <umd-element-call-to-action data-display="secondary" data-theme="dark">
+          <a href="/rankings">Our Rankings</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+  <!-- Test 7: Standard — dark theme, image left -->
+  <div role="presentation" aria-hidden="true" style="background:#f5f5f5;padding:8px 24px;font:13px/1.4 monospace;color:#555;border-bottom:1px solid #ddd;">
+    Test 8: Standard, data-theme="dark" + data-layout-image-position="left" → black text column on right, image on left.
+  </div>
+  <section class="umd-layout-background-full-dark" style="padding: 80px 0;">
+    <umd-element-pathway data-theme="dark" data-layout-image-position="left">
+      <img slot="image" src="../images/large/campus/thurgood-marshall-hall-spring.webp" alt="Thurgood Marshall Hall in spring" />
+      <h2 slot="headline">A Campus Like No Other</h2>
+      <div slot="text"><p>Nestled in College Park, our 1,335-acre campus is home to championship athletics, world-class research facilities, and a community unlike any other.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
+          <a href="/visit">Plan a Visit</a>
+        </umd-element-call-to-action>
+        <umd-element-call-to-action data-display="secondary" data-theme="dark">
+          <a href="/campus-map">Campus Map</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+
+  <!-- ============================================================
+       HERO PATHWAY
+       data-display="hero" — full-bleed, self-contained.
+       Uses padding-based layout (not container queries), so it
+       renders correctly even without critical CSS (RULES.md §5).
+       No dark wrapper needed.
+  ============================================================ -->
+
+  <div role="presentation" aria-hidden="true" style="background:#e8e8e8;padding:10px 24px;border-left:4px solid #c00;font:700 13px/1.4 monospace;color:#333;">
+    HERO PATHWAY — data-display="hero" — full-bleed, self-contained, no dark wrapper needed
+  </div>
+
+  <div role="presentation" aria-hidden="true" style="background:#f5f5f5;padding:8px 24px;font:13px/1.4 monospace;color:#555;border-bottom:1px solid #ddd;">
+    Test 9: data-display="hero" → uses padding-based layout (not container queries), renders without critical CSS
+  </div>
+  <section class="umd-layout-vertical-landing">
+    <umd-element-pathway data-display="hero">
+      <img slot="image" src="../images/large/events/large-DE0F740A-EDA6-48B7-BBB21600F6ABAB21.jpg" alt="University of Maryland campus event" />
+      <p slot="eyebrow">Impact</p>
+      <h2 slot="headline">Grand Challenges in Science and Society</h2>
+      <div slot="text"><p>Maryland researchers are addressing the world's most pressing problems — from food security to quantum computing and cancer treatment.</p></div>
+      <div slot="actions">
+        <umd-element-call-to-action data-display="primary">
+          <a href="/grand-challenges">Learn More</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-pathway>
+  </section>
+
+
+  <!-- ========================================
+       FOOTER
+  ======================================== -->
+  <footer class="overflow-hidden">
+    <umd-element-footer data-display="visual" data-theme="dark">
+      <a slot="logo" href="/">
+        <img src="../images/logos/footer-logo.svg" alt="University of Maryland"
+          onerror="this.onerror=null;this.src='../images/logos/footer-logo.svg';" />
+      </a>
+    </umd-element-footer>
+  </footer>
+
+  <!-- ========================================
+       GRID ENTRY ANIMATIONS
+  ======================================== -->
+  <script>
+    (function () {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var GRID_SELECTORS = [
+        '.umd-layout-grid-gap-two',
+        '.umd-layout-grid-gap-three',
+        '.umd-layout-grid-gap-stacked',
+        '.umd-layout-grid-columns-four',
+        '.umd-layout-grid-masonry',
+        '.umd-layout-grid-inline-tablet-rows',
+        '.umd-animation-grid',
+        '.umd-grid-animation'
+      ].map(function (sel) { return sel + ':not([data-animation="off"])'; });
+
+      var style = document.createElement('style');
+      style.textContent = [
+        '@keyframes fade-in-from-bottom {',
+        '  from { opacity: 0; transform: translateY(50px); }',
+        '  to   { opacity: 1; transform: translateY(0); }',
+        '}',
+        ':where(' + GRID_SELECTORS.join(',') + ') > * {',
+        '  opacity: 0;',
+        '  transform: translateY(50px);',
+        '}',
+        '.umd-animation-transition-fade-bottom {',
+        '  animation: fade-in-from-bottom 1s forwards;',
+        '}'
+      ].join('\n');
+      document.head.appendChild(style);
+
+      function tagRowOffsets(grid) {
+        var children = Array.prototype.slice.call(grid.children);
+        var prevTop = null;
+        children.forEach(function (child) {
+          var top = child.getBoundingClientRect().top;
+          if (prevTop !== null && Math.abs(top - prevTop) < 1) {
+            child.dataset.animation = 'offset';
+          } else {
+            delete child.dataset.animation;
+          }
+          prevTop = top;
+        });
+      }
+
+      function init() {
+        var grids = document.querySelectorAll(GRID_SELECTORS.join(','));
+        if (!grids.length) return;
+
+        grids.forEach(tagRowOffsets);
+        window.addEventListener('resize', function () {
+          grids.forEach(tagRowOffsets);
+        });
+
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            el.style.animationDelay = el.dataset.animation === 'offset' ? '350ms' : '0ms';
+            el.classList.add('umd-animation-transition-fade-bottom');
+            observer.unobserve(el);
+          });
+        }, { threshold: 0.35 });
+
+        grids.forEach(function (grid) {
+          Array.prototype.forEach.call(grid.children, function (child) {
+            observer.observe(child);
+          });
+        });
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+
+</body>
+</html>

@@ -57,6 +57,24 @@
         "required": false,
         "description": "Optional utility row shown above the nav row on desktop.",
         "example": "<div slot=\"utility-navigation\"><a href=\"/give\">Give</a><a href=\"/myum\">myUMD</a></div>"
+      },
+      {
+        "name": "primary-slide-links",
+        "required": false,
+        "description": "REQUIRED FOR MOBILE HAMBURGER. Top-level links shown in the mobile drawer. Without this slot, the drawer returns null and no hamburger button is rendered — the header collapses to logo-only on mobile. Use a <div> with bare <a> children mirroring the main-navigation items. Wrap each link text in <span>.",
+        "example": "<div slot=\"primary-slide-links\"><a href=\"/about\"><span>About</span></a><a href=\"/academics\"><span>Academics</span></a></div>"
+      },
+      {
+        "name": "children-slides",
+        "required": false,
+        "description": "Two-level mobile drawer: child page links grouped under a parent. Each group is a <div data-parent-ref='{id}'> matching a data-child-ref on the primary-slide-links anchor. Add data-active to the currently open group. Add data-selected to the current page link. Wrap link text in <span>.",
+        "example": "<div slot=\"children-slides\"><div data-parent-ref=\"about\"><a href=\"/about/mission\"><span>Our Mission</span></a><a href=\"/about/leadership\"><span>Leadership</span></a></div></div>"
+      },
+      {
+        "name": "primary-slide-secondary-links",
+        "required": false,
+        "description": "Secondary action links shown below the primary mobile nav links (e.g. Apply Now, Give). Use a <div> with bare <a> children.",
+        "example": "<div slot=\"primary-slide-secondary-links\"><a href=\"/apply\">Apply Now</a><a href=\"/give\">Give</a></div>"
       }
     ],
     "attrs": [
@@ -86,7 +104,7 @@
       "sticky": "Add sticky attribute for fixed positioning on scroll"
     },
     "page_types": ["landing", "interior"],
-    "notes": "Site-level header \u2014 logo and nav links change per site. The component auto-registers umd-element-nav-item children from the main-navigation slot. CTA button only appears when both cta-url and cta-text are present.",
+    "notes": "Site-level header \u2014 logo and nav links change per site. The component auto-registers umd-element-nav-item children from the main-navigation slot. CTA button only appears when both cta-url and cta-text are present. CRITICAL: The mobile hamburger drawer is built into this component but ONLY renders when slot='primary-slide-links' is present. Without it, drawer.CreateElement() returns null, eventOpen is never set, and the header collapses to logo-only on mobile with no hamburger button. Always add slot='primary-slide-links' with links mirroring main-navigation. For two-level mobile nav, pair with slot='children-slides' using the same data-child-ref/data-parent-ref wiring as umd-element-nav-slider.",
     "source": "npm",
     "priority": 1,
     "batch": 1

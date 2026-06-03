@@ -13,15 +13,27 @@ The `.claude/commands/` directory contains slash commands for this project. **Be
 | Evaluate a design | `.claude/commands/evaluate-design.md` |
 | Recommend a component | `.claude/commands/recommend-component.md` |
 | Recreate an existing page | `.claude/commands/recreate-page.md` |
+| QA a component after a DS update | `.claude/commands/qa-component.md` |
 
 **Do not build pages from scratch** when a command file covers the task. The command file defines the required sections, content source, file naming, image sources, spacing rules, and output path. Follow it exactly.
 
-To choose between the four page-building commands:
+To choose between the page-building commands:
 - **`/recreate-page <url>`** — convert a real existing page (downloads source assets first, mirrors structure).
 - **`/build-landing-page <brief>`** / **`/build-interior-page <brief>`** — fresh pages from a topic/audience brief; output to `examples/`.
 - **`/sample-landing-page`** / **`/sample-interior-page`** — fixed-recipe showcase pages (no brief, no inputs); output to `test/`. Use only for fixture/test work.
+- **`/qa-component <component-or-ticket>`** — focused component QA page for verifying a DS submodule update; output to `qa/`.
 
-The three brief- or URL-driven commands all run a final harvest step that updates `OVERRIDES.md` with any shadow injections or page-built classes the new page introduced. The two `sample-*` commands skip this step because they reuse the same fixed recipe each time.
+The three brief- or URL-driven commands all run a final harvest step that updates `OVERRIDES.md` with any shadow injections or page-built classes the new page introduced. The `sample-*` and `qa-component` commands skip this step.
+
+## Output folder guide
+
+| Folder | What lives here | Written by |
+|---|---|---|
+| `examples/` | Realistic pages built from briefs or real URLs — for demos and client review | `/build-landing-page`, `/build-interior-page`, `/recreate-page` |
+| `test/` | Fixed-recipe fixture pages — for validating the page builder itself | `/sample-landing-page`, `/sample-interior-page` |
+| `qa/` | Isolated component test pages — for visually verifying DS submodule updates | `/qa-component` |
+
+Never write QA pages to `examples/` or `test/`, and never write demo/fixture pages to `qa/`.
 
 ## Source of truth hierarchy
 

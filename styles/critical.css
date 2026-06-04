@@ -185,9 +185,9 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 /* ============================================================
    5. MASONRY SECTION-INTRO COMPANION
-   Compensates for masonry's negative top margin when a section
-   intro immediately precedes it. The base .umd-layout-grid-masonry
-   class comes from layout.min.css.
+   The base .umd-layout-grid-masonry class is provided by layout.min.css (CDN).
+   This rule compensates for masonry's negative top margin when a section
+   intro immediately precedes it — layout.min.css does not include this fix.
    ============================================================ */
 @media (min-width: 768px) {
   umd-element-section-intro + .umd-layout-grid-masonry,
@@ -481,20 +481,24 @@ umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-
 
 
 /* ============================================================
-   15. NO-GAP CARD GRID — 3 columns flush together
+   15. NOTE — GRID CLASSES FROM LAYOUT.MIN.CSS (CDN)
+   All standard grid classes are provided by layout.min.css loaded
+   from CDN in the <head>. Do NOT add them here — that duplicates CSS.
+
+   Available from CDN (layout.min.css):
+     umd-layout-grid-columns-two/three/four  — no-gap at tablet+
+     umd-layout-grid-gap-stacked/two/three/four  — 32px gap at all bp
+     umd-layout-grid-gap-two  — widens to 40px at 1024px
+     umd-layout-grid-child-fill-height  — height:100% on item + child
+     umd-layout-grid-inline-tablet-rows  — flex CTA row at 650px+
+     umd-layout-grid-masonry  — 2-col staggered (base CSS)
+     umd-layout-grid-offset-three  — 3-col staircase offset
+     umd-layout-grid-border-two/three/four  — bordered cell grids
+
+   Only add grid-related CSS here when it is genuinely absent from
+   layout.min.css (e.g. shellcraft-only classes like umd-animation-grid
+   and umd-shell-person-grid-helper padding).
    ============================================================ */
-.umd-layout-grid-cards-no-gap {
-  display: grid;
-  grid-template-columns: 1fr;
-}
-@media (min-width: 768px) {
-  .umd-layout-grid-cards-no-gap {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-.umd-layout-grid-cards-no-gap > * {
-  height: 100%;
-}
 
 
 /* ============================================================
@@ -565,4 +569,68 @@ umd-element-card-overlay.size-large {
 .umd-action-outline-block.dark:focus {
   background-color: #ffffff;
   color: #000000;
+}
+
+
+/* ============================================================
+   19. BORDER GRID — person-grid-helper container query + padding
+   Source: umd.edu shellcraft (umdApp-release-116.css)
+   Verified from: https://umd.edu/about/university-presidents
+
+   The base umd-layout-grid-border-two/three/four grid CSS is
+   provided by layout.min.css (CDN). Only the container query
+   setup and the umd-shell-person-grid-helper responsive padding
+   are absent from layout.min.css — those come from shellcraft.
+
+   Usage: add class="umd-shell-person-grid-helper" to every
+   umd-element-person host inside a border grid.
+   ============================================================ */
+
+/* Establishes named container for padding queries */
+[class*="umd-layout-grid-border-two"],
+[class*="umd-layout-grid-border-three"],
+[class*="umd-layout-grid-border-four"] {
+  container: umd-shell-person-grid-helper / inline-size;
+}
+
+/* Responsive cell padding (24px → 32px → 48px) */
+[class*="umd-layout-grid-border-two"] .umd-shell-person-grid-helper,
+[class*="umd-layout-grid-border-three"] .umd-shell-person-grid-helper,
+[class*="umd-layout-grid-border-four"] .umd-shell-person-grid-helper {
+  padding: 24px;
+  transition: padding 0.5s ease-in-out;
+}
+@container umd-shell-person-grid-helper (min-width: 650px) {
+  [class*="umd-layout-grid-border-two"] .umd-shell-person-grid-helper,
+  [class*="umd-layout-grid-border-three"] .umd-shell-person-grid-helper,
+  [class*="umd-layout-grid-border-four"] .umd-shell-person-grid-helper {
+    padding: 32px;
+  }
+}
+@container umd-shell-person-grid-helper (min-width: 1024px) {
+  [class*="umd-layout-grid-border-two"] .umd-shell-person-grid-helper,
+  [class*="umd-layout-grid-border-three"] .umd-shell-person-grid-helper,
+  [class*="umd-layout-grid-border-four"] .umd-shell-person-grid-helper {
+    padding: 48px;
+  }
+}
+
+
+/* ============================================================
+   20. ANIMATION GRID — JS-driven scroll-reveal initial state
+   Source: umd.edu shellcraft (umdApp-release-116.css)
+   NOT in layout.min.css — must be here.
+
+   Sets children to invisible + translated as an initial state.
+   A JS scroll observer adds a class/style to reveal them in
+   sequence. Use on grid wrappers (offset grid, gap-stacked in
+   sticky-columns) to get the entrance animation.
+
+   Respects prefers-reduced-motion — no animation if reduced.
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  .umd-animation-grid > * {
+    opacity: 0;
+    transform: translateY(50px);
+  }
 }

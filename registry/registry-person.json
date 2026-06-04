@@ -48,7 +48,7 @@
       "list": "Horizontal row with image on one side.",
       "tabular": "Compact table-row-style for dense directories."
     },
-    "notes": "Email and phone slots accept anchor tags for proper mailto:/tel: links.",
+    "notes": "Email and phone slots accept anchor tags for proper mailto:/tel: links. For grid layouts, use umd-layout-grid-border-four/three/two (see LAYOUT-PATTERNS.md) with class='umd-shell-person-grid-helper' on every host element — this class is required for responsive cell padding via container queries.",
     "source": "npm",
     "priority": 2
   },

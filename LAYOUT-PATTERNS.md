@@ -36,33 +36,55 @@ If the hero is dark **and** the first content section is also a full dark sectio
 
 Two-column staggered layout. Odd children are offset upward, even children are pushed down, creating a visual zigzag. Stacks to a single column on mobile.
 
-**When to use:** 4 image-overlay cards on landing pages. Works especially well when cards have equal dimensions and strong images.
+**Lock:** `umd-layout-space-horizontal-normal` (1280px).
+
+**When to use:** 2–4 overlay cards or person bio components on landing pages. Works especially well when cards have equal dimensions and strong images. Commonly used with 4 cards (fills both columns evenly) but 2 cards is valid.
 
 **When NOT to use:** Mixed content types, lists, or cards where visual hierarchy matters — use `umd-layout-grid-gap-two` for plain two-column grids.
 
 ```html
 <!-- 4 overlay cards in staggered masonry -->
-<div class="umd-layout-grid-masonry">
-  <umd-element-card-overlay type="image">
-    <img slot="image" src="/img1.jpg" alt="" />
-    <h2 slot="headline"><a href="/research">Research</a></h2>
-    <p slot="text">Body copy.</p>
-  </umd-element-card-overlay>
-  <umd-element-card-overlay type="image">
-    <img slot="image" src="/img2.jpg" alt="" />
-    <h2 slot="headline"><a href="/academics">Academics</a></h2>
-    <p slot="text">Body copy.</p>
-  </umd-element-card-overlay>
-  <umd-element-card-overlay type="image">
-    <img slot="image" src="/img3.jpg" alt="" />
-    <h2 slot="headline"><a href="/partners">Partners</a></h2>
-    <p slot="text">Body copy.</p>
-  </umd-element-card-overlay>
-  <umd-element-card-overlay type="image">
-    <img slot="image" src="/img4.jpg" alt="" />
-    <h2 slot="headline"><a href="/alumni">Alumni</a></h2>
-    <p slot="text">Body copy.</p>
-  </umd-element-card-overlay>
+<div class="umd-layout-space-horizontal-normal">
+  <div class="umd-layout-grid-masonry">
+    <umd-element-card-overlay type="image">
+      <img slot="image" src="/img1.jpg" alt="" />
+      <h2 slot="headline"><a href="/research">Research</a></h2>
+      <p slot="text">Body copy.</p>
+    </umd-element-card-overlay>
+    <umd-element-card-overlay type="image">
+      <img slot="image" src="/img2.jpg" alt="" />
+      <h2 slot="headline"><a href="/academics">Academics</a></h2>
+      <p slot="text">Body copy.</p>
+    </umd-element-card-overlay>
+    <umd-element-card-overlay type="image">
+      <img slot="image" src="/img3.jpg" alt="" />
+      <h2 slot="headline"><a href="/partners">Partners</a></h2>
+      <p slot="text">Body copy.</p>
+    </umd-element-card-overlay>
+    <umd-element-card-overlay type="image">
+      <img slot="image" src="/img4.jpg" alt="" />
+      <h2 slot="headline"><a href="/alumni">Alumni</a></h2>
+      <p slot="text">Body copy.</p>
+    </umd-element-card-overlay>
+  </div>
+</div>
+
+<!-- 2 person bio components in staggered masonry -->
+<div class="umd-layout-space-horizontal-normal">
+  <div class="umd-layout-grid-masonry">
+    <umd-element-person-bio>
+      <img slot="image" src="…" alt="…" />
+      <p slot="name">Full Name</p>
+      <p slot="job-title">Title</p>
+      <div slot="description"><p>Bio text.</p></div>
+    </umd-element-person-bio>
+    <umd-element-person-bio>
+      <img slot="image" src="…" alt="…" />
+      <p slot="name">Full Name</p>
+      <p slot="job-title">Title</p>
+      <div slot="description"><p>Bio text.</p></div>
+    </umd-element-person-bio>
+  </div>
 </div>
 ```
 
@@ -90,7 +112,109 @@ Add per-page CSS to set card height (the stagger depends on cards having a defin
 
 ## Three-Column Offset Grid (`umd-layout-grid-offset-three`)
 
-An alternative to a flat 3-column grid when you want visual interest. Use for 3 overlay or image cards. See `critical.css` for the CSS definition.
+A 3-column grid with a descending staircase offset at desktop — col 1 drops 48px, col 2 drops 104px, col 3 sits at baseline. Creates visual rhythm and depth without needing images on every card.
+
+**Lock:** `umd-layout-space-horizontal-larger` (1600px).
+
+**Always pair with `umd-animation-grid`** on the same wrapper element. This class sets children to `opacity: 0; transform: translateY(50px)` as an initial state; a JS scroll observer reveals them in sequence on scroll. Omitting `umd-animation-grid` leaves the offset stagger but no entrance animation.
+
+**Wrap each child in a plain `<div>`** — do not place `umd-element-*` components as direct children of the grid. The `> *` offset rules target the div wrappers, not the components.
+
+**Add `class="umd-layout-grid-child-fill-height"`** to stat components to equalize card heights within their column.
+
+**Column order matters for the stagger:**
+| Position | Desktop offset | Typical content |
+|---|---|---|
+| 1st child | `margin-top: 48px` | stat `data-display="block"` |
+| 2nd child | `margin-top: 104px` | stat or card `data-display="block"` |
+| 3rd child | `margin-top: 0` (baseline) | stat `data-display="block"` |
+
+**Responsive:** Stacks to 1 column below 650px (gap: 32px). Goes to 3 columns at 768px. Offset only activates at 1024px+.
+
+**When to use:**
+- A mix of block stats and a card in a 3-column layout
+- 3 block stats side by side where visual stagger adds interest
+- **Not for** list-style content, people cards, or event lists — those use other grids
+
+```html
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-larger">
+
+    <umd-element-section-intro-wide class="umd-layout-vertical-landing-child">
+      <h2 slot="headline">By The Numbers</h2>
+    </umd-element-section-intro-wide>
+
+    <div class="umd-layout-grid-offset-three umd-animation-grid">
+      <div>
+        <umd-element-stat data-display="block" class="umd-layout-grid-child-fill-height">
+          <h2 slot="stat">68%</h2>
+          <div slot="text"><p>of all freshmen received some form of financial aid</p></div>
+          <div slot="sub-text"><p>2022-23 admission cycle</p></div>
+        </umd-element-stat>
+      </div>
+      <div>
+        <umd-element-card data-display="block" data-visual-image-aligned="true">
+          <img src="…" slot="image" />
+          <p slot="headline">A diverse, vibrant community of 41,000+ students</p>
+        </umd-element-card>
+      </div>
+      <div>
+        <umd-element-stat data-display="block" class="umd-layout-grid-child-fill-height">
+          <h2 slot="stat">$236M</h2>
+          <div slot="text"><p>in financial aid awarded</p></div>
+          <div slot="sub-text"><p>2022-23 admission cycle</p></div>
+        </umd-element-stat>
+      </div>
+    </div>
+
+  </div>
+</section>
+```
+
+All CSS is in `styles/critical.css` — sections 20 (grid) and 21 (animation).
+
+---
+
+## Border Grid — People Cards (`umd-layout-grid-border-four` / `-three` / `-two`)
+
+A bordered cell grid for `umd-element-person` (block display). Each cell is separated by a `1px solid #E6E6E6` line on all sides — no gap, no background — creating a clean directory table layout.
+
+**Lock:** Always wrap in `umd-layout-space-horizontal-larger` (1600px).
+
+**Which variant to choose:**
+
+| Variant | Columns (desktop) | Columns (tablet 650px+) | Use for |
+|---|---|---|---|
+| `umd-layout-grid-border-four` | 4 | 2 | Large staff directories, president/leadership lists |
+| `umd-layout-grid-border-three` | 3 (768px+) | — | Medium-sized teams |
+| `umd-layout-grid-border-two` | 2 (650px+) | 2 | Small teams, pairs |
+
+All variants stack to 1 column on mobile (below 649px) with no gap.
+
+**Required helper class:** Add `class="umd-shell-person-grid-helper"` to every `umd-element-person` host. This is the container query target — without it, the responsive cell padding (24px → 32px → 48px) does not apply.
+
+```html
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-larger">
+    <div class="umd-layout-grid-border-four">
+      <umd-element-person class="umd-shell-person-grid-helper" data-display="block">
+        <img src="…" alt="…" slot="image" />
+        <a href="/people/name" slot="name"><span aria-hidden="true">Full Name</span></a>
+        <p slot="job-title">Director, Lorem Ipsum</p>
+        <a href="mailto:email@umd.edu" slot="email" rel="noopener noreferrer" target="_blank"
+           aria-label="Email: email@umd.edu"><span aria-hidden="true">email@umd.edu</span></a>
+      </umd-element-person>
+      <!-- repeat for each person -->
+    </div>
+  </div>
+</section>
+```
+
+**Partial row handling:** The CSS automatically handles rows that don't fill all columns (e.g. 5 people in a 4-column grid). The `:not(:has(>:last-child:nth-child(N)))` rules restore correct border rendering — no extra markup needed.
+
+**When NOT to use:** Do not use the border grid for non-person content, event cards, or standard cards — the zero-gap cell layout is designed specifically for the `umd-element-person` block display and the `umd-shell-person-grid-helper` padding system.
+
+All border grid CSS is in `styles/critical.css` — section 19.
 
 ---
 
@@ -134,7 +258,7 @@ An alternative to a flat 3-column grid when you want visual interest. Use for 3 
 
 **When to choose card grid vs. sticky-columns vs. plain stat grid:**
 - **Card grid (block)** — homogenous stats, no editorial framing column needed, want strong visual presence.
-- **Sticky-columns** — there's a meaningful intro paragraph that should sit alongside the stats while scrolling. Works for stats *and* events; the deciding factor is whether you have enough text to justify the sticky column. Sparse intros look weak in a sticky column.
+- **Sticky-columns** — there's intro text (even 2 sentences), or the content column is long enough that white space helps, or there's a featured item to promote alongside the list. See RULES.md §20 for the full decision criteria.
 - **Plain stat grid (default `umd-element-stat`, no `data-display`)** — minimalist, text-only stats; use `data-decoration-line` here if you want the accent line.
 
 ---

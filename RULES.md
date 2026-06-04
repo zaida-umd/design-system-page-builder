@@ -498,6 +498,21 @@ Pathway and hero components manage their own internal horizontal spacing — do 
 </section>
 ```
 
+### Grid lock reference
+
+| Grid / layout | Lock | Notes |
+|---|---|---|
+| `umd-layout-grid-masonry` | `umd-layout-space-horizontal-normal` (1280px) | Overlay cards or person bio, 2–4 items |
+| `umd-layout-grid-offset-three` | `umd-layout-space-horizontal-larger` (1600px) | Block stats + card mix, 3 columns |
+| `umd-layout-grid-border-four` / `-three` / `-two` | `umd-layout-space-horizontal-larger` (1600px) | Person cards directory grid |
+| `umd-layout-grid-columns-four` | `umd-layout-space-horizontal-larger` (1600px) | Standard 4-column card grid |
+| `umd-layout-grid-gap-two` | `umd-layout-space-horizontal-larger` (1600px) | 2-column content grid |
+| `umd-layout-grid-gap-stacked` | `umd-layout-space-horizontal-larger` (1600px) | Single-column stacked list (used inside sticky-columns static slot) |
+| Card list / event list (standalone) | `umd-layout-space-horizontal-small` (992px) | See §33 |
+| Card list / event list (inside sticky-columns) | `umd-layout-space-horizontal-larger` (1600px) via host | See §33 |
+
+---
+
 ### Quote uses `umd-layout-space-horizontal-normal`
 
 `umd-element-quote` is not full-bleed. Wrap it in `.umd-layout-space-horizontal-normal` (1280px) to constrain its width and maintain consistent page gutters:
@@ -870,6 +885,16 @@ This applies to any dark-to-dark transition: hero → dark section, dark section
 
 `umd-element-sticky-columns` is a layout container. The component itself has no opinions about how slot content is styled — you are responsible for applying the correct UMD typography and layout classes inside each slot.
 
+### When to use sticky-columns
+
+Use `umd-element-sticky-columns` when any of the following conditions apply:
+
+- **Meaningful intro text** — even a 2-sentence paragraph qualifies. The sticky column keeps the editorial context visible while the user scrolls the content column. A single short label or eyebrow alone is not enough.
+- **Visual breathing room** — when a section would otherwise be a long run of stacked rows (many card rows, a long event list, a tall accordion), the sticky column breaks up the monotony and adds white space that improves readability.
+- **Featured item + list** — when there is a featured event, article, special link, or imagery that you want to pair with a scrollable list. Use the overlay card or event feature in the sticky column; the list goes in the static column. This signals editorial hierarchy — one thing is promoted, the rest are browsable.
+
+**Do not use sticky-columns** when intro copy is absent or when the content column is short enough to read without scrolling — the layout loses its purpose if nothing actually sticks.
+
 ### Sticky column (left — sticks while user scrolls)
 
 Use the following pattern, verified against umd.edu production markup:
@@ -932,6 +957,10 @@ Always apply the horizontal spacing class and sticky offset on the host element:
 
 - `class="umd-layout-space-horizontal-larger"` — page gutters (1600px max-width)
 - `data-layout-position="100px"` — sticky top offset; set to match your sticky nav height so the sticky column clears it when scrolling
+
+### Landing-page only
+
+`umd-element-sticky-columns` is **not allowed on interior pages**. Interior pages conform to their own layout widths and column structure. Only use sticky-columns on landing pages.
 
 ---
 
@@ -1541,7 +1570,72 @@ A vertical stack of `umd-element-accordion-item` siblings on a landing page uses
 
 Why narrow: accordion bodies are text-list-heavy and read better at a constrained measure. `-larger`/`-normal` produce overly wide rows that scan poorly. Why 8px: `--umd-space-min` is the DS token for the smallest spacing step (verified in `tokens.min.css`). The default `umd-layout-grid-gap-stacked` (24px+) puts too much air between collapsed accordion headers.
 
-## 33. Inline link styling — always use the gradient underline pattern
+### Exception: accordion inside `umd-element-sticky-columns`
+
+When the accordion stack is in the `static-column` slot of a `umd-element-sticky-columns` layout (text lockup on the left, accordion on the right), the lock is controlled by the **sticky-columns host** (`umd-layout-space-horizontal-larger`). Do not add an additional `umd-layout-space-horizontal-small` wrapper around the accordion — the host lock already governs the section width.
+
+---
+
+## 33. Card list and event list — lock rules (landing pages)
+
+These rules apply to landing pages only. Interior pages use their own layout widths and are not governed by these rules.
+
+### Standalone (no sticky-columns)
+
+Use `umd-layout-space-horizontal-small` (992px) as the wrapping lock:
+
+```html
+<!-- ✓ Card list — standalone -->
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-small">
+    <umd-element-card data-display="list">…</umd-element-card>
+    <umd-element-card data-display="list">…</umd-element-card>
+  </div>
+</section>
+
+<!-- ✓ Event list — standalone -->
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-small">
+    <umd-element-event data-display="list">…</umd-element-event>
+    <umd-element-event data-display="list">…</umd-element-event>
+  </div>
+</section>
+```
+
+### Inside `umd-element-sticky-columns`
+
+When a card list or event list occupies the `static-column` slot (with a text lockup in the sticky column, or an overlay/event feature card on either side), the lock is controlled by the **sticky-columns host** (`umd-layout-space-horizontal-larger`). Do not add a `umd-layout-space-horizontal-small` wrapper inside the slot.
+
+```html
+<!-- ✓ Card list in sticky-columns -->
+<umd-element-sticky-columns
+  class="umd-layout-space-horizontal-larger"
+  data-layout-position="100px">
+  <div slot="sticky-column">
+    <h2 class="umd-sans-largest-uppercase mb-md">Section Heading</h2>
+    <div class="umd-text-rich-advanced mb-sm"><p>Body copy.</p></div>
+  </div>
+  <div slot="static-column">
+    <div class="umd-layout-grid-gap-stacked">
+      <umd-element-card data-display="list">…</umd-element-card>
+      <umd-element-card data-display="list">…</umd-element-card>
+    </div>
+  </div>
+</umd-element-sticky-columns>
+```
+
+The same applies for `umd-element-event data-display="list"` in the static column.
+
+| Component | Context | Lock |
+|---|---|---|
+| `umd-element-card data-display="list"` | Standalone | `umd-layout-space-horizontal-small` (992px) |
+| `umd-element-card data-display="list"` | Inside `umd-element-sticky-columns` | `umd-layout-space-horizontal-larger` (1600px) via host |
+| `umd-element-event data-display="list"` | Standalone | `umd-layout-space-horizontal-small` (992px) |
+| `umd-element-event data-display="list"` | Inside `umd-element-sticky-columns` | `umd-layout-space-horizontal-larger` (1600px) via host |
+
+---
+
+## 34. Inline link styling — always use the gradient underline pattern
 
 When writing page-built CSS for inline `<a>` links inside body copy, AI summaries, custom content divs, or any non-component text area, **never use `text-decoration: underline` or a custom `color`**. Always copy the `umd-text-rich-advanced a` gradient underline pattern from `LAYOUT-PATTERNS.md` (or from `styles/critical.css`):
 

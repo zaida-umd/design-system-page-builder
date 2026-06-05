@@ -138,7 +138,8 @@ The standard pathway (`umd-element-pathway` with no `data-display`) renders a tw
 
 Background panel color by theme:
 - No theme → white panel
-- `data-theme="dark"` → black panel (recommended for photography)  
+- `data-theme="white"` → white panel (explicit; use when the section background is dark and you want a white panel — visually identical to no-theme but communicates intent)
+- `data-theme="dark"` → black panel (recommended for photography)
 - `data-theme="maryland"` → red panel
 - `data-theme="light"` → light gray panel
 

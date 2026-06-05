@@ -1057,3 +1057,78 @@ The DS has **no native dropdown** for this slot. Production uses a `<button>` to
   });
 </script>
 ```
+
+---
+
+## Pathway as Editorial Intro to a Card Grid
+
+A `umd-element-pathway` placed directly above a card grid section serves as both the editorial introduction (headline + body + optional CTA) and the visual entry point into the grid. No separate `umd-element-section-intro` is needed when the pathway already frames the content.
+
+**When to use:** The source content has a two-column image+text intro paragraph followed immediately by a grid of cards covering the sub-topics (e.g. "Types of Aid" introducing Scholarships, Work-Study, Loans).
+
+**Dark theme composition:** Place the pathway and card grid each in their own `section.umd-layout-background-full-dark` (no `umd-layout-vertical-landing` on the pathway section — the dark section that follows provides its own top padding). The pathway handles its internal spacing; `umd-layout-background-full-dark` handles the card section's top/bottom padding.
+
+```html
+<!-- Pathway section — no umd-layout-vertical-landing since dark follows -->
+<section class="umd-layout-background-full-dark">
+  <umd-element-pathway data-theme="dark" data-layout-image-position="left">
+    <img slot="image" src="/image.jpg" alt="…" />
+    <h2 slot="headline">Types of Aid</h2>
+    <div slot="text">
+      <p>Intro paragraph that contextualises the cards below — no CTA needed if the cards themselves are the navigation.</p>
+    </div>
+  </umd-element-pathway>
+</section>
+
+<!-- Card grid section — its own dark section, no umd-layout-vertical-landing if dark follows -->
+<section class="umd-layout-background-full-dark">
+  <div class="umd-layout-space-horizontal-larger">
+    <div class="umd-layout-grid-gap-three">
+      <umd-element-card-icon data-theme="dark">
+        <img slot="image" src="/icons/icon-link-dark.svg" alt="" />
+        <h3 slot="headline"><a href="/topic-a">Topic A</a></h3>
+        <p slot="text">Short description.</p>
+      </umd-element-card-icon>
+      <!-- repeat -->
+    </div>
+  </div>
+</section>
+```
+
+**Note on `umd-layout-background-full-dark` spacing:** Each section with this class has built-in `padding: 48px 0` (80px tablet, 104px highDef). Do NOT add an additional inner `umd-layout-vertical-landing` wrapper div inside the dark section to inflate the gap — keep each logical component in its own `umd-layout-background-full-dark` section and let the section padding do the work.
+
+---
+
+## Dark Card-Icon Grid (`umd-element-card-icon data-theme="dark"`)
+
+`umd-element-card-icon` supports `data-theme="dark"` which renders a dark card background with white text and a light icon. Use `icon-link-dark.svg` (or another `*-dark` icon variant) so the icon is visible against the dark card background.
+
+**Use inside `umd-layout-background-full-dark`** — the dark card sits on a dark section with just enough internal contrast to define each card boundary.
+
+```html
+<section class="umd-layout-background-full-dark">
+  <div class="umd-layout-space-horizontal-larger">
+    <div class="umd-layout-grid-gap-three">
+      <umd-element-card-icon data-theme="dark">
+        <img slot="image" src="../images/icons/icon-link-dark.svg" alt="" />
+        <h3 slot="headline"><a href="/scholarships">Scholarships &amp; Grants</a></h3>
+        <p slot="text">Free money you don't repay — based on financial need and/or academic merit.</p>
+      </umd-element-card-icon>
+      <umd-element-card-icon data-theme="dark">
+        <img slot="image" src="../images/icons/icon-link-dark.svg" alt="" />
+        <h3 slot="headline"><a href="/work-study">Federal Work-Study</a></h3>
+        <p slot="text">Part-time employment on or off campus for students with demonstrated financial need.</p>
+      </umd-element-card-icon>
+      <umd-element-card-icon data-theme="dark">
+        <img slot="image" src="../images/icons/icon-link-dark.svg" alt="" />
+        <h3 slot="headline"><a href="/loans">Loans</a></h3>
+        <p slot="text">Borrowed funds repaid after graduation; federal terms based on financial need.</p>
+      </umd-element-card-icon>
+    </div>
+  </div>
+</section>
+```
+
+**Use this pattern when:** The content has no strong photography and the topic is better served by a navigational list than image-driven cards. Pairs naturally with the "Pathway as intro" pattern above.
+
+**Do not use on light-background sections** — a dark card on a white page looks like an orphaned dark band. Dark card-icons belong inside `umd-layout-background-full-dark` sections.

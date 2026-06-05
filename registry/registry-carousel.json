@@ -59,7 +59,7 @@
         "description": "Container of umd-element-card instances.",
         "example": "<div slot=\"cards\"><umd-element-card>...</umd-element-card><umd-element-card>...</umd-element-card></div>"
       },
-      {"name": "headline", "required": false, "description": "Section headline above the carousel."},
+      {"name": "headline", "required": true, "description": "Section headline above the carousel. Functionally required — omitting it leaves the dark carousel without context."},
       {"name": "text", "required": false, "description": "Section description."},
       {"name": "actions", "required": false, "description": "Section-level CTA(s)."}
     ],
@@ -68,7 +68,8 @@
     ],
     "configurable": true,
     "page_types": ["landing", "interior"],
-    "children_expected": "umd-element-card instances.",
+    "children_expected": "umd-element-card-overlay instances (preferred — image-driven content fits the dark texture). umd-element-card with data-theme=\"dark\" is also valid when cards have substantive body copy.",
+    "notes": "Always include slot=\"headline\" — without it the dark carousel renders without context. A umd-text-line-trailing section eyebrow can be placed in a horizontal wrapper directly above the component in the page flow (no eyebrow slot exists on the component itself). See RULES.md §27.",
     "source": "npm",
     "priority": 3
   },

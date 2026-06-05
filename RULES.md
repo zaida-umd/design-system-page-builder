@@ -1376,21 +1376,41 @@ The carousel components do not enforce child types in the DS source — slots ac
 
 ### `umd-element-carousel-cards` — built-in dark texture surface
 
-The carousel ships its own dark SVG-textured background, so slotted cards must be designed for a dark surface. Two options:
+The carousel ships its own dark SVG-textured background, so slotted cards must be designed for a dark surface.
+
+**`slot="headline"` is functionally required.** The DS source marks it optional, but omitting it leaves the full-bleed dark carousel floating without section context on the page. Always include a headline.
+
+**Preferred card type: `umd-element-card-overlay`** — image-driven overlay cards fit the dark texture naturally. `umd-element-card data-theme="dark"` is also valid when cards have substantive body copy beyond the headline, but overlay cards are the common production pattern.
 
 | Card | When to use |
 |---|---|
-| `umd-element-card` with `data-theme="dark"` | Standard text + image card on the dark texture. Use when each card has body copy beyond the headline. |
-| `umd-element-card-overlay data-theme="dark"` | Image-overlay card. Use when each card is primarily image-driven and the headline overlays the image. |
+| `umd-element-card-overlay data-theme="dark"` | Image-overlay card. Use when each card is primarily image-driven (the common case). |
+| `umd-element-card` with `data-theme="dark"` | Standard text + image card. Use only when cards have substantial body copy beyond the headline. |
 
 Do **not** use light-theme standard cards — they render a white block on the dark texture.
 
+**Section eyebrow / tagline:** There is no eyebrow slot on this component. To add a category label above the carousel's intro block, place a `umd-text-line-trailing` element in a horizontal wrapper (`umd-layout-space-horizontal-larger`) directly above the `umd-element-carousel-cards` in the page flow:
+
 ```html
-<!-- ✓ Standard dark cards -->
+<!-- ✓ Section eyebrow above the carousel (not a slot — page-level placement) -->
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-larger">
+    <p class="umd-text-line-trailing"><span>Featured Stories</span></p>
+  </div>
+  <umd-element-carousel-cards>
+    <h2 slot="headline">Campus News</h2>
+    <p slot="text">The latest from across the University of Maryland.</p>
+    <div slot="cards">…</div>
+  </umd-element-carousel-cards>
+</section>
+```
+
+```html
+<!-- ✓ Standard dark cards — always include headline -->
 <umd-element-carousel-cards>
   <h2 slot="headline">Resources</h2>
   <div slot="cards">
-    <umd-element-card data-theme="dark">
+    <umd-element-card data-theme="dark" data-visual-image-aligned="true">
       <img slot="image" src="/img.jpg" alt="…" />
       <h3 slot="headline"><a href="/x">Title</a></h3>
       <p slot="text">Supporting copy.</p>
@@ -1398,12 +1418,13 @@ Do **not** use light-theme standard cards — they render a white block on the d
   </div>
 </umd-element-carousel-cards>
 
-<!-- ✓ Image-overlay cards -->
+<!-- ✓ Image-overlay cards (preferred) — always include headline -->
 <umd-element-carousel-cards>
+  <h2 slot="headline">Campus Stories</h2>
   <div slot="cards">
-    <umd-element-card-overlay data-theme="dark">
-      <p slot="headline"><a href="/x"><span>Title</span></a></p>
-      <div slot="text"><p>Supporting copy.</p></div>
+    <umd-element-card-overlay type="image" data-theme="dark">
+      <img slot="image" src="/img.jpg" alt="…" />
+      <h3 slot="headline"><a href="/x">Title</a></h3>
     </umd-element-card-overlay>
   </div>
 </umd-element-carousel-cards>

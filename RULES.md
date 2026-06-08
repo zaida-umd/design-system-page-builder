@@ -527,6 +527,25 @@ Pathway and hero components manage their own internal horizontal spacing — do 
 </div>
 ```
 
+### Quote attribution slots must use `<p>` — not `<cite>` or `<span>`
+
+Both `slot="attribution"` and `slot="attribution-sub-text"` must use `<p>` tags. Using `<cite>` italicises the text and renders inline (no line break). Using `<span>` renders inline and runs attribution and sub-text together on one line.
+
+```html
+<!-- ✓ Correct — block elements, no italics, line break between -->
+<umd-element-quote>
+  <p slot="quote">Quote text here.</p>
+  <p slot="attribution">Person Name</p>
+  <p slot="attribution-sub-text">Title, Department</p>
+</umd-element-quote>
+
+<!-- ✗ Wrong — cite italicises and renders inline -->
+<umd-element-quote>
+  <cite slot="attribution">Person Name</cite>
+  <span slot="attribution-sub-text">Title, Department</span>
+</umd-element-quote>
+```
+
 ### Extra properties required when wrapping `umd-element-section-intro-wide`
 
 When `.umd-layout-space-horizontal-larger` wraps `umd-element-section-intro-wide`, three additional properties are required: `position: relative` (watermark span is `position:absolute`), `container-type: inline-size` (fires the component's internal `@container` query), and `isolation: isolate` (creates a local stacking context for watermark `z-index`). These are already defined in `styles/critical.css` — section 6.
@@ -714,15 +733,33 @@ Image-overlay cards render a dark scrim over the image, so text/icons must be wh
 
 The image-expand component does **not** support `data-theme`. It has no internal text color styling — the shadow DOM text-lock container defaults to `color: rgb(0, 0, 0)` (black). Since content overlays the image with a dark semi-transparent overlay (`rgba(0,0,0,0.65)`), black text is invisible.
 
-**When placing raw HTML in the `content` slot, all text must be explicitly set to white**, either via inline styles or utility classes:
+**When placing raw HTML in the `content` slot, use UMD typography classes for headings and the dark rich-text class for body copy.** Do NOT use inline `font-family`, `font-size`, `font-weight`, `line-height`, or `margin` — those duplicate the design system and are the primary source of styling regressions in this component.
 
 ```html
-<!-- ✓ Correct — explicit white text -->
+<!-- ✓ Correct — UMD typography classes, dark rich text class -->
 <umd-layout-image-expand>
   <div slot="content">
     <div>
-      <h2 style="color: white;">Section Heading</h2>
-      <p style="color: white;">Supporting text for this section.</p>
+      <h2 class="umd-sans-larger text-white mb-md">Section Heading</h2>
+      <div class="umd-text-rich-simple-large-dark mb-md">
+        <p>Supporting text for this section.</p>
+      </div>
+      <div>
+        <umd-element-call-to-action data-display="primary" data-theme="dark">
+          <a href="/learn-more">Learn More</a>
+        </umd-element-call-to-action>
+      </div>
+    </div>
+  </div>
+  <img slot="image" src="/feature.jpg" alt="" />
+</umd-layout-image-expand>
+
+<!-- ✗ Wrong — inline font declarations duplicate the DS and create regressions -->
+<umd-layout-image-expand>
+  <div slot="content">
+    <div>
+      <h2 style="color:white; font-family:'Interstate',Helvetica,Arial,Verdana,sans-serif; font-weight:700; font-size:clamp(22px,2.5vw,38px); line-height:1.2em; margin:0 0 24px;">Section Heading</h2>
+      <p style="color:white; font-size:18px; line-height:1.5em; margin:0 0 32px;">Supporting text.</p>
     </div>
   </div>
   <img slot="image" src="/feature.jpg" alt="" />
@@ -739,6 +776,8 @@ The image-expand component does **not** support `data-theme`. It has no internal
   <img slot="image" src="/feature.jpg" alt="" />
 </umd-layout-image-expand>
 ```
+
+Available heading scale classes (from `typography.min.css`): `umd-sans-smaller`, `umd-sans-small`, `umd-sans-medium`, `umd-sans-large`, `umd-sans-larger`, `umd-sans-largest`, `umd-sans-largest-uppercase`. Pair with `text-white` and spacing utilities (`mb-md` = 24px, `mb-sm` = 16px) — these are defined in `styles/critical.css`.
 
 ### Placing a quote inside image-expand — use `data-visual-transparent="true"`
 
@@ -795,7 +834,8 @@ The host element requires `width: 100%` in critical CSS. Without it, the host co
 
 | Issue | Symptom | Fix |
 |---|---|---|
-| No `color: white` on raw text | Text invisible (black on dark overlay) | Add `style="color:white"` to every text element in content slot |
+| No `color: white` on raw text | Text invisible (black on dark overlay) | Use `umd-sans-*` + `text-white` on headings; `umd-text-rich-simple-large-dark` on body copy — do NOT use inline font declarations |
+| Inline `font-family`/`font-size`/`font-weight` on content | Styling regressions, design system drift | Delete inline styles; use UMD typography classes (see §17 examples) |
 | Quote has opaque background | Background card blocks image | Add `data-visual-transparent="true"` to `umd-element-quote` |
 | Quote fills full width | Quote panel too wide, poor composition | Add `max-width: 480px` + `margin-left/right: auto` on `div[slot="content"]` |
 | No dark section wrapper | White gaps around image during scroll | Wrap in `<section style="background:#000;">` |
@@ -1681,3 +1721,27 @@ When writing page-built CSS for inline `<a>` links inside body copy, AI summarie
 For dark backgrounds, use white (`#ffffff`) instead of black, and gold (`#FFD200`) on hover — see `umd-text-rich-advanced-dark a` in `LAYOUT-PATTERNS.md`.
 
 **Why:** `text-decoration: underline` renders the browser's default underline on top of the gradient and prevents the red hover animation from being visible. The design system never uses browser-native underlines for body links.
+
+---
+
+## 35. Slider/carousel horizontal overflow — use `body { overflow-x: clip }`
+
+`umd-element-slider-events` and other carousel components expand beyond the viewport width during slide transitions, causing a horizontal scrollbar at the document level. `overflow: hidden` on the wrapping section alone is not sufficient.
+
+**Use `overflow-x: clip` on `body`** — this is already included in `styles/critical.css` (section 21) and applied to every page via `TEMPLATE.html`. Do not add it inline to a page unless it is somehow missing from the inlined critical CSS.
+
+**Why `clip` and not `hidden`:** `overflow-x: hidden` promotes the element to a scroll container, which breaks `animation-timeline: scroll()` (scroll-driven animations) and shifts `IntersectionObserver` offsets. `overflow-x: clip` suppresses the scroll without creating a scroll container.
+
+---
+
+## 36. Dark → light section transition gap
+
+When `.umd-layout-background-full-dark` is immediately followed by a standard (light/white) section, the design requires 120px of white breathing room between them. This rule is already included in `styles/critical.css` (section 22) and applies automatically via the adjacent sibling selector:
+
+```css
+.umd-layout-background-full-dark + section:not(.umd-layout-background-full-dark) {
+  margin-top: 120px;
+}
+```
+
+The rule is conditional — a dark section followed by another dark section gets no extra gap (the selector only matches when the following sibling lacks the dark class). Do not add manual `margin-top` or `padding-top` to achieve this gap; the CSS rule handles it.

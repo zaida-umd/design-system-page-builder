@@ -24,13 +24,13 @@
         "name": "attribution",
         "required": false,
         "description": "Person or source of the quote.",
-        "example": "<cite slot=\"attribution\">Jane Smith</cite>"
+        "example": "<p slot=\"attribution\">Jane Smith</p>"
       },
       {
         "name": "attribution-sub-text",
         "required": false,
         "description": "Title, affiliation, or secondary attribution line.",
-        "example": "<span slot=\"attribution-sub-text\">'24, Computer Science</span>"
+        "example": "<p slot=\"attribution-sub-text\">'24, Computer Science</p>"
       },
       {
         "name": "image",
@@ -69,10 +69,15 @@
         "description": "Color theme for the quote container."
       },
       {
-        "name": "data-visual",
+        "name": "data-visual-transparent",
+        "type": "boolean",
+        "description": "Removes the background from the quote container."
+      },
+      {
+        "name": "data-visual-size",
         "type": "enum",
-        "values": ["transparent", "size-large"],
-        "description": "Transparent removes the background; size-large increases quote text size."
+        "values": ["large"],
+        "description": "Increases quote text size. Use data-visual-size=\"large\"."
       },
       {
         "name": "data-feature-animation",

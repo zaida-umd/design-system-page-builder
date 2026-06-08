@@ -40,7 +40,9 @@
  *     - banner-promo stacked actions
  *     - section divider, trailing-line label, no-gap card grid,
  *       overlay-card .size-large min-height, tuition 2-column grid,
- *       action-outline-block utility, color utilities (.text-*)
+ *       action-outline-block utility, color utilities (.text-*),
+ *       slider overflow containment (body overflow-x: clip),
+ *       dark→light section transition gap (120px margin-top)
  *
  * LOAD ORDER in TEMPLATE.html:
  *   <link rel="stylesheet"> CDN bundles (including layout.min.css)
@@ -280,8 +282,8 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 .mr-auto         { margin-right: auto; }
 .pl-md           { padding-left: 24px; }
 
-.umd-adjacent-line-text { position: relative; }
-.umd-adjacent-line-text::before {
+:is(.umd-text-line-adjustent, .umd-adjacent-line-text) { position: relative; }
+:is(.umd-text-line-adjustent, .umd-adjacent-line-text)::before {
   content: "";
   display: block;
   position: absolute;
@@ -633,4 +635,36 @@ umd-element-card-overlay.size-large {
     opacity: 0;
     transform: translateY(50px);
   }
+}
+
+
+/* ============================================================
+   21. SLIDER OVERFLOW CONTAINMENT
+   umd-element-slider-events (and other carousel/slider components)
+   expand beyond the viewport during transitions, causing horizontal
+   scroll at the document level. overflow: hidden on the section
+   alone is not sufficient.
+
+   clip (not hidden) is intentional: overflow-x: hidden promotes
+   the element to a scroll container, which breaks scroll-driven
+   animations (animation-timeline: scroll()) and shifts
+   IntersectionObserver offsets. overflow-x: clip suppresses
+   the scroll bar without creating a scroll container.
+   ============================================================ */
+body { overflow-x: clip; }
+
+
+/* ============================================================
+   22. DARK → LIGHT SECTION TRANSITION GAP
+   When a full-bleed dark section (.umd-layout-background-full-dark)
+   is immediately followed by a default/light section, inject 120px
+   of white breathing room between them.
+
+   Conditional: dark-after-dark gets no extra gap — the adjacent
+   sibling selector only fires when the following section lacks the
+   dark class. Add overflow: hidden to the dark section if its
+   content bleeds into this gap.
+   ============================================================ */
+.umd-layout-background-full-dark + section:not(.umd-layout-background-full-dark) {
+  margin-top: 120px;
 }

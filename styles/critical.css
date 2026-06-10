@@ -312,6 +312,7 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 .w-full          { width: 100%; }
 .block           { display: block; }
 .mr-auto         { margin-right: auto; }
+.ml-auto         { margin-left: auto; }
 .pl-md           { padding-left: 24px; }
 
 :is(.umd-text-line-adjustent, .umd-adjacent-line-text) { position: relative; }

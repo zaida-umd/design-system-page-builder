@@ -1132,3 +1132,77 @@ A `umd-element-pathway` placed directly above a card grid section serves as both
 **Use this pattern when:** The content has no strong photography and the topic is better served by a navigational list than image-driven cards. Pairs naturally with the "Pathway as intro" pattern above.
 
 **Do not use on light-background sections** — a dark card on a white page looks like an orphaned dark band. Dark card-icons belong inside `umd-layout-background-full-dark` sections.
+
+## Filter Band (filterable listing with select + search)
+
+Gray highlight panel with a category select, a text search, a clear button,
+a live results count, and a divider-separated item list filtered client-side.
+First used on belonging resources; reusable on any static listing page.
+
+Almost everything is upstream CSS: `umd-layout-background-highlight-light`,
+`umd-layout-grid-inline-stretch`, `umd-layout-grid-gap-two/stacked`
+(layout.min.css), `umd-text-line-trailing-light`, `umd-field-select-wrapper`
+(element.min.css), `umd-animation-line-slide-graydark-red` (animation.min.css),
+`sr-only` (accessibility.min.css). The search row, results count, and divider
+list are critical.css §23 (`umd-filter-*`). Behavior comes from
+`scripts/filter-band.js` — data-attribute driven, no ids required, multiple
+bands per page supported.
+
+```html
+<form data-filter-band data-filter-items=".umd-filter-item"
+      class="umd-layout-background-highlight-light umd-layout-grid-gap-stacked"
+      data-animation="off" action="">
+
+  <div class="umd-layout-grid-inline-stretch">
+    <h2 class="umd-text-line-trailing-light"><span>Filter Resources</span></h2>
+    <button type="reset" data-filter-clear class="umd-animation-line-slide-graydark-red">
+      <span aria-hidden="true">Clear filters</span>
+      <span class="sr-only">Clear all filters</span>
+    </button>
+  </div>
+
+  <div class="umd-layout-grid-gap-two" data-animation="off">
+    <div>
+      <label for="type-filter" class="sr-only">Filter by type</label>
+      <div class="umd-field-select-wrapper">
+        <select id="type-filter" data-filter-select name="types">
+          <option value="all">All</option>
+          <option value="some-category">Some Category</option>
+        </select>
+      </div>
+    </div>
+    <div>
+      <label for="text-search" class="sr-only">Search</label>
+      <div class="umd-filter-search-row">
+        <input type="text" id="text-search" data-filter-search
+               placeholder="Search" autocomplete="off" />
+        <button type="submit" class="umd-filter-search-btn" aria-label="Submit search">
+          <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <path d="M8.5 3a5.5 5.5 0 0 1 4.383 8.823l3.647 3.647a1 1 0 0 1-1.414 1.414l-3.647-3.647A5.5 5.5 0 1 1 8.5 3zm0 2a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<p data-filter-count class="umd-filter-results-count" aria-live="polite"></p>
+
+<div class="umd-layout-grid-gap-stacked umd-filter-list" data-animation="off">
+  <umd-element-card data-display="list" class="umd-filter-item" data-category="some-category">
+    …
+  </umd-element-card>
+  <!-- one .umd-filter-item with data-category per entry -->
+</div>
+
+<!-- end of body -->
+<script src="../page-builder/scripts/filter-band.js"></script>
+```
+
+Rules:
+- Each filterable item needs `class="umd-filter-item"` AND `data-category="…"`
+  matching a `<option value>`. The "all" option is required.
+- Keep `data-animation="off"` on the form and the list — entry animations on a
+  filterable list re-trigger awkwardly when items toggle.
+- The count element can live anywhere; `aria-live="polite"` announces updates.
+- Text search matches against each item's full `textContent` (case-insensitive).

@@ -16,7 +16,28 @@
  *                                  umd-layout-background-full-dark highDef
  *                                  breakpoint — fixed by section 4 below.)
  *   - css/web-components.min.css → :defined / container-type rules for
- *                                  most umd-element-* custom elements
+ *                                  most umd-element-* custom elements,
+ *                                  plus host-level rules like
+ *                                  umd-element-card-overlay.size-large
+ *   - css/element.min.css        → light-DOM element library: rich text
+ *                                  (.umd-text-rich-*), trailing-line labels
+ *                                  (.umd-text-line-trailing*), form fields
+ *                                  (.umd-field-input/select/textarea + wrappers),
+ *                                  actions, quotes, summaries
+ *   - css/animation.min.css      → link underline animations
+ *                                  (.umd-animation-line-slide-* /-fade-*, 6 color
+ *                                  variants each), transition keyframes +
+ *                                  .umd-animation-transition-fade-bottom,
+ *                                  .umd-animation-grid initial state, loaders
+ *   - css/accessibility.min.css  → .sr-only, .umd-skip-content
+ *
+ * DO NOT hand-roll classes those bundles provide (check the published
+ * bundle on unpkg before adding anything here — most .umd-* classes
+ * from umd.edu shellcraft now exist upstream under the same names).
+ *
+ * RETIRING RULES: when a section lands upstream, replace its body with
+ * a tombstone comment and KEEP its section number. Never renumber —
+ * pages reference these numbers in their inline copies.
  *
  * What stays here (and why):
  *   - Gap-fills for components missing from web-components.min.css:
@@ -211,6 +232,12 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 /* ============================================================
    7. RICH TEXT ADVANCED — editorial body copy
    Light and dark variants. 18px/1.5em with link hover styles.
+
+   NOTE: element.min.css (linked in TEMPLATE.html) now ships
+   .umd-text-rich-advanced with the same base sizing and link
+   animation. This section is kept as an intentional DELTA:
+   upstream only colors list content #454545; we force it on
+   all descendants. Do not delete without visual verification.
    ============================================================ */
 
 /* Light variant */
@@ -438,6 +465,12 @@ umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-
 /* ============================================================
    14. TRAILING-LINE LABEL — section eyebrow with horizontal line
    Source: @universityofmaryland/web-styles-library: element.text.line.trailing
+
+   NOTE: element.min.css (linked in TEMPLATE.html) now ships
+   .umd-text-line-trailing / -light / -dark. This section is kept
+   as an intentional DELTA: we add font-weight: 700 (upstream
+   omits it) and use #000 for the dark background (upstream uses
+   #242424). Do not delete without visual verification.
    ============================================================ */
 .umd-text-line-trailing,
 .umd-text-line-trailing-dark {
@@ -504,18 +537,12 @@ umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-
 
 
 /* ============================================================
-   16. OVERLAY CARD .size-large MIN-HEIGHT
-   Source: design-system/packages/styles/source/web-components.ts
-           (cardOverlay custom rules — umd-element-card-overlay.size-large)
+   16. RETIRED — OVERLAY CARD .size-large MIN-HEIGHT
+   Now shipped verbatim by web-components.min.css (linked in
+   TEMPLATE.html): umd-element-card-overlay.size-large
+   {min-height: 320px; 560px @768px}. Section number reserved —
+   do NOT renumber later sections when retiring a rule.
    ============================================================ */
-umd-element-card-overlay.size-large {
-  min-height: 320px;
-}
-@media (min-width: 768px) {
-  umd-element-card-overlay.size-large {
-    min-height: 560px;
-  }
-}
 
 
 /* ============================================================
@@ -629,11 +656,25 @@ umd-element-card-overlay.size-large {
    sticky-columns) to get the entrance animation.
 
    Respects prefers-reduced-motion — no animation if reduced.
+
+   animation.min.css (linked in TEMPLATE.html) ships the same
+   initial state UNGUARDED (.umd-animation-grid > * always gets
+   opacity: 0) plus the fade-in-from-bottom keyframes and the
+   .umd-animation-transition-fade-bottom reveal class. The
+   reduce block below cancels the upstream rule so content is
+   never hidden for reduced-motion users.
    ============================================================ */
 @media (prefers-reduced-motion: no-preference) {
   .umd-animation-grid > * {
     opacity: 0;
     transform: translateY(50px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .umd-animation-grid > * {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 }
 
@@ -668,3 +709,84 @@ body { overflow-x: clip; }
 .umd-layout-background-full-dark + section:not(.umd-layout-background-full-dark) {
   margin-top: 120px;
 }
+
+
+/* ============================================================
+   23. FILTER BAND COMPANIONS — page-built pieces of the
+   filterable-listing pattern (see LAYOUT-PATTERNS.md "Filter
+   Band"). The band itself uses upstream classes
+   (umd-layout-background-highlight-light, umd-text-line-trailing-
+   light, umd-field-select-wrapper, umd-animation-line-slide-*,
+   sr-only — element/animation/accessibility bundles). Only the
+   search row, results count, and divider list below are absent
+   upstream. Behavior comes from scripts/filter-band.js.
+   ============================================================ */
+.umd-filter-search-row {
+  display: flex;
+  align-items: stretch;
+}
+.umd-filter-search-row input[type="text"] {
+  flex: 1;
+  padding: 12px 16px;
+  font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
+  font-size: 16px;
+  line-height: 1.375em;
+  border: 1px solid #c0c0c0;
+  border-right: none;
+  color: #242424;
+  background: #fff;
+  min-width: 0;
+}
+.umd-filter-search-row input[type="text"]:focus {
+  outline: 2px solid #E21833;
+  outline-offset: 0;
+}
+.umd-filter-search-btn {
+  background-color: #E21833;
+  border: none;
+  cursor: pointer;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+.umd-filter-search-btn:hover,
+.umd-filter-search-btn:focus {
+  background-color: #a90007;
+  outline: none;
+}
+.umd-filter-search-btn svg {
+  fill: #fff;
+  width: 20px;
+  height: 20px;
+}
+.umd-filter-results-count {
+  font-family: Interstate, Helvetica, Arial, Verdana, sans-serif;
+  font-size: 14px;
+  color: #454545;
+  margin: 24px 0 0;
+}
+
+/* Divider list — zero-gap stack with rules between visible items */
+.umd-filter-list {
+  gap: 0 !important;
+  margin-top: 56px;
+}
+.umd-filter-list > .umd-filter-item {
+  padding-bottom: 24px;
+  border-bottom: 1px solid #d0d0d0;
+}
+.umd-filter-list > .umd-filter-item + .umd-filter-item {
+  padding-top: 24px;
+}
+.umd-filter-list > .umd-filter-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+.umd-filter-list > .umd-filter-item[hidden] + .umd-filter-item {
+  padding-top: 0;
+}
+.umd-filter-item[hidden] { display: none !important; }

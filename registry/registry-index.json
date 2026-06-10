@@ -144,10 +144,11 @@
     "heroes": {
       "background_hero_small": {
         "component": "hero-standard",
-        "attrs": { "data-display": "overlay", "data-layout-height": "small" },
+        "attrs": { "data-layout-height": "small" },
+        "note": "Do NOT add data-display — omitting it is the background hero default. data-display=\"overlay\" is an explicit design choice for a different visual mode (see RULES.md §22).",
         "variants": {
-          "left_text": "data-display=overlay + data-layout-height=small",
-          "centered_text": "data-display=overlay + data-layout-height=small + data-layout-text=center"
+          "left_text": "data-layout-height=small",
+          "centered_text": "data-layout-height=small + data-layout-text=center"
         }
       },
       "minimal_hero": {

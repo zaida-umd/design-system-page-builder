@@ -65,9 +65,14 @@
  *       slider overflow containment (body overflow-x: clip),
  *       dark→light section transition gap (120px margin-top)
  *
+ * INLINING: strip this file-header comment when copying into an HTML
+ * <style> block — and never write a literal closing style tag inside
+ * CSS comments; the HTML parser ends the style element at the first
+ * one it sees, dumping the rest of the CSS into the page as text.
+ *
  * LOAD ORDER in TEMPLATE.html:
  *   <link rel="stylesheet"> CDN bundles (including layout.min.css)
- *   <style> this file </style>
+ *   <style> ... this file's rules ... (closed after the last rule)
  *   <script src="…cdn.js">
  *
  * Browsers block on stylesheet fetches before parsing the script tag,

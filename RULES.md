@@ -527,6 +527,26 @@ Pathway and hero components manage their own internal horizontal spacing — do 
 </div>
 ```
 
+### Short quotes use `data-visual-size="large"` (150 characters or fewer)
+
+When the quote text is **150 characters or fewer (including spaces)**, add `data-visual-size="large"` to scale the text up — a short quote reads as undersized at the default scale. Above 150 characters, omit it (the default scale keeps a long quote from overflowing its column). This applies to **both** the standalone `umd-element-quote` and a `umd-element-quote` placed in the `content` slot of `umd-layout-image-expand`.
+
+```html
+<!-- ✓ Short quote (≤150 chars) → large -->
+<umd-element-quote data-visual-size="large">
+  <p slot="quote">This is our time to reinvent our University.</p>
+  <p slot="attribution">President Darryl J. Pines</p>
+</umd-element-quote>
+
+<!-- ✓ Long quote (>150 chars) → default size, no attribute -->
+<umd-element-quote>
+  <p slot="quote">We must be united in our noble and fearless purpose, because celebrating differences and leveling societal inequities must be among our greatest strengths and our progress.</p>
+  <p slot="attribution">Person Name</p>
+</umd-element-quote>
+```
+
+`data-visual-size="large"` is in the quote registry but is **not rendered by web-components-library v1.18.12** — it requires the quote-size shadow-injection polyfill (see `OVERRIDES.md`). Include that injection on any page that uses the attribute until it ships upstream.
+
 ### Quote attribution slots must use `<p>` — not `<cite>` or `<span>`
 
 Both `slot="attribution"` and `slot="attribution-sub-text"` must use `<p>` tags. Using `<cite>` italicises the text and renders inline (no line break). Using `<span>` renders inline and runs attribution and sub-text together on one line.

@@ -64,6 +64,25 @@ Injected after `customElements.whenDefined('umd-element-card-overlay')`, applied
 
 ---
 
+## Quote size-large polyfill
+
+**Component:** `umd-element-quote` with `data-visual-size="large"`. The attribute is documented in `registry/registry-quote.json` and intended to enlarge the quote text, but **web-components-library v1.18.12 does not render it** — the shadow DOM keeps the default `.quote-container-quote` font size regardless. Used by the under-150-character quote rule (see `RULES.md` "Short quotes use data-visual-size").
+
+**Override:** Shadow-inject the intended larger type scale onto `.quote-container-quote`, gated to the same breakpoints the component uses (`large.min` = 650px, `desktop.min` = 1024px). Applied to every `umd-element-quote[data-visual-size="large"]` after `customElements.whenDefined('umd-element-quote')`.
+
+```css
+.quote-container-quote { font-size: 24px !important; line-height: 1.3em !important; }
+@media (min-width: 650px)  { .quote-container-quote { font-size: calc(24px + 0.5vw) !important; } }
+@media (min-width: 1024px) { .quote-container-quote { font-size: 32px !important; } }
+```
+
+**Upstream candidate:** implement `data-visual-size="large"` in the quote composite so the attribute scales `.quote-container-quote` natively; retire this injection once it ships.
+
+**Pages using this:**
+- strategic-plan-design `pages/index.html` — President Pines quote inside `umd-layout-image-expand`
+
+---
+
 # Page-built components
 
 ## .umd-action-outline-block — full-width outline CTA

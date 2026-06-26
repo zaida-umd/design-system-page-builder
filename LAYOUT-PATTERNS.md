@@ -110,6 +110,43 @@ Add per-page CSS to set card height (the stagger depends on cards having a defin
 
 ---
 
+## Overlay-Card Grids — gap vs. no-gap, and `size-large`
+
+Two independent choices when laying out a grid of `umd-element-card-overlay type="image"` cards.
+
+### Grid gap vs. no-gap
+
+Both families are provided by `layout.min.css` (CDN). Pick by whether the cards should read as **one mosaic** or **separate tiles** — do **not** hand-roll a no-gap grid class (e.g. a page-local `.umd-layout-grid-cards-no-gap`), which just duplicates `umd-layout-grid-columns-*`.
+
+| Class family | Gap | Use when |
+|---|---|---|
+| `umd-layout-grid-columns-two` / `-three` / `-four` | **No gap** — cells butt edge-to-edge (tablet+) | Image-overlay cards meant to read as one continuous photo wall. Shared edges reinforce the grid as a single unit. |
+| `umd-layout-grid-gap-two` / `-three` / `-stacked` | **32px** (gap-two widens to 40px at 1024px) | Cards that should read as discrete, separated objects — standard cards, mixed content, anything where each card is its own tile. |
+
+### Card height — `size-large`
+
+`umd-element-card-overlay.size-large` (shipped by `web-components.min.css`) raises the card min-height to **320px → 560px (768px+)**. Add `class="size-large"` to each card host — **no per-page CSS needed**.
+
+- Use it when overlay cards are the **primary visual** of a section (e.g. a 2-up principles grid) and the default height crops the image too tightly.
+- Skip it for compact card rows or cards carrying little imagery.
+- **Not for masonry** — the staggered masonry layout needs an explicit `min-height` (see the masonry note above) because the stagger depends on a defined height. `size-large` and masonry are not combined.
+
+```html
+<!-- No-gap 2-up overlay mosaic, each card size-large -->
+<div class="umd-layout-space-horizontal-larger">
+  <div class="umd-layout-grid-columns-two umd-animation-grid">
+    <umd-element-card-overlay type="image" data-theme="dark" class="size-large">
+      <img slot="image" src="…" alt="…" />
+      <h3 slot="headline">Values-driven Excellence</h3>
+      <p slot="text">Body copy.</p>
+    </umd-element-card-overlay>
+    <!-- … more cards … -->
+  </div>
+</div>
+```
+
+---
+
 ## Three-Column Offset Grid (`umd-layout-grid-offset-three`)
 
 A 3-column grid with a descending staircase offset at desktop — col 1 drops 48px, col 2 drops 104px, col 3 sits at baseline. Creates visual rhythm and depth without needing images on every card.

@@ -1243,3 +1243,76 @@ Rules:
   filterable list re-trigger awkwardly when items toggle.
 - The count element can live anywhere; `aria-live="polite"` announces updates.
 - Text search matches against each item's full `textContent` (case-insensitive).
+
+## Modal (`umd-element-modal`) — content-detail dialogs
+
+Verified against v1.18.12. The component supplies the fixed backdrop
+(`rgba(0,0,0,0.9)`), backdrop-click close, focus trap, and body scroll lock.
+Everything inside the backdrop is page-supplied light DOM.
+
+Reference implementation: strategic-plan-design
+`pages/commitment/we-reimagine-learning.html` (initiative Details + goal
+Objectives modals).
+
+```html
+<!-- Trigger: any element carrying data-modal-target -->
+<umd-element-call-to-action data-display="primary">
+  <button type="button" data-modal-target="modal-example">Details</button>
+</umd-element-call-to-action>
+
+<!-- Modal: content MUST be slot="content"; start hidden -->
+<umd-element-modal id="modal-example" data-layout-hidden="true">
+  <div class="my-modal-panel" slot="content">
+    <button type="button" data-modal-close aria-label="Close dialog">×</button>
+    <h3>Title</h3>
+    <div class="umd-text-rich-advanced"><p>Body copy…</p></div>
+  </div>
+</umd-element-modal>
+```
+
+```js
+// End-of-body wiring. composedPath() is REQUIRED: umd-element-call-to-action
+// and umd-element-card-overlay (cta-icon slot) clone their child link/button
+// into shadow DOM, so e.target.closest('[data-modal-target]') never matches.
+(function () {
+  function findInPath(e, attr) {
+    var path = e.composedPath ? e.composedPath() : [e.target];
+    for (var i = 0; i < path.length; i++) {
+      var n = path[i];
+      if (n.nodeType === 1 && n.hasAttribute && n.hasAttribute(attr)) return n;
+    }
+    return null;
+  }
+  document.addEventListener('click', function (e) {
+    var trigger = findInPath(e, 'data-modal-target');
+    if (trigger) {
+      e.preventDefault();
+      var modal = document.getElementById(trigger.getAttribute('data-modal-target'));
+      if (modal) modal.setAttribute('data-layout-hidden', 'false'); // true→false opens
+      return;
+    }
+    var closer = findInPath(e, 'data-modal-close');
+    if (closer) {
+      var open = closer.closest('umd-element-modal') ||
+        document.querySelector('umd-element-modal[data-layout-hidden="false"]');
+      if (open) open.setAttribute('data-layout-hidden', 'true'); // false→true closes
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('umd-element-modal[data-layout-hidden="false"]')
+      .forEach(function (m) { m.setAttribute('data-layout-hidden', 'true'); });
+  });
+})();
+```
+
+Rules:
+- Content must be a single child with `slot="content"` — the shadow DOM renders
+  `<slot name="content">`; unslotted children never display.
+- Show/hide is the observed `data-layout-hidden` attribute: the `true→false`
+  transition opens, `false→true` closes. The component resets it to `"true"`
+  when it closes itself, so attribute state stays in sync.
+- `data-visual-open` / `data-visual-closed` are **not implemented** in v1.18.12.
+- The slotted panel is unstyled — the page provides the white box (match a lock
+  width, e.g. 992px small lock), padding, close button, and typography
+  (`.umd-sans-extralarge-bold` for the title, `.umd-text-rich-advanced` body).

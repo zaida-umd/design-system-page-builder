@@ -12,18 +12,16 @@
   "modal": {
     "tag": "umd-element-modal",
     "label": "Modal",
-    "description": "Overlay modal with backdrop and focus management. Programmatically controlled via observed data-visual-open / data-visual-closed attributes.",
+    "description": "Overlay modal with backdrop (rgba(0,0,0,0.9)), backdrop-click close, focus trap, and body scroll lock. Shown/hidden by toggling the observed data-layout-hidden attribute.",
     "slots": [
-      {"name": "default", "required": false, "description": "Modal content (any markup). Use the default slot \u2014 no named slot.", "example": "<umd-element-modal data-layout-hidden=\"true\"><h2>Title</h2><p>Body</p></umd-element-modal>"}
+      {"name": "content", "required": true, "description": "Modal content. MUST be a child with slot=\"content\" \u2014 the component renders <slot name=\"content\"> inside its backdrop; unslotted children never display. The slotted panel is unstyled light DOM: the page provides the white box, close button, and typography.", "example": "<umd-element-modal data-layout-hidden=\"true\"><div slot=\"content\"><h2>Title</h2><p>Body</p></div></umd-element-modal>"}
     ],
     "attrs": [
-      {"name": "data-layout-hidden", "type": "boolean", "description": "Initial state. Set to true so the modal starts hidden."},
-      {"name": "data-visual-open", "type": "boolean", "description": "Observed \u2014 setting to true opens the modal."},
-      {"name": "data-visual-closed", "type": "boolean", "description": "Observed \u2014 setting to true closes the modal."}
+      {"name": "data-layout-hidden", "type": "enum", "values": ["true", "false"], "description": "Observed. Start with \"true\" (hidden). The true\u2192false transition opens the modal; false\u2192true closes it. The component resets it to \"true\" when it closes itself (backdrop click / focus-trap escape)."}
     ],
     "configurable": true,
     "page_types": ["landing", "interior"],
-    "notes": "Open/close by mutating the observed attributes from JS (e.g. `el.setAttribute('data-visual-open', 'true')`).",
+    "notes": "Open with el.setAttribute('data-layout-hidden', 'false'); close by setting 'true'. The data-visual-open / data-visual-closed attributes previously documented here are NOT implemented in v1.18.12. Trigger gotcha: umd-element-call-to-action and umd-element-card-overlay (cta-icon slot) CLONE their child link/button into shadow DOM, so document-level click delegation via e.target.closest() never sees the trigger \u2014 walk e.composedPath() instead. See LAYOUT-PATTERNS.md 'Modal' for the wiring recipe.",
     "source": "npm",
     "priority": 3
   },

@@ -115,7 +115,7 @@
       {
         "name": "data-animation",
         "type": "boolean",
-        "description": "Enable scroll-triggered entrance animation."
+        "description": "Scroll-triggered entrance animation (animation-timeline: view() on the overlay panel). ON by default when the attribute is absent. Set data-animation=\"false\" to disable. CAUTION: a bare attribute (no value) reads as NOT \"true\" and DISABLES the animation in v1.18.12 \u2014 never include it valueless."
       }
     ],
     "aliases": {

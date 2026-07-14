@@ -97,7 +97,7 @@
       {
         "name": "data-animation",
         "type": "boolean",
-        "description": "Include attribute (no value) to enable entrance animations."
+        "description": "Entrance animation is ON by default when this attribute is absent. Set data-animation=\"false\" to disable. CAUTION: a bare attribute (no value) reads as NOT \"true\" and DISABLES the animation in v1.18.12 \u2014 never include it valueless; data-animation=\"true\" is the same as omitting."
       },
       {
         "name": "data-layout-height",

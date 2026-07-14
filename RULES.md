@@ -119,8 +119,11 @@ The standard pathway (`umd-element-pathway` with no `data-display`) renders a tw
 | (none) | white | transparent | ⚠ Both float on white — broken |
 | `dark` | black | transparent | ✓ Wrap in `background: #000` section |
 | `maryland` | red (#e21833) | transparent | ✓ Wrap in `background: #000` section |
+| `light` | ⚠ **none — silent no-op** | transparent | Do not use on standard pathway |
 
 **Rule:** Standard pathway must only be used when a dark section wrapper (`background: #000` or similar) contains the entire component — so both columns sit within a contained dark field.
+
+**`data-theme="light"` is unimplemented on the standard pathway** in web-components-library v1.18.12 — upstream `composite/pathway/standard.js` only paints dark/maryland text-column backgrounds, so a light standard pathway renders with no panel at all and fails silently. For a light pathway with the gray offset panel, use the overlay variant: `data-display="overlay" data-theme="light"` (self-contained — see below — and includes the scroll-driven panel entrance animation).
 
 ```html
 <!-- ✓ Correct — dark theme inside dark section -->
@@ -142,6 +145,23 @@ Background panel color by theme:
 - `data-theme="dark"` → black panel (recommended for photography)
 - `data-theme="maryland"` → red panel
 - `data-theme="light"` → light gray panel
+
+### `data-animation` semantics — never include the attribute valueless
+
+Applies to `umd-element-pathway` and `umd-element-hero` (v1.18.12). The attribute reader treats the animation as **ON by default when the attribute is absent**, and only the exact value `"true"` reads as true — so a **bare `data-animation` (no value) reads as false and silently DISABLES the entrance animation**:
+
+```html
+<!-- ✓ Animation on (default) -->
+<umd-element-pathway data-display="overlay" data-theme="light">
+
+<!-- ✓ Animation explicitly off -->
+<umd-element-pathway data-display="overlay" data-theme="light" data-animation="false">
+
+<!-- ✗ Looks like an opt-in, actually turns the animation OFF -->
+<umd-element-pathway data-display="overlay" data-theme="light" data-animation>
+```
+
+`data-animation="true"` is valid but identical to omitting the attribute. (The stat component's `data-animation="offset"` is a different, enum-valued API — see the stat registry entry.)
 
 ### Hero pathway exception
 

@@ -43,28 +43,16 @@
     umd-element-utility-header:not(:defined) { content-visibility: hidden; }
     umd-element-utility-header { display: block; container-type: normal; }
 
-    /* umd-element-carousel* — not in upstream bundle. */
-    umd-element-carousel:not(:defined),
-    umd-element-carousel-cards:not(:defined),
-    umd-element-carousel-thumbnail:not(:defined),
-    umd-element-carousel-image:not(:defined),
-    umd-element-carousel-image-wide:not(:defined),
-    umd-element-carousel-multiple-image:not(:defined) {
-      content-visibility: hidden;
-    }
-    umd-element-carousel,
-    umd-element-carousel-cards,
-    umd-element-carousel-thumbnail,
-    umd-element-carousel-image,
-    umd-element-carousel-image-wide,
-    umd-element-carousel-multiple-image {
-      display: block;
-      container-type: inline-size;
-    }
+    /* umd-element-carousel* — RETIRED (web-styles-library@1.8.14): all six
+       variants (plus new umd-element-carousel-people) now ship in upstream
+       web-components.min.css with content-visibility: auto + min-height
+       placeholder sizing. Do NOT re-add — a local content-visibility: hidden
+       loads after the CDN link at equal specificity, overrides the upstream
+       placeholder, and reintroduces layout shift. */
 
-    /* umd-layout-image-expand — full-bleed pseudo-component.
-       Width:100% is project-specific (collapses without it). */
-    umd-layout-image-expand:not(:defined) { content-visibility: hidden; }
+    /* umd-layout-image-expand — :not(:defined) hiding + placeholder sizing
+       landed upstream in v1.8.14. display:block and width:100% remain
+       project-specific (collapses without them; upstream sets neither). */
     umd-layout-image-expand {
       display: block;
       container-type: inline-size;
@@ -603,37 +591,17 @@
 
 
     /* ============================================================
-       20. ANIMATION GRID — JS-driven scroll-reveal initial state
-       Source: umd.edu shellcraft (umdApp-release-116.css)
-       NOT in layout.min.css — must be here.
-
-       Sets children to invisible + translated as an initial state.
-       A JS scroll observer adds a class/style to reveal them in
-       sequence. Use on grid wrappers (offset grid, gap-stacked in
-       sticky-columns) to get the entrance animation.
-
-       Respects prefers-reduced-motion — no animation if reduced.
-
-       animation.min.css (linked in TEMPLATE.html) ships the same
-       initial state UNGUARDED (.umd-animation-grid > * always gets
-       opacity: 0) plus the fade-in-from-bottom keyframes and the
-       .umd-animation-transition-fade-bottom reveal class. The
-       reduce block below cancels the upstream rule so content is
-       never hidden for reduced-motion users.
+       20. RETIRED — ANIMATION GRID INITIAL STATE
+       As of animation.min.css v1.8.14, upstream guards the
+       .umd-animation-grid > * initial state (opacity: 0 +
+       translateY(50px)) AND the .umd-animation-transition-fade-bottom
+       reveal animation behind @media (prefers-reduced-motion:
+       no-preference), so reduced-motion users never get hidden
+       content — the local duplicate and its reduce-block cancellation
+       are no longer needed. The class still works: keep using
+       .umd-animation-grid on grid wrappers with scripts/
+       grid-animations.js. Section number reserved — do NOT renumber.
        ============================================================ */
-    @media (prefers-reduced-motion: no-preference) {
-      .umd-animation-grid > * {
-        opacity: 0;
-        transform: translateY(50px);
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .umd-animation-grid > * {
-        opacity: 1;
-        transform: none;
-        animation: none;
-      }
-    }
 
 
     /* ============================================================

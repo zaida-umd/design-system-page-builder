@@ -251,8 +251,8 @@
     "slots": [
       {
         "name": "headline",
-        "required": true,
-        "description": "Section heading. Renders uppercase, bold, large sans-serif.",
+        "required": false,
+        "description": "Section heading. Renders uppercase, bold, large sans-serif. Optional — the component renders correctly with only text/actions slots (verified in v1.18.12), e.g. a centered lead paragraph with a CTA.",
         "example": "<h2 slot=\"headline\">Our Research Areas</h2>"
       },
       {
@@ -304,7 +304,7 @@
       }
     },
     "page_types": ["landing"],
-    "notes": "Text aligns center. Max-width constrains content to roughly 640px. When no headline is provided, text renders larger. If only text (no headline), text gets largest/bold treatment.",
+    "notes": "Text aligns center. Max-width constrains content to roughly 640px. Headline is optional: text-only usage (with optional actions) renders correctly. CAUTION (verified v1.18.12): the intended larger/bold treatment for headline-less text is NOT implemented — slotted text renders at the default 18px/400 whether wrapped in a div or slotted as a bare p; style the slotted paragraph from page CSS when the design calls for a bold lead.",
     "example": "<umd-element-section-intro>\n  <h2 slot=\"headline\">Our Research Areas</h2>\n  <div slot=\"text\"><p>Discover the cutting-edge work happening across our departments.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action><a href=\"/research\">Explore Research</a></umd-element-call-to-action>\n  </div>\n</umd-element-section-intro>",
     "source": "npm",
     "priority": 1,

@@ -1648,29 +1648,27 @@ Do **not** force a body sentence into `<h2 slot="headline">` to "fill" the headl
 
 A vertical stack of `umd-element-accordion-item` siblings on a landing page uses two specific layout choices.
 
-| Property | Value | Token |
+| Property | Value | Source |
 |---|---|---|
 | Horizontal wrap | `umd-layout-space-horizontal-small` (992px max-width) | — |
-| Gap between items | 8px | `var(--umd-space-min)` |
+| Gap between items | 8px | shipped by `web-components.min.css`: `umd-element-accordion-item + umd-element-accordion-item { margin-top: 8px }` |
 
 ```html
 <section class="umd-layout-vertical-landing">
   <div class="umd-layout-space-horizontal-small">
-    <div style="display: grid; gap: var(--umd-space-min);">
-      <umd-element-accordion-item>
-        <p slot="headline">Section A</p>
-        <div slot="text">…</div>
-      </umd-element-accordion-item>
-      <umd-element-accordion-item>
-        <p slot="headline">Section B</p>
-        <div slot="text">…</div>
-      </umd-element-accordion-item>
-    </div>
+    <umd-element-accordion-item>
+      <p slot="headline">Section A</p>
+      <div slot="text">…</div>
+    </umd-element-accordion-item>
+    <umd-element-accordion-item>
+      <p slot="headline">Section B</p>
+      <div slot="text">…</div>
+    </umd-element-accordion-item>
   </div>
 </section>
 ```
 
-Why narrow: accordion bodies are text-list-heavy and read better at a constrained measure. `-larger`/`-normal` produce overly wide rows that scan poorly. Why 8px: `--umd-space-min` is the DS token for the smallest spacing step (verified in `tokens.min.css`). The default `umd-layout-grid-gap-stacked` (24px+) puts too much air between collapsed accordion headers.
+Why narrow: accordion bodies are text-list-heavy and read better at a constrained measure. `-larger`/`-normal` produce overly wide rows that scan poorly. Why no gap wrapper: the upstream bundle already ships the 8px sibling margin (verified in `web-components.min.css`), so accordion items only need to be **adjacent siblings** — do **not** wrap them in a grid with `gap: var(--umd-space-min)`; the gap stacks with the built-in sibling margin and doubles the space to 16px. (An earlier revision of this section prescribed the grid-gap wrapper — that was wrong.) Do not use `umd-layout-grid-gap-stacked` (24px+) either; it also stacks with the sibling margin and puts too much air between collapsed headers.
 
 ### Exception: accordion inside `umd-element-sticky-columns`
 

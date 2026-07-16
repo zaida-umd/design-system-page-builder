@@ -37,6 +37,7 @@ Help identify the right UMD design system component for a given piece of content
 | Split image + text feature | `umd-element-pathway` (`data-display="overlay"` for standalone, standard for dark-section use) |
 | Stats / metrics | `umd-element-stat` with grid wrapper |
 | News/story cards | `umd-element-card` (standard) or `umd-element-card-overlay` (type="image" for photo bg) |
+| Card carousel with no real images | `umd-element-card-overlay data-theme="dark"` (color version — no `type="image"`) inside `umd-element-carousel-cards`; never standard cards with placeholder images |
 | Grid of image-overlay feature cards | `umd-element-card-overlay type="image"` in `umd-layout-grid-columns-*` (no-gap mosaic) or `umd-layout-grid-gap-*` (separated); add `class="size-large"` when cards are the section's primary visual. See `LAYOUT-PATTERNS.md` "Overlay-Card Grids" |
 | Section heading + CTA | `umd-element-section-intro` (centered) or `umd-element-section-intro-wide` (with watermark) |
 | Pull quote / testimonial | `umd-element-quote` wrapped in `umd-layout-space-horizontal-normal`; `data-display="featured"` for large format |

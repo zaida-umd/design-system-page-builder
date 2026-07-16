@@ -56,7 +56,7 @@ If a section on the source page has no DS-equivalent component and the user hasn
 
 This rule applies during the initial build *and* every later edit to a recreate-page output. When the user asks for a copy change without supplying the new text, ask for the verbatim string before editing.
 
-**Images:** Extract actual image paths from `tmp/source.html` — do not guess or construct URLs. For the generated page, copy the downloaded images from `tmp/assets/images/` into `/Users/zjocson/repos/design-system-page-builder/images/projects/{title}/` (where `{title}` matches the output filename, e.g. `images/projects/ischool/`) and reference them as repo-relative paths: `../images/projects/{title}/filename.jpg`. Videos go into `images/media/`.
+**Images:** Extract actual image paths from `tmp/source.html` — do not guess or construct URLs. For the generated page, copy the downloaded images from `tmp/assets/images/` into `/Users/zjocson/repos/design-system-page-builder/images/projects/{title}/` (where `{title}` matches the output filename, e.g. `images/projects/sph/`) and reference them as repo-relative paths: `../images/projects/{title}/filename.jpg`. Do not commit video files to this repo — use a poster image for video heroes instead.
 
 
 ## Process
@@ -131,7 +131,7 @@ For `slot="logo"` in `umd-element-navigation-header`, use a confirmed accessible
 
 ## Image fallback
 
-Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them to `images/projects/{title}/` and reference as repo-relative paths: `../images/projects/{title}/filename.jpg`. Copy any video files to `images/media/`.
+Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them to `images/projects/{title}/` and reference as repo-relative paths: `../images/projects/{title}/filename.jpg`. Do not copy video files into this repo — use a poster image instead.
 
 If an image was not downloaded (listed in `tmp/skipped-assets.txt` or absent from `tmp/assets/images/`), fall back to the library lookup in CLAUDE.md §Images.
 

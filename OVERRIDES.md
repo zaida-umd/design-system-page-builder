@@ -94,4 +94,4 @@ Injected after `customElements.whenDefined('umd-element-card-overlay')`, applied
 **Class definition:** Light + dark variants. `.umd-action-outline-block` is the light version (white background, dark text); add `.dark` for the dark-section variant (transparent background, white text/border with white-fill hover).
 
 **Pages using this:**
-- [examples/search.html](examples/search.html) — "Show more / Show less" toggle for the AI Summary block (full-width outline button)
+- `examples/search.html` in the `page-builder-examples` repo — "Show more / Show less" toggle for the AI Summary block (full-width outline button)

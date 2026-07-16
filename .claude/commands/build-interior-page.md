@@ -16,7 +16,7 @@ The user's `$ARGUMENTS` should describe: page title, breadcrumb trail, eyebrow l
 
 ## Page identity
 
-Slug from the brief title (e.g. "Honors program admissions" → `honors-program-admissions`). Output to `examples/{slug}.html` unless the user specifies otherwise.
+Slug from the brief title (e.g. "Honors program admissions" → `honors-program-admissions`). Output to `examples/{slug}.html` in the page-builder-examples repo unless the user specifies otherwise.
 
 ## Required structure
 
@@ -43,7 +43,7 @@ Same library lookup as `/build-landing-page` — read `images/images-index.json`
 
 ## Output
 
-Write to `/Users/zjocson/repos/design-system-page-builder/examples/{slug}.html`. Confirm the filename. If a preview server is running, verify the page renders before reporting success.
+Write to `/Users/zjocson/repos/page-builder-examples/examples/{slug}.html`. Confirm the filename. If a preview server is running, verify the page renders before reporting success.
 
 ## Harvest overrides (final step)
 

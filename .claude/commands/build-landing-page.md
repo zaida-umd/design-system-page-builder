@@ -8,9 +8,9 @@ The user's `$ARGUMENTS` should describe: page topic/audience, key sections neede
 
 ## Optional reference page(s) step (skip if no URL reference)
 
-Before doing any analysis or building, spawn a subagent to download the source page assets into `/Users/zjocson/repos/design-system-page-builder/tmp/`. The subagent should:
+Before doing any analysis or building, spawn a subagent to download the source page assets into `/Users/zjocson/repos/page-builder-examples/tmp/`. The subagent should:
 
-1. Create the directory `/Users/zjocson/repos/design-system-page-builder/tmp/` if it does not exist.
+1. Create the directory `/Users/zjocson/repos/page-builder-examples/tmp/` if it does not exist.
 2. Download the full HTML of the source URL and save it as `tmp/source.html`.
 3. Parse `tmp/source.html` and download all referenced assets:
    - Images (`<img src>`, `srcset`, CSS `background-image` URLs, `<picture><source srcset>`)
@@ -34,7 +34,7 @@ Wait for the subagent to complete before proceeding.
 
 ## Page identity
 
-Slug the page from the brief (e.g. "Sustainability initiatives" → `sustainability-initiatives`). Output to `examples/{slug}.html` unless the user specifies a different path.
+Slug the page from the brief (e.g. "Sustainability initiatives" → `sustainability-initiatives`). Output to `examples/{slug}.html` in the page-builder-examples repo unless the user specifies a different path.
 
 ## Component selection
 
@@ -81,17 +81,17 @@ No source page to download from — pull from the local library:
 1. Read `images/images-index.json`.
 2. Size tier: **large** for heroes, pathways, image-expand; **small** for cards.
 3. Match the brief's tone to a tag (`campus`, `people`, `events`, `research`); fall back to `default: true` entries.
-4. Reference as repo-relative paths: `../images/{tier}/{tag}/filename.jpg`.
+4. Reference as repo-relative paths: `../page-builder/images/{tier}/{tag}/filename.jpg`.
 
 ## Output
 
-Write the completed HTML file to `/Users/zjocson/repos/design-system-page-builder/examples/{slug}.html`. Confirm the filename when done. If a preview server is running, verify the page renders before reporting success.
+Write the completed HTML file to `/Users/zjocson/repos/page-builder-examples/examples/{slug}.html`. Confirm the filename when done. If a preview server is running, verify the page renders before reporting success.
 
 ## Cleanup
 
 After the output file is confirmed written, delete the `tmp/` directory:
 ```bash
-rm -rf /Users/zjocson/repos/design-system-page-builder/tmp
+rm -rf /Users/zjocson/repos/page-builder-examples/tmp
 ```
 
 ## Harvest overrides (final step)

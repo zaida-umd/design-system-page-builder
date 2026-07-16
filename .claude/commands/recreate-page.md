@@ -1,6 +1,6 @@
 # Recreate this page / convert this page to the design system
 
-Build a complete UMD landing page HTML file based on an existing page and save it to `/Users/zjocson/repos/design-system-page-builder/examples/`. Help identify the right UMD design system component for all components on a given piece of content or use case.
+Build a complete UMD landing page HTML file based on an existing page and save it to `/Users/zjocson/repos/page-builder-examples/examples/`. Help identify the right UMD design system component for all components on a given piece of content or use case.
 
 
 
@@ -14,9 +14,9 @@ Every page must open with these three elements, in this order, before any conten
 
 ## Step 1: Download source assets (subagent)
 
-Before doing any analysis or building, spawn a subagent to download the source page assets into `/Users/zjocson/repos/design-system-page-builder/tmp/`. The subagent should:
+Before doing any analysis or building, spawn a subagent to download the source page assets into `/Users/zjocson/repos/page-builder-examples/tmp/`. The subagent should:
 
-1. Create the directory `/Users/zjocson/repos/design-system-page-builder/tmp/` if it does not exist.
+1. Create the directory `/Users/zjocson/repos/page-builder-examples/tmp/` if it does not exist.
 2. Download the full HTML of the source URL and save it as `tmp/source.html`.
 3. Parse `tmp/source.html` and download all referenced assets:
    - Images (`<img src>`, `srcset`, CSS `background-image` URLs, `<picture><source srcset>`)
@@ -39,7 +39,7 @@ Wait for the subagent to complete before proceeding.
 
 ## Page identity
 
-Use content and images from the source page as the fictional client. Shorten the page title used in the command and name the output file `examples/{title}.html`.
+Use content and images from the source page as the fictional client. Shorten the page title used in the command and name the output file `examples/{title}.html` in the page-builder-examples repo.
 
 ## Copy fidelity (mandatory)
 
@@ -56,7 +56,7 @@ If a section on the source page has no DS-equivalent component and the user hasn
 
 This rule applies during the initial build *and* every later edit to a recreate-page output. When the user asks for a copy change without supplying the new text, ask for the verbatim string before editing.
 
-**Images:** Extract actual image paths from `tmp/source.html` — do not guess or construct URLs. For the generated page, copy the downloaded images from `tmp/assets/images/` into `/Users/zjocson/repos/design-system-page-builder/images/projects/{title}/` (where `{title}` matches the output filename, e.g. `images/projects/sph/`) and reference them as repo-relative paths: `../images/projects/{title}/filename.jpg`. Do not commit video files to this repo — use a poster image for video heroes instead.
+**Images:** Extract actual image paths from `tmp/source.html` — do not guess or construct URLs. For the generated page, copy the downloaded images from `tmp/assets/images/` into `/Users/zjocson/repos/page-builder-examples/images/projects/{title}/` (where `{title}` matches the output filename, e.g. `images/projects/sph/`) and reference them as repo-relative paths: `../images/projects/{title}/filename.jpg`. Do not commit video files to this repo — use a poster image for video heroes instead.
 
 
 ## Process
@@ -121,30 +121,30 @@ This rule applies during the initial build *and* every later edit to a recreate-
 Always use the visual footer:
 ```html
 <umd-element-footer data-display="visual">
-  <a slot="logo" href="/"><img src="../images/logos/footer-logo.svg" alt="University of Maryland" onerror="this.onerror=null;this.src='../images/logos/footer-logo.svg';" /></a>
-  <img slot="image" src="../images/large/campus/footer-campus.jpg" alt="University of Maryland campus" />
+  <a slot="logo" href="/"><img src="../page-builder/images/logos/footer-logo.svg" alt="University of Maryland" onerror="this.onerror=null;this.src='../page-builder/images/logos/footer-logo.svg';" /></a>
+  <img slot="image" src="../page-builder/images/large/campus/footer-campus.jpg" alt="University of Maryland campus" />
 </umd-element-footer>
 ```
 Do not add contact info, address, or social links — the visual variant renders the logo and image only. Do not use an external logo URL in the footer. The `slot="image"` `alt` must be non-empty — the visual footer's image renderer drops the slotted image entirely if `alt=""` (it does not fall back to the default).
 
-For `slot="logo"` in `umd-element-navigation-header`, use a confirmed accessible URL from the downloaded source. If unavailable or uncertain, fall back to `../images/logos/primary-logo-dark.svg`. When using an external URL, always add `onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';"` to the `<img>` so hotlink-blocked logos swap to the local fallback at runtime — see CLAUDE.md §Logos.
+For `slot="logo"` in `umd-element-navigation-header`, use a confirmed accessible URL from the downloaded source. If unavailable or uncertain, fall back to `../page-builder/images/logos/primary-logo-dark.svg`. When using an external URL, always add `onerror="this.onerror=null;this.src='../page-builder/images/logos/primary-logo-dark.svg';"` to the `<img>` so hotlink-blocked logos swap to the local fallback at runtime — see CLAUDE.md §Logos.
 
 ## Image fallback
 
-Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them to `images/projects/{title}/` and reference as repo-relative paths: `../images/projects/{title}/filename.jpg`. Do not copy video files into this repo — use a poster image instead.
+Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them to `images/projects/{title}/` in the page-builder-examples repo and reference as repo-relative paths: `../images/projects/{title}/filename.jpg`. Do not copy video files into this repo — use a poster image instead.
 
 If an image was not downloaded (listed in `tmp/skipped-assets.txt` or absent from `tmp/assets/images/`), fall back to the library lookup in CLAUDE.md §Images.
 
 ## Output
 
-Write the completed HTML file to `/Users/zjocson/repos/design-system-page-builder/examples/{title}.html`. Confirm the filename when done.
+Write the completed HTML file to `/Users/zjocson/repos/page-builder-examples/examples/{title}.html`. Confirm the filename when done.
 
 ## Cleanup
 
 After the output file is confirmed written, delete the `tmp/` directory:
 
 ```bash
-rm -rf /Users/zjocson/repos/design-system-page-builder/tmp
+rm -rf /Users/zjocson/repos/page-builder-examples/tmp
 ```
 
 ## Harvest overrides (final step)

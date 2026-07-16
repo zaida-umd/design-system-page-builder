@@ -112,16 +112,6 @@
       "tags": ["campus", "buildings"],
       "default": true
     },
-    "small/default/Foward-Arrows_Loop_Updated_102325_12-fps.webp": {
-      "alt": "Animated Fearlessly Forward arrows",
-      "tags": ["campus"],
-      "default": false
-    },
-    "small/default/MT-Accolades_23-04_v4.gif": {
-      "alt": "University of Maryland accolades and rankings",
-      "tags": ["campus"],
-      "default": false
-    },
     "small/people/2-female-students-in-booth-pathway1.jpg": {
       "alt": "Two female students talking in a booth",
       "tags": ["people", "students"],

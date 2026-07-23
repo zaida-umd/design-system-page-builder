@@ -82,29 +82,9 @@ This rule applies during the initial build *and* every later edit to a recreate-
 
 4. **Distinguish close alternatives** — if two components are similar (e.g. `umd-element-hero` vs `umd-element-hero-minimal`, or `umd-element-pathway` overlay vs standard), explain the tradeoff clearly so the user can choose.
 
-## Component cheat-sheet (quick reference)
+## Component cheat-sheet
 
-| Content type | First component to consider |
-|---|---|
-| Top-of-page hero (site home page) | `umd-element-hero data-display="standard"` — full-height; centered text by default (RULES.md §22) |
-| Top-of-page hero (any other landing) | `umd-element-hero data-display="standard" data-layout-height="small" data-layout-text="center"` — small + centered is the default for non-home landings (RULES.md §22). Pull body copy + multi-CTA rows into a section-intro below. |
-| Top-of-page hero with image (interior page) | `umd-element-hero data-display="standard" data-layout-height="small"` — small on interior pages (RULES.md §21) |
-| Page title / section header bar | `umd-element-hero-minimal` |
-| Split image + text feature | `umd-element-pathway` (`data-display="overlay"` for emphasized content, standard for typical use) |
-| Stats / metrics | `umd-element-stat` with grid wrapper or `umd-element-stat` in a `sticky-column` when a text introduction is needed |
-| Featured event + upcoming list | `umd-element-sticky-columns`: sticky column = `umd-element-event display="promo"`, static column = `umd-layout-grid-gap-stacked` of `umd-element-event data-display="list"`. See LAYOUT-PATTERNS.md "Events Section". |
-| One featured item + many secondary items | `umd-element-sticky-columns` — general pattern for any "one editorial pick + list" layout (events, news, research). Sticky = featured; static = list. |
-| News/story cards | `umd-element-card` (standard) or `umd-element-card-overlay` (type="image" for photo bg) |
-| Section heading + CTA | `umd-element-section-intro` (centered) or `umd-element-section-intro-wide` (with watermark) |
-| Pull quote / testimonial | `umd-element-quote` (standard) or `data-display="featured"` for a quote that stands out |
-| Full-bleed image scroll effect | `umd-layout-image-expand` for high visual |
-| Row of 2–4 standalone navigation links | `umd-element-card-overlay` (no image, `slot="cta-icon"`) in a grid — NOT secondary CTAs |
-| FAQ / expandable content | `umd-element-accordion-item` |
-| Person profile (standalone bio page or featured person section) | `umd-element-person-bio`. **Do NOT use inside `umd-element-carousel-thumbnail`** — that carousel only takes `umd-element-card` slides (RULES.md §27). |
-| Icon + text card | `umd-element-card-icon` |
-| Video card | `umd-element-card-video` |
-| Grid of logo | `umd-element-hero-grid` |
-| Top-level navigation | `umd-element-navigation-header` + `umd-element-nav-item` |
+Use the content-type → component cheat-sheet in `/recommend-component` — it is the **single source** for first-pass matching (do not maintain a copy here). Verify tags/attributes against `registry/` before use; the registry wins on conflict.
 
 
 ## Spacing and layout

@@ -145,6 +145,44 @@ Both families are provided by `layout.min.css` (CDN). Pick by whether the cards 
 </div>
 ```
 
+### Feature Card Grid — 2+1+1 (`umd-layout-grid-child-size-double`)
+
+Production pattern (umd.edu/academics, section right after the hero): a 4-column no-gap grid holding **three** overlay cards — the first spans two columns via `umd-layout-grid-child-size-double` (from CDN `layout.min.css`: `grid-column: span 2` at 650px+), creating a dominant feature card plus two supporting cards. Establishes hierarchy without a section intro: the feature card carries a `slot="text"` body; the supporting cards are headline-only.
+
+```html
+<section class="umd-layout-space-vertical-landing">
+  <div class="umd-layout-space-horizontal-larger">
+    <div class="umd-layout-grid-columns-four umd-animation-grid">
+      <!-- Feature card: spans 2 columns, has body text -->
+      <umd-element-card-overlay type="image" data-theme="dark"
+          class="umd-layout-grid-child-size-double size-large">
+        <img slot="image" src="…" alt="…" />
+        <p slot="headline"><a href="…"><span>Colleges &amp; Schools</span></a></p>
+        <div slot="text"><p>With over 100 majors across 12 schools and colleges…</p></div>
+        <a slot="cta-icon" href="…" aria-label="See all colleges and schools"><span aria-hidden="true">Learn more</span></a>
+      </umd-element-card-overlay>
+      <!-- Supporting cards: single column, headline-only -->
+      <umd-element-card-overlay type="image" data-theme="dark" class="size-large">
+        <img slot="image" src="…" alt="…" />
+        <p slot="headline"><a href="…"><span>Undergraduate Programs</span></a></p>
+        <a slot="cta-icon" href="…"><span aria-hidden="true">Learn more</span></a>
+      </umd-element-card-overlay>
+      <umd-element-card-overlay type="image" data-theme="dark" class="size-large">
+        <img slot="image" src="…" alt="…" />
+        <p slot="headline"><a href="…"><span>Graduate Programs</span></a></p>
+        <a slot="cta-icon" href="…"><span aria-hidden="true">Learn more</span></a>
+      </umd-element-card-overlay>
+    </div>
+  </div>
+</section>
+```
+
+**Notes:**
+- All classes ship from the CDN bundles — no critical.css additions needed.
+- All three cards take `size-large`; the span-2 card gets image room, the singles stay tall.
+- 3 cards in a 4-column grid (2+1+1) is the canonical count. With 4 cards it becomes 2+1+1 / +1 wrapping — check the layout at tablet before using.
+- Works with no section intro — the imagery opens the section cold (see `/evaluate-design` "Intros are optional").
+
 ---
 
 ## Three-Column Offset Grid (`umd-layout-grid-offset-three`)
@@ -297,6 +335,49 @@ All border grid CSS is in `styles/critical.css` — section 19.
 - **Card grid (block)** — homogenous stats, no editorial framing column needed, want strong visual presence.
 - **Sticky-columns** — there's intro text (even 2 sentences), or the content column is long enough that white space helps, or there's a featured item to promote alongside the list. See RULES.md §20 for the full decision criteria.
 - **Plain stat grid (default `umd-element-stat`, no `data-display`)** — minimalist, text-only stats; use `data-decoration-line` here if you want the accent line.
+
+### Sticky Text + Stacked Stats — the breathing section
+
+Production pattern (umd.edu/art "The Clarice", umd.edu/academics "Top of the Class"): a fully **imageless** sticky-columns section — editorial text + CTA in the sticky column, a stack of large decoration-line stats in the static column. On both production pages this is the *only* imageless section, placed mid-page between image-heavy runs as the palate cleanser (see `/evaluate-design` "Palate cleansers between heavy bands").
+
+```html
+<section class="umd-layout-space-vertical-landing">
+  <umd-element-sticky-columns class="umd-layout-space-horizontal-larger">
+    <div slot="sticky-column">
+      <div>
+        <h2 class="mb-md umd-sans-largest-uppercase">Top of the Class</h2>
+        <div class="umd-text-rich-advanced mb-sm">
+          <p>Terps are high achievers, knowledge seekers and creative leaders…</p>
+        </div>
+        <div class="umd-layout-grid-inline-tablet-rows">
+          <umd-element-call-to-action data-display="primary" data-theme="light">
+            <a href="…">Learn more</a>
+          </umd-element-call-to-action>
+        </div>
+      </div>
+    </div>
+    <div slot="static-column">
+      <div class="umd-layout-grid-gap-stacked umd-animation-grid">
+        <umd-element-stat data-decoration-line="true" data-visual-size="large">
+          <h2 slot="stat">300+</h2>
+          <div slot="text"><p>Degree-granting programs</p></div>
+        </umd-element-stat>
+        <umd-element-stat data-decoration-line="true" data-visual-size="large">
+          <h2 slot="stat">#6</h2>
+          <div slot="text"><p>Graduation rate among primarily residential public universities</p></div>
+          <div slot="sub-text"><p>Chronicle of Higher Education</p></div>
+        </umd-element-stat>
+        <!-- third stat… -->
+      </div>
+    </div>
+  </umd-element-sticky-columns>
+</section>
+```
+
+**Notes:**
+- `umd-sans-largest-uppercase` and the `mb-sm`/`mb-md` spacing utilities: the heading class ships from CDN `typography.min.css`; the `mb-*` utilities are in `critical.css` §10.
+- Stat labels must use `slot="text"` (RULES.md §11); `slot="sub-text"` carries the attribution/source line.
+- Three stats is the canonical count — enough to fill the static column against the sticky text without scrolling forever.
 
 ---
 
@@ -497,6 +578,36 @@ Use `umd-element-sticky-columns` when you have one editorially featured event an
 - `umd-element-event data-display="list"` works correctly with `data-display`; only `promo` and `feature` require the deprecated `display` attribute.
 - `data-layout-position="100px"` should match the sticky nav height so the promo event clears it when scrolling.
 - If a live events feed is needed, `umd-feed-events-list` can replace the stacked list — but it requires a server context (CORS blocks it on localhost).
+
+---
+
+## Page Closer — Banner-Promo CTA (site convention, optional)
+
+A recurring per-site convention (used on every page of the admissions and strategic-plan projects): close each page with the same gold `umd-element-banner-promo` CTA band as the final section before the footer. This is a **project-level choice, not a rule** — adopt it site-wide or not at all; the point is that every page of a site ends the same way.
+
+```html
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-larger">
+    <umd-element-banner-promo>
+      <h2 slot="headline">There is a lot more to learn about UMD</h2>
+      <p slot="text">Let's stay in touch!</p>
+      <div slot="actions" class="banner-promo-actions">
+        <umd-element-call-to-action data-display="primary">
+          <a href="…">Join the Mailing List</a>
+        </umd-element-call-to-action>
+        <umd-element-call-to-action data-display="secondary">
+          <a href="…">Connect</a>
+        </umd-element-call-to-action>
+      </div>
+    </umd-element-banner-promo>
+  </div>
+</section>
+```
+
+**Notes:**
+- Default (no `data-theme`) renders the gold band.
+- `.banner-promo-actions` (stacked actions with an 8px gap) is a documented shadow-injection override — see `OVERRIDES.md` before reusing.
+- If the site adopts this closer, keep headline/text/actions consistent across its pages — the repetition is the point (a stable "what next" bookend).
 
 ---
 

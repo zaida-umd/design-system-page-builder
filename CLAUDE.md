@@ -6,6 +6,7 @@ The `.claude/commands/` directory contains slash commands for this project. **Be
 
 | Task | Command file |
 |---|---|
+| Plan a page from a brief **or raw content** (front door) | `.claude/commands/plan-page.md` |
 | Build a sample/test landing page (fixed recipe) | `.claude/commands/sample-landing-page.md` |
 | Build a sample/test interior page (fixed recipe) | `.claude/commands/sample-interior-page.md` |
 | Build a fresh landing page from a brief | `.claude/commands/build-landing-page.md` |
@@ -18,12 +19,13 @@ The `.claude/commands/` directory contains slash commands for this project. **Be
 **Do not build pages from scratch** when a command file covers the task. The command file defines the required sections, content source, file naming, image sources, spacing rules, and output path. Follow it exactly.
 
 To choose between the page-building commands:
+- **`/plan-page <brief or raw content>`** — the **front door** when you have content (or a topic) but not a finished plan. Detects brief vs raw content, surveys the site (existing) or peers (new) for visual tone, derives an ordered **Page Plan** (sections → components, copy source, image source), self-validates against `/evaluate-design`, then hands off to `/build-landing-page` or `/build-interior-page`. Use this rather than calling a build command directly whenever the structure isn't already decided.
+- **`/build-landing-page`** / **`/build-interior-page`** — render a page. Preferred path is via `/plan-page` (Page Plan mode); they also accept a raw `<brief>` directly (Brief mode) for simple pages. Output to the `page-builder-examples` repo.
 - **`/recreate-page <url>`** — convert a real existing page (downloads source assets first, mirrors structure).
-- **`/build-landing-page <brief>`** / **`/build-interior-page <brief>`** — fresh pages from a topic/audience brief; output to the `page-builder-examples` repo.
 - **`/sample-landing-page`** / **`/sample-interior-page`** — fixed-recipe showcase pages (no brief, no inputs); output to `test/`. Use only for fixture/test work.
 - **`/qa-component <component-or-ticket>`** — focused component QA page for verifying a DS submodule update; output to `qa/`.
 
-The three brief- or URL-driven commands all run a final harvest step that updates `OVERRIDES.md` with any shadow injections or page-built classes the new page introduced. The `sample-*` and `qa-component` commands skip this step.
+`/plan-page` plans but does not render or harvest — it delegates both to the build command. The build and URL-driven commands (`/build-landing-page`, `/build-interior-page`, `/recreate-page`) run a final harvest step that updates `OVERRIDES.md` with any shadow injections or page-built classes the new page introduced. The `sample-*` and `qa-component` commands skip this step.
 
 ## Output folder guide
 

@@ -521,10 +521,16 @@ umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-
      umd-layout-grid-gap-stacked/two/three/four  — 32px gap at all bp
      umd-layout-grid-gap-two  — widens to 40px at 1024px
      umd-layout-grid-child-fill-height  — height:100% on item + child
+     umd-layout-grid-child-size-double  — grid-column: span 2 at 650px+
+       (feature 2+1+1 card grids — see LAYOUT-PATTERNS.md)
      umd-layout-grid-inline-tablet-rows  — flex CTA row at 650px+
      umd-layout-grid-masonry  — 2-col staggered (base CSS)
      umd-layout-grid-offset-three  — 3-col staircase offset
      umd-layout-grid-border-two/three/four  — bordered cell grids
+
+   Typography classes (umd-sans-*, incl. umd-sans-largest-uppercase
+   used by the sticky text+stats pattern) likewise ship from the CDN
+   typography.min.css — check that bundle before flagging one missing.
 
    Only add grid-related CSS here when it is genuinely absent from
    layout.min.css (e.g. shellcraft-only classes like umd-animation-grid

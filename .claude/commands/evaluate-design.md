@@ -104,6 +104,7 @@ Any component-specific rule that fails silently or produces broken output is a h
 - `umd-element-quote data-display="featured"` actions slot wrapper — `RULES.md §28`
 - `umd-element-card-overlay type="image"` requirement for image backgrounds — `RULES.md §16`
 - `umd-layout-image-expand` text color and quote transparency — `RULES.md §17`
+- Rich-text eyebrow/header color — the `umd-sans-*` classes set no color, so a header inherits the DS `#454545` gray and reads muddy, not black. Needs `text-black` (light) / `text-white` (dark) — `RULES.md §18`
 - Footer visual variant non-empty `alt` — `RULES.md §29`
 - Standard card `data-visual-image-aligned="true"` default — `RULES.md §30`
 - Section-intro + masonry compensation CSS — `LAYOUT-PATTERNS.md` "Masonry compensation rule"

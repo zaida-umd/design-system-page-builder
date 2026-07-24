@@ -903,16 +903,24 @@ Full HTML examples, CSS definitions, and all supporting layout classes are in **
 <div class="umd-text-rich-advanced">...</div>
 ```
 
-**Inline typography on dark backgrounds requires `text-white`:**
+**Inline headers/eyebrows need an explicit text color — they are NOT black by default:**
 
-Inline headline classes (`umd-sans-large`, `umd-sans-larger-bold`, `umd-sans-extralarge-bold`) output black text by default. On dark backgrounds, add `text-white` to force white. Define `.text-white { color: #ffffff; }` in your `<style>` block.
+The typography classes (`umd-sans-large`, `umd-sans-larger-bold`, `umd-sans-extralarge-bold`) set font only — **no color**. Text color is inherited, and the design system's `base.min.css` defaults body/paragraph copy to the DS gray `#454545`. So a rich-text section eyebrow or header renders **dark gray, not black**, unless you say otherwise. This is a common regression: the eyebrow label above a rich-text block (e.g. "Study Here", "Make UMD Yours") looks muddy gray instead of a crisp black header.
+
+- **Light background:** add `text-black` to the header/eyebrow `<p>`.
+- **Dark background:** add `text-white` (also required so the header isn't near-invisible on the dark band).
+
+Define `.text-black { color: #000; }` / `.text-white { color: #fff; }` in your `<style>` block (both ship in `critical.css`).
 
 ```html
-<!-- ✓ Correct -->
+<!-- ✓ Light background — crisp black eyebrow/header -->
+<p class="text-black umd-sans-large">Study Here</p>
+
+<!-- ✓ Dark background -->
 <p class="text-white umd-sans-larger-bold">Inline headline</p>
 
-<!-- ✗ Wrong — black text on black background -->
-<p class="umd-sans-larger-bold">Inline headline</p>
+<!-- ✗ Wrong — inherits DS #454545 gray (light) / invisible (dark) -->
+<p class="umd-sans-large">Study Here</p>
 ```
 
 **Inline typography uses `<p>` not heading tags:**

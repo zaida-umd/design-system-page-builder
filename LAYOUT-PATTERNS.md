@@ -724,6 +724,61 @@ A separate headline above the grid uses both the horizontal lock and the vertica
 </section>
 ```
 
+### Light background — two-column image + text (zig-zag)
+
+Pairs a rich-text column (headline, rule, body, CTA) with a stacked image column, alternating the column order section-to-section for a zig-zag rhythm. Build it from `umd-layout-grid-gap-two` inside the 992px lock, with the image in a `figure.umd-layout-alignment-block-stacked`.
+
+The section headline is a true large headline (`umd-sans-extralarge-bold`, 32px), so it must sit **outside** the rich-text wrapper — a `umd-sans-*` size collapses to 18px inside the block (see RULES.md §18).
+
+```html
+<div class="umd-layout-space-horizontal-small">
+  <div class="umd-layout-grid-gap-two">
+
+    <!-- Text column: headline sits ABOVE the rich-text block -->
+    <div>
+      <h2 class="text-black umd-sans-extralarge-bold umd-layout-space-vertical-headline-large">
+        Section Headline
+      </h2>
+      <div class="umd-text-rich-advanced">
+        <hr>
+        <p>Body copy for this section.</p>
+        <div class="umd-layout-grid-inline-tablet-rows">
+          <umd-element-call-to-action data-display="secondary">
+            <a href="/page">CTA Label</a>
+          </umd-element-call-to-action>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image column -->
+    <figure class="umd-layout-alignment-block-stacked">
+      <img src="/image.jpg" alt="Description">
+    </figure>
+
+  </div>
+</div>
+```
+
+To alternate the zig-zag, swap the order of the text `<div>` and the `<figure>` in the next section.
+
+This pattern needs two page-level CSS rules — neither is in the base bundles or `critical.css`:
+
+```css
+/* Let the 1fr tracks shrink; otherwise a wide image's min-content forces
+   its grid track to the image's intrinsic width and unbalances the columns. */
+.umd-layout-grid-gap-two > * { min-width: 0; }
+.umd-layout-grid-gap-two figure.umd-layout-alignment-block-stacked img {
+  display: block; width: 100%; height: auto;
+}
+
+/* The inlined critical CSS gives <hr> no border (UA default is an inset ~2px
+   grey). Style it as a 1px black rule, and add <hr> as the FIRST child of the
+   rich-text block so its 24px above/below spacing comes from the wrapper. */
+.umd-layout-grid-gap-two .umd-text-rich-advanced hr {
+  border: 0; border-top: 1px solid #000; height: 0;
+}
+```
+
 ---
 
 ## Layout Classes Used in These Patterns

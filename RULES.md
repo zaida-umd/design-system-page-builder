@@ -927,6 +927,10 @@ Define `.text-black { color: #000; }` / `.text-white { color: #fff; }` in your `
 
 Inline headline elements inside `umd-text-rich-advanced` are styled `<p>` elements, not `<h2>` etc. Heading tags carry semantic weight and should only be used for the section headline above the grid.
 
+**A true large headline must sit OUTSIDE the rich-text wrapper:**
+
+`.umd-text-rich-advanced > *` sets `font-size: 18px` on every direct child, which flattens any `umd-sans-*` size applied to an element *inside* the block — the weight still applies, but a 32px `umd-sans-extralarge-bold` collapses to 18px. So a real section headline must be a **sibling above** the rich-text block, not a child of it, with `umd-layout-space-vertical-headline-large` for the gap to the body. This is the mechanical reason heading tags belong above the grid (see the previous gotcha), and it is what the two-column image + text (zig-zag) pattern in LAYOUT-PATTERNS.md relies on.
+
 **The lock for these sections is `umd-layout-space-horizontal-small` (992px):**
 
 These rich text sections use the 992px lock, not the 1280px normal lock. See §12 for the full CSS.

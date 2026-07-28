@@ -31,11 +31,11 @@
     "description": "Floating scroll-to-top button. Appears after the user scrolls down and smoothly returns to the top when clicked.",
     "slots": [],
     "attrs": [
-      {"name": "data-layout-fixed", "type": "boolean", "description": "Fixed viewport positioning when present; absolute positioning when omitted."}
+      {"name": "data-layout-fixed", "type": "enum", "values": ["true"], "description": "Fixed viewport positioning. IMPORTANT: the DS CSS (web-components.min.css) matches ONLY data-layout-fixed=\"true\" (explicit value) or a bare `fixed` attribute — a valueless boolean data-layout-fixed does NOT match, and the button renders position:static in normal flow. Omit entirely for absolute positioning."}
     ],
     "configurable": true,
     "page_types": ["landing", "interior"],
-    "notes": "Usually placed once per page, near the end of the body.",
+    "notes": "Usually placed once per page, near the end of the body. To pin it, use data-layout-fixed=\"true\" (NOT a valueless data-layout-fixed — that won't match the CSS and the button stays static in flow). DS fixed default is right:40px; bottom:10vh; z-index:9999; 52x52. Override right/bottom in your page <style> to reposition (e.g. right:24px; bottom:24px for a 24px viewport inset).",
     "source": "npm",
     "priority": 3
   },

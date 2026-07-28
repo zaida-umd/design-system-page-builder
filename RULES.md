@@ -1795,3 +1795,22 @@ When `.umd-layout-background-full-dark` is immediately followed by a standard (l
 ```
 
 The rule is conditional — a dark section followed by another dark section gets no extra gap (the selector only matches when the following sibling lacks the dark class). Do not add manual `margin-top` or `padding-top` to achieve this gap; the CSS rule handles it.
+
+## 37. Checkbox / radio choice labels — bold by default
+
+`base.min.css` sets a **global element rule** `label { font-weight: 700 }` (font-size 18px). So a bare `<label>` wrapping a checkbox/radio — e.g. a filter option row — renders its text **bold**, which reads as a heading and flattens the visual hierarchy between the group heading and its options.
+
+The design system already ships the fix: **`.umd-field-checkbox-wrapper`** (and its alias `.umd-forms-choices-wrapper`) sets `font-weight: 400` plus the correct `display:inline-flex`, `gap`, color, and hover transition for a choice row. Use it on the label — do **not** hand-roll a page-level `font-weight` override.
+
+```html
+<!-- ✓ Normal-weight choice label; only the group heading stays bold -->
+<label class="umd-field-checkbox-wrapper">
+  <input type="checkbox" name="filters" value="major" />
+  <span>Major <span class="umd-sans-smaller">(104)</span></span>
+</label>
+
+<!-- ✗ Wrong — inherits the global label{font-weight:700}; option text looks like a heading -->
+<label><input type="checkbox" name="filters" value="major" /> <span>Major</span></label>
+```
+
+Same root cause as the eyebrow-color gotcha (§18): a global `base.min.css` element rule imposes a default you must counter with the intended DS class, not an inline style.

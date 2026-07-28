@@ -1410,6 +1410,22 @@ Rules:
 - The count element can live anywhere; `aria-live="polite"` announces updates.
 - Text search matches against each item's full `textContent` (case-insensitive).
 
+### Facet variant — multi-select checkbox groups + A–Z directory
+
+When a listing needs **multiple faceted dimensions** (e.g. type + college + interest) rather than one `<select>`, and/or an **alphabetical directory** with a jump-nav, extend the band with these DS pieces. This is a bespoke-JS variant (the shipped `filter-band.js` handles the single-select case); the filter is still client-side over an in-memory/embedded data array. First used on the admissions Programs page.
+
+Reusable DS-class choices (all upstream — no new component CSS):
+
+- **Rail heading:** `.umd-tailwing-right-headline` (element.min.css) — small uppercase label with a thin rule trailing to the right. **Requires a `<span>` child** (its inherited white background masks the line behind the text) and adds `margin-top:40px` to the next element. Alternative to `.umd-text-line-trailing-light` used above.
+- **Search input:** a **bare `<input>` needs no box CSS** — the global `input {}` rule (base.min.css) already gives white bg, `1px solid #E6E6E6`, `12px 16px` padding, full width. Wrap the input + a red square submit button in a `.umd-layout-background-highlight-light` form to get the gray `#F1F1F1` panel + `2px solid #E21833` left rule.
+- **Checkbox option rows:** `.umd-field-checkbox-wrapper` on each `<label>` (font-weight:400 — see RULES §37; bare labels render bold). Group them under a toggle button and animate open/closed with `grid-template-rows: 0fr → 1fr`. Put per-option counts in `.umd-sans-smaller`.
+- **Active-filter chips ("Filtered by:"):** wrap the removable pills in `<span class="umd-pill-list">` (element.min.css) — each child renders as a `#FAFAFA` 12px chip (hover yellow `#FFD200` on `<a>`; add a page hover rule for `<button>`). Neutralize the container's `margin-top:-8px` hack with flex gap. Put the label × in an inner `<span>` (DS `> span{display:flex;gap:4px}`).
+- **A–Z quick-nav + letter headings:** the `.umd-campaign-*` italic display faces make a good alphabet nav — `.umd-campaign-extrasmall` (32px) for the jump-nav row, `.umd-campaign-small` (44px desktop) for in-list letter headings; recolor to Maryland red. Bucket the sorted array by `name[0]`, render sticky letter sections (`scroll-margin-top` to clear a sticky nav), and dim letters with no matches. Recompute active letters on every filter change.
+- **Row meta with no badge slot:** `umd-element-card[data-display="list"]` has no dedicated badge/tag slot — repurpose its **`date` slot** for a short type/category label (`<p slot="date">Major | Minor</p>`, not `<time>`).
+- **Reset control:** if you use `umd-element-call-to-action data-display="outline"` for "Reset", note it clones its child into shadow DOM — a native `type="reset"` won't reach the light-DOM form; catch the click on a light-DOM wrapper (or walk `e.composedPath()`) and clear state explicitly. See the modal registry note.
+
+Filter logic that matches the UMD "experts" UX: **AND across groups, OR within a group**, plus a case-insensitive substring search — keep an item iff it passes every *active* group (a group with no checked boxes is skipped).
+
 ## Modal (`umd-element-modal`) — content-detail dialogs
 
 Verified against v1.18.12. The component supplies the fixed backdrop

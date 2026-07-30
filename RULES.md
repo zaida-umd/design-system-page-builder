@@ -102,9 +102,26 @@ Nav items must be placed inside a `<nav slot="main-navigation">` wrapper, not sl
 The `slot="utility-navigation"` content is styled almost entirely by light-DOM CSS, **not** the shadow DOM. The component's shadow only does `.element-header-utility-row ::slotted(*) { display:flex; justify-content:flex-end; gap:24px }` — and `::slotted()` reaches **only the direct slotted `<div>`, never its descendants**. Two things fail silently if you forget them:
 
 1. **Links render browser-default blue + underlined** unless you set `color` and `text-decoration: none` on the `<a>`/`<button>` descendants. This is already in `styles/critical.css` §11 / `TEMPLATE.html` — so any page built from the template gets it. **Do not write a narrower scoped override that omits the color/decoration reset** (this is exactly how the bug keeps coming back).
-2. **Items are spaced ~57px apart, not ~33px,** if you use the `.umd-shell-utility-item` separator pattern without killing the shadow's `gap:24px`. The fix is the scoped rule `umd-element-navigation-header div[slot="utility-navigation"] { gap: 0 }` (already in §11). The `.umd-shell-utility-item` margins/border then provide the 16+1+16px separator.
+2. **Items are spaced ~57px apart, not ~33px,** if you use the `.umd-shell-utility-item` separator pattern without killing the shadow's `gap:24px`. §11 handles this with `umd-element-navigation-header div[slot="utility-navigation"]:has(.umd-shell-utility-item) { gap: 0 }`. The `.umd-shell-utility-item` margins/border then provide the 16+1+16px separator.
 
-Use the canonical production markup (matches umd.edu): plain `<div slot="utility-navigation">` → one `.umd-shell-utility-item` per link → `.umd-shell-utility-actions` → `<a class="umd-sans-smaller">`. For a dropdown item, use a `<button>` toggle + sibling `.umd-shell-utility-links[aria-hidden]` panel — see [LAYOUT-PATTERNS.md](LAYOUT-PATTERNS.md) for the full recipe + JS.
+### Two valid markup patterns — the `gap` reset applies to only one
+
+**Shell pattern (canonical, matches umd.edu).** Plain `<div slot="utility-navigation">` → one `.umd-shell-utility-item` per link → `.umd-shell-utility-actions` → `<a class="umd-sans-smaller">`. For a dropdown item, use a `<button>` toggle + sibling `.umd-shell-utility-links[aria-hidden]` panel — see [LAYOUT-PATTERNS.md](LAYOUT-PATTERNS.md) for the full recipe + JS. Each item carries its own separator margins, so §11 zeroes the shadow gap.
+
+**Flat-link pattern.** Plain `<a>` children directly in the slot (`<div slot="utility-navigation"><a>Visit</a><a>Connect</a></div>`) — simpler, and common when a site wants two or three bare links with no separators or dropdowns.
+
+> **The `gap: 0` reset is gated on `:has(.umd-shell-utility-item)` for a reason — do not un-gate it.** Flat `<a>` children have no separator margins, so an unconditional reset collapses them into one run-on string of links with no space between them. Gated, the shadow's own `gap: 24px` survives and flat links space correctly with no project-level override.
+>
+> What flat-link projects **do** still need is link **colour and decoration**: §11's BASE layer styles `.umd-shell-utility-item a`, which does not match a bare `<a>`. Without it the links render browser-default blue and underlined (failure mode 1 above). Add:
+>
+> ```css
+> umd-element-navigation-header div[slot="utility-navigation"] a {
+>   color: #242424;
+>   text-decoration: none;
+> }
+> ```
+>
+> This rule must load **after** the inlined critical block to win at equal specificity.
 
 ---
 

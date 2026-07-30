@@ -340,8 +340,17 @@
 
     /* ---- B. NAV-HEADER: scoped to the utility-navigation slot ---- */
     /* Override the shadow ::slotted(*) gap:24px (the wrapper margins above
-       handle item spacing in the shell pattern). */
-    umd-element-navigation-header div[slot="utility-navigation"] {
+       handle item spacing in the shell pattern).
+
+       GATED ON :has(.umd-shell-utility-item) — this reset is ONLY correct for
+       the shell pattern, where each item supplies its own 16+1+16px
+       margin/border separator. A slot holding plain <a> children has no such
+       margins, so an unconditional `gap: 0` collapsed them into a single
+       run-on string of links. The shadow's own gap:24px is the right default
+       there, so leave it alone. Projects using flat links then need no spacing
+       override at all — only link colour/decoration, which the BASE layer
+       above does not cover for bare <a>. */
+    umd-element-navigation-header div[slot="utility-navigation"]:has(.umd-shell-utility-item) {
       gap: 0;
     }
     umd-element-navigation-header div[slot="utility-navigation"] .umd-shell-utility-item {

@@ -170,6 +170,10 @@
        6. COLOR UTILITIES — not in upstream tokens or typography bundles
        ============================================================ */
     .text-black { color: #000; }
+    /* .umd-text-rich-advanced * (§7) paints every descendant #454545 at the same
+       (0,1,0) specificity as this utility but later in the file, so a bare
+       .text-black loses inside editorial body copy. Scope it so it wins. */
+    .umd-text-rich-advanced .text-black { color: #000; }
     .text-white { color: #ffffff; }
 
 
@@ -200,6 +204,7 @@
       margin-top: 0;
     }
     .umd-text-rich-advanced a {
+      text-decoration: none;
       color: #000000;
       background-image: linear-gradient(#000000, #000000);
       position: relative;
@@ -221,6 +226,7 @@
     .umd-text-rich-advanced-dark p,
     .umd-text-rich-advanced-dark li { color: #ffffff; }
     .umd-text-rich-advanced-dark a {
+      text-decoration: none;
       color: #ffffff;
       background-image: linear-gradient(#ffffff, #ffffff);
       position: relative;
@@ -276,6 +282,7 @@
     .umd-text-rich-simple-large-dark > * { font-size: 18px; margin-top: 24px; }
     .umd-text-rich-simple-large-dark > *:first-child { margin-top: 0; }
     .umd-text-rich-simple-large-dark a {
+      text-decoration: none;
       color: #ffffff;
       background-image: linear-gradient(#ffffff, #ffffff);
       position: relative;

@@ -38,7 +38,9 @@ Two-column staggered layout. Odd children are offset upward, even children are p
 
 **Lock:** `umd-layout-space-horizontal-normal` (1280px).
 
-**When to use:** 2–4 overlay cards or person bio components on landing pages. Works especially well when cards have equal dimensions and strong images. Commonly used with 4 cards (fills both columns evenly) but 2 cards is valid.
+**When to use:** 2–4 overlay cards, person bio components, or `umd-element-card-icon` on landing pages. Works especially well when cards have equal dimensions and strong images. Commonly used with 4 cards (fills both columns evenly) but 2 cards is valid.
+
+**Not only full-width sections.** Masonry is a plain two-column grid underneath, so it also works inside a narrower container — notably the `static-column` of `umd-element-sticky-columns`, where the headline and intro copy stay pinned while the cards stagger past them. Verified at a 629px static column (two 294px columns, 40px gap) on a 1440px viewport.
 
 **When NOT to use:** Mixed content types, lists, or cards where visual hierarchy matters — use `umd-layout-grid-gap-two` for plain two-column grids.
 
@@ -99,6 +101,28 @@ Add per-page CSS to set card height (the stagger depends on cards having a defin
 }
 ```
 
+This applies to **every** child type, not just overlay cards. `umd-element-card-icon`
+in particular sizes to its own copy, so without a `min-height` the offsets read as
+ragged edges rather than a zigzag. Scope the rule to the grid so other cards on the
+page are unaffected:
+
+```css
+.my-icon-grid umd-element-card-icon {
+  min-height: 220px;
+}
+@media (min-width: 768px) {
+  .my-icon-grid umd-element-card-icon { min-height: 260px; }
+}
+```
+
+**Grid rows are equal-height — mind which cards share one.** Masonry offsets the
+children with margins, but they still sit in CSS grid rows, so a card that is much
+taller than the rest stretches whichever card shares its row to match. With an odd
+number of children, put the tallest card **last**: it lands alone at the foot of
+column 1 and stretches nothing. Moving it to an even position balances the column
+bottoms but leaves its rowmate as a mostly-empty box — usually the worse trade. If
+every card must share a row, shorten the outlier's copy instead.
+
 **Stagger mechanics** (for reference — defined in `critical.css`):
 
 | Child position | Desktop offset |
@@ -107,6 +131,39 @@ Add per-page CSS to set card height (the stagger depends on cards having a defin
 | 2nd (even) | `margin-top: 40px` (pushed down) |
 | 3rd (odd) | `margin-top: -40px` (pulled up) |
 | 4th (even) | `margin-top: 0` |
+
+**Icon cards in a sticky column.** Headline and intro copy pin in the sticky column
+while the icon cards stagger past them in the static column. Note the tallest card
+sits last, and the icons carry an intrinsic `width`/`height` — `card-icon` caps its
+image children at `max-height: 120px` in shadow, so an SVG sized under that cap
+controls its own render and needs no shadow injection.
+
+```html
+<section class="umd-layout-vertical-landing">
+  <umd-element-sticky-columns class="umd-layout-space-horizontal-larger" data-layout-position="100px">
+    <div slot="sticky-column">
+      <h2 class="umd-sans-largest-uppercase mb-md">Application Requirements</h2>
+      <div class="umd-text-rich-advanced mb-sm">
+        <p>Intro copy that stays pinned while the cards scroll past.</p>
+      </div>
+    </div>
+    <div slot="static-column">
+      <div class="umd-layout-grid-masonry my-icon-grid">
+        <umd-element-card-icon>
+          <img slot="image" src="/icons/icon-english.svg" alt="" />
+          <h3 slot="headline">4 Years of English</h3>
+        </umd-element-card-icon>
+        <!-- … three more short cards … -->
+        <umd-element-card-icon>
+          <img slot="image" src="/icons/icon-math.svg" alt="" />
+          <h3 slot="headline">4 Years of Math</h3>
+          <p slot="text">The one long description — last, so it shares a row with nothing.</p>
+        </umd-element-card-icon>
+      </div>
+    </div>
+  </umd-element-sticky-columns>
+</section>
+```
 
 ---
 

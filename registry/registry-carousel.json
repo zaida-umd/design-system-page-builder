@@ -184,7 +184,7 @@
         "values": [
           "fullscreen"
         ],
-        "description": "Enable fullscreen viewer."
+        "description": "Additional features. NOTE: \"fullscreen\" is inert — the Full Screen control renders on every image carousel whether or not this attribute is set (verified identical in 1.18.12 and 1.19.5). Setting it documents intent only."
       },
       {
         "name": "data-visual-text-toggle",
@@ -207,7 +207,10 @@
     ],
     "notes": "Alt text is enforced — missing alt will log a warning.",
     "source": "npm",
-    "priority": 3
+    "priority": 3,
+    "slot_child_attrs": {
+      "data-credit": "Set on each <img> inside slot=\"images\". Supplies the caption/credit text. Without it no caption renders at all, which also makes data-visual-text-toggle a no-op. The older data-caption still works but is deprecated and logs a console warning; it is removed in 2.0."
+    }
   },
   "carousel-multiple-image": {
     "tag": "umd-element-carousel-multiple-image",
@@ -235,7 +238,8 @@
         "type": "enum",
         "values": [
           "fullscreen"
-        ]
+        ],
+        "description": "Additional features. NOTE: \"fullscreen\" is inert — the Full Screen control renders on every image carousel whether or not this attribute is set (verified identical in 1.18.12 and 1.19.5). Setting it documents intent only."
       },
       {
         "name": "data-visual-text-toggle",
@@ -257,7 +261,10 @@
       "interior"
     ],
     "source": "npm",
-    "priority": 3
+    "priority": 3,
+    "slot_child_attrs": {
+      "data-credit": "Set on each <img> inside slot=\"images\". Supplies the caption/credit text. Without it no caption renders at all, which also makes data-visual-text-toggle a no-op. The older data-caption still works but is deprecated and logs a console warning; it is removed in 2.0."
+    }
   },
   "carousel-image-wide": {
     "tag": "umd-element-carousel-image-wide",
@@ -301,7 +308,8 @@
       "landing"
     ],
     "source": "npm",
-    "priority": 3
+    "priority": 3,
+    "notes": "TAG GOTCHA: the registered tag is umd-element-carousel-image-wide. The upstream docblock @example in web-components/carousel/wide.ts writes <umd-element-carousel-wide>, which is NOT registered and renders nothing."
   },
   "carousel-thumbnail": {
     "tag": "umd-element-carousel-thumbnail",

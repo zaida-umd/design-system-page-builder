@@ -127,6 +127,21 @@ After the output file is confirmed written, delete the `tmp/` directory:
 rm -rf /Users/zjocson/repos/page-builder-examples/tmp
 ```
 
+## Attribute check (after writing)
+
+Run the registry-driven `data-theme` validator on the new page:
+
+```bash
+python3 /Users/zjocson/repos/design-system-page-builder/tools/check-themes.py <output-file>
+```
+
+- **ERROR** — the value is not in the design system's theme vocabulary, i.e. a typo. Fix before reporting success. These are the ones worth tooling for: a component that ignores an unrecognized `data-theme` renders a misspelled value *identically* to a correct one (pathway `whte` vs `white`), so the mistake is invisible on the page and in a screenshot.
+- **WARNING** — a real theme word the registry does not list for that component. Usually inert; confirm it is deliberate. If it turns out to be genuinely supported, update `registry/` rather than silencing the warning.
+
+Exit code is non-zero only for errors, so warnings will not block a build.
+
+---
+
 ## Harvest overrides (final step)
 
 After cleanup, spawn an `Explore` subagent to scan the new HTML file and update `OVERRIDES.md`. Brief it like this:

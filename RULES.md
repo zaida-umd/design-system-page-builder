@@ -163,6 +163,38 @@ Background panel color by theme:
 - `data-theme="maryland"` → red panel
 - `data-theme="light"` → light gray panel
 
+#### On overlay, `data-theme` also changes section height — it is not only a color
+
+`composite/pathway/overlay.ts` gates the lock wrapper's padding on a theme being *recognized*, not on which theme it is:
+
+```js
+const isThemeApplied = props.isThemeDark || props.isThemeLight || props.isThemeMaryland;
+// … @container (min-width: 800px)
+...(isThemeApplied && { padding: `${token.spacing['6xl']} 0` })   // 6xl = 80px
+```
+
+So on `data-display="overlay"`, at container width ≥ 800px:
+
+| Theme | Panel color | Lock-wrapper padding |
+|---|---|---|
+| No theme | white | none |
+| `white` | white | **none** |
+| `light` | light gray | **80px 0** |
+| `dark` | black | 80px 0 |
+| `maryland` | red | 80px 0 |
+
+**Consequence:** swapping `light` ↔ `white` on an otherwise identical section changes its rendered height by 160px (measured: 918px → 758px). `white` is not a lighter-weight `light` — it is the no-padding branch. Pick between them on layout rhythm as well as color: if a section needs the extra breathing room, `light`/`dark`/`maryland` supply it; `white` and no-theme leave the panel tight to its content and need surrounding spacing utilities to compensate.
+
+`white` is intentional, not a gap: it is the value for an overlay pathway that should sit **tight to its content** — a white panel without the extra 80px. Reach for it when the section background is dark and the surrounding rhythm already supplies the spacing.
+
+It is implemented by *fall-through* rather than parsed — v1.18.12 reads only `dark`/`light`/`maryland`, so `white` takes the default branch. One practical consequence for authors: a misspelling renders identically to a correct value. `data-theme="whte"` produces the exact same panel as `data-theme="white"`, so a typo here is invisible on the page and can only be caught by reading the attribute. (The same is not true of `light`/`dark`/`maryland`, where a typo visibly drops the color *and* the 80px.)
+
+Because that class of typo cannot be caught by eye, `tools/check-themes.py` checks `data-theme` values against `registry/` and is run by the build commands:
+
+```bash
+python3 tools/check-themes.py path/to/page.html
+```
+
 ### `data-animation` semantics — never include the attribute valueless
 
 Applies to `umd-element-pathway` and `umd-element-hero` (v1.18.12). The attribute reader treats the animation as **ON by default when the attribute is absent**, and only the exact value `"true"` reads as true — so a **bare `data-animation` (no value) reads as false and silently DISABLES the entrance animation**:

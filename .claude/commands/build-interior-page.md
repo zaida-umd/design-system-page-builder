@@ -102,6 +102,22 @@ Confirm the output path when done. If a preview server is running, verify the pa
 - [ ] No landing-only components on the page
 - [ ] No broken logo images — `../images/logos/primary-logo-dark.svg` (header), `../images/logos/footer-logo.svg` (footer)
 - [ ] `copy-source` honored (verbatim copy not paraphrased); `image-source` honored (no forced stock)
+- [ ] `tools/check-themes.py` reports no ERRORs (misspelled `data-theme` values render identically to correct ones)
+
+---
+
+## Attribute check (after writing)
+
+Run the registry-driven `data-theme` validator on the new page:
+
+```bash
+python3 /Users/zjocson/repos/design-system-page-builder/tools/check-themes.py <output-file>
+```
+
+- **ERROR** — the value is not in the design system's theme vocabulary, i.e. a typo. Fix before reporting success. These are the ones worth tooling for: a component that ignores an unrecognized `data-theme` renders a misspelled value *identically* to a correct one (pathway `whte` vs `white`), so the mistake is invisible on the page and in a screenshot.
+- **WARNING** — a real theme word the registry does not list for that component. Usually inert; confirm it is deliberate. If it turns out to be genuinely supported, update `registry/` rather than silencing the warning.
+
+Exit code is non-zero only for errors, so warnings will not block a build.
 
 ---
 

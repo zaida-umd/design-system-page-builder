@@ -88,6 +88,31 @@ When a real image URL is unavailable (hotlink protection, dynamic content):
 
 Only needed when the submodule version changes (`git submodule update` or a bump in `.gitmodules`). If the submodule hasn't moved, `critical.css` cannot have drifted.
 
+### The stylesheet pin follows the submodule
+
+Pages load the `web-styles-library` CSS bundles from unpkg at a **pinned version**, and that pin must match the `packages/styles` version inside the current submodule pin. The two move together — a submodule bump is not finished until the stylesheet links are repointed.
+
+Do not leave the links unversioned. An unpinned `unpkg.com/@universityofmaryland/web-styles-library/css/...` URL floats to whatever npm publishes as `latest`, so page CSS changes with no commit, `critical.css` gets audited against a version no page is guaranteed to load, and visual regressions appear with nothing in the history to explain them.
+
+**On every submodule bump:**
+
+```bash
+# 1. Read the styles version the new submodule pin ships
+grep -m1 '"version"' design-system/packages/styles/package.json
+
+# 2. Repoint every stylesheet link to it (TEMPLATE.html + test/ + qa/)
+OLD=1.8.16; NEW=<version from step 1>
+grep -rl "web-styles-library@$OLD" TEMPLATE.html test qa \
+  | xargs sed -i '' "s|web-styles-library@$OLD|web-styles-library@$NEW|g"
+
+# 3. Confirm none were missed — this must print nothing
+grep -rn "web-styles-library/css/" TEMPLATE.html test qa
+```
+
+Then run the `critical.css` audit below against that same version, and update the version stamp in the `styles/critical.css` header.
+
+The components pin (`web-components-library@…` in the `cdn.js` script tag) is tracked separately and deliberately — it names what pages actually run, and matches `components_version` in `registry/`. Moving it is its own decision, with its own QA pass; it does not follow the submodule automatically.
+
 ### How to audit
 
 ```bash

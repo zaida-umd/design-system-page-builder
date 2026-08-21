@@ -750,8 +750,23 @@
 
   <!-- Findings recorded during this QA pass — see commit message for detail.
        1. ElementBuilder "resize" warning (x4) is NEW in 1.19.5 (0 at 1.18.12).
-          Benign: equal-width-items.ts attaches window resize separately, and all
-          seven carousels reflow correctly 1472px -> 657px with no overflow.
+          FALSE POSITIVE — no functional impact. withEvents() is used here as
+          storage for lifecycle-invoked handlers, not as a DOM listener
+          registration, so ElementBuilder's DOM-event-name heuristic misfires.
+          Both handlers do run:
+            - resize: explicit window.addEventListener at
+              equal-width-items.ts:556; all seven carousels reflow correctly
+              1472px -> 657px with no overflow.
+            - load: invoked via Lifecycle.hooks.loadOnConnect
+              (model/utilities/lifecycle.ts:17 -> ref.events.load()) for
+              thumbnail/wide/cards/base, and by an explicit
+              carousel.events.load() call at image/multiple.ts:118.
+              Proven at runtime: Event.load sets inline display:flex and gap on
+              the slide track, and both are present (multiple-image gap:32px,
+              thumbnail gap:0px). EventSwipe is attached inside Event.load, so
+              touch swipe is wired too.
+          An earlier revision of this note and commit a4706d4 suggested load
+          might not be wired. That was wrong — corrected here.
        2. data-feature="fullscreen" is inert — the control renders regardless.
           Pre-existing, identical at 1.18.12.
        3. Caption text comes from data-credit on each <img> (data-caption is

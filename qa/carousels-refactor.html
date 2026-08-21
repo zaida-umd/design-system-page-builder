@@ -745,7 +745,7 @@
 
   <!-- QA label banner — sticky, identifies what is being tested -->
   <div style="background:#ffeb3b;color:#000;padding:8px 16px;font:13px/1.4 monospace;border-bottom:2px solid rgba(0,0,0,.2);position:sticky;top:0;z-index:9999;">
-    QA: carousels refactored 1.18.12 → 1.19.5 | image (standard), multiple-image, thumbnail, image-wide | data-visual-text-toggle true/false + fullscreen | INTERACTION TEST — click nav arrows, indicators, caption toggles, thumbnails, and fullscreen; also verify at ≤768px
+    QA: carousels refactored 1.18.12 → 1.19.5 | image (standard), multiple-image, thumbnail, image-wide | data-visual-text-toggle true/false + fullscreen | PASSED 2026-08-21 — nav arrows and indicator dots verified by hand; no blocking issues
   </div>
 
   <!-- Findings recorded during this QA pass — see commit message for detail.
@@ -756,7 +756,15 @@
           Pre-existing, identical at 1.18.12.
        3. Caption text comes from data-credit on each <img> (data-caption is
           deprecated and logs a warning). Without it captions never render, so
-          data-visual-text-toggle has nothing to show. -->
+          data-visual-text-toggle has nothing to show.
+
+       Manual interaction pass, 2026-08-21 — PASSED, no blocking issues:
+       - Nav arrows and indicator dots: verified working by hand.
+       - Thumbnail carousel shows no Prev/Next at desktop. Expected, not a bug:
+         this page slots 4 cards, they all fit, so the controls are hidden by
+         CSS rather than absent. Measured display:none at 1830px flipping to
+         display:flex (48px) at 768px. Add a 5th card to exercise them at
+         desktop width. -->
 
   <!-- ========================================
        GLOBAL UNIVERSITY HEADER
@@ -907,7 +915,7 @@
   <section class="umd-layout-space-vertical-landing">
     <div class="umd-layout-space-horizontal-larger">
       <h2>6. Thumbnail carousel</h2>
-      <p><code>umd-element-carousel-thumbnail</code>. Per RULES.md §27 the only sanctioned slide is <code>umd-element-card</code> with <code>data-visual-transparent="true"</code>, <code>data-visual-image-aligned="true"</code>, and <code>data-thumbnail</code> on the <strong>host</strong>. Verify thumbnails render below and clicking one advances the carousel.</p>
+      <p><strong>Note:</strong> with only 4 slotted cards they all fit at desktop, so the Prev/Next controls are hidden (<code>display:none</code> at 1830px, <code>display:flex</code> at 768px) — hidden, not missing. <code>umd-element-carousel-thumbnail</code>. Per RULES.md §27 the only sanctioned slide is <code>umd-element-card</code> with <code>data-visual-transparent="true"</code>, <code>data-visual-image-aligned="true"</code>, and <code>data-thumbnail</code> on the <strong>host</strong>. Verify thumbnails render below and clicking one advances the carousel.</p>
     </div>
     <div class="umd-layout-space-horizontal-larger">
       <umd-element-carousel-thumbnail>

@@ -99,7 +99,7 @@
           "dark": "Black panel. On overlay, adds padding: 80px 0 to the lock wrapper at container width \u2265 800px.",
           "light": "Light gray panel. On overlay, adds padding: 80px 0 to the lock wrapper at container width \u2265 800px \u2014 same content is 160px taller than white. Unimplemented on the standard (no data-display) variant \u2014 silent no-op.",
           "maryland": "Red panel. On overlay, adds padding: 80px 0 to the lock wrapper at container width \u2265 800px. Do not use on the standard variant.",
-          "white": "White panel, no added padding \u2014 the intended choice for an overlay pathway that should sit tight to its content, typically on a dark section background. Rendering is identical to omitting data-theme. Implemented by fall-through rather than parsed (the component reads only dark/light/maryland; verified in elements 1.7.1 and unchanged in 1.7.3), so a misspelled value renders identically to a correct one \u2014 spell it exactly."
+          "white": "White panel, no added padding \u2014 the intended choice for an overlay pathway that should sit tight to its content, typically on a dark section background. Rendering is identical to omitting data-theme. Implemented by fall-through rather than parsed (the component reads only dark/light/maryland; identical in 1.18.12, the CDN version pages load, and in upstream main), so a misspelled value renders identically to a correct one \u2014 spell it exactly."
         }
       },
       {

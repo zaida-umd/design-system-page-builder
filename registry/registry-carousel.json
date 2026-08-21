@@ -1,9 +1,9 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "components_version": "1.18.12",
+    "components_version": "1.19.5",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-06-03",
+    "last_verified": "2026-08-21",
     "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist",
     "notes": "Verified from design-system submodule source.",
     "category": "carousel",
@@ -29,20 +29,71 @@
       }
     ],
     "attrs": [
-      {"name": "left-button", "type": "boolean", "description": "Show the left nav button."},
-      {"name": "right-button", "type": "boolean", "description": "Show the right nav button."},
-      {"name": "mobile-hint", "type": "boolean", "description": "Show a swipe hint on mobile."},
-      {"name": "hint", "type": "boolean", "description": "Show a generic navigation hint."},
-      {"name": "data-theme", "type": "enum", "values": ["light", "dark"], "description": "Color theme."},
-      {"name": "tablet-size", "type": "number", "description": "Visible items per view on tablet."},
-      {"name": "desktop-size", "type": "number", "description": "Visible items per view on desktop."},
-      {"name": "tablet-count", "type": "number", "description": "Total item count used for tablet sizing calculations."},
-      {"name": "desktop-count", "type": "number", "description": "Total item count used for desktop sizing calculations."},
-      {"name": "max-count", "type": "number", "description": "Cap on total items displayed."},
-      {"name": "grid-gap-pixels", "type": "number", "description": "Gap between items (pixels)."}
+      {
+        "name": "left-button",
+        "type": "boolean",
+        "description": "Show the left nav button."
+      },
+      {
+        "name": "right-button",
+        "type": "boolean",
+        "description": "Show the right nav button."
+      },
+      {
+        "name": "mobile-hint",
+        "type": "boolean",
+        "description": "Show a swipe hint on mobile."
+      },
+      {
+        "name": "hint",
+        "type": "boolean",
+        "description": "Show a generic navigation hint."
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "light",
+          "dark"
+        ],
+        "description": "Color theme."
+      },
+      {
+        "name": "tablet-size",
+        "type": "number",
+        "description": "Visible items per view on tablet."
+      },
+      {
+        "name": "desktop-size",
+        "type": "number",
+        "description": "Visible items per view on desktop."
+      },
+      {
+        "name": "tablet-count",
+        "type": "number",
+        "description": "Total item count used for tablet sizing calculations."
+      },
+      {
+        "name": "desktop-count",
+        "type": "number",
+        "description": "Total item count used for desktop sizing calculations."
+      },
+      {
+        "name": "max-count",
+        "type": "number",
+        "description": "Cap on total items displayed."
+      },
+      {
+        "name": "grid-gap-pixels",
+        "type": "number",
+        "description": "Gap between items (pixels)."
+      }
     ],
     "configurable": true,
-    "page_types": ["landing", "interior"],
+    "page_types": [
+      "landing",
+      "interior"
+    ],
     "children_expected": "Generic block elements (div, article, section).",
     "notes": "Use this when none of the specialized carousels fit. For card grids use carousel-cards; for image galleries use carousel-image / carousel-multiple-image.",
     "source": "npm",
@@ -59,15 +110,38 @@
         "description": "Container of umd-element-card instances.",
         "example": "<div slot=\"cards\"><umd-element-card>...</umd-element-card><umd-element-card>...</umd-element-card></div>"
       },
-      {"name": "headline", "required": true, "description": "Section headline above the carousel. Functionally required — omitting it leaves the dark carousel without context."},
-      {"name": "text", "required": false, "description": "Section description."},
-      {"name": "actions", "required": false, "description": "Section-level CTA(s)."}
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Section headline above the carousel. Functionally required — omitting it leaves the dark carousel without context."
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Section description."
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "Section-level CTA(s)."
+      }
     ],
     "attrs": [
-      {"name": "data-theme", "type": "enum", "values": ["light", "dark"], "description": "Color theme."}
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "light",
+          "dark"
+        ],
+        "description": "Color theme."
+      }
     ],
     "configurable": true,
-    "page_types": ["landing", "interior"],
+    "page_types": [
+      "landing",
+      "interior"
+    ],
     "children_expected": "umd-element-card-overlay instances (preferred — image-driven content fits the dark texture). umd-element-card with data-theme=\"dark\" is also valid when cards have substantive body copy.",
     "notes": "Always include slot=\"headline\" — without it the dark carousel renders without context. A umd-text-line-trailing section eyebrow can be placed in a horizontal wrapper directly above the component in the page flow (no eyebrow slot exists on the component itself). See RULES.md §27.",
     "source": "npm",
@@ -84,16 +158,54 @@
         "description": "Container with img elements (alt text required).",
         "example": "<div slot=\"images\"><img src=\"/a.jpg\" alt=\"A\" /><img src=\"/b.jpg\" alt=\"B\" /></div>"
       },
-      {"name": "headlines", "required": false, "description": "Per-image headlines (div elements, one per image)."},
-      {"name": "texts", "required": false, "description": "Per-image caption text."}
+      {
+        "name": "headlines",
+        "required": false,
+        "description": "Per-image headlines (div elements, one per image)."
+      },
+      {
+        "name": "texts",
+        "required": false,
+        "description": "Per-image caption text."
+      }
     ],
     "attrs": [
-      {"name": "data-theme", "type": "enum", "values": ["light", "dark"]},
-      {"name": "data-feature", "type": "enum", "values": ["fullscreen"], "description": "Enable fullscreen viewer."}
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "name": "data-feature",
+        "type": "enum",
+        "values": [
+          "fullscreen"
+        ],
+        "description": "Enable fullscreen viewer."
+      },
+      {
+        "name": "data-visual-text-toggle",
+        "type": "enum",
+        "values": [
+          "true",
+          "false"
+        ],
+        "description": "Caption display style. Added in 1.19.0. Defaults to true when absent.",
+        "notes": {
+          "true": "Toggle button that expands to reveal the caption (default).",
+          "false": "Block caption overlaid directly on the image."
+        }
+      }
     ],
     "configurable": true,
-    "page_types": ["landing", "interior"],
-    "notes": "Alt text is enforced \u2014 missing alt will log a warning.",
+    "page_types": [
+      "landing",
+      "interior"
+    ],
+    "notes": "Alt text is enforced — missing alt will log a warning.",
     "source": "npm",
     "priority": 3
   },
@@ -110,11 +222,40 @@
       }
     ],
     "attrs": [
-      {"name": "data-theme", "type": "enum", "values": ["light", "dark"]},
-      {"name": "data-feature", "type": "enum", "values": ["fullscreen"]}
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "name": "data-feature",
+        "type": "enum",
+        "values": [
+          "fullscreen"
+        ]
+      },
+      {
+        "name": "data-visual-text-toggle",
+        "type": "enum",
+        "values": [
+          "true",
+          "false"
+        ],
+        "description": "Caption display style. Added in 1.19.0. Defaults to true when absent.",
+        "notes": {
+          "true": "Toggle button that expands to reveal the caption (default).",
+          "false": "Block caption overlaid directly on the image."
+        }
+      }
     ],
     "configurable": true,
-    "page_types": ["landing", "interior"],
+    "page_types": [
+      "landing",
+      "interior"
+    ],
     "source": "npm",
     "priority": 3
   },
@@ -131,13 +272,34 @@
       }
     ],
     "attrs": [
-      {"name": "title", "type": "string", "description": "Accessible carousel title. Default: 'Animated Image Carousel'."},
-      {"name": "data-theme", "type": "enum", "values": ["light", "dark"]},
-      {"name": "animation-time", "type": "number", "description": "Transition duration in ms. Default: 500."},
-      {"name": "mobile-breakpoint", "type": "number", "description": "Mobile breakpoint in px. Default: 650."}
+      {
+        "name": "title",
+        "type": "string",
+        "description": "Accessible carousel title. Default: 'Animated Image Carousel'."
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "light",
+          "dark"
+        ]
+      },
+      {
+        "name": "animation-time",
+        "type": "number",
+        "description": "Transition duration in ms. Default: 500."
+      },
+      {
+        "name": "mobile-breakpoint",
+        "type": "number",
+        "description": "Mobile breakpoint in px. Default: 650."
+      }
     ],
     "configurable": true,
-    "page_types": ["landing"],
+    "page_types": [
+      "landing"
+    ],
     "source": "npm",
     "priority": 3
   },
@@ -154,10 +316,20 @@
       }
     ],
     "attrs": [
-      {"name": "data-theme", "type": "enum", "values": ["light", "dark"]}
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "light",
+          "dark"
+        ]
+      }
     ],
     "configurable": true,
-    "page_types": ["landing", "interior"],
+    "page_types": [
+      "landing",
+      "interior"
+    ],
     "source": "npm",
     "priority": 3
   }

@@ -1,9 +1,9 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "components_version": "1.18.12",
+    "components_version": "1.19.5",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-06-03",
+    "last_verified": "2026-08-21",
     "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist",
     "notes": "Verified from design-system submodule source.",
     "category": "layout",
@@ -21,7 +21,7 @@
     ],
     "configurable": true,
     "page_types": ["landing", "interior"],
-    "notes": "Open with el.setAttribute('data-layout-hidden', 'false'); close by setting 'true'. The data-visual-open / data-visual-closed attributes previously documented here are NOT implemented in v1.18.12. Trigger gotcha: umd-element-call-to-action and umd-element-card-overlay (cta-icon slot) CLONE their child link/button into shadow DOM, so document-level click delegation via e.target.closest() never sees the trigger \u2014 walk e.composedPath() instead. See LAYOUT-PATTERNS.md 'Modal' for the wiring recipe.",
+    "notes": "Open with el.setAttribute('data-layout-hidden', 'false'); close by setting 'true'. The data-visual-open / data-visual-closed attributes previously documented upstream are NOT implemented; upstream corrected its own docblock to data-layout-hidden in 1.19.x, matching what this registry already recorded. Modal also dispatches modal:show / modal:hide (bubbling, composed) as of 1.19.x. Trigger gotcha: umd-element-call-to-action and umd-element-card-overlay (cta-icon slot) CLONE their child link/button into shadow DOM, so document-level click delegation via e.target.closest() never sees the trigger \u2014 walk e.composedPath() instead. See LAYOUT-PATTERNS.md 'Modal' for the wiring recipe.",
     "source": "npm",
     "priority": 3
   },

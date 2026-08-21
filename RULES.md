@@ -1,6 +1,6 @@
 # UMD Page Builder — Rules
 
-Verified against `@universityofmaryland/web-components-library@1.18.2`.  
+Verified against `@universityofmaryland/web-components-library@1.19.5`.  
 Source: NPM package analysis + `beta.umd-staging.com` inspection.
 
 ---
@@ -14,7 +14,7 @@ Every standalone UMD HTML page must load these two files in `<head>`:
 <style>
   /* contents of styles/critical.css inlined here */
 </style>
-<script src="https://unpkg.com/@universityofmaryland/web-components-library@1.18.2/dist/cdn.js"></script>
+<script src="https://unpkg.com/@universityofmaryland/web-components-library@1.19.5/dist/cdn.js"></script>
 ```
 
 The canonical CSS is in **`styles/critical.css`** — the single source of truth. `TEMPLATE.html` inlines it verbatim. When updating CSS rules, edit `styles/critical.css` first, then copy changes to `TEMPLATE.html`.
@@ -140,7 +140,7 @@ The standard pathway (`umd-element-pathway` with no `data-display`) renders a tw
 
 **Rule:** Standard pathway must only be used when a dark section wrapper (`background: #000` or similar) contains the entire component — so both columns sit within a contained dark field.
 
-**`data-theme="light"` is unimplemented on the standard pathway** in web-components-library v1.18.12 — upstream `composite/pathway/standard.js` only paints dark/maryland text-column backgrounds, so a light standard pathway renders with no panel at all and fails silently. For a light pathway with the gray offset panel, use the overlay variant: `data-display="overlay" data-theme="light"` (self-contained — see below — and includes the scroll-driven panel entrance animation).
+**`data-theme="light"` is unimplemented on the standard pathway** in web-components-library through 1.19.5 — upstream `composite/pathway/standard.js` only paints dark/maryland text-column backgrounds, so a light standard pathway renders with no panel at all and fails silently. For a light pathway with the gray offset panel, use the overlay variant: `data-display="overlay" data-theme="light"` (self-contained — see below — and includes the scroll-driven panel entrance animation).
 
 ```html
 <!-- ✓ Correct — dark theme inside dark section -->
@@ -187,7 +187,7 @@ So on `data-display="overlay"`, at container width ≥ 800px:
 
 `white` is intentional, not a gap: it is the value for an overlay pathway that should sit **tight to its content** — a white panel without the extra 80px. Reach for it when the section background is dark and the surrounding rhythm already supplies the spacing.
 
-It is implemented by *fall-through* rather than parsed — the component reads only `dark`/`light`/`maryland`, so `white` takes the default branch. Verified identical in **1.18.12** (the CDN version pages actually load), in the current `design-system` submodule pin, and in upstream `main` — `pathway/` has zero diff across all three — and confirmed behaviorally against the live bundle on umd.edu. One practical consequence for authors: a misspelling renders identically to a correct value. `data-theme="whte"` produces the exact same panel as `data-theme="white"`, so a typo here is invisible on the page and can only be caught by reading the attribute. (The same is not true of `light`/`dark`/`maryland`, where a typo visibly drops the color *and* the 80px.)
+It is implemented by *fall-through* rather than parsed — the component reads only `dark`/`light`/`maryland`, so `white` takes the default branch. Verified identical in 1.18.12, in **1.19.5** (the CDN version pages now load), and in upstream `main` — `pathway/` has zero diff across all three — and confirmed behaviorally against the live bundle on umd.edu. One practical consequence for authors: a misspelling renders identically to a correct value. `data-theme="whte"` produces the exact same panel as `data-theme="white"`, so a typo here is invisible on the page and can only be caught by reading the attribute. (The same is not true of `light`/`dark`/`maryland`, where a typo visibly drops the color *and* the 80px.)
 
 Because that class of typo cannot be caught by eye, `tools/check-themes.py` checks `data-theme` values against `registry/` and is run by the build commands:
 
@@ -197,7 +197,7 @@ python3 tools/check-themes.py path/to/page.html
 
 ### `data-animation` semantics — never include the attribute valueless
 
-Applies to `umd-element-pathway` and `umd-element-hero` (v1.18.12). The attribute reader treats the animation as **ON by default when the attribute is absent**, and only the exact value `"true"` reads as true — so a **bare `data-animation` (no value) reads as false and silently DISABLES the entrance animation**:
+Applies to `umd-element-pathway` and `umd-element-hero` (verified through 1.19.5). The attribute reader treats the animation as **ON by default when the attribute is absent**, and only the exact value `"true"` reads as true — so a **bare `data-animation` (no value) reads as false and silently DISABLES the entrance animation**:
 
 ```html
 <!-- ✓ Animation on (default) -->
@@ -324,7 +324,7 @@ Valid `data-display` values: `primary`, `secondary`. Omit for default style.
 
 ## 8. Registry is the source of truth
 
-Do not re-derive known components from NPM source or Storybook. Use the registry JSON. The registry has been verified directly from NPM package source for version `1.18.2`. Only add new components to the registry after verification — never guess slots or attribute names.
+Do not re-derive known components from NPM source or Storybook. Use the registry JSON. The registry has been verified directly from NPM package source for version `1.19.5`. Only add new components to the registry after verification — never guess slots or attribute names.
 
 ---
 
@@ -614,7 +614,7 @@ When the quote text is **150 characters or fewer (including spaces)**, add `data
 </umd-element-quote>
 ```
 
-`data-visual-size="large"` is in the quote registry but is **not rendered by web-components-library v1.18.12** — it requires the quote-size shadow-injection polyfill (see `OVERRIDES.md`). Include that injection on any page that uses the attribute until it ships upstream.
+`data-visual-size="large"` is in the quote registry but is **not rendered by web-components-library through 1.19.5** — it requires the quote-size shadow-injection polyfill (see `OVERRIDES.md`). Include that injection on any page that uses the attribute until it ships upstream.
 
 ### Quote attribution slots must use `<p>` — not `<cite>` or `<span>`
 

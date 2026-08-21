@@ -111,7 +111,27 @@ grep -rn "web-styles-library/css/" TEMPLATE.html test qa
 
 Then run the `critical.css` audit below against that same version, and update the version stamp in the `styles/critical.css` header.
 
-The components pin (`web-components-library@…` in the `cdn.js` script tag) is tracked separately and deliberately — it names what pages actually run, and matches `components_version` in `registry/`. Moving it is its own decision, with its own QA pass; it does not follow the submodule automatically.
+### The components pin follows the submodule too
+
+The `cdn.js` script tag's `web-components-library@…` version must match the `packages/components` version in the current submodule pin, and `components_version` in every `registry/*.json` must match both. All three move together with the stylesheet pin.
+
+```bash
+# Version the new submodule pin ships
+grep -m1 '"version"' design-system/packages/components/package.json
+
+OLD=1.19.5; NEW=<version from above>
+grep -rl "web-components-library@$OLD" TEMPLATE.html test qa \
+  | xargs sed -i '' "s|web-components-library@$OLD|web-components-library@$NEW|g"
+sed -i '' "s|\"components_version\": \"$OLD\"|\"components_version\": \"$NEW\"|" registry/registry-*.json
+```
+
+Then diff the component API surface across the two versions and apply any real changes to `registry/` before updating `last_verified`:
+
+```bash
+git -C design-system diff --stat <old-tag> <new-tag> -- packages/components/source/
+```
+
+That diff is the verification — it shows exactly which components' slots or attributes moved, so the rest of the registry stays valid without re-deriving it. **Carousels are the high-risk area**: they were substantially refactored across the 1.18 → 1.19 line, so QA any page using `umd-element-carousel-*` after a bump.
 
 ### How to audit
 

@@ -102,8 +102,10 @@ grep -m1 '"version"' design-system/packages/styles/package.json
 
 # 2. Repoint every stylesheet link to it (TEMPLATE.html + test/ + qa/)
 OLD=1.8.16; NEW=<version from step 1>
-grep -rl "web-styles-library@$OLD" TEMPLATE.html test qa \
-  | xargs sed -i '' "s|web-styles-library@$OLD|web-styles-library@$NEW|g"
+# Match the URL path form (@VER/css/), never the bare token — prose comments
+# cite versions historically and must not be rewritten. See the note below.
+grep -rl "web-styles-library@$OLD/css/" TEMPLATE.html test qa \
+  | xargs sed -i '' "s|web-styles-library@$OLD/css/|web-styles-library@$NEW/css/|g"
 
 # 3. Confirm none were missed — this must print nothing
 grep -rn "web-styles-library/css/" TEMPLATE.html test qa
@@ -120,8 +122,9 @@ The `cdn.js` script tag's `web-components-library@…` version must match the `p
 grep -m1 '"version"' design-system/packages/components/package.json
 
 OLD=1.19.5; NEW=<version from above>
-grep -rl "web-components-library@$OLD" TEMPLATE.html test qa \
-  | xargs sed -i '' "s|web-components-library@$OLD|web-components-library@$NEW|g"
+# Again, match the URL path form (@VER/dist/), not the bare token.
+grep -rl "web-components-library@$OLD/dist/" TEMPLATE.html test qa \
+  | xargs sed -i '' "s|web-components-library@$OLD/dist/|web-components-library@$NEW/dist/|g"
 sed -i '' "s|\"components_version\": \"$OLD\"|\"components_version\": \"$NEW\"|" registry/registry-*.json
 ```
 
@@ -130,6 +133,8 @@ Then diff the component API surface across the two versions and apply any real c
 ```bash
 git -C design-system diff --stat <old-tag> <new-tag> -- packages/components/source/
 ```
+
+**Writing version numbers in comments.** `critical.css` is inlined verbatim into every page, so any version it names shows up when you grep a built page. Phrase historical references so they cannot be mistaken for a pin — `RETIRED (upstream since web-styles-library@1.8.14)`, not `RETIRED (web-styles-library@1.8.14)` — and keep the bump `sed` scoped to the URL path form above so a tombstone is never rewritten into a false claim.
 
 That diff is the verification — it shows exactly which components' slots or attributes moved, so the rest of the registry stays valid without re-deriving it. **Carousels are the high-risk area**: they were substantially refactored across the 1.18 → 1.19 line, so QA any page using `umd-element-carousel-*` after a bump.
 

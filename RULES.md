@@ -29,13 +29,11 @@ The canonical CSS is in **`styles/critical.css`** — the single source of truth
 
 ## 2. Interstate font
 
-Interstate is a **licensed typeface**. The `@font-face` declarations with base64-encoded font data live in UMD's production `critical.css` (build artifact). `umd-critical.css` sets the font-family stack but does not embed the font.
+Interstate is a **licensed typeface**, but you do not need to self-host it. `TEMPLATE.html`'s `<head>` links the published `@font-face` bundle (`web-styles-library`'s `css/font-faces.min.css`) alongside the other stylesheet bundles. Copy the `<head>` block verbatim and Interstate renders.
 
-For the font to actually render as Interstate you must either:
-- Link UMD's production `critical.css` from your CMS or build output, OR  
-- Self-host the Interstate font files and add `@font-face` declarations yourself.
+Do not transcribe that URL here or into a page by hand — take it from `TEMPLATE.html`, which carries the current version pin. The pin moves with the submodule; see CLAUDE.md, "The stylesheet pin follows the submodule."
 
-Without the font loaded, the stack falls back to `Helvetica, Arial, Verdana, sans-serif`. All layouts and sizing will still be correct — only the typeface changes.
+`styles/critical.css` only sets the font-family *stack*; it does not embed font data. If the `font-faces` link is missing or blocked, the stack falls back to `Helvetica, Arial, Verdana, sans-serif` — all layouts and sizing stay correct, only the typeface changes.
 
 Font stacks (for reference):
 ```css

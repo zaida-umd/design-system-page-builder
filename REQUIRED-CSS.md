@@ -23,14 +23,14 @@ This file explains **why** each CSS rule group is needed. The actual CSS lives i
 
 ## 2. Font Stack (`styles/critical.css` — section 2)
 
-**Why:** UMD uses Interstate as its primary typeface. The font is licensed — `@font-face` declarations with embedded font data live in UMD's production build pipeline. This CSS sets the font-family stack so Interstate renders when available, with clean fallbacks when it's not.
+**Why:** UMD uses Interstate as its primary typeface. This CSS sets the font-family stack; the `@font-face` declarations themselves come from the `css/font-faces.min.css` bundle that `TEMPLATE.html` links (see RULES.md §2). The stack lists fallbacks so type still renders cleanly if that bundle is unavailable.
 
 **Font stacks defined:**
 - `--umd-font-sans`: Interstate, Helvetica, Arial, Verdana, sans-serif
 - `--umd-font-serif`: Crimson Pro, Georgia, serif
 - `--umd-font-campaign`: Barlow Condensed, Arial Narrow, sans-serif
 
-**To render Interstate:** Either link UMD's production `critical.css` from the CMS build, or self-host the font files with your own `@font-face` declarations. Without the font loaded, layouts render correctly — only the typeface changes.
+**To render Interstate:** Keep the `font-faces.min.css` `<link>` from `TEMPLATE.html`'s `<head>` block — no self-hosting needed. Without it the stack falls back to Helvetica/Arial; layouts render correctly, only the typeface changes.
 
 ---
 

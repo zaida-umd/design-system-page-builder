@@ -318,6 +318,55 @@ Valid `data-display` values: `primary`, `secondary`. Omit for default style.
 - Use the correct element type per slot. Most headline slots expect heading elements (`h1`–`h6`). Most image slots expect `img` (not a `div` wrapping an `img`).
 - The `logo` slot in headers and footers must be an `<a>` wrapping an `<img>` — not just an `<img>` or text.
 
+### Slot content is CLONED into the shadow root by default — page CSS cannot reach it
+
+This decides whether your CSS classes work at all, and it fails silently when
+you get it wrong: the class simply does nothing, with no console error.
+
+`createStyledSlotOrClone` (web-utilities-library) is what most slots go through:
+
+```js
+const elementRef = element.querySelector(`:scope > [slot=${slotRef}]`);
+if (elementRef.hasAttribute('styled')) return createSlot(slotRef);  // real <slot>
+const clonedElement = elementRef.cloneNode(true);                   // copied into shadow
+```
+
+Two ways a slot ends up as a **real `<slot>`**, leaving content in the light DOM
+where CDN classes and page CSS apply normally:
+
+1. **The component opts out.** Slots requested with `isDefaultStyling: false`
+   always render a real `<slot>`. `umd-element-accordion-item`'s `slot="text"`
+   is one — which is why `class="umd-sans-large"` on a paragraph inside it just
+   works.
+2. **The author opts out** by putting a bare `styled` attribute on the slotted
+   element: `<div slot="text" styled>`. The component then emits a `<slot>` and
+   applies none of its own typography — you own all of it.
+
+Otherwise the content is **cloned into the shadow root**. Page CSS is out of
+reach and the only way to style it is a shadow injection (see OVERRIDES.md).
+
+**How to check, rather than guess:**
+
+```js
+el.shadowRoot.querySelector('slot[name="text"]')   // truthy → light DOM, page CSS works
+                                                   // null   → cloned, needs injection
+```
+
+⚠️ **`styled` does not work on `umd-element-pathway`'s `slot="stats"`.** That
+composite builds its wrapper with `statsWrapper.innerHTML = stats.innerHTML`,
+and a `<slot>` element's `innerHTML` is empty — adding `styled` there makes the
+entire stats block silently disappear. Style it with a shadow injection instead.
+
+### Typography classes with viewport ramps inside container-scoped components
+
+Type scale classes (`.umd-campaign-small`, `.umd-sans-medium`, …) step their
+size on **viewport** media queries. Components that lay out with **container**
+queries — pathway, sticky-columns, cards — can therefore be narrow on a wide
+window, and the class jumps to its large size in a column that cannot hold it.
+When restating a type class inside such a component, re-key its `@media` steps
+to `@container`. Viewport `@media` rules do work unchanged inside a shadow root;
+it is only the *breakpoint basis* that is wrong.
+
 ---
 
 ## 8. Registry is the source of truth

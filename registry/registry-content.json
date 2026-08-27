@@ -65,7 +65,7 @@
       {
         "name": "stats",
         "required": false,
-        "description": "Stat/data callouts displayed within the text area.",
+        "description": "Stat/data callouts displayed within the text area. Renders BEFORE slot=\"actions\" regardless of markup order. Cloned into the shadow root, so page CSS cannot style its contents and the `styled` attribute breaks it \u2014 see notes.",
         "example": "<div slot=\"stats\"><p>$50M in research funding</p></div>"
       }
     ],
@@ -82,7 +82,7 @@
         "notes": {
           "hero": "Full-bleed hero-style pathway",
           "overlay": "Text overlaid on image (similar to hero overlay)",
-          "sticky": "Sticky scroll layout \u2014 text sticks while image scrolls"
+          "sticky": "Sticky scroll layout \u2014 text sticks while image scrolls. The image column is position: sticky; top: 0; height: 100%, with a 656px min-height on the img at container width \u2265 1200px, so it runs the full height of the text column. Do NOT apply an aspect-ratio cap to the image container on this variant \u2014 that is what makes it stick. Feed it a tall/large source; a small landscape image upscales."
         }
       },
       {
@@ -176,6 +176,7 @@
       }
     },
     "page_types": ["landing"],
+    "notes": "SLOT RENDER ORDER is fixed by the component and does NOT follow markup order: eyebrow \u2192 headline \u2192 text \u2192 stats \u2192 actions. Stats render BEFORE actions; authoring them the other way round does not change the output. SLOT STYLING: slot=\"stats\" is CLONED into the shadow root (statsWrapper.innerHTML = stats.innerHTML), so page CSS and CDN utility classes never reach it \u2014 style it with a shadow injection. The `styled` attribute escape hatch (RULES.md \u00a77) MUST NOT be used on stats: it makes the component emit a <slot>, whose innerHTML is empty, and the whole block silently disappears. STATS GRID: the stats wrapper is one column with a 24px gap, becoming two equal columns with a 32px gap at container width \u2265 800px; a third child wraps to the next row unless given grid-column: 1 / -1.",
     "example": "<umd-element-pathway>\n  <img slot=\"image\" src=\"/feature.jpg\" alt=\"Featured research\" />\n  <p slot=\"eyebrow\">Featured Research</p>\n  <h2 slot=\"headline\">Advancing the Future of Engineering</h2>\n  <div slot=\"text\"><p>Our researchers are tackling the defining challenges of our time.</p></div>\n  <div slot=\"actions\">\n    <umd-element-call-to-action data-display=\"primary\"><a href=\"/research\">Explore Research</a></umd-element-call-to-action>\n  </div>\n</umd-element-pathway>",
     "source": "npm",
     "priority": 2,

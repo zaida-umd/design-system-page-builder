@@ -6,6 +6,7 @@ The `.claude/commands/` directory contains slash commands for this project. **Be
 
 | Task | Command file |
 |---|---|
+| Stand up a **whole site / new project repo** (front door) | `.claude/commands/new-project.md` |
 | Plan a page from a brief **or raw content** (front door) | `.claude/commands/plan-page.md` |
 | Build a sample/test landing page (fixed recipe) | `.claude/commands/sample-landing-page.md` |
 | Build a sample/test interior page (fixed recipe) | `.claude/commands/sample-interior-page.md` |
@@ -18,10 +19,11 @@ The `.claude/commands/` directory contains slash commands for this project. **Be
 
 **Do not build pages from scratch** when a command file covers the task. The command file defines the required sections, content source, file naming, image sources, spacing rules, and output path. Follow it exactly.
 
-To choose between the page-building commands:
+To choose between the commands:
+- **`/new-project <name, url, or brief>`** — the **site-level front door**. Use when the work is a whole site or multi-page section, in any of its three flavors: closely recreating an existing site, overhauling one, or building something new. Scaffolds a project repo from `templates/project-scaffold/`, derives the IA, builds the shared header and footer **once**, then hands each page to `/recreate-page` or `/plan-page`. The per-page commands all assume chrome and IA already exist — this is what creates them. Also documents how to retrofit a pre-scaffold project repo.
 - **`/plan-page <brief or raw content>`** — the **front door** when you have content (or a topic) but not a finished plan. Detects brief vs raw content, surveys the site (existing) or peers (new) for visual tone, derives an ordered **Page Plan** (sections → components, copy source, image source), self-validates against `/evaluate-design`, then hands off to `/build-landing-page` or `/build-interior-page`. Use this rather than calling a build command directly whenever the structure isn't already decided.
 - **`/build-landing-page`** / **`/build-interior-page`** — render a page. Preferred path is via `/plan-page` (Page Plan mode); they also accept a raw `<brief>` directly (Brief mode) for simple pages. Output to the `page-builder-examples` repo.
-- **`/recreate-page <url>`** — convert a real existing page (downloads source assets first, mirrors structure).
+- **`/recreate-page <url>`** — convert a real existing page (downloads source assets first, mirrors structure). Targets either the `page-builder-examples` repo (default) or a project repo; in a project with `shared/` chrome it writes `<main>` only and lets `tools/build-chrome.py` splice the rest.
 - **`/sample-landing-page`** / **`/sample-interior-page`** — fixed-recipe showcase pages (no brief, no inputs); output to `test/`. Use only for fixture/test work.
 - **`/qa-component <component-or-ticket>`** — focused component QA page for verifying a DS submodule update; output to `qa/`.
 
@@ -31,7 +33,8 @@ To choose between the page-building commands:
 
 | Folder | What lives here | Written by |
 |---|---|---|
-| `page-builder-examples` repo | Realistic pages built from briefs or real URLs — for demos and client review | `/build-landing-page`, `/build-interior-page`, `/recreate-page` |
+| A project repo (`<name>-design`) | Real design work — a whole site or section, in its own repo vendoring this one | `/new-project`, then `/recreate-page` or `/plan-page` targeting that repo |
+| `page-builder-examples` repo | Realistic one-off pages from briefs or real URLs — for demos and client review | `/build-landing-page`, `/build-interior-page`, `/recreate-page` |
 | `test/` | Fixed-recipe fixture pages — for validating the page builder itself | `/sample-landing-page`, `/sample-interior-page` |
 | `qa/` | Isolated component test pages — for visually verifying DS submodule updates | `/qa-component` |
 

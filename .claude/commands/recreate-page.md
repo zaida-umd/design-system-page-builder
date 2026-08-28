@@ -1,10 +1,48 @@
 # Recreate this page / convert this page to the design system
 
-Build a complete UMD landing page HTML file based on an existing page and save it to `/Users/zjocson/repos/page-builder-examples/examples/`. Help identify the right UMD design system component for all components on a given piece of content or use case.
+Build a complete UMD design system page from an existing page. Help identify the right UMD design system component for all components on a given piece of content or use case.
 
+---
 
+## Step 0: Resolve the output target
+
+Everything downstream — where `tmp/` lives, where images go, whether you author the page chrome at all — depends on this. Settle it first.
+
+**Default — demo/example.** Output goes to the `page-builder-examples` repo. Use this for one-off conversions, experiments, and client-review pieces.
+
+```
+OUT=/Users/zjocson/repos/page-builder-examples
+```
+
+**Standalone project repo.** When the recreation belongs to a real design project (`admissions-design`, `strategic-plan-design`, or one stood up by `/new-project`) — the repo vendors this one as a `page-builder/` submodule and keeps its pages in `pages/`.
+
+```
+OUT=/Users/zjocson/repos/{project}-design
+```
+
+Infer from the invocation: a bare URL with no project context is a demo; a URL named alongside a project, or an invocation from `/new-project`'s build order, is a project page. **Ask if it is not obvious** — writing a project page into the examples repo is tedious to unpick, because its paths and chrome are wrong for the destination.
+
+Read `$OUT/CLAUDE.md` when it exists. A project repo's own rules — nav, section directories, image folders, overrides — layer on top of this command and win where they conflict.
+
+### Does the target have shared chrome?
+
+If `$OUT/shared/header.html` exists, the project inlines its chrome with `page-builder/tools/build-chrome.py`. That changes your job:
+
+- **Do not author the header, footer, or end-of-body shared scripts.** Write the `<head>` and the `<main>` content only, and leave the template's placeholder chrome in place.
+- After writing the page, run the inliner from the project root; it replaces that placeholder chrome with the project's real chrome at the correct depth:
+  ```bash
+  cd $OUT && python3 page-builder/tools/build-chrome.py
+  ```
+- Skip the [Required page structure](#required-page-structure) and [Footer](#footer) sections below — `shared/` owns both.
+- If the source page's nav differs from the project's established nav, **do not** change the chrome to match the source. Note the discrepancy in your summary; site-wide nav is `/new-project`'s decision, not one page's.
+
+Otherwise (the examples repo, or a project with no `shared/`) author the chrome inline, per the sections below.
+
+---
 
 ## Required page structure
+
+*Skip this section when the target has `shared/` chrome — see Step 0.*
 
 Every page must open with these three elements, in this order, before any content:
 
@@ -14,9 +52,9 @@ Every page must open with these three elements, in this order, before any conten
 
 ## Step 1: Download source assets (subagent)
 
-Before doing any analysis or building, spawn a subagent to download the source page assets into `/Users/zjocson/repos/page-builder-examples/tmp/`. The subagent should:
+Before doing any analysis or building, spawn a subagent to download the source page assets into `$OUT/tmp/`. The subagent should:
 
-1. Create the directory `/Users/zjocson/repos/page-builder-examples/tmp/` if it does not exist.
+1. Create the directory `$OUT/tmp/` if it does not exist.
 2. Download the full HTML of the source URL and save it as `tmp/source.html`.
 3. Parse `tmp/source.html` and download all referenced assets:
    - Images (`<img src>`, `srcset`, CSS `background-image` URLs, `<picture><source srcset>`)
@@ -39,7 +77,9 @@ Wait for the subagent to complete before proceeding.
 
 ## Page identity
 
-Use content and images from the source page as the fictional client. Shorten the page title used in the command and name the output file `examples/{title}.html` in the page-builder-examples repo.
+Shorten the page title from the command into a `{title}` slug — it names both the output file and the image folder.
+
+For a **demo** target, use the content and images from the source page as a fictional client. For a **project** target, the content is the real thing: the project owns it, and the project's `CLAUDE.md` governs naming.
 
 ## Copy fidelity (mandatory)
 
@@ -56,7 +96,14 @@ If a section on the source page has no DS-equivalent component and the user hasn
 
 This rule applies during the initial build *and* every later edit to a recreate-page output. When the user asks for a copy change without supplying the new text, ask for the verbatim string before editing.
 
-**Images:** Extract actual image paths from `tmp/source.html` — do not guess or construct URLs. For the generated page, copy the downloaded images from `tmp/assets/images/` into `/Users/zjocson/repos/page-builder-examples/images/projects/{title}/` (where `{title}` matches the output filename, e.g. `images/projects/sph/`) and reference them as repo-relative paths: `../images/projects/{title}/filename.jpg`. Do not commit video files to this repo — use a poster image for video heroes instead.
+**Images:** Extract actual image paths from `tmp/source.html` — do not guess or construct URLs. Copy the downloaded images out of `tmp/assets/images/` into the target's image folder and reference them relative to the page:
+
+| Target | Copy to | Reference as |
+|---|---|---|
+| Demo (`page-builder-examples`) | `$OUT/images/projects/{title}/` | `../images/projects/{title}/file.jpg` |
+| Project repo | `$OUT/images/{section}/` (per its `CLAUDE.md`) | `../images/{section}/file.jpg`, `../../` from a section folder |
+
+Never copy project images into the `page-builder/` submodule — it holds only the shared fallback library. Do not commit video files to either repo; use a poster image for video heroes.
 
 
 ## Process
@@ -98,6 +145,8 @@ Use the content-type → component cheat-sheet in `/recommend-component` — it 
 
 ## Footer
 
+*Skip this section when the target has `shared/` chrome — `shared/footer.html` owns it, and the paths below would be wrong anyway.*
+
 Always use the visual footer:
 ```html
 <umd-element-footer data-display="visual">
@@ -111,20 +160,33 @@ For `slot="logo"` in `umd-element-navigation-header`, use a confirmed accessible
 
 ## Image fallback
 
-Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them to `images/projects/{title}/` in the page-builder-examples repo and reference as repo-relative paths: `../images/projects/{title}/filename.jpg`. Do not copy video files into this repo — use a poster image instead.
+Prefer images downloaded into `tmp/assets/images/` — these are already verified. Copy them into the target's image folder per the table in [Copy fidelity](#copy-fidelity-mandatory) and reference them relative to the page. Do not copy video files; use a poster image instead.
 
 If an image was not downloaded (listed in `tmp/skipped-assets.txt` or absent from `tmp/assets/images/`), fall back to the library lookup in CLAUDE.md §Images.
 
 ## Output
 
-Write the completed HTML file to `/Users/zjocson/repos/page-builder-examples/examples/{title}.html`. Confirm the filename when done.
+| Target | Write to |
+|---|---|
+| Demo (`page-builder-examples`) | `$OUT/{title}/index.html` |
+| Project repo | `$OUT/pages/{section}/{page}.html`, per its `CLAUDE.md` |
+
+Either way the page sits **one level below a repo root**, or two inside a section folder, so relative paths resolve: the fallback image library as `../page-builder/images/...` and shared scripts as `../page-builder/scripts/...`, each gaining a `../` per extra level of depth. In a project with `shared/` chrome, `build-chrome.py` writes those depths for you — do not hand-count them.
+
+If the target has `shared/` chrome, run the inliner now and confirm it reports the page as written:
+
+```bash
+cd $OUT && python3 page-builder/tools/build-chrome.py
+```
+
+Confirm the output path when done. If a preview server is running, verify the page renders — at its real depth — before reporting success.
 
 ## Cleanup
 
 After the output file is confirmed written, delete the `tmp/` directory:
 
 ```bash
-rm -rf /Users/zjocson/repos/page-builder-examples/tmp
+rm -rf $OUT/tmp
 ```
 
 ## Attribute check (after writing)
@@ -144,16 +206,18 @@ Exit code is non-zero only for errors, so warnings will not block a build.
 
 ## Harvest overrides (final step)
 
-After cleanup, spawn an `Explore` subagent to scan the new HTML file and update `OVERRIDES.md`. Brief it like this:
+After cleanup, spawn an `Explore` subagent to scan the new HTML file and update the **target repo's** `OVERRIDES.md` — `$OUT/OVERRIDES.md`, never the submodule's. A project's deviations belong to that project; this repo is shared by all of them. Brief it like this:
 
 > Scan `<output-path>` for two things:
 > 1. **Shadow injections** — IIFEs that call `el.shadowRoot.appendChild(<style>)`. Capture the target component tag, the CSS string injected, and the leading comment that explains why.
 > 2. **Page-built components** — light-DOM CSS classes defined in the inline `<style>` block whose names are NOT present in `styles/critical.css` (typically a custom component with no DS equivalent, e.g. a page-specific `.sp-venn-diagram` block). Skip any class that IS in `critical.css` — that includes `.umd-action-outline-block`, `.umd-text-line-trailing`, and all `umd-layout-grid-*` classes (a no-gap card grid is already `umd-layout-grid-columns-*` upstream — never harvest a hand-rolled duplicate). For each genuine page-built class, capture the class name, its DS counterpart (if any), and why a page-built version was needed (read the leading comment).
 >
-> Then read `OVERRIDES.md`. For each item found:
+> Then read `$OUT/OVERRIDES.md`. For each item found:
 > - If an entry already exists, append `<output-path>` to the "Pages using this" list (only if not already listed).
 > - If no entry exists, append a new entry under the correct heading (Shadow overrides / Page-built components) using the existing entry format.
 >
 > Do NOT add entries for classes already in `styles/critical.css` — those are sanctioned, not overrides. Do NOT modify the preamble.
 >
 > Report a one-line summary: `OVERRIDES.md: +N new entries, +M pages added to existing entries`.
+
+A chrome-driven injection is the exception: in a project with `shared/`, it belongs in `shared/chrome-scripts.html`, not in the page. If the harvest turns one up, move it there and re-run the inliner.

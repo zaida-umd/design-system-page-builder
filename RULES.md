@@ -736,6 +736,25 @@ Wider locks let the tab row sprawl: the buttons space out across 1280px or 1600p
 
 Interior pages are governed by their own column widths (`umd-layout-space-columns-left`) and are not covered by this rule.
 
+### Video embeds on a landing page: `umd-layout-space-horizontal-small` or full bleed
+
+A third-party video embed (`<iframe>`) has no design-system component and no
+opinions of its own, so the page has to lock it. On a landing page use either:
+
+- **`umd-layout-space-horizontal-small`** (992px) — the default. Keeps the video
+  at reading width alongside the text it belongs to.
+- **Full bleed** — no horizontal wrapper, when the video is the section.
+
+Do not use the intermediate locks: at `-normal` or `-larger` a 16:9 embed grows
+tall enough to push everything else off screen without reading as a
+deliberate full-bleed moment.
+
+Always give the iframe `width:100%; aspect-ratio:16/9; height:auto` rather than
+the provider's fixed `width`/`height` attributes, or it will not scale.
+
+Strip provider tracking parameters from the embed URL — YouTube's `?si=` is a
+per-share token, not part of the embed.
+
 ### Quote uses `umd-layout-space-horizontal-normal`
 
 `umd-element-quote` is not full-bleed. Wrap it in `.umd-layout-space-horizontal-normal` (1280px) to constrain its width and maintain consistent page gutters:
@@ -1276,6 +1295,7 @@ Use the following pattern, verified against umd.edu production markup:
 </div>
 ```
 
+- `umd-text-decoration-eyebrow` — the eyebrow above the heading: 12px, 700, uppercase, 0.6px letter-spacing. **Use this, not `umd-sans-smaller`** — the small sans class is body-scale text and reads as a stray line rather than a label. It is the same treatment pathway eyebrows use, so feature lockups match across components. Ships in the CDN `element.min.css`, not `critical.css`. Pair with `mb-sm`.
 - `umd-sans-largest-uppercase` — 800-weight uppercase heading, scales from 32px → 44px
 - `mb-md` — 24px bottom margin between heading and body copy
 - `umd-text-rich-advanced` — 18px body copy with animated red underline links
@@ -1934,6 +1954,27 @@ A vertical stack of `umd-element-accordion-item` siblings on a landing page uses
 |---|---|---|
 | Horizontal wrap | `umd-layout-space-horizontal-small` (992px max-width) | — |
 | Gap between items | 8px | shipped by `web-components.min.css`: `umd-element-accordion-item + umd-element-accordion-item { margin-top: 8px }` |
+
+**This holds inside a sticky-columns static column too — do not wrap accordions in `umd-layout-grid-gap-stacked`.** §33 prescribes that wrapper for card lists and event lists in the static column, and it is easy to carry over to accordions by analogy. Doing so replaces the accordion's own 8px with the grid's much larger gap, and the stack stops reading as one control group.
+
+```html
+<!-- ✗ Wrong — the grid gap overrides the 8px the component already ships -->
+<div slot="static-column">
+  <div class="umd-layout-grid-gap-stacked">
+    <umd-element-accordion-item>…</umd-element-accordion-item>
+    <umd-element-accordion-item>…</umd-element-accordion-item>
+  </div>
+</div>
+
+<!-- ✓ Right — accordions are direct children; the adjacent-sibling rule applies -->
+<div slot="static-column">
+  <umd-element-accordion-item>…</umd-element-accordion-item>
+  <umd-element-accordion-item>…</umd-element-accordion-item>
+</div>
+```
+
+Verified against the design system's own QA page
+(`qa-designteam.umd-servd.com/components/accordion`): 8px between every item.
 
 ```html
 <section class="umd-layout-vertical-landing">

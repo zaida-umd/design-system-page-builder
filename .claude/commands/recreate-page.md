@@ -4,23 +4,36 @@ Build a complete UMD design system page from an existing page. Help identify the
 
 ---
 
-## Step 0: Resolve the output target
+## Step 0: One page, or a site?
 
-Everything downstream — where `tmp/` lives, where images go, whether you author the page chrome at all — depends on this. Settle it first.
+**This command builds ONE page.** It never creates a project repo and never establishes site chrome or navigation.
 
-**Default — demo/example.** Output goes to the `page-builder-examples` repo. Use this for one-off conversions, experiments, and client-review pieces.
+If the real ask is a whole site or a multi-page section — even when it arrives as a single homepage URL — stop and use **`/new-project`** instead. It scaffolds the repo, derives the IA, builds the shared header and footer once, and then calls this command per page with the target already resolved. Recreating a site page-by-page from here instead produces N pages that each invented their own chrome, which is the exact failure the scaffold exists to prevent.
+
+Signals that this is really a site: the URL is a site root or section landing page; the user says "site", "section", or names more than one page; the source page's nav points at siblings they also want. **Ask** rather than guessing — one page is cheap to redo, a half-built site is not.
+
+## Step 0b: Resolve the output target
+
+Everything downstream — where `tmp/` lives, where images go, whether you author the page chrome at all — depends on this. Settle it before doing anything else.
+
+Resolve in this order; **the first signal that matches wins:**
+
+1. **The user named a project** ("add this to admissions", "for the belonging site") → that project.
+2. **`/new-project` invoked this command** from its build order → the repo it just scaffolded, which it passes explicitly.
+3. **The working directory is inside a project repo** — a `page-builder/` submodule and a `pages/` directory are present at the root → **that project**. Running from `admissions-design` means you are working on admissions; do not write to the examples repo from inside a project.
+4. **Otherwise — demo.** Running from `design-system-page-builder` itself, or anywhere else, with a bare URL and no project named → the examples repo. This is the default, and it is correct for one-off conversions, experiments, and client-review pieces.
 
 ```
+# demo (default)
 OUT=/Users/zjocson/repos/page-builder-examples
-```
 
-**Standalone project repo.** When the recreation belongs to a real design project (`admissions-design`, `strategic-plan-design`, or one stood up by `/new-project`) — the repo vendors this one as a `page-builder/` submodule and keeps its pages in `pages/`.
-
-```
+# project repo — vendors this repo as page-builder/, keeps pages in pages/
 OUT=/Users/zjocson/repos/{project}-design
 ```
 
-Infer from the invocation: a bare URL with no project context is a demo; a URL named alongside a project, or an invocation from `/new-project`'s build order, is a project page. **Ask if it is not obvious** — writing a project page into the examples repo is tedious to unpick, because its paths and chrome are wrong for the destination.
+Rule 4 means **running `/recreate-page <url>` from this repo produces a demo page in `page-builder-examples`.** It will not create a project and will not ask to. If a project is what you wanted, name it in the invocation (rule 1) or use `/new-project`.
+
+**Ask when two signals conflict** — e.g. invoked from inside `admissions-design` but the URL is plainly some other organization's site. Writing a project page into the examples repo, or a demo into a project, is tedious to unpick because the paths and chrome are wrong for the destination.
 
 Read `$OUT/CLAUDE.md` when it exists. A project repo's own rules — nav, section directories, image folders, overrides — layer on top of this command and win where they conflict.
 
@@ -42,7 +55,7 @@ Otherwise (the examples repo, or a project with no `shared/`) author the chrome 
 
 ## Required page structure
 
-*Skip this section when the target has `shared/` chrome — see Step 0.*
+*Skip this section when the target has `shared/` chrome — see Step 0b.*
 
 Every page must open with these three elements, in this order, before any content:
 

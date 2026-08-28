@@ -80,6 +80,7 @@ Injected after `customElements.whenDefined('umd-element-card-overlay')`, applied
 
 **Pages using this:**
 - strategic-plan-design `pages/index.html` — President Pines quote inside `umd-layout-image-expand`
+- page-builder-examples `engineering/index.html` — Himanshu Surve quote (106 chars) inside `umd-layout-image-expand`
 
 ---
 

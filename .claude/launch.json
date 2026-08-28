@@ -4,15 +4,36 @@
     {
       "name": "test-server",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "."],
+      "runtimeArgs": [
+        "serve",
+        "."
+      ],
       "port": 3800,
       "autoPort": true
     },
     {
       "name": "umd-search",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "5180", "--directory", "/Users/zjocson/repos/umd-search"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "5180",
+        "--directory",
+        "/Users/zjocson/repos/umd-search"
+      ],
       "port": 5180
+    },
+    {
+      "name": "strategic-plan",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4175",
+        "--directory",
+        "/Users/zjocson/repos/strategic-plan-design"
+      ],
+      "port": 4175
     }
   ]
 }

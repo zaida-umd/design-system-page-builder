@@ -75,6 +75,7 @@ Each file has a distinct role — don't duplicate rules across them. When a topi
 7. **`.claude/commands/evaluate-design.md`** — design-judgment checks for catching design mistakes (variety, rhythm, dark-theme overuse, watermark adjacency). Not a hard-rule enforcer; complements `RULES.md`.
 8. **`OVERRIDES.md`** — page-specific deviations (shadow injections, page-built classes). Append-only log, not a rule source.
 9. **`REQUIRED-CSS.md`** — commentary on *why* each CSS rule group is needed (no CSS to copy).
+10. **`QA-REFERENCE.md`** — how to check the design system's own QA site (`qa-designteam.umd-servd.com`) for how a component is *supposed* to render. Consult it **before** recording any DS behaviour as broken; it outranks the notes in this repo, which are a translation and can go stale.
 
 ## Logos
 

@@ -142,6 +142,25 @@ Never copy project images into the `page-builder/` submodule — it holds only t
 
 4. **Distinguish close alternatives** — if two components are similar (e.g. `umd-element-hero` vs `umd-element-hero-minimal`, or `umd-element-pathway` overlay vs standard), explain the tradeoff clearly so the user can choose.
 
+## Design check (before writing any HTML)
+
+Run the `/evaluate-design` Step 3 checks against your component mapping, and
+**resolve** what they turn up — do not merely note it.
+
+Mirroring a source page is not a reason to skip this. A CMS page reflects the
+constraints of the CMS it was built in, and mapping it component-for-component
+carries those constraints into a design system that does not share them. The
+checks that catch it most often: hero variant by page role, grid gap vs no-gap,
+dark bands as one contiguous block rather than stripes, card-layout variety, and
+whether the source's own hierarchy survived the mapping.
+
+This step exists because it was missing. Two pages built through this command
+reproduced a source layout faithfully and still needed rework on all of the
+above — every one of which was already documented in `/evaluate-design` and
+simply never consulted, because this command never called it.
+
+---
+
 ## Component cheat-sheet
 
 Use the content-type → component cheat-sheet in `/recommend-component` — it is the **single source** for first-pass matching (do not maintain a copy here). Verify tags/attributes against `registry/` before use; the registry wins on conflict.

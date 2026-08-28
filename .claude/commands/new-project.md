@@ -114,7 +114,14 @@ Output the Site Plan, then build pages one at a time via the per-page command fo
 Every per-page command must be told:
 - the **repo path**, so it writes to the project and not to `page-builder-examples`,
 - that the project **has `shared/` chrome**, so it writes only `<main>` content and lets `build-chrome.py` splice the rest,
-- the **visual tone** from Step 2.
+- the **visual tone** from Step 2,
+- to run the `/evaluate-design` Step 3 checks against its plan **before writing HTML**, and resolve what they surface.
+
+That last one is not optional and not a formality. The design checks encode
+judgment that a faithful source mapping will not produce on its own — hero
+variant by page role, grid gap vs no-gap, dark bands as one block instead of
+stripes, card variety, legibility inside themed components. A page can mirror
+its source correctly and still be wrong on every one of them.
 
 After each page is written, re-run `build-chrome.py` so the new page gets its chrome.
 

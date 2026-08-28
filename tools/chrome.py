@@ -8,6 +8,8 @@ console error, no broken layout, just unstyled chrome.
 
 A project keeps its chrome in a `shared/` directory:
 
+    shared/head-meta.html       <head> meta every page carries (robots,
+                                theme-color, verification tokens)
     shared/header.html          header stack (navigation-utility +
                                 utility-header + navigation-header, with the
                                 project's own nav items and logo)
@@ -16,8 +18,12 @@ A project keeps its chrome in a `shared/` directory:
     shared/page-scripts.html    end-of-body <script src> tags every page loads
     shared/chrome-scripts.html  chrome-driven shadow injections
 
-All five are optional — a region whose file is absent is simply skipped, so a
+All six are optional — a region whose file is absent is simply skipped, so a
 project with no shadow injections needs no `chrome-scripts.html`.
+
+`head-meta` is site-wide meta only. A page's own `<title>` and
+`<meta name="description">` stay in the page — they differ per page, and the
+region is spliced verbatim into all of them.
 
 `page-scripts` exists for the same reason as `{{ROOT}}`: TEMPLATE.html ships
 `<script src="../scripts/grid-animations.js">`, which is right for a page in
@@ -86,6 +92,7 @@ _END = '  <!-- SHARED:%s:END -->'
 
 # key -> (source file, wrapper applied to the file's contents)
 REGIONS = {
+    'head-meta':      ('head-meta.html',     lambda s: s),
     'header':         ('header.html',        lambda s: s),
     'footer':         ('footer.html',        lambda s: s),
     'chrome-css':     ('chrome.css',         lambda s: '  <style>\n' + s + '\n  </style>'),

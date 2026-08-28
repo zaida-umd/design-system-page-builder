@@ -70,6 +70,7 @@ footer. Pages should read as one coherent site, not invent their own chrome.
 
 | File | What it holds |
 |---|---|
+| `shared/head-meta.html` | Site-wide `<head>` meta — ships a `noindex, nofollow` pair; delete it when the site goes live |
 | `shared/header.html` | Header stack with this project's nav items and logo |
 | `shared/footer.html` | Footer |
 | `shared/chrome.css` | CSS companions the chrome markup depends on — create only if needed |

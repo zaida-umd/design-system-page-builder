@@ -76,6 +76,18 @@ def locate_footer(src):
     return find_between(src, r'[ \t]*<umd-element-footer\b', r'</umd-element-footer>')
 
 
+def locate_head_meta(src):
+    """Insert the shared <head> meta immediately after the viewport meta.
+
+    Anchored there rather than at the top of <head> so it lands below charset
+    and viewport — which browsers want early — and above the page's own
+    <title>/description, which stay per-page.
+    """
+    m = re.search(r'^[ \t]*<meta name="viewport"[^>]*>[^\n]*$', src, re.M)
+    # m.end() sits on the newline; +1 puts the block on its own line below.
+    return (m.end() + 1, m.end() + 1) if m else None
+
+
 def locate_css_slot(src):
     """Insert a new chrome-CSS block immediately before </head>."""
     m = re.search(r'\n</head>', src)
@@ -108,6 +120,7 @@ def locate_page_scripts(src):
 
 
 LOCATORS = {
+    'head-meta': locate_head_meta,
     'header': locate_header,
     'footer': locate_footer,
     'chrome-css': locate_css_slot,

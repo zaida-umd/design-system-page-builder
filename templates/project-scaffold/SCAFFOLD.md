@@ -13,7 +13,7 @@ This file documents the scaffold. It is **not** copied into the new project.
 ├── README.md          human-facing orientation
 ├── OVERRIDES.md       project-specific shadow injections and CSS overrides
 ├── pages/             the pages, one directory per site section
-├── shared/            header, footer, and their CSS/script companions
+├── shared/            header, footer, <head> meta, and their CSS/script companions
 ├── briefs/            page briefs and source notes
 ├── images/            project-owned images (logos, photography)
 └── page-builder/      submodule → design-system-page-builder
@@ -87,10 +87,11 @@ Until step 1, a fresh page logs one expected 404 for
 renders the UMD wordmark, so the page is correct meanwhile. It clears the moment
 you drop the real logo in.
 
-## The five chrome regions
+## The six chrome regions
 
 | Region | Source | Spliced |
 |---|---|---|
+| `head-meta` | `shared/head-meta.html` | site-wide meta, after the viewport meta |
 | `header` | `shared/header.html` | replaces the header stack |
 | `footer` | `shared/footer.html` | replaces `umd-element-footer` |
 | `chrome-css` | `shared/chrome.css` | `<style>` before `</head>` — not shipped; add only if needed |
@@ -101,6 +102,12 @@ Delete any file the project does not need — the inliner skips a region whose
 source is absent. The scaffold ships no `shared/chrome.css` at all: the rules
 that used to live there (utility-nav flat-link styling) are in `critical.css`
 now, so most projects need no chrome CSS of their own.
+
+`head-meta` ships a `noindex, nofollow` pair, because a design project is a
+prototype or client review until someone decides otherwise. **Delete it when the
+site goes live for real.** It is meta rather than a `robots.txt` because a
+`robots.txt` is only fetched from a HOST root, and a GitHub Pages project site
+is served from `/<repo>/` — the file would never be read.
 
 `page-scripts` matters more than it looks. `TEMPLATE.html` ships
 `<script src="../scripts/grid-animations.js">`, which is correct only for a page

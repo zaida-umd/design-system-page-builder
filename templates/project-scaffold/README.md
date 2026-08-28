@@ -8,7 +8,7 @@ header, footer, and design-system chrome.
 ```
 {{PROJECT_SLUG}}-design/
 ├── pages/              Page HTML, one directory per site section
-├── shared/             Header, footer, and their CSS/script companions
+├── shared/             Header, footer, <head> meta, and their CSS/script companions
 ├── images/             Project-owned logos and photography
 ├── briefs/             Page briefs / source notes
 ├── page-builder/       Submodule → design-system-page-builder
@@ -35,8 +35,9 @@ git submodule update --init --recursive
 
 ## Shared chrome
 
-The header and footer live once, in `shared/`, and are inlined into every page.
-Edit `shared/`, never the chrome inside a page, then run:
+The header, footer, and site-wide `<head>` meta live once, in `shared/`, and are
+inlined into every page. Edit `shared/`, never the chrome inside a page, then
+run:
 
 ```bash
 python3 page-builder/tools/build-chrome.py

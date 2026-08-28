@@ -50,7 +50,7 @@ Real design projects live in their own repo and vendor this one as a submodule a
 
 All three kinds of project — closely recreating an existing site, overhauling one, and building something new — use that same scaffold. They differ only in where content and structure come from, which is `/plan-page`'s and `/recreate-page`'s business, not the repo layout's.
 
-**Shared chrome.** A project keeps its header and footer once, in `shared/`, and inlines them into every page with `tools/build-chrome.py`. Never copy chrome between pages, and never hand-edit chrome inside a page — it sits between `SHARED:<key>:START`/`:END` markers and the next build overwrites it.
+**Shared chrome.** A project keeps its header, footer, and site-wide `<head>` meta (`shared/head-meta.html`) once, in `shared/`, and inlines them into every page with `tools/build-chrome.py`. Never copy chrome between pages, and never hand-edit chrome inside a page — it sits between `SHARED:<key>:START`/`:END` markers and the next build overwrites it.
 
 | Tool | What it does |
 |---|---|

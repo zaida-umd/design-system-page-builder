@@ -907,6 +907,34 @@ All watermark rules are defined in `styles/critical.css` — section 5. They are
 
 ---
 
+## 15b. `data-visual-*` boolean attributes need the literal `="true"`
+
+The design system's boolean-ish attributes are checked with `isAttributeTrue`
+against the **string `"true"`** — not by attribute presence. A bare attribute is
+inert, and nothing warns:
+
+```html
+<!-- ✗ Inert — renders exactly like a card with no attribute at all -->
+<umd-element-card data-visual-bordered>
+<umd-element-card data-visual-image-aligned>
+
+<!-- ✓ Applied -->
+<umd-element-card data-visual-bordered="true">
+<umd-element-card data-visual-image-aligned="true">
+```
+
+**There is no `data-aligned` attribute.** It appears nowhere in the design
+system and matches nothing — the current name is `data-visual-image-aligned`,
+with `aligned="true"` as the deprecated predecessor. A card written with
+`data-aligned` simply does not align, silently.
+
+The same pattern governs `data-visual-transparent="true"`,
+`data-visual-size="large"`, and the rest of the `data-visual-*` family: check
+`packages/model/source/attributes/checks.ts` when a visual attribute appears to
+do nothing. Verified against 1.19.5.
+
+---
+
 ## 16. Card overlay — `type="image"` is required for image backgrounds
 
 `umd-element-card-overlay` has two visual modes: solid-color background (default) and image background. The image background variant requires the deprecated `type="image"` attribute — without it, `slot="image"` is silently ignored and the component renders as a solid-color card.

@@ -101,7 +101,12 @@
       {
         "name": "data-visual-image-aligned",
         "type": "boolean",
-        "description": "Force consistent aspect ratio on images across a group of cards. Set to \"true\"."
+        "description": "Force consistent aspect ratio on images across a group of cards. MUST be written data-visual-image-aligned=\"true\" \u2014 the check is isAttributeTrue against the literal string \"true\", so a bare attribute is inert. Deprecated old name: aligned=\"true\". There is no \"data-aligned\" attribute; it matches nothing and fails silently."
+      },
+      {
+        "name": "data-visual-bordered",
+        "type": "boolean",
+        "description": "Adds a 1px #E6E6E6 border around the card body (.layout-block-stacked-container). MUST be written data-visual-bordered=\"true\" \u2014 a bare attribute is inert. Deprecated old name: border=\"true\". Read by packages/components/source/web-components/card/_model.ts via Attributes.isVisual.bordered. Use for standard cards in a plain column grid where the cells need definition; do NOT reach for umd-layout-grid-border-* instead, which is the person-directory grid."
       }
     ],
     "aliases": {
@@ -138,7 +143,10 @@
       }
     },
     "example": "<umd-element-card>\n  <a slot=\"image\" href=\"/article\"><img src=\"/image.jpg\" alt=\"\" /></a>\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description of the article content.</p>\n  <time slot=\"date\" datetime=\"2025-03-01\">March 1, 2025</time>\n</umd-element-card>",
-    "page_types": ["landing", "interior"],
+    "page_types": [
+      "landing",
+      "interior"
+    ],
     "source": "npm",
     "priority": 2,
     "batch": 2,
@@ -223,13 +231,13 @@
     "classes": [
       {
         "name": "size-large",
-        "description": "Applied directly on umd-element-card-overlay to increase minimum height. Sets minHeight to 320px on mobile and 560px on tablet+. Use whenever the card is featured prominently — e.g., as the sticky column in umd-element-sticky-columns. Example: <umd-element-card-overlay type=\"image\" class=\"size-large\">",
+        "description": "Applied directly on umd-element-card-overlay to increase minimum height. Sets minHeight to 320px on mobile and 560px on tablet+. Use whenever the card is featured prominently \u2014 e.g., as the sticky column in umd-element-sticky-columns. Example: <umd-element-card-overlay type=\"image\" class=\"size-large\">",
         "usage": "feature card in sticky column or hero-style card contexts"
       }
     ],
     "aliases": {
       "overlay card": {
-        "description": "Card with image background and text overlay — always include type=\"image\" when using an image slot",
+        "description": "Card with image background and text overlay \u2014 always include type=\"image\" when using an image slot",
         "attrs": {
           "type": "image"
         }
@@ -239,7 +247,9 @@
         "attrs": {
           "type": "image"
         },
-        "classes": ["size-large"]
+        "classes": [
+          "size-large"
+        ]
       },
       "overlay card dark": {
         "description": "Overlay card with dark theme",
@@ -256,8 +266,11 @@
         }
       }
     },
-    "page_types": ["landing", "interior"],
-    "notes": "When used as a feature card — e.g., in the sticky column slot of umd-element-sticky-columns — always add class=\"size-large\" to the element. CRITICAL — cdn.js never injects the UA custom styles for host elements into the document, so the size-large min-height rule must be defined manually in the page <style> block. Additionally, min-height alone does not work — the shadow DOM inner container uses height: 100% which only cascades when the host has an explicit height. Use height: 320px (mobile) and height: 560px (tablet+) on the host element. Without .size-large + the manual CSS rule, the card uses the internal default of 360px (mobile) and 424px (tablet).",
+    "page_types": [
+      "landing",
+      "interior"
+    ],
+    "notes": "When used as a feature card \u2014 e.g., in the sticky column slot of umd-element-sticky-columns \u2014 always add class=\"size-large\" to the element. CRITICAL \u2014 cdn.js never injects the UA custom styles for host elements into the document, so the size-large min-height rule must be defined manually in the page <style> block. Additionally, min-height alone does not work \u2014 the shadow DOM inner container uses height: 100% which only cascades when the host has an explicit height. Use height: 320px (mobile) and height: 560px (tablet+) on the host element. Without .size-large + the manual CSS rule, the card uses the internal default of 360px (mobile) and 424px (tablet).",
     "example": "<umd-element-card-overlay type=\"image\">\n  <img slot=\"image\" src=\"/image.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description.</p>\n  <div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/article\">Learn More</a></umd-element-call-to-action></div>\n</umd-element-card-overlay>",
     "source": "npm",
     "priority": 2,
@@ -309,7 +322,9 @@
         }
       }
     },
-    "page_types": ["landing"],
+    "page_types": [
+      "landing"
+    ],
     "example": "<umd-element-card-icon>\n  <img slot=\"image\" src=\"/icon.svg\" alt=\"\" />\n  <h3 slot=\"headline\">Research Excellence</h3>\n  <p slot=\"text\">Supporting description of this area.</p>\n</umd-element-card-icon>",
     "source": "npm",
     "priority": 3,
@@ -354,7 +369,9 @@
         }
       }
     },
-    "page_types": ["landing"],
+    "page_types": [
+      "landing"
+    ],
     "example": "<umd-element-card-video>\n  <video slot=\"video\" src=\"/video.mp4\" poster=\"/poster.jpg\"></video>\n</umd-element-card-video>",
     "source": "npm",
     "priority": 3,
@@ -486,7 +503,10 @@
         }
       }
     },
-    "page_types": ["landing", "interior"],
+    "page_types": [
+      "landing",
+      "interior"
+    ],
     "example": "<umd-element-event>\n  <h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>\n  <p slot=\"text\">Join us for presentations from leading researchers.</p>\n  <time slot=\"start-date-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025 at 9:00 AM</time>\n  <time slot=\"end-date-iso\" datetime=\"2025-04-15T17:00:00\">April 15, 2025 at 5:00 PM</time>\n  <p slot=\"location\">Stamp Student Union</p>\n</umd-element-event>",
     "notes": "start-date-iso is required \u2014 the component will render an empty div if it is missing. Slot names are start-date-iso and end-date-iso (NOT date-start-iso / date-end-iso). Use a <time> element with a valid ISO 8601 datetime attribute (e.g. 2025-04-15T09:00:00). The date sign and event meta (time, location) are generated automatically from the date slots. For the promo (overlay) variant, always include an image \u2014 without one the overlay has no background.",
     "source": "npm",
@@ -496,7 +516,7 @@
   "feed-news-grid": {
     "tag": "umd-feed-news",
     "label": "News Grid Feed",
-    "description": "Dynamic grid of news articles fetched from the Maryland Today feed. Self-populating — no content slots. Renders cards in a responsive grid (1–4 columns). Supports overlay card style and lazy loading. Requires data-token.",
+    "description": "Dynamic grid of news articles fetched from the Maryland Today feed. Self-populating \u2014 no content slots. Renders cards in a responsive grid (1\u20134 columns). Supports overlay card style and lazy loading. Requires data-token.",
     "slots": [],
     "attrs": [
       {
@@ -513,23 +533,27 @@
       {
         "name": "data-layout-column-count",
         "type": "number",
-        "description": "Number of columns in the grid (1–4). Defaults to 3."
+        "description": "Number of columns in the grid (1\u20134). Defaults to 3."
       },
       {
         "name": "data-layout-row-count",
         "type": "number",
-        "description": "Number of rows to show initially (1–2). Defaults to 1."
+        "description": "Number of rows to show initially (1\u20132). Defaults to 1."
       },
       {
         "name": "data-theme",
         "type": "enum",
-        "values": ["dark"],
+        "values": [
+          "dark"
+        ],
         "description": "Dark color theme."
       },
       {
         "name": "data-display",
         "type": "enum",
-        "values": ["overlay"],
+        "values": [
+          "overlay"
+        ],
         "description": "Use overlay card style (text over image background)."
       },
       {
@@ -556,15 +580,22 @@
       },
       "news grid dark": {
         "description": "News grid feed, dark theme",
-        "attrs": { "data-theme": "dark" }
+        "attrs": {
+          "data-theme": "dark"
+        }
       },
       "news grid overlay": {
         "description": "News grid with overlay card style",
-        "attrs": { "data-display": "overlay" }
+        "attrs": {
+          "data-display": "overlay"
+        }
       }
     },
-    "page_types": ["landing", "interior"],
-    "notes": "No content slots — articles are fetched and rendered automatically from the Maryland Today API. data-token is required. Use data-filter-group-ids to scope to a specific category (the source page uses '10476' for Maryland Promise stories). Wrapping in umd-layout-space-horizontal-larger is recommended for consistent gutters.",
+    "page_types": [
+      "landing",
+      "interior"
+    ],
+    "notes": "No content slots \u2014 articles are fetched and rendered automatically from the Maryland Today API. data-token is required. Use data-filter-group-ids to scope to a specific category (the source page uses '10476' for Maryland Promise stories). Wrapping in umd-layout-space-horizontal-larger is recommended for consistent gutters.",
     "example": "<umd-feed-news\n  data-token=\"your-api-token\"\n  data-filter-group-ids=\"10476\"\n  data-layout-column-count=\"3\"\n  data-layout-row-count=\"1\">\n</umd-feed-news>",
     "source": "npm",
     "priority": 2,
@@ -573,7 +604,7 @@
   "feed-news-list": {
     "tag": "umd-feed-news-list",
     "label": "News List Feed",
-    "description": "Dynamic stacked list of news articles fetched from the Maryland Today feed. Self-populating — no content slots. Renders articles as horizontal list cards optimized for vertical scanning. Requires data-token.",
+    "description": "Dynamic stacked list of news articles fetched from the Maryland Today feed. Self-populating \u2014 no content slots. Renders articles as horizontal list cards optimized for vertical scanning. Requires data-token.",
     "slots": [],
     "attrs": [
       {
@@ -590,12 +621,14 @@
       {
         "name": "data-layout-row-count",
         "type": "number",
-        "description": "Number of articles to show initially (1–10). Defaults to 5."
+        "description": "Number of articles to show initially (1\u201310). Defaults to 5."
       },
       {
         "name": "data-theme",
         "type": "enum",
-        "values": ["dark"],
+        "values": [
+          "dark"
+        ],
         "description": "Dark color theme."
       },
       {
@@ -617,11 +650,16 @@
       },
       "news list dark": {
         "description": "News list feed, dark theme",
-        "attrs": { "data-theme": "dark" }
+        "attrs": {
+          "data-theme": "dark"
+        }
       }
     },
-    "page_types": ["landing", "interior"],
-    "notes": "No content slots — articles fetched automatically. Pairs well with umd-element-sticky-columns as the static column content alongside a section intro in the sticky column.",
+    "page_types": [
+      "landing",
+      "interior"
+    ],
+    "notes": "No content slots \u2014 articles fetched automatically. Pairs well with umd-element-sticky-columns as the static column content alongside a section intro in the sticky column.",
     "example": "<umd-feed-news-list\n  data-token=\"your-api-token\"\n  data-filter-group-ids=\"10476\"\n  data-layout-row-count=\"5\"\n  data-lazy-load=\"true\">\n</umd-feed-news-list>",
     "source": "npm",
     "priority": 2,
@@ -647,13 +685,15 @@
       {
         "name": "data-theme",
         "type": "enum",
-        "values": ["dark"],
+        "values": [
+          "dark"
+        ],
         "description": "Dark color theme."
       },
       {
         "name": "data-layout-reverse",
         "type": "boolean",
-        "description": "Reverse the layout — overlay card moves to the right, supporting grid to the left."
+        "description": "Reverse the layout \u2014 overlay card moves to the right, supporting grid to the left."
       },
       {
         "name": "data-top-position",
@@ -663,7 +703,7 @@
       {
         "name": "data-layout-position",
         "type": "string",
-        "description": "Observed attribute — dynamically updates the sticky card's top position. Same purpose as data-top-position but reactive to DOM changes."
+        "description": "Observed attribute \u2014 dynamically updates the sticky card's top position. Same purpose as data-top-position but reactive to DOM changes."
       },
       {
         "name": "data-lazy-load",
@@ -684,20 +724,26 @@
     "critical_css": "umd-feed-news-featured requires display:block and container-type:inline-size on the host element. Add to critical CSS.",
     "aliases": {
       "news featured": {
-        "description": "Featured news layout — large overlay card + supporting grid",
+        "description": "Featured news layout \u2014 large overlay card + supporting grid",
         "attrs": {}
       },
       "news featured reversed": {
-        "description": "Featured news layout, reversed — overlay card on right",
-        "attrs": { "data-layout-reverse": "" }
+        "description": "Featured news layout, reversed \u2014 overlay card on right",
+        "attrs": {
+          "data-layout-reverse": ""
+        }
       },
       "news featured dark": {
         "description": "Featured news layout, dark theme",
-        "attrs": { "data-theme": "dark" }
+        "attrs": {
+          "data-theme": "dark"
+        }
       }
     },
-    "page_types": ["landing"],
-    "notes": "Renders 3 articles on initial load: 1 overlay (featured) + 2 block cards. Falls back to standard 2-column grid if fewer than 2 articles are returned. Set data-top-position to match your sticky nav height so the overlay card sticks below the nav. No content slots — articles are fetched automatically from the Maryland Today API.",
+    "page_types": [
+      "landing"
+    ],
+    "notes": "Renders 3 articles on initial load: 1 overlay (featured) + 2 block cards. Falls back to standard 2-column grid if fewer than 2 articles are returned. Set data-top-position to match your sticky nav height so the overlay card sticks below the nav. No content slots \u2014 articles are fetched automatically from the Maryland Today API.",
     "example": "<umd-feed-news-featured\n  data-token=\"your-api-token\"\n  data-filter-group-ids=\"10476\"\n  data-top-position=\"100\">\n</umd-feed-news-featured>",
     "source": "npm",
     "priority": 1,
@@ -751,7 +797,10 @@
         }
       }
     },
-    "page_types": ["landing", "interior"],
+    "page_types": [
+      "landing",
+      "interior"
+    ],
     "notes": "No content slots \u2014 events are fetched and rendered automatically from the API. data-token is required; the component renders an empty div and logs an error without it. Use data-filter-group-ids to scope to a specific category (e.g. arts, athletics). Pairs naturally with umd-element-sticky-columns as the static column content.",
     "example": "<umd-feed-events-list\n  data-token=\"your-api-token\"\n  data-layout-row-count=\"5\"\n  data-lazy-load=\"true\">\n</umd-feed-events-list>",
     "source": "npm",
@@ -761,7 +810,7 @@
   "event-slider": {
     "tag": "umd-element-slider-events",
     "label": "Event Slider",
-    "description": "Horizontal scrollable slider for displaying a collection of events. Headline and CTA are built into the component via slots — no separate section-intro needed. Each event item inside slot='event-list' must be a umd-element-events-date custom element (not a plain div, not umd-element-event). Supports dark theme.",
+    "description": "Horizontal scrollable slider for displaying a collection of events. Headline and CTA are built into the component via slots \u2014 no separate section-intro needed. Each event item inside slot='event-list' must be a umd-element-events-date custom element (not a plain div, not umd-element-event). Supports dark theme.",
     "slots": [
       {
         "name": "headline",
@@ -778,7 +827,7 @@
       {
         "name": "event-list",
         "required": true,
-        "description": "Container <div> holding event items. Each item should be a umd-element-events-date component — the slider copies the slot innerHTML and the browser upgrades these components inside the shadow DOM. Use umd-element-events-date with slots: headline (h3 with a), start-date-iso (time element). The slider renders date sign + headline for each item.",
+        "description": "Container <div> holding event items. Each item should be a umd-element-events-date component \u2014 the slider copies the slot innerHTML and the browser upgrades these components inside the shadow DOM. Use umd-element-events-date with slots: headline (h3 with a), start-date-iso (time element). The slider renders date sign + headline for each item.",
         "example": "<div slot=\"event-list\">\n  <umd-element-events-date>\n    <h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>\n    <time slot=\"start-date-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025</time>\n  </umd-element-events-date>\n  <umd-element-events-date>\n    <h3 slot=\"headline\"><a href=\"/events/career-fair\">Career Fair</a></h3>\n    <time slot=\"start-date-iso\" datetime=\"2025-04-20T14:00:00\">April 20, 2025</time>\n  </umd-element-events-date>\n</div>"
       }
     ],
@@ -786,13 +835,17 @@
       {
         "name": "data-theme",
         "type": "enum",
-        "values": ["dark"],
-        "description": "Dark color theme — dark background with light text."
+        "values": [
+          "dark"
+        ],
+        "description": "Dark color theme \u2014 dark background with light text."
       },
       {
         "name": "resize",
         "type": "string",
-        "values": ["true"],
+        "values": [
+          "true"
+        ],
         "description": "Set to 'true' to trigger recalculation of date element sizes after dynamic content updates or container resize."
       }
     ],
@@ -808,8 +861,11 @@
         }
       }
     },
-    "page_types": ["landing", "interior"],
-    "notes": "The event-list slot is required. The component copies the innerHTML of the slot div into shadow DOM (extract-and-append — standard slot projection does NOT apply). Event items must be umd-element-events-date custom elements; plain divs produce no date sign. Actions slot expects a bare <a> tag, NOT umd-element-call-to-action. Include umd-element-slider-events in critical CSS Group 2 (container-type: inline-size).",
+    "page_types": [
+      "landing",
+      "interior"
+    ],
+    "notes": "The event-list slot is required. The component copies the innerHTML of the slot div into shadow DOM (extract-and-append \u2014 standard slot projection does NOT apply). Event items must be umd-element-events-date custom elements; plain divs produce no date sign. Actions slot expects a bare <a> tag, NOT umd-element-call-to-action. Include umd-element-slider-events in critical CSS Group 2 (container-type: inline-size).",
     "example": "<umd-element-slider-events>\n  <h2 slot=\"headline\">Upcoming Events</h2>\n  <a slot=\"actions\" href=\"/events\">View All Events</a>\n  <div slot=\"event-list\">\n    <umd-element-events-date>\n      <h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>\n      <time slot=\"start-date-iso\" datetime=\"2025-04-15T09:00:00\">April 15, 2025</time>\n    </umd-element-events-date>\n    <umd-element-events-date>\n      <h3 slot=\"headline\"><a href=\"/events/career-fair\">Career Fair</a></h3>\n      <time slot=\"start-date-iso\" datetime=\"2025-04-20T14:00:00\">April 20, 2025</time>\n    </umd-element-events-date>\n  </div>\n</umd-element-slider-events>",
     "source": "npm",
     "priority": 1,
@@ -818,7 +874,7 @@
   "events-date": {
     "tag": "umd-element-events-date",
     "label": "Event Date Lockup",
-    "description": "Renders a date sign block (month abbreviation + day number) alongside an event headline. Used as the child item type inside umd-element-slider-events. Not a standalone page component — always used within an event slider's event-list slot.",
+    "description": "Renders a date sign block (month abbreviation + day number) alongside an event headline. Used as the child item type inside umd-element-slider-events. Not a standalone page component \u2014 always used within an event slider's event-list slot.",
     "slots": [
       {
         "name": "headline",
@@ -829,13 +885,13 @@
       {
         "name": "start-date-iso",
         "required": true,
-        "description": "Start date. Use a <time> element with a datetime attribute in ISO 8601 format (YYYY-MM-DDTHH:MM:SS). The component reads the datetime value to build the date sign. Slot name is start-date-iso — NOT date-start-iso.",
+        "description": "Start date. Use a <time> element with a datetime attribute in ISO 8601 format (YYYY-MM-DDTHH:MM:SS). The component reads the datetime value to build the date sign. Slot name is start-date-iso \u2014 NOT date-start-iso.",
         "example": "<time slot=\"start-date-iso\" datetime=\"2026-04-15T09:00:00\">April 15, 2026</time>"
       },
       {
         "name": "end-date-iso",
         "required": false,
-        "description": "End date for multi-day events. Same format as start-date-iso. Slot name is end-date-iso — NOT date-end-iso.",
+        "description": "End date for multi-day events. Same format as start-date-iso. Slot name is end-date-iso \u2014 NOT date-end-iso.",
         "example": "<time slot=\"end-date-iso\" datetime=\"2026-04-16T17:00:00\">April 16, 2026</time>"
       }
     ],
@@ -846,8 +902,11 @@
         "attrs": {}
       }
     },
-    "page_types": ["landing", "interior"],
-    "notes": "Slot names are start-date-iso and end-date-iso (not date-start-iso / date-end-iso). Wrong slot names fail silently — no date sign is rendered. Must be a direct child of the event-list slot div inside umd-element-slider-events.",
+    "page_types": [
+      "landing",
+      "interior"
+    ],
+    "notes": "Slot names are start-date-iso and end-date-iso (not date-start-iso / date-end-iso). Wrong slot names fail silently \u2014 no date sign is rendered. Must be a direct child of the event-list slot div inside umd-element-slider-events.",
     "example": "<umd-element-events-date>\n  <h3 slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></h3>\n  <time slot=\"start-date-iso\" datetime=\"2026-04-15T09:00:00\">April 15, 2026</time>\n</umd-element-events-date>",
     "source": "npm",
     "priority": 1,
@@ -858,20 +917,71 @@
     "label": "Article Card",
     "description": "Article-specific card with eyebrow, headline, text, date, image, and actions. Similar to card-standard but tuned for news/article listings.",
     "slots": [
-      {"name": "headline", "required": true, "description": "Article title."},
-      {"name": "eyebrow", "required": false, "description": "Category label (e.g. 'Research', 'Campus Life')."},
-      {"name": "text", "required": false, "description": "Article excerpt."},
-      {"name": "image", "required": false, "description": "Featured image."},
-      {"name": "date", "required": false, "description": "Publication date (time element)."},
-      {"name": "actions", "required": false, "description": "Read-more / sharing links."}
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Article title."
+      },
+      {
+        "name": "eyebrow",
+        "required": false,
+        "description": "Category label (e.g. 'Research', 'Campus Life')."
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Article excerpt."
+      },
+      {
+        "name": "image",
+        "required": false,
+        "description": "Featured image."
+      },
+      {
+        "name": "date",
+        "required": false,
+        "description": "Publication date (time element)."
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "Read-more / sharing links."
+      }
     ],
     "attrs": [
-      {"name": "data-theme", "type": "enum", "values": ["light", "dark"], "description": "Color theme."},
-      {"name": "data-display", "type": "enum", "values": ["list"], "description": "List layout (horizontal). Omit for default block layout."},
-      {"name": "data-visual", "type": "enum", "values": ["transparent", "aligned", "bordered"], "description": "Visual treatment."}
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "light",
+          "dark"
+        ],
+        "description": "Color theme."
+      },
+      {
+        "name": "data-display",
+        "type": "enum",
+        "values": [
+          "list"
+        ],
+        "description": "List layout (horizontal). Omit for default block layout."
+      },
+      {
+        "name": "data-visual",
+        "type": "enum",
+        "values": [
+          "transparent",
+          "aligned",
+          "bordered"
+        ],
+        "description": "Visual treatment."
+      }
     ],
     "configurable": true,
-    "page_types": ["landing", "interior"],
+    "page_types": [
+      "landing",
+      "interior"
+    ],
     "notes": "Functionally close to card-standard. Prefer article for news/editorial contexts and card-standard for generic content cards.",
     "source": "npm",
     "priority": 2
@@ -881,20 +991,63 @@
     "label": "Event Time Card",
     "description": "Two-column event card emphasizing start/end time, location, and optional image. Use for time-forward event listings (lectures, workshops with specific windows).",
     "slots": [
-      {"name": "headline", "required": false, "description": "Event title."},
-      {"name": "start-time", "required": true, "description": "Event start time (time element).", "example": "<time slot=\"start-time\" datetime=\"2026-05-01T18:00\">6:00 PM</time>"},
-      {"name": "end-time", "required": false, "description": "Event end time."},
-      {"name": "location", "required": false, "description": "Venue / location."},
-      {"name": "information", "required": false, "description": "Additional event info."},
-      {"name": "text", "required": false, "description": "Event description."},
-      {"name": "actions", "required": false, "description": "CTA links (register, learn more)."},
-      {"name": "image", "required": false, "description": "Event image."}
+      {
+        "name": "headline",
+        "required": false,
+        "description": "Event title."
+      },
+      {
+        "name": "start-time",
+        "required": true,
+        "description": "Event start time (time element).",
+        "example": "<time slot=\"start-time\" datetime=\"2026-05-01T18:00\">6:00 PM</time>"
+      },
+      {
+        "name": "end-time",
+        "required": false,
+        "description": "Event end time."
+      },
+      {
+        "name": "location",
+        "required": false,
+        "description": "Venue / location."
+      },
+      {
+        "name": "information",
+        "required": false,
+        "description": "Additional event info."
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Event description."
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "CTA links (register, learn more)."
+      },
+      {
+        "name": "image",
+        "required": false,
+        "description": "Event image."
+      }
     ],
     "attrs": [
-      {"name": "data-theme", "type": "enum", "values": ["dark"], "description": "Dark theme styling."}
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "dark"
+        ],
+        "description": "Dark theme styling."
+      }
     ],
     "configurable": true,
-    "page_types": ["landing", "interior"],
+    "page_types": [
+      "landing",
+      "interior"
+    ],
     "source": "npm",
     "priority": 2
   },
@@ -903,15 +1056,47 @@
     "label": "Call-to-Action Button",
     "description": "Wraps a child <a> or <button> and applies UMD CTA styling. Use for all primary/secondary/outline CTAs \u2014 do NOT style raw buttons.",
     "slots": [
-      {"name": "default", "required": true, "description": "A single <a> or <button> child.", "example": "<umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply now</a></umd-element-call-to-action>"}
+      {
+        "name": "default",
+        "required": true,
+        "description": "A single <a> or <button> child.",
+        "example": "<umd-element-call-to-action data-display=\"primary\"><a href=\"/apply\">Apply now</a></umd-element-call-to-action>"
+      }
     ],
     "attrs": [
-      {"name": "data-display", "type": "enum", "values": ["primary", "secondary", "outline"], "description": "Button style. Omit for default secondary-ish look."},
-      {"name": "data-visual-size", "type": "enum", "values": ["large"], "description": "Large size variant."},
-      {"name": "data-theme", "type": "enum", "values": ["dark", "gold"], "description": "Theme variant. On dark sections use data-theme=\"dark\"."}
+      {
+        "name": "data-display",
+        "type": "enum",
+        "values": [
+          "primary",
+          "secondary",
+          "outline"
+        ],
+        "description": "Button style. Omit for default secondary-ish look."
+      },
+      {
+        "name": "data-visual-size",
+        "type": "enum",
+        "values": [
+          "large"
+        ],
+        "description": "Large size variant."
+      },
+      {
+        "name": "data-theme",
+        "type": "enum",
+        "values": [
+          "dark",
+          "gold"
+        ],
+        "description": "Theme variant. On dark sections use data-theme=\"dark\"."
+      }
     ],
     "configurable": true,
-    "page_types": ["landing", "interior"],
+    "page_types": [
+      "landing",
+      "interior"
+    ],
     "notes": "Clones and enhances the child link/button. Always nest a real anchor or button inside \u2014 don't rely on the component as the interactive element.",
     "source": "npm",
     "priority": 1

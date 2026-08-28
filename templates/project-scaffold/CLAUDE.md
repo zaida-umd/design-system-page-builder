@@ -72,7 +72,7 @@ footer. Pages should read as one coherent site, not invent their own chrome.
 |---|---|
 | `shared/header.html` | Header stack with this project's nav items and logo |
 | `shared/footer.html` | Footer |
-| `shared/chrome.css` | CSS companions the chrome markup depends on |
+| `shared/chrome.css` | CSS companions the chrome markup depends on — create only if needed |
 | `shared/page-scripts.html` | End-of-body `<script src>` tags every page loads |
 | `shared/chrome-scripts.html` | Chrome-driven shadow injections |
 

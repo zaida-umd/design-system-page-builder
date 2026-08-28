@@ -93,12 +93,14 @@ you drop the real logo in.
 |---|---|---|
 | `header` | `shared/header.html` | replaces the header stack |
 | `footer` | `shared/footer.html` | replaces `umd-element-footer` |
-| `chrome-css` | `shared/chrome.css` | `<style>` before `</head>` |
+| `chrome-css` | `shared/chrome.css` | `<style>` before `</head>` — not shipped; add only if needed |
 | `page-scripts` | `shared/page-scripts.html` | replaces the end-of-body `scripts/*.js` tags |
 | `chrome-scripts` | `shared/chrome-scripts.html` | shadow injections before `</body>` |
 
 Delete any file the project does not need — the inliner skips a region whose
-source is absent.
+source is absent. The scaffold ships no `shared/chrome.css` at all: the rules
+that used to live there (utility-nav flat-link styling) are in `critical.css`
+now, so most projects need no chrome CSS of their own.
 
 `page-scripts` matters more than it looks. `TEMPLATE.html` ships
 `<script src="../scripts/grid-animations.js">`, which is correct only for a page

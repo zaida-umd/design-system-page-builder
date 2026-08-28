@@ -87,7 +87,7 @@ Replace the scaffold's placeholders in `shared/` with the project's real chrome:
 - **`shared/footer.html`** — the project's footer logo and image.
 - **`shared/page-scripts.html`** — trim to the scripts this project actually uses.
 - **`shared/chrome-scripts.html`** — delete it unless the chrome needs a shadow injection (a logo wider than the DS default is the common one). A region with no source file is skipped.
-- **`shared/chrome.css`** — create it only if the chrome needs CSS beyond `critical.css`. Bare `<a>` children in `slot="utility-navigation"` do (see the scaffold's copy).
+- **`shared/chrome.css`** — the scaffold ships none. Create it only if the chrome genuinely needs CSS beyond `critical.css`, which now covers utility-nav flat links itself (§11 layer C). Do not re-add that override per project — that duplication is what layer C exists to end.
 
 Hard requirements, all of which fail silently if missed:
 

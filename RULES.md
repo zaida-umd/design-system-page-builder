@@ -491,7 +491,7 @@ The design system provides CSS utility classes for consistent spacing between se
 
 ### CSS
 
-All vertical spacing rules are defined in `styles/critical.css` — section 3. They are already included in the TEMPLATE.html `<style>` block.
+These classes ship in the design system's `layout.min.css`, which every page links from unpkg — they are **not** in `styles/critical.css`. Do not go looking for them there, and do not hand-roll a local copy when one appears to be missing; check the linked bundle first.
 
 ### Usage pattern
 
@@ -534,7 +534,43 @@ A section intro or section header **always** needs `umd-layout-vertical-landing-
 <umd-feed-news data-token="..."></umd-feed-news>
 ```
 
-This rule applies whether the content that follows is a card grid, a feed component (`umd-feed-news`, `umd-feed-news-list`, `umd-feed-news-featured`), CTA buttons, or any other content block.
+This rule applies whether the content that follows is a card grid, a feed component (`umd-feed-news`, `umd-feed-news-list`, `umd-feed-news-featured`), CTA buttons, tabs, or any other content block.
+
+**The intro and the component it introduces belong in the SAME `<section>`.** Splitting them into two sections is the common way this goes wrong: each `<section class="umd-layout-vertical-landing">` carries full *section* rhythm, so the heading ends up separated from its own content by the same gap used between unrelated sections. It reads as a stranded heading, and no amount of tuning the child class fixes it because the child class is not what is creating the gap.
+
+```html
+<!-- ✗ Wrong — two sections, so section rhythm lands between a heading and its content -->
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-larger">
+    <umd-element-section-intro><h2 slot="headline">Information for...</h2></umd-element-section-intro>
+  </div>
+</section>
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-normal"><umd-element-tabs>…</umd-element-tabs></div>
+</section>
+
+<!-- ✓ Right — one section, one lock, child spacing between the two -->
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-small">
+    <umd-element-section-intro class="umd-layout-vertical-landing-child">
+      <h2 slot="headline">Information for...</h2>
+    </umd-element-section-intro>
+    <umd-element-tabs>…</umd-element-tabs>
+  </div>
+</section>
+```
+
+### Pick the section-intro variant to match the lock, not the page
+
+`umd-element-section-intro` centres its text; `umd-element-section-intro-wide` left-aligns across a wide measure. Choose by the width of the content it sits above:
+
+| Content below | Lock | Intro variant |
+|---|---|---|
+| Narrow / centred content — tabs, a quote, a constrained text block | `umd-layout-space-horizontal-small` or `-normal` | `umd-element-section-intro` |
+| Staggered or masonry card layouts | `umd-layout-space-horizontal-normal` | `umd-element-section-intro` — **always the small one**, so the heading centres on the same narrower lock the cards use |
+| Full-width card grids, feeds, sticky-columns | `umd-layout-space-horizontal-larger` | `umd-element-section-intro-wide` |
+
+The failure mode is `-wide` over a narrower lock: the heading spans further than the content beneath it and stops reading as that content's heading.
 
 ### Note on pathway sections
 
@@ -670,9 +706,35 @@ Pathway and hero components manage their own internal horizontal spacing — do 
 | `umd-layout-grid-gap-two` | `umd-layout-space-horizontal-larger` (1600px) | 2-column content grid |
 | `umd-layout-grid-gap-stacked` | `umd-layout-space-horizontal-larger` (1600px) | Single-column stacked list (used inside sticky-columns static slot) |
 | Card list / event list (standalone) | `umd-layout-space-horizontal-small` (992px) | See §33 |
+| `umd-element-tabs` (landing page) | `umd-layout-space-horizontal-small` (992px) | Centred. See below |
 | Card list / event list (inside sticky-columns) | `umd-layout-space-horizontal-larger` (1600px) via host | See §33 |
 
 ---
+
+### Tabs on a landing page lock to `umd-layout-space-horizontal-small`
+
+`umd-element-tabs` is not full-bleed and does not constrain itself. On a landing page, wrap it in `umd-layout-space-horizontal-small` (992px), centred — the same lock a card list uses.
+
+Wider locks let the tab row sprawl: the buttons space out across 1280px or 1600px while the panel content beneath them is short link lists or a paragraph, so the row stops reading as a control for the content under it, and it no longer lines up with the centred `umd-element-section-intro` above it.
+
+```html
+<!-- ✓ Landing page: intro and tabs share one section and one narrow lock -->
+<section class="umd-layout-vertical-landing">
+  <div class="umd-layout-space-horizontal-small">
+    <umd-element-section-intro class="umd-layout-vertical-landing-child">
+      <h2 slot="headline">Information for...</h2>
+    </umd-element-section-intro>
+    <umd-element-tabs>
+      <div slot="tabs">
+        <div data-title="Students">…</div>
+        <div data-title="Alumni">…</div>
+      </div>
+    </umd-element-tabs>
+  </div>
+</section>
+```
+
+Interior pages are governed by their own column widths (`umd-layout-space-columns-left`) and are not covered by this rule.
 
 ### Quote uses `umd-layout-space-horizontal-normal`
 

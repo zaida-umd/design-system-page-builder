@@ -926,6 +926,41 @@ All watermark rules are defined in `styles/critical.css` — section 5. They are
 
 Note: This uses the deprecated `type` attribute, not `data-type`. The attribute name is confirmed from cdn.js source.
 
+### `.size-large` is host-only — the card still renders 424px without an injection
+
+`.size-large` looks like it works and does not. `web-components.min.css` sets
+`umd-element-card-overlay.size-large { min-height: 560px }` at 768px+, but that
+class is **only** understood by the stylesheet: the overlay card component has
+no `size-large` awareness (only quote, stat, and actions read that attribute),
+and its shadow hard-codes the image container at 424px —
+`packages/elements/source/composite/card/overlay/image.ts:185`,
+`minHeight: '424px'`.
+
+So the **host box** grows to 560px while the **card content** stays 424px,
+leaving 136px of dead space under a card that reads as arbitrarily short. There
+is no error and no console warning, and the class appears to be working because
+the element really does measure taller — you have to compare the host against
+`.card-overlay-image` in the shadow to see it.
+
+It matters most exactly where `.size-large` is prescribed: a feature card in a
+sticky column, or a no-gap feature grid, where the short card sits beside a
+taller list and looks like a mistake.
+
+Until it ships upstream, pages using `.size-large` need the shadow injection in
+`OVERRIDES.md` ("Overlay card size-large min-height"), gated to the same 768px
+breakpoint:
+
+```css
+@media (min-width: 768px) {
+  .card-overlay-image, .card-overlay-image-container { min-height: 560px; }
+}
+```
+
+Below 768px the host minimum is 320px and the shadow's own 424px already
+exceeds it, so there is no gap to close and the gate must stay off.
+
+Verified against 1.19.5.
+
 ### When the source has any image, use the image variant
 
 When recreating an existing page, if a destination/link card on the source has any accompanying icon, photo, or banner crop, use `umd-element-card-overlay type="image"` and put the source image in `slot="image"` — even when the card has no body copy. The image is part of the navigational affordance and a text-only card loses that signal. Only fall back to text-only link cards (the no-image overlay card pattern in `LAYOUT-PATTERNS.md` "Link Cards Grid") when no image is available.

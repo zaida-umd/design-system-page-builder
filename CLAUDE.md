@@ -97,6 +97,30 @@ Never use a broken or placeholder logo image. Use these local fallbacks whenever
 
 `this.onerror=null` prevents an infinite loop if the fallback also fails.
 
+### A reversed (white) logo is not a broken logo — `onerror` will not save you
+
+Many UMD sites put their department logo on a **dark** header, so the only file
+they publish is the reversed/white variant. `umd-element-navigation-header` has
+**no dark theme** — it is white — so that file renders invisible.
+
+It returns HTTP 200, so `onerror` never fires. Nothing errors, nothing is
+missing from the network log, and the header just looks like it has no logo.
+Check the fills before trusting a downloaded logo:
+
+```bash
+grep -o 'fill="[^"]*"' logo.svg | sort | uniq -c   # mostly #FFF/#FEFEFE = reversed
+```
+
+Recolouring is usually not safe either: on a UMD lockup the white fills are
+shared between the wordmark and the flag globe's quadrants, so a blanket swap
+corrupts the globe. When no dark variant is published, fall back to
+`primary-logo-dark.svg` above and keep the reversed original alongside for
+reference.
+
+If the source site has no logo *image* at all — some sites set their brand as
+styled text — the `slot="logo"` anchor accepts text, and that is a better
+recreation than inventing a logo.
+
 ## Images
 
 When a real image URL is unavailable (hotlink protection, dynamic content):

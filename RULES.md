@@ -377,6 +377,50 @@ Do not re-derive known components from NPM source or Storybook. Use the registry
 
 ## 9. Stats layout rules
 
+### `slot="stat"` is hard-truncated to 6 characters — in every variant
+
+`umd-element-stat` cuts its own value at six characters and renders the result
+with no warning:
+
+```ts
+// packages/elements/source/atomic/text/stat.ts
+statElement.textContent = rawText.slice(0, 6);
+```
+
+That call is **unconditional** — not gated on `data-visual-size`,
+`data-display`, or `data-theme`, and no attribute turns it off. So:
+
+| Value | Renders as |
+|---|---|
+| `72%` | `72%` |
+| `$17,032` | `$17,03` |
+| `$82,860` | `$82,86` |
+
+This is worse than a layout bug: the page shows a **factually wrong number**,
+looks entirely normal doing it, and logs nothing. A screenshot review will not
+catch it either — `$17,03` reads as a plausible figure.
+
+**If a value exceeds 6 characters, do not use this component.** Dropping a `$`
+or a comma to fit changes what the number means. Mark it up directly with the
+type scale instead:
+
+```html
+<!-- ✓ Accurate — 7-character value, no stat component -->
+<div>
+  <p class="umd-sans-extralarge-bold">$17,032</p>
+  <p class="umd-sans-medium">average amount of aid received</p>
+</div>
+```
+
+Verified against 1.19.5. Re-check if the cap is ever lifted upstream.
+
+### Stat rows need a gapped grid — `umd-layout-grid-columns-*` is no-gap
+
+`umd-layout-grid-columns-two/three/four` are **no-gap** grids. Stats placed in
+one butt against each other and clip. Use the explicit gapped grid below, and
+add `umd-layout-grid-child-fill-height` to each stat when using
+`data-display="block"`.
+
 ### Large stats (data-visual-size="large") — max 4 per row
 
 Large stats are wide enough that rows of more than 4 become cramped. The rules are:

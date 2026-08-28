@@ -34,6 +34,30 @@
         "/Users/zjocson/repos/strategic-plan-design"
       ],
       "port": 4175
+    },
+    {
+      "name": "examples",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4180",
+        "--directory",
+        "/Users/zjocson/repos/page-builder-examples"
+      ],
+      "port": 4180
+    },
+    {
+      "name": "financial-aid",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4182",
+        "--directory",
+        "/Users/zjocson/repos/financial-aid-design"
+      ],
+      "port": 4182
     }
   ]
 }

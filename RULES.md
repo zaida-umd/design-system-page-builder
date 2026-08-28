@@ -767,7 +767,7 @@ When the quote text is **150 characters or fewer (including spaces)**, add `data
 </umd-element-quote>
 ```
 
-`data-visual-size="large"` **renders natively as of 1.19.5** — verified 32px large vs 22px default at desktop, 22px vs 18px at mobile, with no injection. It needs no polyfill.
+`data-visual-size="large"` **renders natively as of 1.19.5** and needs no polyfill. Verified two ways with no injection present: locally (32px large vs 22px default at desktop, 22px vs 18px at mobile) and against the design system's own QA page at `qa-designteam.umd-servd.com/components/text-quotes`, where `large` renders 32px and both `data-visual-size="false"` and the attribute's absence render 22px — including on a quote inside `umd-layout-image-expand` with `data-visual-transparent="true"`, which is the configuration this rule is usually reached for.
 
 It genuinely did not render at **1.18.12**, and the quote-size shadow injection in `OVERRIDES.md` exists for pages still pinned there. On 1.19.5 that injection is a no-op producing the identical 32px — do not add it to new pages, and drop it from a page when its cdn.js pin moves to 1.19.5.
 

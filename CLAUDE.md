@@ -37,6 +37,28 @@ To choose between the page-building commands:
 
 Never write QA pages to `test/` or the `page-builder-examples` repo, and never write demo/fixture pages to `qa/`.
 
+`test/` and `qa/` are fixtures for validating the builder itself. Real design work never lands here — it goes to a project repo (below) or to `page-builder-examples`.
+
+## Using this repo in a design project
+
+Real design projects live in their own repo and vendor this one as a submodule at `page-builder/`: `admissions-design`, `belonging-design`, `strategic-plan-design`, and `page-builder-examples` all do. Those repos own their pages, images, briefs, and overrides; this repo owns the rules, registry, CSS, commands, and shared tooling.
+
+**Starting a new project:** copy `templates/project-scaffold/` — it carries the `pages/ + shared/ + images/ + briefs/` skeleton, a project `CLAUDE.md`/`README.md`/`OVERRIDES.md`, and starter chrome partials. `templates/project-scaffold/SCAFFOLD.md` has the bootstrap steps. Do not hand-roll a project layout; three projects did and diverged three ways.
+
+All three kinds of project — closely recreating an existing site, overhauling one, and building something new — use that same scaffold. They differ only in where content and structure come from, which is `/plan-page`'s and `/recreate-page`'s business, not the repo layout's.
+
+**Shared chrome.** A project keeps its header and footer once, in `shared/`, and inlines them into every page with `tools/build-chrome.py`. Never copy chrome between pages, and never hand-edit chrome inside a page — it sits between `SHARED:<key>:START`/`:END` markers and the next build overwrites it.
+
+| Tool | What it does |
+|---|---|
+| `tools/build-chrome.py` | Splices a project's `shared/` chrome into every page under `pages/`. `--check` exits non-zero if any page is stale. |
+| `tools/chrome.py` | The library behind it — region contract, `{{ROOT}}` depth expansion, contextual-drawer stamping. Import it from a project's own page generators so both paths emit identical bytes. |
+| `tools/check-themes.py` | Registry-driven `data-theme` validator. |
+
+**Paths in shared files use `{{ROOT}}`, never `../`.** Project pages sit at more than one depth, so a fixed prefix is wrong on half of them. This applies to end-of-body scripts too: `TEMPLATE.html` ships `src="../scripts/grid-animations.js"`, which is correct only for a page in this repo's `test/` — a project references it as `{{ROOT}}page-builder/scripts/...` from `shared/page-scripts.html`.
+
+**Never commit project-specific work into this repo.** Project images, chrome, and overrides belong in the project. This submodule is shared by every project.
+
 ## Source of truth hierarchy
 
 Each file has a distinct role — don't duplicate rules across them. When a topic could fit two files, prefer the higher-priority one and reference it from the others.

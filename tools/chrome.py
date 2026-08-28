@@ -13,10 +13,17 @@ A project keeps its chrome in a `shared/` directory:
                                 project's own nav items and logo)
     shared/footer.html          footer
     shared/chrome.css           CSS companions the chrome markup depends on
+    shared/page-scripts.html    end-of-body <script src> tags every page loads
     shared/chrome-scripts.html  chrome-driven shadow injections
 
-All four are optional — a region whose file is absent is simply skipped, so a
+All five are optional — a region whose file is absent is simply skipped, so a
 project with no shadow injections needs no `chrome-scripts.html`.
+
+`page-scripts` exists for the same reason as `{{ROOT}}`: TEMPLATE.html ships
+`<script src="../scripts/grid-animations.js">`, which is right for a page in
+this repo's own `test/` and wrong everywhere else — a project needs
+`page-builder/scripts/...`, at a depth that differs per page. Left to
+hand-editing it silently 404s on exactly the pages that sit one level deeper.
 
 `tools/build-chrome.py` splices these into hand-authored pages. A project that
 also *generates* pages (a script that emits `pages/programs.html` from a data
@@ -82,6 +89,7 @@ REGIONS = {
     'header':         ('header.html',        lambda s: s),
     'footer':         ('footer.html',        lambda s: s),
     'chrome-css':     ('chrome.css',         lambda s: '  <style>\n' + s + '\n  </style>'),
+    'page-scripts':   ('page-scripts.html',  lambda s: s),
     'chrome-scripts': ('chrome-scripts.html', lambda s: s),
 }
 

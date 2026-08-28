@@ -31,11 +31,39 @@ design-system-page-builder/
 ├── RULES.md                         ← composition rules, gotchas, and required CSS patterns
 ├── TEMPLATE.html                    ← copy-paste page skeleton with all critical CSS
 ├── REQUIRED-CSS.md                  ← reference: what each CSS rule does and why
-├── test/                            ← generated test/output pages
+├── LAYOUT-PATTERNS.md               ← HTML recipes for utility classes and multi-component layouts
+├── styles/critical.css              ← canonical CSS, inlined verbatim into every page
+├── scripts/                         ← runtime browser JS shipped into pages
+├── tools/                           ← build-time Python (chrome inliner, theme validator)
+├── templates/project-scaffold/      ← skeleton for a new project repo
+├── images/                          ← shared fallback image library
+├── test/                            ← fixture pages for validating the builder
+├── qa/                              ← component QA pages for DS submodule updates
 └── design-system/                   ← git submodule → UMD-Digital/design-system
     ├── packages/components/         ← component source code
     └── ...
 ```
+
+## Two ways to use it
+
+**As a submodule in a design project** — the normal case. A project repo owns its
+pages, images, briefs, and overrides, and vendors this repo at `page-builder/`
+for the rules, registry, CSS, slash commands, and shared tooling:
+
+```bash
+git submodule add https://github.com/zaida-umd/design-system-page-builder.git page-builder
+cp -R page-builder/templates/project-scaffold/. .
+```
+
+See `templates/project-scaffold/SCAFFOLD.md` for the full bootstrap, and
+`CLAUDE.md` § *Using this repo in a design project* for the conventions. Existing
+consumers: `admissions-design`, `belonging-design`, `strategic-plan-design`, and
+`page-builder-examples`.
+
+**Directly** — for working on the builder itself. `test/` and `qa/` hold fixture
+and component-QA pages used to validate the registry, `critical.css`, and
+component behaviour after a design-system bump. Real design work does not live
+here.
 
 ## Setup
 
@@ -63,15 +91,15 @@ git add design-system
 git commit -m "Update design-system submodule to latest"
 ```
 
-### 3. Claude project setup
+### 3. Claude Code setup
 
-Add these files as project knowledge in your Claude project:
-- `registry/registry-index.json` + individual category files
-- `RULES.md`
-- `TEMPLATE.html`
-- `REQUIRED-CSS.md`
+Run Claude Code from the repo root — or, for project work, from the **project**
+root that vendors this repo. It reads `CLAUDE.md` (the project's first, this
+one's second) and picks up the slash commands in `.claude/commands/`.
 
-The full `design-system/` directory is too large for project knowledge, but having it on disk means Claude (via Claude in Chrome or computer use) can inspect specific source files when investigating component behavior.
+Nothing needs to be uploaded anywhere: the registry, rules, template, and CSS
+are read from disk on demand, and having `design-system/` checked out means
+component source can be inspected directly when a gotcha needs verifying.
 
 ## How it works
 

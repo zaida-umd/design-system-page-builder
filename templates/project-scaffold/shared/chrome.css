@@ -1,0 +1,46 @@
+/* ============================================================
+   SHARED CHROME — CSS companions
+   Inlined into every page by page-builder/tools/build-chrome.py.
+   Edit here, not in pages/*.html.
+
+   These rules are NOT in page-builder/TEMPLATE.html. They pair with the
+   markup in shared/header.html and shared/footer.html, and a page that
+   carries the chrome markup without them renders SILENTLY wrong — no
+   console error, no broken layout, just unstyled chrome.
+
+   This block is emitted AFTER the inlined critical.css so it wins at
+   equal specificity.
+   ============================================================ */
+
+/* ---- Utility navigation: flat-link pattern ----
+   shared/header.html puts plain <a> children in the utility slot rather
+   than the DS .umd-shell-utility-item pattern. critical.css §11's BASE
+   layer styles `.umd-shell-utility-item a`, which never matches a bare
+   <a>, so without these rules the projected links render browser-default
+   blue and underlined. The component's own shadow ::slotted(*) cannot
+   reach the descendants either.
+
+   The display/justify/gap rule is belt-and-braces: since §11's `gap: 0`
+   was gated on :has(.umd-shell-utility-item), the shadow already supplies
+   flex + 24px here. Stating it keeps the intent readable and survives a
+   shadow change. */
+umd-element-navigation-header div[slot="utility-navigation"] {
+  display: flex;
+  justify-content: flex-end;
+  gap: 24px;
+}
+
+umd-element-navigation-header div[slot="utility-navigation"] a {
+  font-family: "Interstate", Helvetica, Arial, Verdana, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--umd-color-gray-darker);
+  text-decoration: none;
+  line-height: 1.25;
+  transition: color 0.3s ease-in-out;
+}
+
+umd-element-navigation-header div[slot="utility-navigation"] a:hover,
+umd-element-navigation-header div[slot="utility-navigation"] a:focus {
+  color: var(--umd-color-red);
+}

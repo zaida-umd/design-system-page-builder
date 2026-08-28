@@ -88,10 +88,30 @@ def locate_script_slot(src):
     return (m.start() + 1, m.start() + 1) if m else None
 
 
+# An end-of-body shared-script tag, with any HTML comment attached above it.
+# `scripts/<name>.js` only — the cdn.js tag in <head> is served from a
+# `/dist/` path and inline <script> blocks have no src, so neither matches.
+_SHARED_SCRIPT = (r'(?:[ \t]*<!--(?:(?!-->).)*?-->[ \t]*\n)?'
+                  r'[ \t]*<script src="[^"]*scripts/[\w-]+\.js"></script>[ \t]*')
+
+
+def locate_page_scripts(src):
+    """The existing shared-script tags, so they are REPLACED, not duplicated.
+
+    TEMPLATE.html ships one such tag with a comment above it. Falls back to a
+    pure insertion before </body> for a page that has none yet.
+    """
+    spans = [m.span() for m in re.finditer('(?s)' + _SHARED_SCRIPT, src)]
+    if spans:
+        return spans[0][0], spans[-1][1]
+    return locate_script_slot(src)
+
+
 LOCATORS = {
     'header': locate_header,
     'footer': locate_footer,
     'chrome-css': locate_css_slot,
+    'page-scripts': locate_page_scripts,
     'chrome-scripts': locate_script_slot,
 }
 

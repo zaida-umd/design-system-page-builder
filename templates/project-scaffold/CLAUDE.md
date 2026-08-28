@@ -1,0 +1,138 @@
+# Claude Code — {{PROJECT_NAME}} Design
+
+This is the **{{PROJECT_NAME}} design project**. It builds on the design-system
+page builder, vendored as a submodule at `page-builder/`.
+
+`page-builder/CLAUDE.md` defines the canonical rules — **read it first**. This
+file layers {{PROJECT_SLUG}}-specific guidance on top and does not repeat it.
+
+## Where to find things
+
+| What | Location |
+|---|---|
+| Slash commands | `page-builder/.claude/commands/*.md` |
+| Layout/spacing/component rules | `page-builder/RULES.md` |
+| Component slots & attributes | `page-builder/registry/` |
+| Critical CSS (canonical) | `page-builder/styles/critical.css` |
+| Skeleton + inlined CSS | `page-builder/TEMPLATE.html` |
+| Layout HTML patterns | `page-builder/LAYOUT-PATTERNS.md` |
+| Generic page-builder overrides | `page-builder/OVERRIDES.md` |
+| **{{PROJECT_NAME}}-specific overrides** | `OVERRIDES.md` (this repo) |
+
+**Registry first**: before hand-rolling any element, search
+`page-builder/registry/` for an existing `umd-element-*` component.
+
+## Output paths
+
+Pages are organised by site section, one directory per section, with the
+section's landing page as `index.html` so `/pages/<section>/` serves it:
+
+```
+pages/
+├── index.html                  site home (stays at the top)
+└── <section>/
+    ├── index.html              section landing
+    └── <page-name>.html
+```
+
+- New pages → `pages/<section>/<page-name>.html`; a new section starts with its own `index.html`
+- New images → `images/<section>/`, or `images/<page>/` for one page's assets
+- Briefs / source notes → `briefs/<page-name>.md`
+
+Do **not** write to `test/`, `qa/`, or `examples/`. Test and QA fixtures live in
+the page-builder repo; demo and example pages live in the separate
+`page-builder-examples` repo. Neither belongs here.
+
+### Depth: never hard-code `../`
+
+Pages sit at two different depths (`pages/index.html` vs
+`pages/<section>/<page>.html`), so a fixed `../` prefix is wrong on half of
+them. Anything shared across pages — `shared/header.html`, `shared/footer.html`,
+and the image paths in any `briefs/*-data.json` — writes its paths
+**repo-root-relative behind a `{{ROOT}}` token**:
+
+```html
+<img src="{{ROOT}}images/logos/{{PROJECT_SLUG}}-logo.svg" />
+<a href="{{ROOT}}pages/<section>/">Section</a>
+```
+
+`page-builder/tools/chrome.py` expands `{{ROOT}}` to the right number of `../`
+for the page being written. A page that moves between directories is then a
+path change and nothing else.
+
+Inside a single page's own body, ordinary relative paths are fine — they just
+have to match that page's depth.
+
+## Shared chrome — never copy it between pages
+
+Every page in this project must use the **same** header, navigation, logo, and
+footer. Pages should read as one coherent site, not invent their own chrome.
+
+| File | What it holds |
+|---|---|
+| `shared/header.html` | Header stack with this project's nav items and logo |
+| `shared/footer.html` | Footer |
+| `shared/chrome.css` | CSS companions the chrome markup depends on |
+| `shared/page-scripts.html` | End-of-body `<script src>` tags every page loads |
+| `shared/chrome-scripts.html` | Chrome-driven shadow injections |
+
+Shared scripts are **never** pasted inline and their paths are **never**
+hand-written: `shared/page-scripts.html` references them as
+`{{ROOT}}page-builder/scripts/<name>.js` so the depth resolves per page.
+`TEMPLATE.html`'s own `../scripts/...` path is correct only inside the
+page-builder repo and 404s from a project.
+
+**Edit `shared/`, then run the inliner:**
+
+```bash
+python3 page-builder/tools/build-chrome.py          # splices shared/ into every page under pages/
+python3 page-builder/tools/build-chrome.py --check  # exits non-zero if any page is stale
+```
+
+Never hand-edit the chrome inside a `pages/*.html` file — it sits between
+`SHARED:<key>:START` / `:END` markers and the next build overwrites it.
+
+The CSS and scripts travel **with** the markup for a reason: a page assembled
+from a sibling's chrome markup plus `TEMPLATE.html`'s `<head>` silently loses
+the CSS companions — no console error, no broken layout, just unstyled chrome.
+
+### The drawer's refs are directory names
+
+`data-child-ref` / `data-parent-ref` values in the mobile drawer are the section
+**directory names** under `pages/`. The inliner stamps `data-active` and
+`data-selected` per page by matching those against the page's own path — rename
+a directory and its drawer ref has to follow.
+
+## Image paths
+
+- **{{PROJECT_NAME}}-owned** (logos, project photography): `{{ROOT}}images/...`
+- **Shared fallback library** (campus, people, events, default):
+  `{{ROOT}}page-builder/images/large/...`, `{{ROOT}}page-builder/images/small/...`
+
+When `images-index.json` is needed, read `page-builder/images/images-index.json`.
+
+Never add project photography to the page-builder submodule — it holds only the
+shared fallback library. Project images belong in this repo's `images/`.
+
+## Overrides
+
+Project-specific shadow injections and CSS overrides go in this repo's
+`OVERRIDES.md`, never into the `page-builder/` submodule. The submodule is
+shared with every other project; a {{PROJECT_SLUG}}-specific tweak committed
+there breaks that boundary.
+
+Chrome-driven injections belong in `shared/chrome-scripts.html`. Injections
+driven by **page content** stay in the page that needs them and are logged in
+`OVERRIDES.md`.
+
+## Updating the page-builder pin
+
+```bash
+cd page-builder && git pull origin main && cd ..
+python3 page-builder/tools/build-chrome.py --check   # confirm nothing drifted
+git add page-builder && git commit -m "Bump page-builder submodule"
+```
+
+A submodule bump can move `critical.css`, the registry, or the stylesheet pin —
+re-run any pages' checks after bumping, and QA anything using
+`umd-element-carousel-*` (see `page-builder/CLAUDE.md`).

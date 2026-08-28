@@ -1,0 +1,72 @@
+  <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
+  <umd-element-utility-header></umd-element-utility-header>
+
+  <umd-element-navigation-header
+    sticky
+    class="umd-layout-space-horizontal-full"
+    cta-url="{{ROOT}}pages/example-section/"
+    cta-text="Primary CTA">
+    <a slot="logo" href="{{ROOT}}pages/index.html">
+      <!-- Replace with this project's logo in images/logos/. The onerror
+           fallback is mandatory: many UMD-domain logo URLs are hotlink
+           protected and 403 from a local page, and the component does NOT
+           detect a broken src or fall back to the UMD wordmark on its own —
+           it just renders the broken <img>. -->
+      <img src="{{ROOT}}images/logos/{{PROJECT_SLUG}}-logo.svg"
+           alt="University of Maryland {{PROJECT_NAME}}"
+           onerror="this.onerror=null;this.src='{{ROOT}}page-builder/images/logos/primary-logo-dark.svg';" />
+    </a>
+
+    <!-- Bare <a> children, not the DS .umd-shell-utility-item pattern, so they
+         need the light-DOM styles in shared/chrome.css — ::slotted() cannot
+         reach them. Without those rules they render browser-default blue. -->
+    <div slot="utility-navigation">
+      <a href="#">Utility Link</a>
+      <a href="#">Utility Link</a>
+    </div>
+
+    <nav slot="main-navigation">
+      <umd-element-nav-item>
+        <a slot="primary-link" href="{{ROOT}}pages/example-section/">Section</a>
+        <div slot="dropdown-links">
+          <a href="{{ROOT}}pages/example-section/">Overview</a>
+          <a href="{{ROOT}}pages/example-section/example-page.html">Child Page</a>
+        </div>
+      </umd-element-nav-item>
+    </nav>
+
+    <!-- DRAWER:START — mobile / compact navigation.
+         The hamburger renders ONLY when slot="primary-slide-links" is present;
+         without it the drawer factory returns null and there is no hamburger at
+         any width. The DS appends the button to the logo column with no media
+         query, so it is persistent at every width, beside the desktop nav.
+
+         All drawer slots must be DIRECT children of umd-element-navigation-header
+         (the component collects them with `:scope > [slot]`) and are CLONED into
+         the shadow root, so page CSS cannot reach them: the DS drawer styles are
+         the only styling, and every link text needs its own <span> for the
+         selected-state underline.
+
+         data-child-ref / data-parent-ref values are the section DIRECTORY names
+         under pages/. page-builder/tools/chrome.py relies on that to stamp
+         data-active / data-selected per page — rename a directory and its
+         drawer ref has to follow. -->
+    <div slot="primary-slide-links">
+      <a href="{{ROOT}}pages/example-section/" data-child-ref="example-section"><span>Section</span></a>
+    </div>
+
+    <!-- Deliberately not a copy of the utility row. Anything reachable only
+         through the desktop CTA or search — both hidden at =<1240px — has to
+         appear here too, or it is unreachable on a phone. -->
+    <div slot="primary-slide-secondary-links">
+      <a href="#"><span>Utility Link</span></a>
+    </div>
+
+    <div slot="children-slides">
+      <div data-parent-ref="example-section">
+        <a href="{{ROOT}}pages/example-section/"><span>Overview</span></a>
+        <a href="{{ROOT}}pages/example-section/example-page.html"><span>Child Page</span></a>
+      </div>
+    </div>
+    <!-- DRAWER:END -->
+  </umd-element-navigation-header>

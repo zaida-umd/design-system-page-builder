@@ -767,7 +767,9 @@ When the quote text is **150 characters or fewer (including spaces)**, add `data
 </umd-element-quote>
 ```
 
-`data-visual-size="large"` is in the quote registry but is **not rendered by web-components-library through 1.19.5** — it requires the quote-size shadow-injection polyfill (see `OVERRIDES.md`). Include that injection on any page that uses the attribute until it ships upstream.
+`data-visual-size="large"` **renders natively as of 1.19.5** — verified 32px large vs 22px default at desktop, 22px vs 18px at mobile, with no injection. It needs no polyfill.
+
+It genuinely did not render at **1.18.12**, and the quote-size shadow injection in `OVERRIDES.md` exists for pages still pinned there. On 1.19.5 that injection is a no-op producing the identical 32px — do not add it to new pages, and drop it from a page when its cdn.js pin moves to 1.19.5.
 
 ### Quote attribution slots must use `<p>` — not `<cite>` or `<span>`
 
@@ -926,40 +928,43 @@ All watermark rules are defined in `styles/critical.css` — section 5. They are
 
 Note: This uses the deprecated `type` attribute, not `data-type`. The attribute name is confirmed from cdn.js source.
 
-### `.size-large` is host-only — the card still renders 424px without an injection
+### `.size-large` needs a grid parent — in a block container the card renders 424px
 
-`.size-large` looks like it works and does not. `web-components.min.css` sets
-`umd-element-card-overlay.size-large { min-height: 560px }` at 768px+, but that
-class is **only** understood by the stylesheet: the overlay card component has
-no `size-large` awareness (only quote, stat, and actions read that attribute),
-and its shadow hard-codes the image container at 424px —
-`packages/elements/source/composite/card/overlay/image.ts:185`,
-`minHeight: '424px'`.
+`.size-large` sets `min-height: 560px` on the **host** (768px+), and the card's
+shadow fills that box with `height: 100%` on `.card-overlay-image` and
+`.card-overlay-image-container`.
 
-So the **host box** grows to 560px while the **card content** stays 424px,
-leaving 136px of dead space under a card that reads as arbitrarily short. There
-is no error and no console warning, and the class appears to be working because
-the element really does measure taller — you have to compare the host against
-`.card-overlay-image` in the shadow to see it.
+A percentage height only resolves against a parent with a **definite** height.
+As a plain block child the host is `height: auto` with a 560px floor — not
+definite — so `height: 100%` does not resolve, the shadow falls back to its own
+`min-height: 424px`, and the card renders **424px inside a 560px box**, leaving
+136px of dead space beneath it.
 
-It matters most exactly where `.size-large` is prescribed: a feature card in a
-sticky column, or a no-gap feature grid, where the short card sits beside a
-taller list and looks like a mistake.
+Make the container a **grid** and the item is stretched to a definite height, so
+the card fills. `umd-layout-grid-gap-stacked` does this for a single-item column
+without an inline style:
 
-Until it ships upstream, pages using `.size-large` need the shadow injection in
-`OVERRIDES.md` ("Overlay card size-large min-height"), gated to the same 768px
-breakpoint:
+```html
+<!-- ✗ Wrong — plain block slot, card renders 424px in a 560px box -->
+<div slot="sticky-column">
+  <umd-element-card-overlay type="image" class="size-large">…</umd-element-card-overlay>
+</div>
 
-```css
-@media (min-width: 768px) {
-  .card-overlay-image, .card-overlay-image-container { min-height: 560px; }
-}
+<!-- ✓ Right — grid parent stretches the host, card fills to 560px -->
+<div slot="sticky-column" class="umd-layout-grid-gap-stacked">
+  <umd-element-card-overlay type="image" class="size-large">…</umd-element-card-overlay>
+</div>
 ```
 
-Below 768px the host minimum is 320px and the shadow's own 424px already
-exceeds it, so there is no gap to close and the gate must stay off.
+This is why `.size-large` looks correct in the design system's own feature grids
+(`umd-layout-grid-columns-*`, `umd-layout-grid-child-size-double`) and looks
+broken the first time it is used outside one — a sticky column, a bare `<div>`,
+a flex **column** (whose stretch is horizontal, so it does not help either).
 
-Verified against 1.19.5.
+**Do not "fix" this with a shadow injection.** It is not a component bug; it is a
+CSS percentage-height resolution rule, and the component behaves correctly in
+the layout it is designed for. Verified against 1.19.5: block parent 424px,
+grid parent 560px, flex-column 424px.
 
 ### When the source has any image, use the image variant
 

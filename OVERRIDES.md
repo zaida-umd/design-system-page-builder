@@ -66,7 +66,11 @@ Injected after `customElements.whenDefined('umd-element-card-overlay')`, applied
 
 ## Quote size-large polyfill
 
-**Component:** `umd-element-quote` with `data-visual-size="large"`. The attribute is documented in `registry/registry-quote.json` and intended to enlarge the quote text, but **web-components-library v1.18.12 does not render it** — the shadow DOM keeps the default `.quote-container-quote` font size regardless. Used by the under-150-character quote rule (see `RULES.md` "Short quotes use data-visual-size").
+**STATUS: obsolete at 1.19.5 — keep only for pages still pinned to 1.18.12.**
+
+**Component:** `umd-element-quote` with `data-visual-size="large"`. The attribute is documented in `registry/registry-quote.json` and intended to enlarge the quote text. **v1.18.12 does not render it** — the shadow keeps the default `.quote-container-quote` font size regardless. Used by the under-150-character quote rule (see `RULES.md` "Short quotes use data-visual-size").
+
+**As of 1.19.5 the attribute renders natively** and this injection is a no-op producing the identical 32px (verified 2026-08-28: 32px large vs 22px default at desktop, 22px vs 18px at mobile, injection absent). Do not add it to new pages. Drop it from an existing page when that page's cdn.js pin moves to 1.19.5.
 
 **Override:** Shadow-inject the intended larger type scale onto `.quote-container-quote`, gated to the same breakpoints the component uses (`large.min` = 650px, `desktop.min` = 1024px). Applied to every `umd-element-quote[data-visual-size="large"]` after `customElements.whenDefined('umd-element-quote')`.
 
@@ -79,27 +83,8 @@ Injected after `customElements.whenDefined('umd-element-card-overlay')`, applied
 **Upstream candidate:** implement `data-visual-size="large"` in the quote composite so the attribute scales `.quote-container-quote` natively; retire this injection once it ships.
 
 **Pages using this:**
-- strategic-plan-design `pages/index.html` — President Pines quote inside `umd-layout-image-expand`
-- page-builder-examples `engineering/index.html` — Himanshu Surve quote (106 chars) inside `umd-layout-image-expand`
-
----
-
-## Overlay card size-large min-height
-
-**Component:** `umd-element-card-overlay` with `class="size-large"`. The class is prescribed for feature cards (sticky-column features, no-gap feature grids) and is set by `web-components.min.css` to `min-height: 560px` at 768px+ — but on the **host only**. The overlay card component does not read `size-large`, and its shadow hard-codes the image container at 424px (`packages/elements/source/composite/card/overlay/image.ts:185`). The host grows, the card does not, and 136px of dead space opens below it with no error. See `RULES.md` "`.size-large` is host-only".
-
-**Override:** Shadow-inject a matching `min-height` on `.card-overlay-image` and `.card-overlay-image-container`, gated to the same 768px breakpoint the class uses. Below that the host minimum is 320px and the shadow's 424px already exceeds it, so the gate must stay off or the card grows where it should not.
-
-```css
-@media (min-width: 768px) {
-  .card-overlay-image, .card-overlay-image-container { min-height: 560px; }
-}
-```
-
-**Upstream candidate:** have the overlay card read `size-large` and set its own container min-height, so the stylesheet class and the shadow agree; retire this injection once it ships.
-
-**Pages using this:**
-- page-builder-examples `engineering/index.html` — MESO feature card in the news sticky column
+- strategic-plan-design `pages/index.html` — President Pines quote inside `umd-layout-image-expand`. Still needed: that page loads cdn.js **1.18.12**. Remove the injection when it is bumped to 1.19.5.
+- ~~page-builder-examples `engineering/index.html`~~ — removed; that page is on 1.19.5 and never needed it.
 
 ---
 

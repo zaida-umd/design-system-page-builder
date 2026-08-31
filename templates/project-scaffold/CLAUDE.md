@@ -76,6 +76,7 @@ footer. Pages should read as one coherent site, not invent their own chrome.
 | `shared/chrome.css` | CSS companions the chrome markup depends on — create only if needed |
 | `shared/page-scripts.html` | End-of-body `<script src>` tags every page loads |
 | `shared/chrome-scripts.html` | Chrome-driven shadow injections |
+| `shared/gate.html` | Access gate — blanks every page until a reviewer signs in |
 
 Shared scripts are **never** pasted inline and their paths are **never**
 hand-written: `shared/page-scripts.html` references them as
@@ -96,6 +97,30 @@ Never hand-edit the chrome inside a `pages/*.html` file — it sits between
 The CSS and scripts travel **with** the markup for a reason: a page assembled
 from a sibling's chrome markup plus `TEMPLATE.html`'s `<head>` silently loses
 the CSS companions — no console error, no broken layout, just unstyled chrome.
+
+### The access gate
+
+`shared/gate.html` keeps this prototype blank for anyone without the shared
+credentials. It is not what keeps the site out of search results — that is the
+`noindex` pair in `shared/head-meta.html`, and the two travel together. The gate
+ships **enabled with no accounts**, so the site is locked until someone adds
+one:
+
+```bash
+python3 page-builder/tools/gate.py --write shared/gate.html   # prompts, no echo
+python3 page-builder/tools/build-chrome.py
+```
+
+`gate.py --list` shows the usernames; `--remove <username>` drops one. Never
+type a password into `shared/gate.html` by hand — the file stores a
+PBKDF2-SHA256 hash and the plaintext should exist only in a password manager.
+To make this project public instead, delete `shared/gate.html` and re-run the
+inliner; the region is stripped from every page.
+
+**It is not access control.** The check runs in the browser, so every page's
+markup is retrievable with `curl` by anyone holding the URL. Keep this repo
+**private**, and put nothing behind the gate that would matter if it leaked.
+`page-builder/scripts/gate.js` explains the boundary in full.
 
 ### The drawer's refs are directory names
 

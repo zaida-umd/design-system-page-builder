@@ -17,9 +17,19 @@ A project keeps its chrome in a `shared/` directory:
     shared/chrome.css           CSS companions the chrome markup depends on
     shared/page-scripts.html    end-of-body <script src> tags every page loads
     shared/chrome-scripts.html  chrome-driven shadow injections
+    shared/gate.html            prototype access gate (<head> lock + sign-in)
+    shared/gate.html            prototype access gate (<head> lock + sign-in)
 
-All six are optional — a region whose file is absent is simply skipped, so a
-project with no shadow injections needs no `chrome-scripts.html`.
+All seven are optional — a region whose file is absent is simply skipped, so a
+project with no shadow injections needs no `chrome-scripts.html`, and a project
+meant to be public simply has no `gate.html`.
+
+`gate` and `head-meta` are the two halves of keeping a prototype unseen, and
+they are not interchangeable. `head-meta`'s noindex pair is what keeps the site
+out of a search index; `gate` blanks the pages for someone who has the URL
+anyway. A prototype wants both. Deleting `shared/gate.html` and re-running the
+inliner strips the gate back out of every page — see
+`page-builder/scripts/gate.js` for what it does and does not protect.
 
 `head-meta` is site-wide meta only. A page's own `<title>` and
 `<meta name="description">` stay in the page — they differ per page, and the
@@ -96,6 +106,7 @@ REGIONS = {
     'header':         ('header.html',        lambda s: s),
     'footer':         ('footer.html',        lambda s: s),
     'chrome-css':     ('chrome.css',         lambda s: '  <style>\n' + s + '\n  </style>'),
+    'gate':           ('gate.html',          lambda s: s),
     'page-scripts':   ('page-scripts.html',  lambda s: s),
     'chrome-scripts': ('chrome-scripts.html', lambda s: s),
 }

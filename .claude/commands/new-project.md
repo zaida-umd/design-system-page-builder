@@ -88,6 +88,7 @@ Replace the scaffold's placeholders in `shared/` with the project's real chrome:
 - **`shared/page-scripts.html`** — trim to the scripts this project actually uses.
 - **`shared/chrome-scripts.html`** — delete it unless the chrome needs a shadow injection (a logo wider than the DS default is the common one). A region with no source file is skipped.
 - **`shared/chrome.css`** — the scaffold ships none. Create it only if the chrome genuinely needs CSS beyond `critical.css`, which now covers utility-nav flat links itself (§11 layer C). Do not re-add that override per project — that duplication is what layer C exists to end.
+- **`shared/gate.html`** — the access gate. Ships enabled with **no accounts**, so the site is locked until one is added. Handle it in Step 4b below rather than editing the file.
 
 Hard requirements, all of which fail silently if missed:
 
@@ -104,6 +105,40 @@ python3 page-builder/tools/build-chrome.py --check   # must exit 0
 ```
 
 Confirm in the browser that the chrome renders at **both** depths — a top-level page and one inside a section — before building any real content. A depth bug found now is one edit; found later it is every page.
+
+---
+
+## Step 4b — Settle the access gate
+
+A project scaffolded here is **locked by default** and **unindexed by default**,
+by two separate regions: `shared/gate.html` blanks every page until someone signs
+in, and `shared/head-meta.html` carries the `noindex` pair. The meta is what
+keeps the site out of search; the gate only blanks it for someone who already has
+the URL. Keep both, or delete both.
+Decide which way this project goes, and say which you did in the Site Plan.
+
+**Gated** (the default, and right for anything going to GitHub Pages for client
+review) — ask the user for the username, then tell them to run:
+
+```bash
+python3 page-builder/tools/gate.py --write shared/gate.html
+python3 page-builder/tools/build-chrome.py
+```
+
+**Do not ask the user to paste the password into the chat, and never type one
+into `shared/gate.html` yourself.** `gate.py` prompts for it without echoing and
+writes only a PBKDF2 hash; the plaintext belongs in their password manager. Have
+them run it — you cannot, since the prompt needs their terminal.
+
+**Public** — delete `shared/gate.html` **and** the noindex pair in
+`shared/head-meta.html`, then re-run `build-chrome.py`; the gate region is
+stripped from every page.
+
+Whichever way it goes, tell the user plainly what the gate does and does not do:
+it stops casual visitors and crawlers, but the check runs in the browser, so
+page markup is retrievable with `curl` by anyone holding the URL. **A gated
+project repo must be private**, and nothing that would matter if it leaked
+belongs behind it. Never describe the gate as securing the pages.
 
 ---
 

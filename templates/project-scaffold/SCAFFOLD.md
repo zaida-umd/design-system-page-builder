@@ -13,7 +13,7 @@ This file documents the scaffold. It is **not** copied into the new project.
 ├── README.md          human-facing orientation
 ├── OVERRIDES.md       project-specific shadow injections and CSS overrides
 ├── pages/             the pages, one directory per site section
-├── shared/            header, footer, <head> meta, and their CSS/script companions
+├── shared/            header, footer, <head> meta, access gate, and their companions
 ├── briefs/            page briefs and source notes
 ├── images/            project-owned images (logos, photography)
 └── page-builder/      submodule → design-system-page-builder
@@ -87,7 +87,7 @@ Until step 1, a fresh page logs one expected 404 for
 renders the UMD wordmark, so the page is correct meanwhile. It clears the moment
 you drop the real logo in.
 
-## The six chrome regions
+## The seven chrome regions
 
 | Region | Source | Spliced |
 |---|---|---|
@@ -95,13 +95,16 @@ you drop the real logo in.
 | `header` | `shared/header.html` | replaces the header stack |
 | `footer` | `shared/footer.html` | replaces `umd-element-footer` |
 | `chrome-css` | `shared/chrome.css` | `<style>` before `</head>` — not shipped; add only if needed |
+| `gate` | `shared/gate.html` | access-gate lock + sign-in, before `</head>` |
 | `page-scripts` | `shared/page-scripts.html` | replaces the end-of-body `scripts/*.js` tags |
 | `chrome-scripts` | `shared/chrome-scripts.html` | shadow injections before `</body>` |
 
 Delete any file the project does not need — the inliner skips a region whose
-source is absent. The scaffold ships no `shared/chrome.css` at all: the rules
-that used to live there (utility-nav flat-link styling) are in `critical.css`
-now, so most projects need no chrome CSS of their own.
+source is absent, and **retires** it: the next build strips the last generated
+block out of every page, so deleting `shared/gate.html` is how a project stops
+being gated. The scaffold ships no `shared/chrome.css` at all: the rules that
+used to live there (utility-nav flat-link styling) are in `critical.css` now, so
+most projects need no chrome CSS of their own.
 
 `head-meta` ships a `noindex, nofollow` pair, because a design project is a
 prototype or client review until someone decides otherwise. **Delete it when the
@@ -115,6 +118,47 @@ in the page-builder repo's own `test/` directory. In a project it has to point
 at `page-builder/scripts/`, one extra `../` deeper for a page in a section
 folder — so hand-editing it is how a site ends up with grid animations silently
 dead on half its pages.
+
+## The access gate
+
+The scaffold ships `shared/gate.html` **enabled but with no accounts**, so a
+project is locked from its first commit and cannot be published open by
+forgetting a step. Until an account exists, every page shows "This prototype
+gate is not configured."
+
+Add the account you will share with reviewers:
+
+```bash
+python3 page-builder/tools/gate.py --write shared/gate.html
+python3 page-builder/tools/build-chrome.py
+```
+
+It prompts for a username and password without echoing them and stores a
+PBKDF2-SHA256 hash. Never type a password into `shared/gate.html` by hand.
+
+**A project meant to be public deletes `shared/gate.html`** and re-runs
+build-chrome; the region is stripped from every page.
+
+### What the gate is and is not
+
+It keeps a GitHub Pages prototype blank for anyone without the credentials, and
+out of search results. That is the whole job: casual visitors and crawlers.
+
+Those are two separate regions and the `noindex` pair in
+`shared/head-meta.html` is the one that does the search half. Keep both, or a
+prototype ends up gated but still indexable.
+
+It is **not** access control. The check runs in the browser, so the markup is
+retrievable with `curl` by anyone holding the URL, and the published hash can be
+attacked offline. So:
+
+- **Keep the project repo private.** A public repo publishes the same pages a
+  second time, where no gate applies at all.
+- **Put nothing behind it that would matter if it leaked** — no unreleased
+  announcements, no real student data, nothing under FERPA.
+- **Use a password with real entropy, used nowhere else.**
+
+`page-builder/scripts/gate.js` carries the full reasoning at the top.
 
 ## Keeping the scaffold honest
 

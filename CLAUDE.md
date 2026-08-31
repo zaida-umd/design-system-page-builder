@@ -57,6 +57,28 @@ All three kinds of project — closely recreating an existing site, overhauling 
 | `tools/build-chrome.py` | Splices a project's `shared/` chrome into every page under `pages/`. `--check` exits non-zero if any page is stale. |
 | `tools/chrome.py` | The library behind it — region contract, `{{ROOT}}` depth expansion, contextual-drawer stamping. Import it from a project's own page generators so both paths emit identical bytes. |
 | `tools/check-themes.py` | Registry-driven `data-theme` validator. |
+| `tools/gate.py` | Manages the accounts on a project's prototype access gate. Prompts for the password; stores a PBKDF2 hash. |
+
+**Prototype access gate.** A project published to GitHub Pages for client
+review keeps `shared/gate.html`, which blanks every page until a reviewer signs
+in with shared credentials; `scripts/gate.js` is the implementation and
+`tools/gate.py` manages the accounts. The scaffold ships it **enabled with no
+accounts**, so a new project is locked from its first commit — a project meant
+to be public deletes the file and re-runs `build-chrome.py`, which retires the
+region from every page.
+
+The gate is only half of keeping a prototype unseen, and not the half that does
+search. `shared/head-meta.html` carries the `noindex` pair that keeps the site
+out of an index; the gate blanks the pages for someone who has the URL anyway. A
+prototype wants both, so **a project that gets a `gate.html` gets a
+`head-meta.html`** — check for it rather than assuming, since projects predating
+that region have neither.
+
+It is deliberately a *casual-visitor and crawler* barrier, not access control:
+the check runs in the browser, so page markup is retrievable with `curl` by
+anyone holding the URL. **Project repos using it must be private**, and nothing
+that would matter if it leaked belongs behind it. Do not describe it to anyone
+as securing a page. See the header comment in `scripts/gate.js`.
 
 **Paths in shared files use `{{ROOT}}`, never `../`.** Project pages sit at more than one depth, so a fixed prefix is wrong on half of them. This applies to end-of-body scripts too: `TEMPLATE.html` ships `src="../scripts/grid-animations.js"`, which is correct only for a page in this repo's `test/` — a project references it as `{{ROOT}}page-builder/scripts/...` from `shared/page-scripts.html`.
 

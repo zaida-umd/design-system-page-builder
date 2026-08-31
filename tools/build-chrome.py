@@ -94,6 +94,16 @@ def locate_css_slot(src):
     return (m.start() + 1, m.start() + 1) if m else None
 
 
+def locate_gate_slot(src):
+    """The gate block goes in <head>, like the chrome CSS.
+
+    It has to be in the document head, not the body: it locks the page in CSS
+    before the first paint, so a body-level insertion would flash the content
+    it exists to hide.
+    """
+    return locate_css_slot(src)
+
+
 def locate_script_slot(src):
     """Insert the chrome scripts immediately before </body>."""
     m = re.search(r'\n</body>', src)
@@ -124,12 +134,29 @@ LOCATORS = {
     'header': locate_header,
     'footer': locate_footer,
     'chrome-css': locate_css_slot,
+    'gate': locate_gate_slot,
     'page-scripts': locate_page_scripts,
     'chrome-scripts': locate_script_slot,
 }
 
 
 # ------------------------------------------------------------------- splice
+def strip(src, key):
+    """Remove a region a project no longer supplies.
+
+    Deleting a file from `shared/` has to actually retire the region — a
+    project that drops `gate.html` to go public, or `chrome-scripts.html` after
+    an injection lands upstream, would otherwise keep the last generated block
+    in every page with nothing left to regenerate it from. A page that never
+    carried the region is untouched.
+    """
+    m = re.search(r'(?s)[ \t]*<!-- SHARED:%s:START.*?<!-- SHARED:%s:END -->\n?'
+                  % (key, key), src)
+    if not m:
+        return src, 'unchanged'
+    return src[:m.start()] + src[m.end():], 'removed'
+
+
 def splice(src, chrome, key, page):
     block = chrome.block(key, page)
 
@@ -184,8 +211,11 @@ def main():
         original = open(path, encoding='utf-8').read()
         src = original
         notes = []
-        for key in keys:
-            src, status = splice(src, chrome, key, path)
+        for key in LOCATORS:
+            if key in keys:
+                src, status = splice(src, chrome, key, path)
+            else:
+                src, status = strip(src, key)
             if status != 'unchanged':
                 notes.append('%s:%s' % (key, status))
 

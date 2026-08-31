@@ -7,6 +7,11 @@ editing anything in `shared/`:
     python3 page-builder/tools/build-chrome.py
     python3 page-builder/tools/build-chrome.py --check   # CI: non-zero if stale
 
+Files inside a vendored submodule, and the chrome sources in `shared/`, are
+never written — a recursive glob finds both, and splicing the header into
+`shared/header.html` corrupts the source every page is generated from. A root
+`index.html` redirect stub is not a page and is left alone.
+
 Source of truth is the project's `shared/` directory — see `tools/chrome.py`
 for the region contract, the `{{ROOT}}` depth token, and the contextual-drawer
 rules. Regions whose source file is absent are skipped, so a project needs only
@@ -140,6 +145,35 @@ LOCATORS = {
 }
 
 
+# ------------------------------------------------------------------- discover
+def in_submodule(path, root):
+    """Whether `path` lives inside a submodule vendored under `root`.
+
+    Passing `--pages .` to reach a stray page at the repo root walks a
+    recursive glob straight into `page-builder/`, rewriting this repo's own
+    test/ and qa/ fixtures with the calling project's chrome. A vendored
+    submodule has its own `.git`, so that is what marks the boundary — no
+    hard-coded directory name, and it holds for any submodule a project adds
+    later.
+    """
+    rel = os.path.relpath(path, root)
+    parts = rel.replace(os.sep, '/').split('/')[:-1]
+    for i in range(1, len(parts) + 1):
+        if os.path.exists(os.path.join(root, *parts[:i], '.git')):
+            return True
+    return False
+
+
+def in_shared(path, chrome):
+    """Whether `path` is one of the chrome SOURCE files in `shared/`.
+
+    Those are inputs, never outputs. A recursive glob from the repo root finds
+    them, and splicing the header into `shared/header.html` corrupts the source
+    every other page is generated from.
+    """
+    return os.path.abspath(path).startswith(chrome.shared + os.sep)
+
+
 # ------------------------------------------------------------------- splice
 def strip(src, key):
     """Remove a region a project no longer supplies.
@@ -196,8 +230,9 @@ def main():
         sys.exit('error: %s' % e)
 
     root = chrome.root
-    pages = sorted(glob.glob(os.path.join(root, args.pages, '**', '*.html'),
-                             recursive=True))
+    pages = [p for p in sorted(glob.glob(
+        os.path.join(root, args.pages, '**', '*.html'), recursive=True))
+        if not in_submodule(p, root) and not in_shared(p, chrome)]
     if not pages:
         sys.exit('error: no .html files under %s/' % args.pages)
 

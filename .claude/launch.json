@@ -58,6 +58,18 @@
         "/Users/zjocson/repos/financial-aid-design"
       ],
       "port": 4182
+    },
+    {
+      "name": "admissions",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4185",
+        "--directory",
+        "/Users/zjocson/repos/admissions-design"
+      ],
+      "port": 4185
     }
   ]
 }

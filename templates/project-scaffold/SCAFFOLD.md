@@ -13,6 +13,7 @@ This file documents the scaffold. It is **not** copied into the new project.
 ├── README.md          human-facing orientation
 ├── OVERRIDES.md       project-specific shadow injections and CSS overrides
 ├── pages/             the pages, one directory per site section
+├── .github/           the Pages deploy workflow
 ├── shared/            header, footer, <head> meta, access gate, and their companions
 ├── briefs/            page briefs and source notes
 ├── images/            project-owned images (logos, photography)
@@ -159,6 +160,27 @@ attacked offline. So:
 - **Use a password with real entropy, used nowhere else.**
 
 `page-builder/scripts/gate.js` carries the full reasoning at the top.
+
+## Publishing to GitHub Pages
+
+The scaffold ships `.github/workflows/pages.yml`, which deploys every push to
+`main`. Two things about it are not obvious:
+
+**The repo has to be public.** GitHub Pages is unavailable for private
+repositories on a personal Free plan, and `configure-pages` fails with
+`Resource not accessible by integration` — a repo-visibility problem that no
+edit to the workflow fixes. A prototype is kept unseen by `shared/gate.html`
+and the noindex pair in `shared/head-meta.html`, **not** by the repo being
+private. If it still fails once public, check Settings → Actions → General →
+Workflow permissions is "Read and write".
+
+**The workflow trims the artifact before uploading.** `upload-pages-artifact`
+ships the whole working tree, so without that step the page builder's own
+`test/` and `qa/` fixtures get published inside the project site — ungated, and
+carrying no noindex. `page-builder/scripts/` and `page-builder/images/` are kept
+because pages load them at runtime; the checkout is deliberately not recursive,
+since page-builder's own `design-system` submodule is a 35k-file reference
+nothing serves.
 
 ## Keeping the scaffold honest
 

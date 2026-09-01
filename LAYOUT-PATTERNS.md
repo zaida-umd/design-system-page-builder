@@ -348,6 +348,70 @@ All variants stack to 1 column on mobile (below 649px) with no gap.
 
 All border grid CSS is in `styles/critical.css` — section 19.
 
+### Filtered or paginated grids: render from data, append on paging
+
+If the grid is driven by a filter, a search box, or a "Load More" button, build a
+**new** `umd-element-person` for every card you show and never move an existing
+one.
+
+`umd-element-person` re-renders **additively** when it reconnects: take a card
+out of the DOM and put it back and its shadow root ends up with a second
+`.person-block`, so the card draws the same person twice at double height
+(measured 389px → 694px on one detach/reattach; a second round gives three).
+This makes the obvious implementation wrong —
+
+```js
+grid.replaceChildren(...matches.slice(0, n));   // WRONG
+```
+
+— because `replaceChildren` re-inserts the cards that were **already** on
+screen. One "Load More" click does it to every visible card at once and the grid
+appears to repeat its rows.
+
+**`display: none` is not the alternative.** Leaving every card in the DOM and
+hiding the non-matches breaks the border rendering, because the top border is
+drawn by DOM position:
+
+```css
+:is(.umd-layout-grid-border-four):not(:has(>:last-child:nth-child(4))) > *:nth-child(1) { border-top: … }
+/* …and :nth-child(2), (3), (4) */
+```
+
+`:nth-child` counts children, not visible ones, so filtering out the first four
+cards strands the top border on hidden cells while the visible first row has
+none.
+
+**The pattern that works** (and the one `omc.umd.edu/people` uses):
+
+```js
+// Filter/search: rebuild from data — none of the previous nodes are reused.
+grid.replaceChildren();
+append(0, pageSize);
+
+// Load More: append the delta ONLY; cards already on screen are left alone.
+append(shown, shown + pageSize);
+
+function append(from, to) {
+  const holder = document.createElement('div');          // detached: no upgrade yet
+  holder.innerHTML = records.slice(from, to).map(r => r.html).join('');
+  while (holder.firstElementChild) grid.appendChild(holder.firstElementChild);
+}
+```
+
+Elements created by `innerHTML` on a **detached** container do not upgrade until
+they are connected, which is what makes this safe — each renders exactly once, on
+append.
+
+Two things that follow from it:
+
+- **`outerHTML` is a safe source for the markup.** On an upgraded
+  `umd-element-person` it serialises the **light DOM only** — the shadow root is
+  not included — so capturing it once at init round-trips the original markup,
+  `data-*` attributes and all.
+- **Any shadow injection must be re-runnable.** Cards built after page load never
+  saw a one-shot `customElements.whenDefined(...)` pass, so expose the injection
+  as a function with a per-element guard and call it after every append.
+
 ---
 
 ## Stat Card Grid (block stats in a grid)

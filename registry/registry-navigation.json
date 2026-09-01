@@ -392,8 +392,8 @@
       {
         "name": "paths",
         "required": true,
-        "description": "Ordered list (ol) of breadcrumb links. Mark the current page with aria-current=\"page\" and no anchor tag.",
-        "example": "<ol slot=\"paths\"><li><a href=\"/\">Home</a></li><li><a href=\"/about\">About</a></li><li aria-current=\"page\">This page</li></ol>"
+        "description": "Ordered trail of breadcrumb links. The paths must be ADJACENT SIBLINGS - the component draws its separators with `.breadcrumb-path + *::before`, so wrapping each link in its own <li> gives every anchor a container to itself, the selector never matches, and the trail renders as one run-on string with no separators. Wrap each label in its own <span> (that is what the hover underline animates), and mark the current page with a <p>, not an anchor. See RULES.md \u00a7 Breadcrumb.",
+        "example": "<div slot=\"paths\"><a href=\"/\" aria-label=\"Return Home\"><span aria-hidden=\"true\">Home</span></a><a href=\"/about\"><span>About</span></a><p aria-label=\"Current Page\"><span>Traditions of the Past</span></p></div>"
       }
     ],
     "attrs": [
@@ -401,7 +401,7 @@
     ],
     "configurable": true,
     "page_types": ["interior"],
-    "notes": "If you're using umd-element-person-hero, use its built-in breadcrumb slot instead of a standalone breadcrumb.",
+    "notes": "If you're using umd-element-person-hero, put this component in its `breadcrumb` slot rather than rendering a standalone breadcrumb elsewhere on the page - that slot accepts umd-element-breadcrumb and nothing else. Never hand-code a <nav> or <ol> trail; the component owns all separator, link and current-page styling.",
     "source": "npm",
     "priority": 2
   }

@@ -14,7 +14,7 @@
     "label": "Person",
     "description": "Compact person card for staff directories and team grids. Three display formats: block (default), list (horizontal), tabular (table row).",
     "slots": [
-      {"name": "name", "required": true, "description": "Full name."},
+      {"name": "name", "required": true, "description": "Full name. Accepts a plain <p> or an <a> linking to a profile page; both render IDENTICALLY (.person-name.umd-sans-larger, black, 700 weight, no underline, no hover state), so a grid where only some cards link gives the reader no way to tell which are actionable. Either link every card or add your own affordance."},
       {"name": "pronouns", "required": false, "description": "Pronouns."},
       {"name": "job-title", "required": false, "description": "Position/title."},
       {"name": "association", "required": false, "description": "Department or unit."},
@@ -48,7 +48,7 @@
       "list": "Horizontal row with image on one side.",
       "tabular": "Compact table-row-style for dense directories."
     },
-    "notes": "Email and phone slots accept anchor tags for proper mailto:/tel: links. For grid layouts, use umd-layout-grid-border-four/three/two (see LAYOUT-PATTERNS.md) with class='umd-shell-person-grid-helper' on every host element — this class is required for responsive cell padding via container queries.",
+    "notes": "Email and phone slots accept anchor tags for proper mailto:/tel: links. For grid layouts, use umd-layout-grid-border-four/three/two (see LAYOUT-PATTERNS.md) with class='umd-shell-person-grid-helper' on every host element — this class is required for responsive cell padding via container queries. This component re-renders ADDITIVELY when it reconnects: taking a card out of the DOM and putting it back appends a second .person-block to its shadow root, so the card draws the same person twice at double height. Build dynamic lists from data and append on paging - never move an existing card. See OVERRIDES.md \"Dynamic person lists\".",
     "source": "npm",
     "priority": 2
   },
@@ -102,7 +102,7 @@
       {"name": "name", "required": true, "description": "Full name."},
       {"name": "pronouns", "required": false, "description": "Pronouns."},
       {"name": "job-title", "required": false, "description": "Position/title."},
-      {"name": "association", "required": false, "description": "Department or unit."},
+      {"name": "association", "required": false, "description": "Department or unit. NOT RENDERED by this component (verified against the shadow tree in cdn.js@1.18.12): person-hero rebuilds its text lockup from the light DOM reading only `name` and `job-title`, so anything in this slot is dead markup. The slot does work on umd-element-person and umd-element-person-bio."},
       {"name": "email", "required": false, "description": "Email (anchor)."},
       {"name": "phone", "required": false, "description": "Phone (anchor)."},
       {"name": "address", "required": false, "description": "Physical address."},
@@ -111,7 +111,7 @@
       {"name": "image", "required": false, "description": "Portrait."},
       {"name": "sub-text", "required": false, "description": "Additional text."},
       {"name": "actions", "required": false, "description": "CTA link(s)."},
-      {"name": "breadcrumb", "required": false, "description": "Breadcrumb nav (the component manages desktop/mobile variants internally)."}
+      {"name": "breadcrumb", "required": false, "description": "Breadcrumb nav. Takes a umd-element-breadcrumb and nothing else - the component validates this slot and logs 'Slot \"breadcrumb\" contains invalid elements' for any other content, which then renders as unstyled light-DOM links. The component manages the desktop/mobile variants internally by cloning your element into a second `breadcrumb-copy` slot; that clone comes FIRST in document order, so querySelector('umd-element-breadcrumb') returns the mobile one (display:none and 0x0 at desktop) - select on [slot=\"breadcrumb\"] instead."}
     ],
     "attrs": [
       {
@@ -123,7 +123,7 @@
     ],
     "configurable": true,
     "page_types": ["interior"],
-    "notes": "If using person-hero, do not also render a standalone umd-element-breadcrumb \u2014 the hero's breadcrumb slot handles it.",
+    "notes": "Put umd-element-breadcrumb IN the breadcrumb slot rather than rendering a standalone one elsewhere on the page. Only `name` and `job-title` reach the text lockup - `association` is accepted but never rendered. This component clones the light DOM into its shadow root rather than projecting it through <slot>, so page CSS cannot reach the name, job title, email or actions; anything cosmetic there needs a shadow injection. `breadcrumb` is the one exception - it is a real <slot>, so its content stays in the light DOM and page CSS does apply.",
     "source": "npm",
     "priority": 2
   }

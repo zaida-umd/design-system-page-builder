@@ -19,7 +19,13 @@ indented to sit inside the block. The header is stripped because it discusses
 early — the reason this is a script and not a copy-paste step.
 
 Only the FIRST <style> block in a file is touched; page-specific <style> blocks
-after it are left alone.
+after it are left alone. Keep page-local CSS in a SECOND block — a page that
+appends its own rules to the end of the first block loses them on the next
+sync. That is not hypothetical: it destroyed test-rich-text-landing.html's
+.stats-row / .news-grid grid CSS on 2026-08-28, silently, and the stats and
+news sections rendered as stacked full-width blocks for ten days before anyone
+noticed. The tool now refuses to overwrite a block containing selectors that
+are not in critical.css, and names them; pass --force to override.
 """
 import argparse
 import glob
@@ -32,6 +38,11 @@ REPO = os.path.dirname(HERE)
 CRITICAL = os.path.join(REPO, 'styles', 'critical.css')
 
 OPEN_RE = re.compile(r'([ \t]*)<style>\n')
+FORCE = False
+
+
+class ForeignCSS(Exception):
+    """The first <style> block holds rules that are not in critical.css."""
 CLOSE = '</style>'
 
 
@@ -55,6 +66,41 @@ def payload(indent='  '):
     return '\n'.join(out)
 
 
+SELECTOR_RE = re.compile(r'(?:^|[{}])\s*([^{}@/][^{}]*?)\s*\{', re.M)
+
+
+def selectors(css):
+    """Rough set of selectors in a stylesheet. Comments stripped first.
+
+    Deliberately loose — it only needs to be good enough to notice rules that
+    are in a page's <style> block but not in critical.css. At-rules are skipped
+    (the [^{}@/] guard), so selectors nested in @media still get collected.
+    """
+    css = re.sub(r'/\*.*?\*/', '', css, flags=re.S)
+    out = set()
+    for m in SELECTOR_RE.finditer(css):
+        # Normalise whitespace: the same grouped selector is indented
+        # differently in critical.css and in a page's inlined copy, and a
+        # newline-vs-space difference must not read as a different rule.
+        sel = ' '.join(m.group(1).split())
+        if sel:
+            out.add(sel)
+    return out
+
+
+def foreign_rules(block, css):
+    """Selectors present in a page's block but absent from critical.css.
+
+    This is the guard for the failure that ate test-rich-text-landing.html's
+    grid CSS on 2026-08-28: that page kept its page-local .stats-row/.news-grid
+    rules at the END of the same <style> block critical.css was inlined into,
+    so re-inlining silently overwrote them. Nothing errored; the stats and news
+    grids just stopped being grids. A page keeping local CSS must put it in a
+    SECOND <style> block, which this tool never touches.
+    """
+    return sorted(selectors(block) - selectors(css))
+
+
 def rewrite(path):
     """Replace the first <style> block's contents. Returns True if changed."""
     with open(path, encoding='utf-8') as fh:
@@ -71,6 +117,12 @@ def rewrite(path):
     tail = src.rfind('\n', start, end)
     if tail == -1:
         return None
+
+    existing = src[start:tail]
+    with open(CRITICAL, encoding='utf-8') as fh:
+        stray = foreign_rules(existing, fh.read())
+    if stray and not FORCE:
+        raise ForeignCSS(stray)
 
     new = src[:start] + payload(m.group(1)) + src[tail:]
     if new == src:
@@ -90,7 +142,13 @@ def main():
                     help='where the target directories live (default: the page-builder repo)')
     ap.add_argument('--check', action='store_true',
                     help='exit non-zero if any file is stale; write nothing')
+    ap.add_argument('--force', action='store_true',
+                    help='overwrite a <style> block even if it holds rules that are not '
+                         'in critical.css (default: refuse — those rules would be lost)')
     args = ap.parse_args()
+
+    global FORCE
+    FORCE = args.force
 
     files = []
     root = os.path.abspath(args.root)
@@ -103,11 +161,15 @@ def main():
 
     if args.check:
         # Compare without writing.
-        stale = []
+        stale, blocked = [], []
         for p in files:
             with open(p, encoding='utf-8') as fh:
                 before = fh.read()
-            r = rewrite(p)
+            try:
+                r = rewrite(p)
+            except ForeignCSS as e:
+                blocked.append((os.path.relpath(p, root), e.args[0]))
+                continue
             if r is None:
                 continue
             with open(p, encoding='utf-8') as fh:
@@ -118,21 +180,38 @@ def main():
                 stale.append(os.path.relpath(p, root))
         for s in stale:
             print('  STALE  ' + s)
-        print('\n%d file(s) stale' % len(stale))
-        sys.exit(1 if stale else 0)
+        for rel, rules in blocked:
+            print('  BLOCKED  %s — page-local CSS in the inline block: %s'
+                  % (rel, ', '.join(rules[:5]) + (' ...' if len(rules) > 5 else '')))
+        print('\n%d file(s) stale, %d blocked' % (len(stale), len(blocked)))
+        sys.exit(1 if (stale or blocked) else 0)
 
-    changed, skipped = [], []
+    changed, skipped, blocked = [], [], []
     for p in files:
-        r = rewrite(p)
         rel = os.path.relpath(p, root)
+        try:
+            r = rewrite(p)
+        except ForeignCSS as e:
+            blocked.append((rel, e.args[0]))
+            continue
         if r is None:
             skipped.append(rel)
         elif r:
             changed.append(rel)
     for c in changed:
         print('  updated  ' + c)
-    print('\n%d file(s) updated, %d already current, %d without an inline block'
-          % (len(changed), len(files) - len(changed) - len(skipped), len(skipped)))
+    for rel, rules in blocked:
+        print('  BLOCKED  ' + rel)
+        print('           these rules are in the inline block but not in critical.css')
+        print('           and would be destroyed: ' + ', '.join(rules[:8])
+              + (' ...' if len(rules) > 8 else ''))
+        print('           Move them to a SECOND <style> block (never touched), or')
+        print('           re-run with --force if they are genuinely disposable.')
+    print('\n%d file(s) updated, %d already current, %d without an inline block, %d blocked'
+          % (len(changed), len(files) - len(changed) - len(skipped) - len(blocked),
+             len(skipped), len(blocked)))
+    if blocked:
+        sys.exit(1)
 
 
 if __name__ == '__main__':

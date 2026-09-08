@@ -49,8 +49,9 @@
  *
  * What stays here (and why):
  *   - Gap-fills for components missing from web-components.min.css:
- *     umd-element-utility-header. (umd-element-carousel* landed upstream
- *     in v1.8.14 — see the §1 tombstone.)
+ *     none currently. (umd-element-carousel* landed upstream in v1.8.14;
+ *     umd-element-utility-header turned out not to be a real tag at all —
+ *     see both §1 tombstones.)
  *   - Bug fix: umd-layout-background-full-dark — upstream layout.min.css
  *     serializes the highDef breakpoint as @media([object Object]) because
  *     background/full.ts:42 passes the whole media.queries.highDef object
@@ -96,10 +97,16 @@
    web-components.min.css. As those land upstream, drop these.
    ============================================================ */
 
-/* umd-element-utility-header — present on every page (band above the
-   nav header). Not in upstream bundle as of v1.8.11. */
-umd-element-utility-header:not(:defined) { content-visibility: hidden; }
-umd-element-utility-header { display: block; container-type: normal; }
+/* umd-element-utility-header — RETIRED 2026-09-08: the tag does not exist.
+   It was never a component, in any version — the design system's only
+   utility-bar tag is umd-element-navigation-utility, which is what actually
+   renders the UMD flag / "A Top 20 Public Research University" band. These
+   rules were written on the assumption that a real component had been left
+   out of web-components.min.css, so they gap-filled a phantom: the element
+   never upgraded, :not(:defined) always matched, and it sat on every page
+   at height 0 with no children. Do NOT re-add. If you want the band, use
+   umd-element-navigation-utility (data-alert-off="true" hides its alert
+   strip, which is how TEMPLATE.html has always rendered it). */
 
 /* umd-element-carousel* — RETIRED (upstream since web-styles-library@1.8.14): all six
    variants (plus new umd-element-carousel-people) now ship in upstream

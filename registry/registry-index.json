@@ -6,14 +6,13 @@
     "last_verified": "2026-09-08",
     "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@2.0.0/dist",
     "notes": "All slots and attributes verified directly from the design-system submodule source. Do not re-derive for known components \u2014 use this registry.",
-    "component_count": 61,
+    "component_count": 60,
     "last_updated": "2026-09-08"
   },
   "categories": {
     "navigation": {
       "file": "registry/registry-navigation.json",
       "components": [
-        "header-utility",
         "navigation-utility",
         "header-site",
         "navigation-sticky",
@@ -238,7 +237,6 @@
     "umd-element-stat": "registry-content.json",
     "umd-element-sticky-columns": "registry-content.json",
     "umd-element-tabs": "registry-content.json",
-    "umd-element-utility-header": "registry-navigation.json",
     "umd-feed-events": "registry-feeds.json",
     "umd-feed-events-grouped": "registry-feeds.json",
     "umd-feed-events-list": "registry-feeds.json",

@@ -348,6 +348,70 @@ All variants stack to 1 column on mobile (below 649px) with no gap.
 
 All border grid CSS is in `styles/critical.css` — section 19.
 
+### Filtered or paginated grids: render from data, append on paging
+
+If the grid is driven by a filter, a search box, or a "Load More" button, build a
+**new** `umd-element-person` for every card you show and never move an existing
+one.
+
+`umd-element-person` re-renders **additively** when it reconnects: take a card
+out of the DOM and put it back and its shadow root ends up with a second
+`.person-block`, so the card draws the same person twice at double height
+(measured 389px → 694px on one detach/reattach; a second round gives three).
+This makes the obvious implementation wrong —
+
+```js
+grid.replaceChildren(...matches.slice(0, n));   // WRONG
+```
+
+— because `replaceChildren` re-inserts the cards that were **already** on
+screen. One "Load More" click does it to every visible card at once and the grid
+appears to repeat its rows.
+
+**`display: none` is not the alternative.** Leaving every card in the DOM and
+hiding the non-matches breaks the border rendering, because the top border is
+drawn by DOM position:
+
+```css
+:is(.umd-layout-grid-border-four):not(:has(>:last-child:nth-child(4))) > *:nth-child(1) { border-top: … }
+/* …and :nth-child(2), (3), (4) */
+```
+
+`:nth-child` counts children, not visible ones, so filtering out the first four
+cards strands the top border on hidden cells while the visible first row has
+none.
+
+**The pattern that works** (and the one `omc.umd.edu/people` uses):
+
+```js
+// Filter/search: rebuild from data — none of the previous nodes are reused.
+grid.replaceChildren();
+append(0, pageSize);
+
+// Load More: append the delta ONLY; cards already on screen are left alone.
+append(shown, shown + pageSize);
+
+function append(from, to) {
+  const holder = document.createElement('div');          // detached: no upgrade yet
+  holder.innerHTML = records.slice(from, to).map(r => r.html).join('');
+  while (holder.firstElementChild) grid.appendChild(holder.firstElementChild);
+}
+```
+
+Elements created by `innerHTML` on a **detached** container do not upgrade until
+they are connected, which is what makes this safe — each renders exactly once, on
+append.
+
+Two things that follow from it:
+
+- **`outerHTML` is a safe source for the markup.** On an upgraded
+  `umd-element-person` it serialises the **light DOM only** — the shadow root is
+  not included — so capturing it once at init round-trips the original markup,
+  `data-*` attributes and all.
+- **Any shadow injection must be re-runnable.** Cards built after page load never
+  saw a one-shot `customElements.whenDefined(...)` pass, so expose the injection
+  as a function with a per-element guard and call it after every append.
+
 ---
 
 ## Stat Card Grid (block stats in a grid)
@@ -1476,7 +1540,8 @@ Reusable DS-class choices (all upstream — no new component CSS):
 - **Rail heading:** `.umd-tailwing-right-headline` (element.min.css) — small uppercase label with a thin rule trailing to the right. **Requires a `<span>` child** (its inherited white background masks the line behind the text) and adds `margin-top:40px` to the next element. Alternative to `.umd-text-line-trailing-light` used above.
 - **Search input:** a **bare `<input>` needs no box CSS** — the global `input {}` rule (base.min.css) already gives white bg, `1px solid #E6E6E6`, `12px 16px` padding, full width. Wrap the input + a red square submit button in a `.umd-layout-background-highlight-light` form to get the gray `#F1F1F1` panel + `2px solid #E21833` left rule.
 - **Checkbox option rows:** `.umd-field-checkbox-wrapper` on each `<label>` (font-weight:400 — see RULES §37; bare labels render bold). Group them under a toggle button and animate open/closed with `grid-template-rows: 0fr → 1fr`. Put per-option counts in `.umd-sans-smaller`.
-- **Active-filter chips ("Filtered by:"):** wrap the removable pills in `<span class="umd-pill-list">` (element.min.css) — each child renders as a `#FAFAFA` 12px chip (hover yellow `#FFD200` on `<a>`; add a page hover rule for `<button>`). Neutralize the container's `margin-top:-8px` hack with flex gap. Put the label × in an inner `<span>` (DS `> span{display:flex;gap:4px}`).
+- **Active-filter chips ("Filtered by:"):** wrap the removable pills in `<span class="umd-text-cluster-pill">` (element.min.css; `umd-pill-list` is the deprecated alias, still emitted on the same rule). Each child renders as a `#FAFAFA` 12px Interstate chip at `8px 12px` padding, with `transition:background-color .3s` and a `#FFD200` hover **on `<a>` children only** — a `<button>` needs its own page hover rule. Neutralize the container's `margin-top:-8px` hack with flex gap, and zero the children's matching `margin-top:8px` or wrapped rows get 8px of gap plus 8px of margin. Put the label × in an inner `<span>` (DS `> span{display:flex;gap:4px}`).
+  - **The light variant sets no text colour, so a bare `<a>` chip renders in the browser's default blue/purple.** Verified against `web-styles-library@1.8.16`: `:is(.umd-text-cluster-pill,.umd-pill-list) > *` declares background, box model and type but never `color`, while the **dark** variant does (`color:#FFFFFF`, and `#000000` on hover) — so the omission is an asymmetry, not "black is implied". `critical.css` §24 carries the gap-fill (`:is(.umd-text-cluster-pill,.umd-pill-list) > a { color:#000; text-decoration:none }`), scoped to the light class names so the dark variant's white is untouched — so a page needs nothing of its own for anchor chips. Same class of bug as the flat utility-nav anchors in §11. Retire §24 when `composePill()`'s light branch gains `color: color.black` in `packages/styles/source/element/text/cluster.ts`.
 - **A–Z quick-nav + letter headings:** the `.umd-campaign-*` italic display faces make a good alphabet nav — `.umd-campaign-extrasmall` (32px) for the jump-nav row, `.umd-campaign-small` (44px desktop) for in-list letter headings; recolor to Maryland red. Bucket the sorted array by `name[0]`, render sticky letter sections (`scroll-margin-top` to clear a sticky nav), and dim letters with no matches. Recompute active letters on every filter change.
 - **Row meta with no badge slot:** `umd-element-card[data-display="list"]` has no dedicated badge/tag slot — repurpose its **`date` slot** for a short type/category label (`<p slot="date">Major | Minor</p>`, not `<time>`).
 - **Reset control:** if you use `umd-element-call-to-action data-display="outline"` for "Reset", note it clones its child into shadow DOM — a native `type="reset"` won't reach the light-DOM form; catch the click on a light-DOM wrapper (or walk `e.composedPath()`) and clear state explicitly. See the modal registry note.

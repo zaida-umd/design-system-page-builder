@@ -123,3 +123,30 @@ See RULES.md §21 for the full interior page layout skeleton.
 **Why:** Utility classes for constraining content inside `umd-layout-image-expand` and spacing inside `umd-element-sticky-columns`. Not in `cdn.js`.
 
 See RULES.md §17 for image-expand patterns and §20 for sticky columns patterns.
+
+---
+
+## 11. Filter Band Companions (`styles/critical.css` — section 23)
+
+**Why:** The filterable-listing pattern is almost entirely upstream classes; only the search row, the results count and the divider list are page-built. See LAYOUT-PATTERNS.md "Filter Band".
+
+**Classes provided:**
+- `.umd-filter-search-row` / `.umd-filter-search-btn` — text input + 44×44 red submit
+- `.umd-filter-results-count` — the live count line
+- `.umd-filter-list` / `.umd-filter-item` — zero-gap stack with `1px #d0d0d0` rules between visible items
+
+**The `border-top: 0` line is a collision fix, not decoration.** When the items are `umd-element-card[data-display="list"]`, the component puts `border-top: 1px solid #E6E6E6` + `padding-top: 24px` on every sibling after the first. That border lands directly against `.umd-filter-item`'s own `border-bottom`, and the pair renders as one doubled 2px rule in two greys. The divider list owns its rules, so the component's is zeroed. The selector carries tag names because it has to clear the component rule's `0,2,2`.
+
+---
+
+## 12. Pill List Anchor Color (`styles/critical.css` — section 24)
+
+**Why:** `element.min.css` styles `.umd-text-cluster-pill` (deprecated alias `.umd-pill-list`) with a `#FAFAFA` chip ground, `8px 12px` box, 12px Interstate and a `#FFD200` hover on `<a>` children — but the **light** variant never declares `color`. An anchor chip therefore renders in the browser's default blue/purple with a UA underline. The **dark** variant does declare one (`color:#FFFFFF`, `#000000` on hover), so the omission is an asymmetry in the package rather than an implied black.
+
+Same shape as section 11's utility-nav rules: upstream styles a wrapper this composition does not use, and the bare `<a>` is left unstyled.
+
+**Scoped to the light class names**, so the dark variant's white is untouched.
+
+**Retire when** `composePill()`'s light branch gains `color: color.black` — `packages/styles/source/element/text/cluster.ts` in the design-system submodule.
+
+> Note: the section numbers above refer to `styles/critical.css`. Entries 1–10 in this file predate several critical.css sections and their references have drifted; entries 11–12 are accurate.

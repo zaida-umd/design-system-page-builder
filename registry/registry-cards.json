@@ -1,10 +1,10 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "components_version": "1.19.5",
+    "components_version": "2.0.0",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-08-21",
-    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist",
+    "last_verified": "2026-09-08",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@2.0.0/dist",
     "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
     "component_count": 26,
     "last_updated": "2026-04-22",
@@ -464,6 +464,14 @@
         "name": "data-visual-time",
         "type": "boolean",
         "description": "Show time in the event meta display."
+      },
+      {
+        "name": "data-visual-bordered",
+        "type": "boolean",
+        "values": [
+          "true"
+        ],
+        "description": "Adds a border to the card. DEFAULT (block) LAYOUT ONLY \u2014 it is read only on the default branch and is inert with data-display=\"feature\", \"promo\", or \"list\". Requires the literal string \"true\". Added in components 2.0.0."
       }
     ],
     "aliases": {

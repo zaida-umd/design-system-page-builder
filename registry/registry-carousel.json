@@ -1,10 +1,10 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "components_version": "1.19.5",
+    "components_version": "2.0.0",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-08-21",
-    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist",
+    "last_verified": "2026-09-08",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@2.0.0/dist",
     "notes": "Verified from design-system submodule source.",
     "category": "carousel",
     "components": [

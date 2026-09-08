@@ -1,13 +1,17 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "components_version": "1.19.5",
+    "components_version": "2.0.0",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-08-21",
-    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist",
+    "last_verified": "2026-09-08",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@2.0.0/dist",
     "notes": "Verified from design-system submodule source.",
     "category": "brand",
-    "components": ["brand-card-stack", "brand-logo-animation"]
+    "components": [
+      "brand-card-stack",
+      "brand-logo-animation",
+      "brand-chevron-promo"
+    ]
   },
   "brand-card-stack": {
     "tag": "umd-element-brand-card-stack",
@@ -30,7 +34,10 @@
       {
         "name": "data-image-expand",
         "type": "boolean",
-        "values": ["true", "false"],
+        "values": [
+          "true",
+          "false"
+        ],
         "default": "true",
         "description": "Full-screen expand is ON by default. Set to `\"false\"` to disable the full-screen takeover; the scroll-spread animation still plays."
       }
@@ -40,7 +47,9 @@
       "notes": "Applies to both featured and supporting assets."
     },
     "configurable": true,
-    "page_types": ["landing"],
+    "page_types": [
+      "landing"
+    ],
     "notes": "Hard minimum of 5 assets (component logs a warning and renders empty if fewer). Recommended count is 5\u20136; supports up to 8. Video supported only as the featured element; all other slots should be still images.",
     "source": "npm",
     "priority": 3
@@ -52,8 +61,60 @@
     "slots": [],
     "attrs": [],
     "configurable": false,
-    "page_types": ["landing"],
+    "page_types": [
+      "landing"
+    ],
     "notes": "Pure behavior component. Typically placed between sections as a scroll transition.",
+    "source": "npm",
+    "priority": 3
+  },
+  "brand-chevron-promo": {
+    "tag": "umd-element-brand-chevron-promo",
+    "label": "Brand Chevron Promo",
+    "description": "Promotional call-to-action band on a black background with decorative brand chevron line work. Outlined chevrons slide in from the left and drift right at varying speeds (mirroring the forward.umd.edu campaign hero), then centered content fades in and up. Dark gradients sit under the text to keep it readable over the arrows. Min height 500px desktop / 355px mobile. Headline uses the campaign typeface. Added in components 2.0.0.",
+    "slots": [
+      {
+        "name": "headline",
+        "required": true,
+        "description": "Main heading. Rendered in the campaign typeface.",
+        "example": "<h2 slot=\"headline\">Do Good</h2>"
+      },
+      {
+        "name": "eyebrow",
+        "required": false,
+        "description": "Small ribbon text above the headline.",
+        "example": "<p slot=\"eyebrow\">Fearlessly Forward</p>"
+      },
+      {
+        "name": "text",
+        "required": false,
+        "description": "Supporting text. Follows the medium text lockup; wrap paragraphs in a <div>.",
+        "example": "<div slot=\"text\"><p>Supporting copy.</p></div>"
+      },
+      {
+        "name": "actions",
+        "required": false,
+        "description": "Call-to-action buttons or links. Use dark-theme CTAs \u2014 the background is black.",
+        "example": "<div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\" data-theme=\"dark\"><a href=\"/apply\">Apply Now</a></umd-element-call-to-action></div>"
+      }
+    ],
+    "attrs": [
+      {
+        "name": "data-animation",
+        "type": "boolean",
+        "values": [
+          "true",
+          "false"
+        ],
+        "default": "true",
+        "description": "Controls WHEN the chevron animation starts, not whether it runs. Default (omitted) starts it on component load. Set to \"false\" to defer until the section scrolls into view."
+      }
+    ],
+    "configurable": true,
+    "page_types": [
+      "landing"
+    ],
+    "notes": "Background is black and is supplied by the component \u2014 do NOT wrap in umd-layout-background-full-dark or set an inline dark background. Do not add a horizontal spacing class to the host; the band is full-bleed. Headline is the only required slot. CTAs in the actions slot need data-theme=\"dark\". The 2.0.0 stylesheet ships the not-defined/FOUC guard for this tag \u2014 pages pinned to web-styles-library@1.8.16 will not have it, so the band may flash unstyled on load (see CLAUDE.md \u2192 \"ACTIVE EXCEPTION \u2014 stylesheet pin lags the submodule\").",
     "source": "npm",
     "priority": 3
   }

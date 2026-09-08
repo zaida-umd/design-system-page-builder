@@ -777,13 +777,13 @@
     .umd-filter-item[hidden] { display: none !important; }
   </style>
 
-  <script src="https://unpkg.com/@universityofmaryland/web-components-library@1.19.5/dist/cdn.js"></script>
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@2.0.0/dist/cdn.js"></script>
 </head>
 <body>
 
   <!-- QA label banner — sticky, identifies what is being tested -->
   <div style="background:#ffeb3b;color:#000;padding:8px 16px;font:13px/1.4 monospace;border-bottom:2px solid rgba(0,0,0,.2);position:sticky;top:0;z-index:9999;">
-    QA: carousels refactored 1.18.12 → 1.19.5 | image (standard), multiple-image, thumbnail, image-wide | data-visual-text-toggle true/false + fullscreen | PASSED 2026-08-21 — nav arrows and indicator dots verified by hand; no blocking issues
+    QA: carousels refactored 1.18.12 → 1.19.5 | image (standard), multiple-image, thumbnail, image-wide | data-visual-text-toggle true/false + fullscreen | PASSED 2026-08-21 — nav arrows and indicator dots verified by hand; no blocking issues | RE-QA'd 2026-09-08 at components 2.0.0 (page now loads 2.0.0): PASSED — all 7 carousels define and render with nav controls, reflow 1425px → 657px with no horizontal overflow, ElementBuilder "resize" warning x4 unchanged (known false positive, see below)
   </div>
 
   <!-- Findings recorded during this QA pass — see commit message for detail.

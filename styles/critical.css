@@ -1,7 +1,14 @@
 /*
  * UMD Design System — Local-Only Critical CSS
- * Verified against @universityofmaryland/web-components-library@1.19.5
+ * Verified against @universityofmaryland/web-components-library@2.0.0
  * (web-styles-library@1.8.16, audited 2026-08-21)
+ *
+ * NOTE: the styles line above is NOT stale. The components pin moved to 2.0.0
+ * on 2026-09-08 while the styles side deliberately stayed put, because the
+ * styles package has no 2.0.0 published to npm to point at. This file must
+ * keep matching the stylesheet bundles pages actually load, which are 1.8.16.
+ * Do not "fix" the mismatch by auditing this file against styles 2.0.0.
+ * See CLAUDE.md -> "ACTIVE EXCEPTION - stylesheet pin lags the submodule".
  *
  * This file is the LOCAL portion of our critical CSS. It is inlined into
  * TEMPLATE.html alongside <link rel="stylesheet"> tags pointing at the

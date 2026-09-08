@@ -166,6 +166,38 @@ Pages load the `web-styles-library` CSS bundles from unpkg at a **pinned version
 
 Do not leave the links unversioned. An unpinned `unpkg.com/@universityofmaryland/web-styles-library/css/...` URL floats to whatever npm publishes as `latest`, so page CSS changes with no commit, `critical.css` gets audited against a version no page is guaranteed to load, and visual regressions appear with nothing in the history to explain them.
 
+#### ACTIVE EXCEPTION — stylesheet pin lags the submodule (since 2026-09-08)
+
+The submodule is pinned at `236aee434` (Release 2.0, all three packages at 2.0.0) and the
+components script is pinned at `web-components-library@2.0.0`, but **the stylesheet links
+and `styles/critical.css` deliberately stay at `web-styles-library@1.8.16`.**
+
+Reason: `web-styles-library@2.0.0` **is not published to npm** (latest is 1.8.17), so there
+is no `@2.0.0/css/*` bundle on unpkg to point at. Repointing would 404 every page.
+
+This was taken knowingly to get the overlay-card padding fix (DSYS-3131), which ships only
+in components 2.0.0. Verified before adopting: styles changed just 3 files across the whole
+2.0 jump, and the one file coupling styles to components (`web-components.ts`) is **purely
+additive** — no tokens changed, no classes renamed or removed. A full landing page rendered
+identically on both component versions.
+
+Two known consequences, both cosmetic:
+
+1. **Shadow DOM is already on 2.0.** The components bundle compiles the styles package into
+   its shadow CSS, so shadow-DOM text uses 2.0 values while light-DOM `.umd-*` classes still
+   use 1.8.16. Concretely: rich-text `<p>` line-height inside components is 27.5px (2.0)
+   where the light-DOM stylesheet still says 1.5em/33px, and sans scaling is `+0.3vw` inside
+   components vs `+0.5vw` outside. Measured effect: `umd-element-section-intro` renders 22px
+   shorter than at 1.19.5.
+2. **No FOUC guard for `umd-element-brand-chevron-promo`.** Its not-defined styles ship only
+   in styles 2.0.0, so that one component may flash unstyled on load until the pin catches up.
+
+**To close this exception:** when `web-styles-library@2.0.0` publishes, repoint the stylesheet
+links per the steps below, re-audit `critical.css` against styles 2.0.0 (at minimum: drop the
+rich-text `& p { line-height: 1.5em }` rules, which 2.0 removed), and delete this section.
+Until then, `critical.css` is correct at 1.8.16 and must not be audited against 2.0.0 — it
+must match what pages actually load.
+
 **On every submodule bump:**
 
 ```bash

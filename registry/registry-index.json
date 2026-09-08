@@ -1,13 +1,13 @@
 {
   "_meta": {
     "version": "1.1.0",
-    "components_version": "1.19.5",
+    "components_version": "2.0.0",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-08-21",
-    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist",
+    "last_verified": "2026-09-08",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@2.0.0/dist",
     "notes": "All slots and attributes verified directly from the design-system submodule source. Do not re-derive for known components \u2014 use this registry.",
-    "component_count": 60,
-    "last_updated": "2026-04-24"
+    "component_count": 61,
+    "last_updated": "2026-09-08"
   },
   "categories": {
     "navigation": {
@@ -110,8 +110,8 @@
     },
     "brand": {
       "file": "registry/registry-brand.json",
-      "components": ["brand-card-stack", "brand-logo-animation"],
-      "description": "Brand hero moments: interactive card stack and animated chevron scroll"
+      "components": ["brand-card-stack", "brand-logo-animation", "brand-chevron-promo"],
+      "description": "Brand hero moments: interactive card stack, animated chevron scroll, and chevron promo band"
     },
     "layout": {
       "file": "registry/registry-layout.json",
@@ -174,7 +174,7 @@
       "pathway", "pathway-highlight", "section-intro", "section-intro-wide",
       "image-expand", "sticky-columns", "card-icon", "card-video",
       "hero-expand", "hero-logo", "hero-grid", "hero-brand-video",
-      "brand-card-stack", "brand-logo-animation", "carousel-image-wide", "feed-news-featured"
+      "brand-card-stack", "brand-logo-animation", "brand-chevron-promo", "carousel-image-wide", "feed-news-featured"
     ],
     "spacing": {
       "between_major_sections": "umd-layout-vertical-interior (56px mobile/tablet, 80px desktop)",
@@ -189,6 +189,7 @@
     "umd-element-article": "registry-cards.json",
     "umd-element-banner-promo": "registry-alerts.json",
     "umd-element-brand-card-stack": "registry-brand.json",
+    "umd-element-brand-chevron-promo": "registry-brand.json",
     "umd-element-brand-logo-animation": "registry-brand.json",
     "umd-element-breadcrumb": "registry-navigation.json",
     "umd-element-call-to-action": "registry-cards.json",

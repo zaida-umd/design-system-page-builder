@@ -45,6 +45,22 @@ The `/recreate-page`, `/build-landing-page`, and `/build-interior-page` commands
 
 ## Card-overlay horizontal padding (desktop+)
 
+**STATUS: GRADUATED UPSTREAM at components 2.0.0 (DSYS-3131) — override removed 2026-09-08.**
+Upstream now ships horizontal padding on both overlay variants (`color.ts` and `image.ts`).
+Keep this entry only as reference for pages still pinned to components 1.19.5 or earlier.
+
+The upstream fix is **container-based, not viewport-based**, and its steps differ from what
+this override did:
+
+| | This override (removed) | Upstream 2.0.0 |
+|---|---|---|
+| Basis | viewport `@media` | `@container (min-width: 600px)` on the card |
+| Steps | 24px → 32px (1200px) → 48px (1500px) | 24px → 40px (`token.spacing.xl`) |
+
+Container-based is the more correct behaviour — a card in a narrow column no longer gets
+wide-viewport padding — but note the ceiling drops from 48px to 40px on very wide screens.
+Verified 2026-09-08: 24px at a 500px container, 40px at a 1425px container.
+
 **Component:** `umd-element-card-overlay` (image variant). Renders content inside a shadow-DOM `.card-overlay-image-container` with hard-coded horizontal padding of `token.spacing.md` (24px) at every breakpoint — upstream styles only adjust `padding-top` at `medium.min`, leaving sides at 24px from mobile through 4K. On wide viewports this crowds the headline/eyebrow/CTA against the card edges.
 
 **Override:** Shadow-inject step-up horizontal padding aligned to upstream token breakpoints (`highDef.min` = 1200px, `maximum.min` = 1500px). Vertical padding unchanged.
@@ -59,8 +75,11 @@ Injected after `customElements.whenDefined('umd-element-card-overlay')`, applied
 
 **Upstream candidate:** fold into `web-elements-library/src/composite/card/overlay/image.ts` as additional `createMediaQuery` entries on the `card-overlay-image-container` style block, mirroring the existing `medium.min` paddingTop step-up.
 
-**Pages using this:**
-- [test/card-overlay-padding.html](test/card-overlay-padding.html) — isolated test page (temporary; remove when override graduates upstream)
+**Pages using this:** none. The isolated fixture `test/card-overlay-padding.html` was
+deleted on 2026-09-08 along with the override — it existed only to exercise this injection,
+and upstream now owns the behaviour. `qa/card-grids.html` covers the replacement: its
+2-column cards (629px) cross the container threshold to 40px while the 3/4-column and mosaic
+cards (300-432px) stay at 24px.
 
 ---
 

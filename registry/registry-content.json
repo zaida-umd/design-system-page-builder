@@ -1,10 +1,10 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "components_version": "1.19.5",
+    "components_version": "2.0.0",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-08-21",
-    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@1.18.12/dist",
+    "last_verified": "2026-09-08",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@2.0.0/dist",
     "notes": "All slots and attributes verified directly from NPM package source. Do not re-derive for known components \u2014 use this registry.",
     "component_count": 21,
     "last_updated": "2026-03-29",
@@ -396,7 +396,18 @@
         "example": "<img slot=\"image\" src=\"/feature.jpg\" alt=\"\" />"
       }
     ],
-    "attrs": [],
+    "attrs": [
+      {
+        "name": "data-animation",
+        "type": "boolean",
+        "values": [
+          "true",
+          "false"
+        ],
+        "default": "true",
+        "description": "Scroll-driven expand animation. ENABLED BY DEFAULT \u2014 omit the attribute for the animation. Set to \"false\" to disable it and render the completed/expanded state statically. Added in components 2.0.0."
+      }
+    ],
     "configurable": false,
     "aliases": {
       "image expand": {
@@ -408,7 +419,7 @@
     "page_types": [
       "landing"
     ],
-    "notes": "No data-theme or data-display attributes. Both slots are required for layout to render. Scroll animation requires animation-timeline: scroll() support (Chrome 115+, Firefox 110+). Falls back to static full-height image. FULL-BLEED: host requires explicit width: 100% in critical CSS \u2014 do not apply a horizontal spacing class (same rule as pathway/hero). The internal image animation uses 100vw; if the host collapses to content width (e.g. due to a narrow component in the content slot) the component will appear narrow. TEXT COLOR: the component does NOT support data-theme \u2014 text color is not set internally. Content slot children must use explicit color: white (via inline styles or utility classes) because the text overlays the image with a dark overlay (rgba(0,0,0,0.65)). SECTION WRAPPER: Wrap in a plain <section class=\"umd-layout-vertical-landing\"> \u2014 do NOT add style='background:#000' or umd-layout-background-full-dark. The component's own image overlay provides the darkness needed for text legibility. Inline black backgrounds and dark section wrappers are never correct here \u2014 if a dark background is needed for a specific design reason, that is a separate decision made at the project level, not a default. INTERNAL MAX-WIDTH: the shadow DOM applies max-width: 1600px on the text-lock container internally \u2014 do NOT set max-width on the host element. See RULES.md section 17.",
+    "notes": "No data-theme or data-display attributes; data-animation=\"false\" (2.0.0+) disables the scroll animation and renders the expanded end state. Both slots are required for layout to render. Scroll animation requires animation-timeline: scroll() support (Chrome 115+, Firefox 110+). Falls back to static full-height image. FULL-BLEED: host requires explicit width: 100% in critical CSS \u2014 do not apply a horizontal spacing class (same rule as pathway/hero). The internal image animation uses 100vw; if the host collapses to content width (e.g. due to a narrow component in the content slot) the component will appear narrow. TEXT COLOR: the component does NOT support data-theme \u2014 text color is not set internally. Content slot children must use explicit color: white (via inline styles or utility classes) because the text overlays the image with a dark overlay (rgba(0,0,0,0.65)). SECTION WRAPPER: Wrap in a plain <section class=\"umd-layout-vertical-landing\"> \u2014 do NOT add style='background:#000' or umd-layout-background-full-dark. The component's own image overlay provides the darkness needed for text legibility. Inline black backgrounds and dark section wrappers are never correct here \u2014 if a dark background is needed for a specific design reason, that is a separate decision made at the project level, not a default. INTERNAL MAX-WIDTH: the shadow DOM applies max-width: 1600px on the text-lock container internally \u2014 do NOT set max-width on the host element. See RULES.md section 17.",
     "source": "npm",
     "priority": 3,
     "batch": 5

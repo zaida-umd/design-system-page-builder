@@ -1138,18 +1138,39 @@ Also constrain the quote panel width and align it using utility classes directly
 <umd-element-quote data-display="featured" data-theme="dark">...</umd-element-quote>
 ```
 
-### Dark section wrapper required
+### CORRECTED — a dark section wrapper is NOT required
 
-Always wrap `umd-layout-image-expand` in a section with `background: #000` (or use the `umd-layout-background-full-dark` class). The image starts small and expands — the black background fills the gaps around the image during the scroll animation.
+This section previously read "Always wrap `umd-layout-image-expand` in a section
+with `background: #000`." That rule was wrong, and following it hid the real
+problem rather than fixing it.
 
-```html
-<!-- ✓ Correct — dark wrapper provides visual continuity -->
-<section style="background: #000;">
-  <umd-layout-image-expand>
-    ...
-  </umd-layout-image-expand>
-</section>
-```
+**What the rule was really chasing:** black text appearing on top of the
+component. That is a genuine and serious failure — the content sits on a dark
+overlay, so black text is invisible — but a dark *page* background does nothing
+to prevent it. `color` does not inherit from an ancestor's `background-color`.
+
+Measured against the current pin, same markup, only the wrapper differing:
+
+| Slot content | Wrapper | Heading | Body |
+|---|---|---|---|
+| No color classes | none | `rgb(0,0,0)` | `rgb(69,69,69)` |
+| No color classes | `background: #000` | `rgb(0,0,0)` | `rgb(69,69,69)` |
+| Dark classes (below) | none | `rgb(255,255,255)` | `rgb(255,255,255)` |
+
+The wrapper changes nothing. The colour classes are the whole fix.
+
+**The actual invariant: content in this component must always be white/light.**
+The component has no `data-theme` and no internal text colour, so every text
+node in `slot="content"` must carry its colour explicitly — `text-white` on
+headings, `umd-text-rich-advanced-dark` (or `umd-text-rich-simple-large-dark`)
+on body copy, `data-theme="dark"` on nested components. See "Text must be
+explicitly white" at the top of this section for the full markup.
+
+**What production does:** the `umd.edu` Academics panel uses
+`<section class="umd-layout-space-vertical-landing">` with no background at all
+— every ancestor up to `<html>` computes `rgba(0,0,0,0)`. A dark wrapper is
+allowed where a design calls for it, but it is not required and must never be
+relied on for legibility.
 
 ### Full-bleed — no horizontal spacing, no max-width on host
 
@@ -2125,3 +2146,94 @@ The design system already ships the fix: **`.umd-field-checkbox-wrapper`** (and 
 ```
 
 Same root cause as the eyebrow-color gotcha (§18): a global `base.min.css` element rule imposes a default you must counter with the intended DS class, not an inline style.
+
+---
+
+## 38. `slot="actions"` — default to a DS CTA; the slot styles nothing
+
+Every component that accepts `slot="actions"` treats it as a **layout-only**
+pass-through. The builders apply spacing and grid — `marginTop`, `maxWidth`,
+`layout.grid.inline.tabletRows` — and never call `.styled()` on the contents.
+Whatever you put in the slot brings its own styling, or renders as unstyled
+body-weight text.
+
+**Default to a DS CTA.** For this team's purposes `actions` almost always means
+`umd-element-call-to-action` — `data-display="secondary"` for section-level
+"view all" affordances, `data-display="primary"` for the main page action.
+18 of the 27 components documenting the slot use exactly that.
+
+```html
+<!-- ✓ The normal case -->
+<div slot="actions">
+  <umd-element-call-to-action data-display="secondary">
+    <a href="/events">View all events</a>
+  </umd-element-call-to-action>
+</div>
+```
+
+**But it is not always a CTA**, and that is by design — the slot is generic so
+components can put other affordances there. Person components are the clearest
+example: `umd-element-person` and friends style the actions container with
+`layout.grid.inline.tabletRows`, which lays out a **row of contact affordances**
+(email, phone, LinkedIn), not a single button. Alerts and quotes likewise use
+plain links. Follow the component's registry example rather than forcing a CTA
+into every `actions` slot.
+
+**A bare `<a>` is legal but unstyled.** It renders at body weight with no button
+treatment. Use it only when a plain text link is genuinely what the design calls
+for — never as a shortcut for a CTA. This is the trap that produced the wrong
+guidance previously recorded for `event-slider`: a bare `<a slot="actions">` in
+an events slider looks like a missing style, because it is one.
+
+**On dark backgrounds**, a CTA inside `actions` needs its own `data-theme="dark"`
+— the host's theme does not propagate to slotted children (see §17's card note).
+
+> Verified 2026-09-22 against components 2.0.0: `SlotNames.actions` in
+> `packages/model/source/slots/mapping.ts` is `{ default: 'actions' }` — there is
+> no CTA-specific slot variant on any component. Confirmed layout-only handling in
+> `slider/events.ts` (`createActions`), `banner/promo.ts` (`createActions`) and
+> `text-lockup/person.ts`.
+
+---
+
+## 39. Italic body copy renders at 400, not 300 — accepted limitation
+
+Interstate ships **no light italic face**. The font-face set
+(`packages/styles/source/typography/font-face/interstate.ts`) covers:
+
+| Face | Weights | Style |
+|---|---|---|
+| `light` | 300 | normal |
+| `regular` | 400–500 | normal |
+| `italic` | **400–500** | italic |
+| `boldItalic` | 600–700 | italic |
+
+There is a 300 upright face but no 300 italic. So once body copy moved to 300,
+`font-weight: 300` + `font-style: italic` has no face to bind to and falls back
+to the nearest italic — the 400–500 one.
+
+Measured, same string at 40px:
+
+| Declaration | Rendered width |
+|---|---|
+| normal 300 | 381.13px |
+| normal 400 | 396.64px |
+| **italic 300** | **393.77px** |
+| **italic 400** | **393.77px** |
+
+Identical to the pixel. `getComputedStyle` reports `300`; the glyphs are 400.
+
+**Consequence:** italic text sits visibly heavier than the upright copy around
+it. This affects every italic in body copy — `<em>` and `<i>` inside rich text,
+`.umd-text-caption-smaller-italic`, and anything else italicised at body weight.
+
+**This is accepted, not a bug.** Decided 2026-09-22. Do not:
+
+- "fix" it with a CSS override — there is no lighter italic face to reach
+- report it as a regression when a computed style says 300 but the text looks 400
+- add a synthetic-oblique workaround (`transform: skew`, `font-synthesis`), which
+  degrades the letterforms worse than the weight mismatch does
+
+Closing it properly requires licensing and shipping an Interstate Light Italic.
+Until then, prefer non-italic emphasis in light body copy where the mismatch
+would be conspicuous.

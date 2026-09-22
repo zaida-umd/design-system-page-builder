@@ -77,15 +77,15 @@
     "description": "Formatted date sign / event date lockup that renders start and end dates in a responsive, prominent format. Typically paired with an event title. See registry-cards.json for the fuller entry \u2014 duplicated here as part of the layout utility set.",
     "slots": [
       {"name": "headline", "required": false, "description": "Event title.", "example": "<h3 slot=\"headline\">Homecoming Weekend</h3>"},
-      {"name": "start-date-iso", "required": false, "description": "Start date as a time element with ISO datetime.", "example": "<time slot=\"start-date-iso\" datetime=\"2026-10-17\">October 17, 2026</time>"},
-      {"name": "end-date-iso", "required": false, "description": "End date as a time element with ISO datetime.", "example": "<time slot=\"end-date-iso\" datetime=\"2026-10-19\">October 19, 2026</time>"}
+      {"name": "start-date-iso", "required": false, "description": "Event start. The component reads this slot's TEXT CONTENT, not the datetime attribute \u2014 utilities/date/parseDateFromElement.ts does Date.parse(element.textContent). Put the full ISO 8601 string in the element's text.", "example": "<div slot=\"start-date-iso\">2026-10-17T10:00:00.000</div>"},
+      {"name": "end-date-iso", "required": false, "description": "Event end. The component reads this slot's TEXT CONTENT, not the datetime attribute \u2014 utilities/date/parseDateFromElement.ts does Date.parse(element.textContent). Put the full ISO 8601 string in the element's text. Always supply it: omitting this optional slot makes the component render the literal string 'undefined' in the date line. For a single-day event repeat the start value, which is what the DS QA site does.", "example": "<div slot=\"end-date-iso\">2026-10-19T18:00:00.000</div>"}
     ],
     "attrs": [
       {"name": "data-theme", "type": "enum", "values": ["dark"], "description": "Dark background, light text."}
     ],
     "configurable": true,
     "page_types": ["landing", "interior"],
-    "notes": "IMPORTANT: slot names are `start-date-iso` and `end-date-iso` (NOT `date-start-iso` / `date-end-iso` as shown in the upstream JSDoc \u2014 that's a documentation bug). The component queries the former via Slots.name.DATE_START_ISO which resolves to `start-date-iso`.",
+    "notes": "DATE SLOTS, corrected 2026-09-22: the examples here previously showed <time datetime=\"ISO\">Human readable</time>. That is WRONG and renders silently bad dates \u2014 parseDateFromElement reads textContent, so the human-readable text was parsed. 'April 15' parses as year 2001 (a Sunday) and a date with no time renders 12:00am. Verified against the DS QA site, which passes <div slot=\"start-date-iso\">2026-02-09T00:00:00.000</div>. IMPORTANT: slot names are `start-date-iso` and `end-date-iso` (NOT `date-start-iso` / `date-end-iso` as shown in the upstream JSDoc \u2014 that's a documentation bug). The component queries the former via Slots.name.DATE_START_ISO which resolves to `start-date-iso`.",
     "source": "npm",
     "priority": 3
   }

@@ -17,12 +17,13 @@
       {
         "name": "event-list",
         "required": true,
-        "description": "Container of event items (div with event markup per slide).",
-        "example": "<div slot=\"event-list\"><div>Event 1 markup</div><div>Event 2 markup</div></div>"
+        "description": "Container of umd-element-events-date children, one per slide. Each child's date slots are read from TEXT CONTENT, not a datetime attribute.",
+        "example": "<div slot=\"event-list\">\n  <umd-element-events-date>\n    <p slot=\"headline\"><a href=\"/events/symposium\">Annual Research Symposium</a></p>\n    <div slot=\"start-date-iso\">2026-04-15T09:00:00.000</div>\n    <div slot=\"end-date-iso\">2026-04-16T17:00:00.000</div>\n  </umd-element-events-date>\n</div>"
       },
-      {"name": "headline", "required": false, "description": "Section headline above the slider."},
-      {"name": "actions", "required": false, "description": "Section-level CTA link(s)."}
+      {"name": "headline", "required": false, "description": "Section headline above the slider.", "example": "<h2 slot=\"headline\">Upcoming Events</h2>"},
+      {"name": "actions", "required": false, "description": "Section-level action. The slot applies layout only and no typography \u2014 put umd-element-call-to-action data-display=\"secondary\" in it for the standard styled button. A bare <a> renders as unstyled body-weight text. See RULES.md \u00a738.", "example": "<div slot=\"actions\">\n  <umd-element-call-to-action data-display=\"secondary\">\n    <a href=\"/events\">View all events</a>\n  </umd-element-call-to-action>\n</div>"}
     ],
+    "notes": "DUPLICATE ENTRY: this component is also documented as `event-slider` in registry-cards.json, which carries the fuller slot detail. The two drifted apart and the cards copy previously gave wrong guidance for both the actions slot and the date slots. Prefer registry-cards.json; keep the two in sync until they are consolidated. Corrected 2026-09-22.",
     "attrs": [
       {"name": "data-theme", "type": "enum", "values": ["dark"], "description": "Dark background."}
     ],

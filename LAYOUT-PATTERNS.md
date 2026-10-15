@@ -1253,8 +1253,8 @@ When a section contains only a row of standalone links — no supporting body co
   </umd-element-card-overlay>
 </div>
 
-<!-- 3-column link card grid — add page-specific CSS class -->
-<div class="link-cards-three">
+<!-- 3-column link card grid — add a house class named per RULES.md §40 -->
+<div class="umd-<namespace>-link-cards-three">
   <umd-element-card-overlay>
     <h3 slot="headline"><a href="/page-one">First Destination</a></h3>
     <a slot="cta-icon" href="/page-one">Go</a>
@@ -1273,13 +1273,13 @@ When a section contains only a row of standalone links — no supporting body co
 Add this CSS to the page `<style>` block for 3-column grids (not in critical.css — define per page):
 
 ```css
-.link-cards-three {
+.umd-<namespace>-link-cards-three {
   display: grid;
   grid-template-columns: 1fr;
   gap: 16px;
 }
 @media (min-width: 650px) {
-  .link-cards-three { grid-template-columns: repeat(3, 1fr); }
+  .umd-<namespace>-link-cards-three { grid-template-columns: repeat(3, 1fr); }
 }
 ```
 

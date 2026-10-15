@@ -47,7 +47,7 @@ If invoked in brief mode with no plan, choose image sources with the same defaul
 2. Read `registry/registry-index.json`; load only the category files you need.
 3. Read `RULES.md` — follow every rule, **§21 for interior-page layout**.
 4. Read `LAYOUT-PATTERNS.md` for the column/sidebar patterns.
-5. Read `OVERRIDES.md` — reuse documented page-built classes (e.g. `.umd-text-line-trailing`) before inventing new ones.
+5. Read `OVERRIDES.md` — reuse documented page-built classes (e.g. `.umd-text-line-trailing`) before inventing new ones. Any class you do invent follows RULES.md §40: `umd-<namespace>-<component>[-<part>]`, full words, no abbreviations.
 
 ---
 
@@ -103,6 +103,7 @@ Confirm the output path when done. If a preview server is running, verify the pa
 - [ ] No broken logo images — `../images/logos/primary-logo-dark.svg` (header), `../images/logos/footer-logo.svg` (footer)
 - [ ] `copy-source` honored (verbatim copy not paraphrased); `image-source` honored (no forced stock)
 - [ ] `tools/check-themes.py` reports no ERRORs (misspelled `data-theme` values render identically to correct ones)
+- [ ] `tools/check-class-names.py` reports no ERRORs (house classes are `umd-<namespace>-…`, full words — RULES.md §40)
 
 ---
 
@@ -118,6 +119,16 @@ python3 /Users/zjocson/repos/design-system-page-builder/tools/check-themes.py <o
 - **WARNING** — a real theme word the registry does not list for that component. Usually inert; confirm it is deliberate. If it turns out to be genuinely supported, update `registry/` rather than silencing the warning.
 
 Exit code is non-zero only for errors, so warnings will not block a build.
+
+## Class-name check (after writing)
+
+Every class the page defines for itself has to be carried into the CMS by a developer, so it must follow RULES.md §40: `umd-<namespace>-<component>[-<part>]`, full words, hyphens only, and state on attributes. The namespace is the one in the project's `CLAUDE.md`.
+
+```bash
+python3 /Users/zjocson/repos/design-system-page-builder/tools/check-class-names.py --namespace <namespace> <output-file>
+```
+
+Fix every ERROR before reporting success. The script cannot judge §40 rules 1 and 4 (reuse a DS/CMS name if one exists; name the component, not the page), so check those by eye.
 
 ---
 

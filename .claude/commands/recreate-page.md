@@ -234,6 +234,16 @@ python3 /Users/zjocson/repos/design-system-page-builder/tools/check-themes.py <o
 
 Exit code is non-zero only for errors, so warnings will not block a build.
 
+## Class-name check (after writing)
+
+Every class the page defines for itself has to be carried into the CMS by a developer, so it must follow RULES.md §40: `umd-<namespace>-<component>[-<part>]`, full words, hyphens only, and state on attributes. The namespace is the one in the project's `CLAUDE.md`.
+
+```bash
+python3 /Users/zjocson/repos/design-system-page-builder/tools/check-class-names.py --namespace <namespace> <output-file>
+```
+
+Fix every ERROR before reporting success. The script cannot judge §40 rules 1 and 4 (reuse a DS/CMS name if one exists; name the component, not the page), so check those by eye.
+
 ---
 
 ## Harvest overrides (final step)
@@ -242,7 +252,7 @@ After cleanup, spawn an `Explore` subagent to scan the new HTML file and update 
 
 > Scan `<output-path>` for two things:
 > 1. **Shadow injections** — IIFEs that call `el.shadowRoot.appendChild(<style>)`. Capture the target component tag, the CSS string injected, and the leading comment that explains why.
-> 2. **Page-built components** — light-DOM CSS classes defined in the inline `<style>` block whose names are NOT present in `styles/critical.css` (typically a custom component with no DS equivalent, e.g. a page-specific `.sp-venn-diagram` block). Skip any class that IS in `critical.css` — that includes `.umd-action-outline-block`, `.umd-text-line-trailing`, and all `umd-layout-grid-*` classes (a no-gap card grid is already `umd-layout-grid-columns-*` upstream — never harvest a hand-rolled duplicate). For each genuine page-built class, capture the class name, its DS counterpart (if any), and why a page-built version was needed (read the leading comment).
+> 2. **Page-built components** — light-DOM CSS classes defined in the inline `<style>` block whose names are NOT present in `styles/critical.css` (typically a custom component with no DS equivalent, e.g. a `.umd-<namespace>-venn-diagram` block). Skip any class that IS in `critical.css` — that includes `.umd-action-outline-block`, `.umd-text-line-trailing`, and all `umd-layout-grid-*` classes (a no-gap card grid is already `umd-layout-grid-columns-*` upstream — never harvest a hand-rolled duplicate). For each genuine page-built class, capture the class name, its DS counterpart (if any), and why a page-built version was needed (read the leading comment).
 >
 > Then read `$OUT/OVERRIDES.md`. For each item found:
 > - If an entry already exists, append `<output-path>` to the "Pages using this" list (only if not already listed).

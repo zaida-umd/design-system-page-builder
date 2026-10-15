@@ -22,6 +22,16 @@ file layers {{PROJECT_SLUG}}-specific guidance on top and does not repeat it.
 **Registry first**: before hand-rolling any element, search
 `page-builder/registry/` for an existing `umd-element-*` component.
 
+## Class namespace
+
+House classes are `umd-{{PROJECT_SLUG}}-<component>[-<part>]`, written in full
+words (`page-builder/RULES.md` §40). If the live site already uses its own
+`umd-<name>-` prefix, use that name instead and change it here. Check a page with:
+
+```bash
+python3 page-builder/tools/check-class-names.py --namespace {{PROJECT_SLUG}} pages/**/*.html
+```
+
 ## Output paths
 
 Pages are organised by site section, one directory per section, with the

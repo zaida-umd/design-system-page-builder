@@ -57,6 +57,7 @@ All three kinds of project — closely recreating an existing site, overhauling 
 | `tools/build-chrome.py` | Splices a project's `shared/` chrome into every page under `pages/`. `--check` exits non-zero if any page is stale. |
 | `tools/chrome.py` | The library behind it — region contract, `{{ROOT}}` depth expansion, contextual-drawer stamping. Import it from a project's own page generators so both paths emit identical bytes. |
 | `tools/check-themes.py` | Registry-driven `data-theme` validator. |
+| `tools/check-class-names.py` | Checks a page's house classes against `RULES.md §40` (`umd-<namespace>-<component>`, full words). Takes `--namespace`. |
 | `tools/gate.py` | Manages the accounts on a project's prototype access gate. Prompts for the password; stores a PBKDF2 hash. |
 
 **Prototype access gate.** A project published to GitHub Pages for client

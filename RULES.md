@@ -2237,3 +2237,71 @@ it. This affects every italic in body copy — `<em>` and `<i>` inside rich text
 Closing it properly requires licensing and shipping an Interstate Light Italic.
 Until then, prefer non-italic emphasis in light body copy where the mismatch
 would be conspicuous.
+
+---
+
+## 40. House class names — what the developer will ship
+
+Every class a page defines for itself is a class a developer has to carry into
+the CMS. If we write `cs-tile-abbr`, they must work out what it means, rename it
+to their own convention, and update every reference. So house classes are named
+the way the production sites already name theirs, and they need no translation.
+
+### What production does
+
+Measured on the CMS QA site (`qa-designteam.umd-servd.com`) and on Maryland
+Today (`today.umd.edu`), which the same developer builds:
+
+| Source | Classes outside the DS | Pattern |
+|---|---|---|
+| QA kitchen sink, interior sample | none, only DS classes and a few utilities | — |
+| CMS shell | `umd-shell-nav-promo`, `umd-shell-nav-promo-headline`, `umd-shell-accordion-group` | `umd-shell-<component>-<part>` |
+| Maryland Today | `umd-editorial-slider-feature`, `umd-editorial-slider-feature-headline`, `umd-editorial-grid-articles-two`, `umd-editorial-eyebrow-flag` | `umd-editorial-<component>-<part>` |
+| Admissions live site | `<umd-admissions-resources>` | `umd-admissions-<component>` |
+
+Every one is `umd-` + **site namespace** + **component** + optional **part**,
+with full words joined by single hyphens. None uses BEM (`__` / `--`), and none
+uses an abbreviated prefix.
+
+### The rules
+
+1. **Reuse before you invent.** Look in `styles/critical.css`, `registry/`, and
+   the project's `OVERRIDES.md`. If the DS or the CMS shell already has a class
+   for the thing, use its exact name, `umd-shell-*` included. Never rename a
+   CMS class on its way into a prototype; `umd-nav-promo-title` for the CMS's
+   `umd-shell-nav-promo-headline` is the failure this rule exists to stop.
+2. **Format: `umd-<namespace>-<component>[-<part>]`.** The namespace is the
+   project's site name as production uses it (`admissions`, `editorial`).
+   Each project's `CLAUDE.md` states its namespace. The DS's own namespaces
+   (`element`, `layout`, `text`, `sans`, `serif`, `animation`, `shell`, …)
+   are never used for house classes.
+3. **Full words only.** Write `description`, not `desc`; `number`, not `num`;
+   `chevron`, not `chev`; `international`, not `intl`; `representatives`, not
+   `reps`; `calendar`, not `cal`. The CMS's own `-img`, `-nav` and `-cta` are
+   the only short forms allowed, because the CMS ships them.
+4. **Name the component, not the page.** `umd-admissions-college-tile`, not
+   `cs-tile`; `umd-admissions-application-step`, not `fa-step`. A component
+   used on two pages gets one name. If two pages invented the same thing under
+   different names (`programs-filters` / `cal-filters`, `sl-figure-square` /
+   `intl-figure-square`), merge them into one.
+5. **Hyphens only.** Use no `__` or `--` modifiers and no camelCase. A variant
+   is just another part: `umd-admissions-figure-square`,
+   `umd-admissions-filter-pill-selected`.
+6. **State goes on attributes, not classes.** JS-toggled state uses `hidden`,
+   `aria-expanded`, `aria-selected`, or the DS's `data-*` attributes, the same
+   way the components themselves do. Use no `is-open` / `is-collapsed` / `open`.
+7. **Utilities are not house classes.** The few Tailwind-style utilities the CMS
+   itself emits (`text-black`, `relative`, `mr-auto`, `max-w-[800px]`, …) are
+   fine as they are. Do not invent new ones.
+
+### Checking
+
+```bash
+python3 page-builder/tools/check-class-names.py --namespace admissions pages/**/*.html
+```
+
+The script reports every house class (any class defined in the page's own
+`<style>` blocks that `critical.css` does not ship) that breaks rule 2, 3, 5 or
+6. Rules 1 and 4 need judgement and the script cannot check them. The
+prototype access gate (`umd-gate*`) is exempt because it is page-builder
+scaffolding that never reaches the CMS.

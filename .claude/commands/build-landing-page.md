@@ -72,7 +72,7 @@ Wait for the subagent to complete before proceeding.
 2. Read `registry/registry-index.json` for the category map and `lookup_by_tag`. Load only the specific category files you need for the content types in the plan/brief.
 3. Read `LAYOUT-PATTERNS.md` for HTML patterns when using rich text sections, dark backgrounds, two-column grids, or inline CTA rows.
 4. Read `RULES.md` and follow every rule.
-5. Read `OVERRIDES.md` — if the plan/brief calls for a layout that an existing entry already solves (e.g. full-width outline CTA → `.umd-action-outline-block`), reuse the documented class instead of re-inventing it.
+5. Read `OVERRIDES.md` — if the plan/brief calls for a layout that an existing entry already solves (e.g. full-width outline CTA → `.umd-action-outline-block`), reuse the documented class instead of re-inventing it. Any class you do invent follows RULES.md §40: `umd-<namespace>-<component>[-<part>]`, full words, no abbreviations.
 
 ---
 
@@ -171,6 +171,16 @@ python3 /Users/zjocson/repos/design-system-page-builder/tools/check-themes.py <o
 - **WARNING** — a real theme word the registry does not list for that component. Usually inert; confirm it is deliberate. If it turns out to be genuinely supported, update `registry/` rather than silencing the warning.
 
 Exit code is non-zero only for errors, so warnings will not block a build.
+
+## Class-name check (after writing)
+
+Every class the page defines for itself has to be carried into the CMS by a developer, so it must follow RULES.md §40: `umd-<namespace>-<component>[-<part>]`, full words, hyphens only, and state on attributes. The namespace is the one in the project's `CLAUDE.md`.
+
+```bash
+python3 /Users/zjocson/repos/design-system-page-builder/tools/check-class-names.py --namespace <namespace> <output-file>
+```
+
+Fix every ERROR before reporting success. The script cannot judge §40 rules 1 and 4 (reuse a DS/CMS name if one exists; name the component, not the page), so check those by eye.
 
 ---
 

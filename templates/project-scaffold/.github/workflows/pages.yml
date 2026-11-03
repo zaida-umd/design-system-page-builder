@@ -1,15 +1,18 @@
 # Deploy this prototype to GitHub Pages.
 #
-# GitHub Pages is NOT available for private repositories on a personal Free
-# plan, so `configure-pages` fails here with "Resource not accessible by
-# integration" the moment the repo is private. That is a repo-visibility
-# problem, not a workflow bug — no edit to this file fixes it. A prototype is
-# kept unseen by shared/gate.html plus the noindex pair in shared/head-meta.html,
-# not by the repo being private.
+# One-time setup, before the first deploy:
+#   1. The repo has to be public on a personal Free plan, where GitHub Pages is
+#      not available for private repositories. A prototype is kept unseen by
+#      shared/gate.html plus the noindex pair in shared/head-meta.html, not by
+#      the repo being private.
+#   2. Settings -> Pages -> Source must be "GitHub Actions". This creates the
+#      Pages site, which the workflow's GITHUB_TOKEN cannot do itself:
+#      `configure-pages` with `enablement: true` fails with "Resource not
+#      accessible by integration" even on a public repo with read-and-write
+#      workflow permissions.
 #
-# If it still fails once the repo is public, check
-# Settings -> Actions -> General -> Workflow permissions is "Read and write";
-# a read-only setting caps the `pages: write` requested below.
+# If it still fails after both, check
+# Settings -> Actions -> General -> Workflow permissions is "Read and write".
 
 name: Deploy GitHub Pages
 
@@ -59,11 +62,8 @@ jobs:
           find page-builder -name '*.html' | head
 
       - name: Configure Pages
+        # Needs the Pages site to exist already — see the note at the top.
         uses: actions/configure-pages@v6
-        with:
-          # Creates the Pages site on first run. Needs the repo to be public on
-          # a Free plan — see the note at the top.
-          enablement: true
 
       - name: Upload site
         uses: actions/upload-pages-artifact@v5

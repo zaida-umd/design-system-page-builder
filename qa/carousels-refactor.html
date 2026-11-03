@@ -24,15 +24,15 @@
        When updating, edit styles/critical.css first, then copy here.
        See REQUIRED-CSS.md for what each rule does and why.
   ============================================================ -->
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@1.8.16/css/font-faces.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@1.8.16/css/tokens.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@1.8.16/css/base.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@1.8.16/css/typography.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@1.8.16/css/element.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@1.8.16/css/web-components.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@1.8.16/css/layout.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@1.8.16/css/animation.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@1.8.16/css/accessibility.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/font-faces.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/tokens.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/base.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/typography.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/element.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/web-components.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/layout.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/animation.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/accessibility.min.css">
   <style>
     /* ============================================================
        1. COMPONENT REGISTRATION GAP-FILLS
@@ -187,7 +187,9 @@
 
     /* ============================================================
        7. RICH TEXT ADVANCED — editorial body copy
-       Light and dark variants. 18px/1.5em with link hover styles.
+       Light and dark variants. 18px with link hover styles. The 1.5em here
+       reaches bare wrapper children, not <p>: upstream dropped its rich-text
+       p rule, so paragraphs take 1.55 from the base p rule (27.9px at 18px).
 
        NOTE: element.min.css (linked in TEMPLATE.html) now ships
        .umd-text-rich-advanced with the same base sizing and link
@@ -819,7 +821,7 @@
     }
   </style>
 
-  <script src="https://unpkg.com/@universityofmaryland/web-components-library@2.0.0/dist/cdn.js"></script>
+  <script src="https://unpkg.com/@universityofmaryland/web-components-library@2.1.0/dist/cdn.js"></script>
 </head>
 <body>
 

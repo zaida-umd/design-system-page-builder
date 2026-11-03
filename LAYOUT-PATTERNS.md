@@ -756,7 +756,7 @@ The shadow DOM applies `color: white` only to `p`, `a`, and `span` children of t
 
 ## Rich Text Advanced (`umd-text-rich-advanced`)
 
-A content wrapper for editorial/body copy sections. Provides 18px body text, 1.5em line height, and animated underline link hover styles.
+A content wrapper for editorial/body copy sections. Provides 18px body text (paragraphs at 1.55 line height, from the base `p` rule) and animated underline link hover styles.
 
 ### Light background — single column
 
@@ -1026,7 +1026,7 @@ Add `text-white` on dark backgrounds.
   text-wrap: pretty;
 }
 @media (min-width: 650px) {
-  .umd-sans-larger-bold { font-size: calc(18px + 0.5vw); }
+  .umd-sans-larger-bold { font-size: calc(18px + 0.3vw); }
 }
 @media (min-width: 1024px) {
   .umd-sans-larger-bold { font-size: 22px; line-height: 1.25em; }

@@ -1,10 +1,10 @@
 {
   "_meta": {
     "version": "1.0.0",
-    "components_version": "2.0.0",
+    "components_version": "2.1.0",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-09-08",
-    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@2.0.0/dist",
+    "last_verified": "2026-11-03",
+    "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@2.1.0/dist",
     "notes": "Verified from design-system submodule source.",
     "category": "brand",
     "components": [
@@ -114,7 +114,7 @@
     "page_types": [
       "landing"
     ],
-    "notes": "Background is black and is supplied by the component \u2014 do NOT wrap in umd-layout-background-full-dark or set an inline dark background. Do not add a horizontal spacing class to the host; the band is full-bleed. Headline is the only required slot. CTAs in the actions slot need data-theme=\"dark\". The 2.0.0 stylesheet ships the not-defined/FOUC guard for this tag \u2014 pages pinned to web-styles-library@1.8.16 will not have it, so the band may flash unstyled on load (see CLAUDE.md \u2192 \"ACTIVE EXCEPTION \u2014 stylesheet pin lags the submodule\").",
+    "notes": "Background is black and is supplied by the component \u2014 do NOT wrap in umd-layout-background-full-dark or set an inline dark background. Do not add a horizontal spacing class to the host; the band is full-bleed. Headline is the only required slot. CTAs in the actions slot need data-theme=\"dark\".",
     "source": "npm",
     "priority": 3
   }

@@ -1,14 +1,7 @@
 /*
  * UMD Design System — Local-Only Critical CSS
- * Verified against @universityofmaryland/web-components-library@2.0.0
- * (web-styles-library@1.8.16, audited 2026-08-21)
- *
- * NOTE: the styles line above is NOT stale. The components pin moved to 2.0.0
- * on 2026-09-08 while the styles side deliberately stayed put, because the
- * styles package has no 2.0.0 published to npm to point at. This file must
- * keep matching the stylesheet bundles pages actually load, which are 1.8.16.
- * Do not "fix" the mismatch by auditing this file against styles 2.0.0.
- * See CLAUDE.md -> "ACTIVE EXCEPTION - stylesheet pin lags the submodule".
+ * Verified against @universityofmaryland/web-components-library@2.1.0
+ * (web-styles-library@2.1.0, audited 2026-11-03)
  *
  * This file is the LOCAL portion of our critical CSS. It is inlined into
  * TEMPLATE.html alongside <link rel="stylesheet"> tags pointing at the
@@ -244,7 +237,9 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 /* ============================================================
    7. RICH TEXT ADVANCED — editorial body copy
-   Light and dark variants. 18px/1.5em with link hover styles.
+   Light and dark variants. 18px with link hover styles. The 1.5em here
+   reaches bare wrapper children, not <p>: upstream dropped its rich-text
+   p rule, so paragraphs take 1.55 from the base p rule (27.9px at 18px).
 
    NOTE: element.min.css (linked in TEMPLATE.html) now ships
    .umd-text-rich-advanced with the same base sizing and link

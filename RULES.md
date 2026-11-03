@@ -1,6 +1,6 @@
 # UMD Page Builder — Rules
 
-Verified against `@universityofmaryland/web-components-library@1.19.5`.  
+Verified against `@universityofmaryland/web-components-library@2.1.0`.  
 Source: NPM package analysis + `beta.umd-staging.com` inspection.
 
 ---
@@ -14,7 +14,7 @@ Every standalone UMD HTML page must load these two files in `<head>`:
 <style>
   /* contents of styles/critical.css inlined here */
 </style>
-<script src="https://unpkg.com/@universityofmaryland/web-components-library@1.19.5/dist/cdn.js"></script>
+<script src="https://unpkg.com/@universityofmaryland/web-components-library@2.1.0/dist/cdn.js"></script>
 ```
 
 The canonical CSS is in **`styles/critical.css`** — the single source of truth. `TEMPLATE.html` inlines it verbatim. When updating CSS rules, edit `styles/critical.css` first, then copy changes to `TEMPLATE.html`.
@@ -1197,7 +1197,7 @@ The host element requires `width: 100%` in critical CSS. Without it, the host co
 
 ## 18. Rich text advanced pattern (`umd-text-rich-advanced`)
 
-`umd-text-rich-advanced` is a **CSS class** (not a component). It creates a styled content area for editorial copy: 18px body text, 1.5em line height, and animated red-underline link hover. The dark variant is `umd-text-rich-advanced-dark` — a separate class, not an attribute.
+`umd-text-rich-advanced` is a **CSS class** (not a component). It creates a styled content area for editorial copy: 18px body text (paragraphs at 1.55 line height, from the base `p` rule), and animated red-underline link hover. The dark variant is `umd-text-rich-advanced-dark` — a separate class, not an attribute.
 
 Full HTML examples, CSS definitions, and all supporting layout classes are in **LAYOUT-PATTERNS.md**.
 

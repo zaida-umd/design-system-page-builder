@@ -239,7 +239,8 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
    7. RICH TEXT ADVANCED — editorial body copy
    Light and dark variants. 18px with link hover styles. The 1.5em here
    reaches bare wrapper children, not <p>: upstream dropped its rich-text
-   p rule, so paragraphs take 1.55 from the base p rule (27.9px at 18px).
+   p rule, so paragraphs take the base p line-height at 18px: 1.375 below
+   1024px (24.75px) and 1.55 from 1024px up (27.9px).
 
    NOTE: element.min.css (linked in TEMPLATE.html) now ships
    .umd-text-rich-advanced with the same base sizing and link

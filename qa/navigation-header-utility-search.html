@@ -7,12 +7,12 @@
   <meta name="googlebot" content="noindex, nofollow">
   <title>QA: Navigation Header Rules — University of Maryland</title>
 
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/font-faces.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/tokens.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/base.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/typography.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/web-components.min.css">
-  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/css/layout.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/dist/css/font-faces.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/dist/css/tokens.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/dist/css/base.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/dist/css/typography.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/dist/css/web-components.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/@universityofmaryland/web-styles-library@2.1.0/dist/css/layout.min.css">
   <style>
     /* ============================================================
        1. COMPONENT REGISTRATION GAP-FILLS
@@ -169,7 +169,8 @@
        7. RICH TEXT ADVANCED — editorial body copy
        Light and dark variants. 18px with link hover styles. The 1.5em here
        reaches bare wrapper children, not <p>: upstream dropped its rich-text
-       p rule, so paragraphs take 1.55 from the base p rule (27.9px at 18px).
+       p rule, so paragraphs take the base p line-height at 18px: 1.375 below
+       1024px (24.75px) and 1.55 from 1024px up (27.9px).
 
        NOTE: element.min.css (linked in TEMPLATE.html) now ships
        .umd-text-rich-advanced with the same base sizing and link

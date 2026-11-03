@@ -164,15 +164,19 @@ attacked offline. So:
 ## Publishing to GitHub Pages
 
 The scaffold ships `.github/workflows/pages.yml`, which deploys every push to
-`main`. Two things about it are not obvious:
+`main`. Three things about it are not obvious:
 
 **The repo has to be public.** GitHub Pages is unavailable for private
-repositories on a personal Free plan, and `configure-pages` fails with
-`Resource not accessible by integration` — a repo-visibility problem that no
-edit to the workflow fixes. A prototype is kept unseen by `shared/gate.html`
-and the noindex pair in `shared/head-meta.html`, **not** by the repo being
-private. If it still fails once public, check Settings → Actions → General →
-Workflow permissions is "Read and write".
+repositories on a personal Free plan, and no edit to the workflow fixes that. A
+prototype is kept unseen by `shared/gate.html` and the noindex pair in
+`shared/head-meta.html`, **not** by the repo being private.
+
+**Pages has to be turned on once by hand.** Set Settings → Pages → Source to
+"GitHub Actions" before the first deploy. That creates the Pages site, which the
+workflow's `GITHUB_TOKEN` cannot do: `configure-pages` with `enablement: true`
+fails with `Resource not accessible by integration` even on a public repo with
+read-and-write workflow permissions. If a deploy still fails after this, check
+Settings → Actions → General → Workflow permissions is "Read and write".
 
 **The workflow trims the artifact before uploading.** `upload-pages-artifact`
 ships the whole working tree, so without that step the page builder's own

@@ -712,12 +712,9 @@ A recurring per-site convention (used on every page of the admissions and strate
     <umd-element-banner-promo>
       <h2 slot="headline">There is a lot more to learn about UMD</h2>
       <p slot="text">Let's stay in touch!</p>
-      <div slot="actions" class="banner-promo-actions">
+      <div slot="actions">
         <umd-element-call-to-action data-display="primary">
           <a href="…">Join the Mailing List</a>
-        </umd-element-call-to-action>
-        <umd-element-call-to-action data-display="secondary">
-          <a href="…">Connect</a>
         </umd-element-call-to-action>
       </div>
     </umd-element-banner-promo>
@@ -727,7 +724,7 @@ A recurring per-site convention (used on every page of the admissions and strate
 
 **Notes:**
 - Default (no `data-theme`) renders the gold band.
-- `.banner-promo-actions` (stacked actions with an 8px gap) is a documented shadow-injection override — see `OVERRIDES.md` before reusing.
+- **One action only.** The component has no multi-action layout and cannot stack CTAs: it reads the slot with `querySelector` and clones that single element into its shadow root, so page CSS cannot reach it either.
 - If the site adopts this closer, keep headline/text/actions consistent across its pages — the repetition is the point (a stable "what next" bookend).
 
 ---
@@ -900,6 +897,12 @@ This pattern needs two page-level CSS rules — neither is in the base bundles o
 }
 ```
 
+**Zig-zag rules — alternation is firm, the rest are preferences:**
+
+- **Alternate by DOM order.** Author the `<figure>` first on alternating blocks. Do not flip the columns with `order: -1`, because migrated CMS content cannot carry that page-level rule (RULES.md §41). Below 650px the figure then stacks above its heading.
+- **Preferred: `<hr>` below the heading**, as the first child of the rich-text block. The stacked mobile order then reads photo → heading → rule → text, which keeps the photo with its own section. With the rule above the heading, the photo reads as the end of the previous section.
+- **Preferred: `umd-sans-extralarge-bold` for the heading.** Use another size when the page or the source calls for it.
+
 ---
 
 ## Layout Classes Used in These Patterns
@@ -1006,7 +1009,7 @@ These are used inside `umd-text-rich-advanced` (or `-dark`) to create in-content
 |---|---|---|
 | `umd-sans-large` | Section labels, small inline subheads | 18px, bold, 1.25em line height |
 | `umd-sans-larger-bold` | Standard inline headlines, pull-quote style | 18–22px responsive, bold |
-| `umd-sans-extralarge-bold` | Separate section headline above a grid | 18–32px responsive, bold |
+| `umd-sans-extralarge-bold` | Separate section headline above a grid | 22–32px responsive, bold |
 
 Add `text-white` on dark backgrounds.
 
@@ -1097,6 +1100,36 @@ Include both variants when either may appear in the page.
   background-image: linear-gradient(#FFD200, #FFD200);
 }
 ```
+
+---
+
+## Tables
+
+Tables are not a component. There is no `umd-text-rich-table` class. A plain `<table>` is styled when it sits inside `.umd-text-rich-advanced` (or `-dark` on a dark background), or when it carries `.umd-table-inline`. Anywhere else it is unstyled, with no error.
+
+```html
+<div class="umd-text-rich-advanced">
+  <table>
+    <thead><tr><th>Column</th><th>Column</th></tr></thead>
+    <tbody><tr><td>Value</td><td>Value</td></tr></tbody>
+  </table>
+</div>
+```
+
+**Default style at stylesheet 2.1.0:**
+
+| | Light | Dark |
+|---|---|---|
+| Header | black ground, white text, 2px red top rule | `#242424` ground, 2px gold top rule |
+| Row rule | 1px `#242424` | |
+| Header text | 18px | 18px |
+| Cell text | 16px, scaling to 18px at desktop | 16px, scaling to 18px at desktop |
+
+Outside rich text, use `.umd-table-inline` or `.umd-table-inline-dark`.
+
+Check the current pin before restating any of this, and prefer the defaults over page CSS, because they are still changing.
+
+**The table itself is the scroll container** (`display: block; overflow-x: auto`), so a table that can overflow needs `tabindex="0"` to be reachable by keyboard.
 
 ---
 
@@ -1381,6 +1414,24 @@ The DS has **no native dropdown** for this slot. Production uses a `<button>` to
   });
 </script>
 ```
+
+---
+
+## Nav Dropdown Promo (`slot="dropdown-callout"`)
+
+`umd-element-nav-item` projects this slot through a real `<slot>`, so the promo stays in the light DOM. The component's shadow CSS cannot reach it and `critical.css` does not style it, so a bare `<a>` renders default blue until the project adds its own rules to `shared/chrome.css`. Use the CMS class names.
+
+```html
+<div slot="dropdown-callout" class="umd-shell-nav-promo">
+  <a href="…">
+    <img src="…" alt="" />
+    <span class="umd-shell-nav-promo-headline">All Programs</span>
+    <span class="umd-shell-nav-promo-text">Short supporting line.</span>
+  </a>
+</div>
+```
+
+At minimum, state the anchor color and remove its underline, and make the image `display: block; width: 100%`. The shadow gives the column a 232px minimum width; everything inside it is the project's.
 
 ---
 

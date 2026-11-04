@@ -83,6 +83,10 @@ as securing a page. See the header comment in `scripts/gate.js`.
 
 **Paths in shared files use `{{ROOT}}`, never `../`.** Project pages sit at more than one depth, so a fixed prefix is wrong on half of them. This applies to end-of-body scripts too: `TEMPLATE.html` ships `src="../scripts/grid-animations.js"`, which is correct only for a page in this repo's `test/` — a project references it as `{{ROOT}}page-builder/scripts/...` from `shared/page-scripts.html`.
 
+**Keep generated pages and their generators in step.** A project's page generators should assert that their template has a slot for every key in `Chrome.keys()`, so a new region breaks the build instead of being silently dropped. Before regenerating a page, diff a fresh build against the committed file: a hand-edit made only to the HTML is wiped without warning unless it is ported into the generator or its data first.
+
+**In the desktop app's Browser pane, verify with computed styles, not screenshots.** Screenshots can come back blank. After a reload on the same tab, `innerWidth` can stick at `0` or a stale width, which makes media queries fail and looks like a CSS bug, so open a fresh tab instead. If a just-edited page looks unchanged, confirm with `curl` and add a cache-busting query.
+
 **Never commit project-specific work into this repo.** Project images, chrome, and overrides belong in the project. This submodule is shared by every project.
 
 ## Source of truth hierarchy

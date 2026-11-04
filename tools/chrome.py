@@ -11,13 +11,12 @@ A project keeps its chrome in a `shared/` directory:
     shared/head-meta.html       <head> meta every page carries (robots,
                                 theme-color, verification tokens)
     shared/header.html          header stack (navigation-utility +
-                                utility-header + navigation-header, with the
+                                navigation-header, with the
                                 project's own nav items and logo)
     shared/footer.html          footer
     shared/chrome.css           CSS companions the chrome markup depends on
     shared/page-scripts.html    end-of-body <script src> tags every page loads
     shared/chrome-scripts.html  chrome-driven shadow injections
-    shared/gate.html            prototype access gate (<head> lock + sign-in)
     shared/gate.html            prototype access gate (<head> lock + sign-in)
 
 All seven are optional — a region whose file is absent is simply skipped, so a

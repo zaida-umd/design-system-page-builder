@@ -39,7 +39,7 @@ At the very top of `<body>`, before any DS elements, add a plain HTML banner tha
 
 Build a **full page** — global nav, site nav, navigation header, content, footer — not a stripped-down fragment. Many bugs (scroll lock, sticky behavior, viewport height, z-index stacking) only reproduce in the full page context.
 
-Follow the same shell structure as interior pages (`umd-element-navigation-utility` → `umd-element-utility-header` → `umd-element-navigation-header` → content → `umd-element-footer`), unless the component under test IS the shell (e.g. testing the nav header itself — then still include it, just populate it more thoroughly).
+Follow the same shell structure as interior pages (`umd-element-navigation-utility` → `umd-element-navigation-header` → content → `umd-element-footer`), unless the component under test IS the shell (e.g. testing the nav header itself — then still include it, just populate it more thoroughly).
 
 For the **navigation header**, always include:
 - `sticky` attribute

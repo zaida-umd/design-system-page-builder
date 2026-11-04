@@ -34,20 +34,14 @@ This is the "Traditions of the Past" subpage from `umd.edu/about/traditions-of-t
 <umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
 ```
 
-### 2. Site header (full-width, outside page wrapper)
-
-```html
-<umd-element-utility-header></umd-element-utility-header>
-```
-
-### 3. Navigation header (full-width, outside page wrapper)
+### 2. Navigation header (full-width, outside page wrapper)
 
 `umd-element-navigation-header` with `sticky` attribute and `class="umd-layout-space-horizontal-full"`.
 
 - Logo: `slot="logo"` → `<a href="/"><img src="../images/logos/primary-logo-dark.svg" alt="University of Maryland" onerror="this.onerror=null;this.src='../images/logos/primary-logo-dark.svg';" /></a>`
 - Nav items: About, Traditions & History (active), Alumni, Give
 
-### 4. Hero — background hero small, centered text
+### 3. Hero — background hero small, centered text
 
 `umd-element-hero` with `data-layout-height="small"` and `data-layout-text="center"`.
 
@@ -56,7 +50,7 @@ This is the "Traditions of the Past" subpage from `umd.edu/about/traditions-of-t
 - `slot="headline"`: `<h1 slot="headline">Traditions of the Past</h1>`
 - `slot="image"`: `<img slot="image" src="../images/large/campus/shaking.webp" alt="Students holding newspapers up during a game" />`
 
-### 5. Breadcrumb (inside outer wrapper, before columns)
+### 4. Breadcrumb (inside outer wrapper, before columns)
 
 Wrap in `<div class="umd-layout-space-horizontal-larger umd-layout-space-vertical-interior">`:
 
@@ -74,7 +68,7 @@ Use the `umd-element-breadcrumb` web component — **not** a raw `<nav><ol>`. Pl
 
 Pattern: every link is `<a><span></span></a>`; the final crumb (current page) is a `<p aria-label="Current Page"><span></span></p>`, not an anchor.
 
-### 6. Sidebar + content column layout
+### 5. Sidebar + content column layout
 
 This is the core interior layout. Use these exact production classes — **do not write custom CSS**:
 
@@ -117,7 +111,7 @@ This is the core interior layout. Use these exact production classes — **do no
 .max-w-\[800px\] { max-width: 800px; }
 ```
 
-### 7. Content sections (inside `max-w-[800px]` content column)
+### 6. Content sections (inside `max-w-[800px]` content column)
 
 Use `umd-layout-space-vertical-interior` between sections and `umd-layout-space-vertical-interior-child` between heading and content within a section.
 
@@ -190,7 +184,7 @@ Use `umd-layout-space-vertical-interior` between sections and `umd-layout-space-
 </section>
 ```
 
-### 8. Footer (full-width, outside page wrapper)
+### 7. Footer (full-width, outside page wrapper)
 
 ```html
 <footer class="overflow-hidden">
@@ -206,7 +200,6 @@ Use `umd-layout-space-vertical-interior` between sections and `umd-layout-space-
 
 ```
 <umd-element-navigation-utility>     ← full-width
-<umd-element-utility-header>         ← full-width
 <umd-element-navigation-header>      ← full-width
 
 <section>                            ← hero (full-width, no spacing class)

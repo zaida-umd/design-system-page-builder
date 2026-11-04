@@ -118,10 +118,9 @@ A full-height hero (omit `data-layout-height`) is reserved for the site home. If
 
 ## Required page chrome
 
-Open with these three elements in this order:
+Open with these two elements in this order:
 1. **Global university header** — `<umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>`
-2. **Site utility header** — `<umd-element-utility-header></umd-element-utility-header>`
-3. **Site navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo and nav items appropriate to the site/department (use the plan's surveyed chrome when available).
+2. **Site navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo and nav items appropriate to the site/department (use the plan's surveyed chrome when available).
 
 Close with the visual footer (see CLAUDE.md §Logos and `/recreate-page` for the snippet).
 

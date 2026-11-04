@@ -122,7 +122,7 @@
       {
         "name": "actions",
         "required": false,
-        "description": "CTA links (limited to 30% width on desktop).",
+        "description": "One action, limited to 30% width on desktop. The component reads a single element from this slot and has no multi-action layout, so actions cannot be stacked.",
         "example": "<div slot=\"actions\"><a href=\"/apply\">Apply now</a></div>"
       },
       {

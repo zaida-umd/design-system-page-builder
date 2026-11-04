@@ -17,8 +17,7 @@ Use a content and images from https://gradschool.umd.edu/ as the fictional clien
 ## Required sections — use this order
 
 1. **Global university header** — `<umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>` (hardcoded, no config, never omit — this is the UMD-wide bar from umd.edu)
-2. **Site utility header** — `<umd-element-utility-header></umd-element-utility-header>` (hardcoded, no config)
-3. **Navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo using `../images/logos/primary-logo-dark.svg` and nav items from https://gradschool.umd.edu/
+2. **Navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo using `../images/logos/primary-logo-dark.svg` and nav items from https://gradschool.umd.edu/
 3. **Hero** — `umd-element-hero` with `data-theme="dark" data-animation data-layout-text="center"`. Include headline, subhead text and a primary CTA. Use assets - video or image - from https://gradschool.umd.edu/.
 4. **Section Intro** — `umd-element-section-intro` with `include-separator` inside `<section class="umd-layout-vertical-landing">` wrapper. Include text only, no headline or CTA: "The University of Maryland is located just steps from the US capitol of Washington, DC - a global center of science, politics, business, and culture. This prime location gives students unparalleled access to national research and policy institutions, performing and visual arts, and national and international decision makers.".
 4. **Pathway (right image)** — `umd-element-pathway data-display="overlay" data-theme="light"` for the Choose Maryland content.

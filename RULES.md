@@ -48,7 +48,7 @@ Font stacks (for reference):
 
 ```html
 <!-- 1. Global university header — hardcoded, never modified -->
-<umd-element-utility-header></umd-element-utility-header>
+<umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>
 
 <!-- 2. Site navigation header — configurable per department -->
 <umd-element-navigation-header sticky>
@@ -67,7 +67,7 @@ Font stacks (for reference):
 <umd-element-footer>...</umd-element-footer>
 ```
 
-`umd-element-utility-header` is self-contained and zero-configurable. Hardcode it on every page. Never modify it.
+`umd-element-navigation-utility` is the design system's only utility-bar tag. It renders the UMD flag and "A Top 20 Public Research University" band; `data-alert-off="true"` suppresses its alert strip. Hardcode it on every page. Never modify it.
 
 ---
 
@@ -295,6 +295,10 @@ The `.umd-shell-utility-item` selector is intentionally not scoped to the naviga
   <p slot="attribution">Albert P. Carey '74</p>
 </umd-element-quote>
 ```
+
+### Put `<p>` directly in `slot="text"` — no wrapper `<div>`
+
+Any number of `<p>`s work as direct children of `slot="text"`. A `<div>` between the slot and the paragraphs collapses their line-height from 27px to 18px, with or without a class on it: the component's shadow CSS sets `div { line-height: 1 }`, and the paragraphs inherit that. Delete the wrapper. Removing only its class does not help. Measured on a dark pathway at components 2.0.0 and 2.1.0.
 
 ---
 
@@ -813,6 +817,8 @@ Both `slot="attribution"` and `slot="attribution-sub-text"` must use `<p>` tags.
 
 When `.umd-layout-space-horizontal-larger` wraps `umd-element-section-intro-wide`, three additional properties are required: `position: relative` (watermark span is `position:absolute`), `container-type: inline-size` (fires the component's internal `@container` query), and `isolation: isolate` (creates a local stacking context for watermark `z-index`). These are already defined in `styles/critical.css` — section 6.
 
+**Only the `-larger` lock has these properties.** `critical.css` sets them on `.umd-layout-space-horizontal-larger` alone, so a watermark or `@container`-driven component inside a `-normal` or `-small` lock has no containing block or query container. Add them to that lock on the page if you need either.
+
 `section-intro` (centered variant, `umd-element-section-intro`) constrains its own width internally and does not need a horizontal spacing wrapper.
 
 ---
@@ -1012,6 +1018,12 @@ a flex **column** (whose stretch is horizontal, so it does not help either).
 CSS percentage-height resolution rule, and the component behaves correctly in
 the layout it is designed for. Verified against 1.19.5: block parent 424px,
 grid parent 560px, flex-column 424px.
+
+### The image variant cuts `slot="text"` at 280 characters
+
+With an image, `umd-element-card-overlay` keeps the first 280 characters of `slot="text"` and appends ` ...`, even mid-word. The copy is removed from the shadow DOM, so CSS cannot bring it back, and no attribute or variable changes the limit. Without an image, the color variant renders the full text. Measured at components 2.0.0 and 2.1.0, with and without `slot="actions"`.
+
+Check the length of source copy before choosing the image variant. Copy over the limit needs a decision about the card, not a workaround.
 
 ### When the source has any image, use the image variant
 
@@ -1393,7 +1405,6 @@ The correct element order for an interior page. Note that the breadcrumb and the
 ```html
 <!-- Full-width: always outside any wrapper -->
 <umd-element-navigation-utility data-alert-off="true" ...></umd-element-navigation-utility>
-<umd-element-utility-header></umd-element-utility-header>
 <umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">...</umd-element-navigation-header>
 
 <!-- Hero: full-width, no spacing class on <section> -->
@@ -1573,12 +1584,26 @@ All headings and body copy inside the `max-w-[800px]` content column require exp
 
 ---
 
+**The `umd-sans-*` sizes can scale with the viewport.** Stylesheet 2.1.0:
+
+| Class | Below 650px | 650–1023px | 1024px and up |
+|---|---|---|---|
+| `umd-sans-large` | 18px | 18px | 18px |
+| `umd-sans-larger-bold` | 18px | `calc(18px + 0.3vw)` | 22px |
+| `umd-sans-extralarge-bold` | 22px | `calc(18px + 1.16vw)` | 32px |
+
+Give the viewport when quoting a measurement, and never restate these classes with a fixed `font-size`.
+
+**Classes and utilities that look real but do nothing:**
+- `umd-sans-large-bold` does not exist and computes 16px / 400. `umd-sans-large` is already bold.
+- `mt-md`, `mt-lg` and `mt-xl` compute to a 0 margin. `umd-layout-space-vertical-interior-child` sets `margin-bottom` only, so an element following a block of copy needs a page-level rule for its gap.
+
 ### Component subset — interior pages
 
 Only the following components are used on interior page layouts. Do not place landing-page-only components on interior pages.
 
 **Always on every page**
-- Global university header (`umd-element-utility-header`)
+- Global university header (`umd-element-navigation-utility`)
 - Site header with navigation (`umd-element-navigation-header` + `umd-element-nav-item`)
 - Footer (`umd-element-footer`)
 
@@ -2305,3 +2330,9 @@ The script reports every house class (any class defined in the page's own
 6. Rules 1 and 4 need judgement and the script cannot check them. The
 prototype access gate (`umd-gate*`) is exempt because it is page-builder
 scaffolding that never reaches the CMS.
+
+---
+
+## 41. Prototype only what the CMS can emit
+
+Migrated CMS content cannot carry a page-level CSS rule. A prototype that uses one to read better than the CMS output can is a false signal: it gets approved, and then cannot be built. Before adding a page-level rule to content that will migrate, check that the CMS can produce the same result. The zig-zag alternation in `LAYOUT-PATTERNS.md` is the worked example.

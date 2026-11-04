@@ -57,11 +57,10 @@ Otherwise (the examples repo, or a project with no `shared/`) author the chrome 
 
 *Skip this section when the target has `shared/` chrome — see Step 0b.*
 
-Every page must open with these three elements, in this order, before any content:
+Every page must open with these two elements, in this order, before any content:
 
 1. **Global university header** — `<umd-element-navigation-utility data-alert-off="true" role="navigation" aria-label="Utility navigation"></umd-element-navigation-utility>` (hardcoded, no config, never omit — this is the UMD-wide bar from umd.edu)
-2. **Site utility header** — `<umd-element-utility-header></umd-element-utility-header>` (hardcoded, no config)
-3. **Site navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo and nav items from the source page
+2. **Site navigation header** — `<umd-element-navigation-header sticky class="umd-layout-space-horizontal-full">` with logo and nav items from the source page
 
 ## Step 1: Download source assets (subagent)
 
@@ -108,6 +107,14 @@ For every text-bearing component (hero body, pathway body, quote, attribution + 
 If a section on the source page has no DS-equivalent component and the user hasn't directed how to handle it, omit it and note the omission in your summary — do not invent substitute copy.
 
 This rule applies during the initial build *and* every later edit to a recreate-page output. When the user asks for a copy change without supplying the new text, ask for the verbatim string before editing.
+
+**Structure is part of fidelity.** Reproduce the source's structure as well as its words:
+
+- **Links stay where they are.** Do not turn an inline link into a CTA. It forces the copy around the link to be rewritten.
+- **Eyebrows stay eyebrows.** Do not turn a repeated card eyebrow into a section heading.
+- **Dividers are content.** Add a rule only where the source has one.
+- **Read the layout from the source.** Use a left nav only if the source page's `main` contains one. Section membership does not decide it, and two pages in one section can differ.
+- **The nav carries top-level entries only.** Scraped link order cannot tell a child page from a sibling, so check before adding an entry. A built page with no nav entry is normal: it gets `data-active` on its section's drawer group and no `data-selected`.
 
 **Images:** Extract actual image paths from `tmp/source.html` — do not guess or construct URLs. Copy the downloaded images out of `tmp/assets/images/` into the target's image folder and reference them relative to the page:
 

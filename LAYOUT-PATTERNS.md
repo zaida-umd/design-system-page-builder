@@ -753,7 +753,7 @@ The shadow DOM applies `color: white` only to `p`, `a`, and `span` children of t
 
 ## Rich Text Advanced (`umd-text-rich-advanced`)
 
-A content wrapper for editorial/body copy sections. Provides 18px body text (paragraphs at 1.55 line height, from the base `p` rule) and animated underline link hover styles.
+A content wrapper for editorial/body copy sections. Provides 18px body text (paragraph line height comes from the base `p` rule: 1.375 below 1024px, 1.55 from 1024px up) and animated underline link hover styles.
 
 ### Light background — single column
 
@@ -1121,11 +1121,12 @@ Tables are not a component. There is no `umd-text-rich-table` class. A plain `<t
 | | Light | Dark |
 |---|---|---|
 | Header | black ground, white text, 2px red top rule | `#242424` ground, 2px gold top rule |
-| Row rule | 1px `#242424` | |
+| Row rule | 1px `#242424` | 1px `#454545` |
 | Header text | 18px | 18px |
 | Cell text | 16px, scaling to 18px at desktop | 16px, scaling to 18px at desktop |
+| Cell padding | 16px below 650px, 24px from 650px | 16px below 650px, 24px from 650px |
 
-Outside rich text, use `.umd-table-inline` or `.umd-table-inline-dark`.
+Outside rich text, use `.umd-table-inline` or `.umd-table-inline-dark`. A table with its own class inside a rich-text block still inherits these defaults, and page CSS has to undo anything it does not want.
 
 Check the current pin before restating any of this, and prefer the defaults over page CSS, because they are still changing.
 

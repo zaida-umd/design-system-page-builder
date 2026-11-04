@@ -1209,7 +1209,7 @@ The host element requires `width: 100%` in critical CSS. Without it, the host co
 
 ## 18. Rich text advanced pattern (`umd-text-rich-advanced`)
 
-`umd-text-rich-advanced` is a **CSS class** (not a component). It creates a styled content area for editorial copy: 18px body text (paragraphs at 1.55 line height, from the base `p` rule), and animated red-underline link hover. The dark variant is `umd-text-rich-advanced-dark` — a separate class, not an attribute.
+`umd-text-rich-advanced` is a **CSS class** (not a component). It creates a styled content area for editorial copy: 18px body text (paragraph line height comes from the base `p` rule: 1.375 below 1024px, 1.55 from 1024px up), and animated red-underline link hover. The dark variant is `umd-text-rich-advanced-dark` — a separate class, not an attribute.
 
 Full HTML examples, CSS definitions, and all supporting layout classes are in **LAYOUT-PATTERNS.md**.
 
@@ -1318,7 +1318,7 @@ Use the following pattern, verified against umd.edu production markup:
 <div slot="sticky-column">
   <h2 class="umd-sans-largest-uppercase mb-md">Section Heading</h2>
   <div class="umd-text-rich-advanced mb-sm">
-    <p>Supporting body copy at 18px with 1.5em line height.</p>
+    <p>Supporting body copy at 18px.</p>
   </div>
   <div class="umd-layout-grid-inline-tablet-rows">
     <umd-element-call-to-action data-display="secondary">
@@ -1575,7 +1575,7 @@ All headings and body copy inside the `max-w-[800px]` content column require exp
 **Body copy:**
 ```html
 <div class="umd-text-rich-advanced">
-  <p>Body copy. 18px / 1.5em line-height / color #454545.</p>
+  <p>Body copy. 18px / color #454545. Line height is 1.375 below 1024px and 1.55 from 1024px up.</p>
   <p>Second paragraph — 24px top margin from first-child exception.</p>
 </div>
 ```
@@ -1592,7 +1592,7 @@ All headings and body copy inside the `max-w-[800px]` content column require exp
 | `umd-sans-larger-bold` | 18px | `calc(18px + 0.3vw)` | 22px |
 | `umd-sans-extralarge-bold` | 22px | `calc(18px + 1.16vw)` | 32px |
 
-Give the viewport when quoting a measurement, and never restate these classes with a fixed `font-size`.
+`umd-sans-larger-bold` reaches about 21px at 1023px, then steps up to 22px. Give the viewport when quoting a measurement, and never restate these classes with a fixed `font-size`.
 
 **Classes and utilities that look real but do nothing:**
 - `umd-sans-large-bold` does not exist and computes 16px / 400. `umd-sans-large` is already bold.

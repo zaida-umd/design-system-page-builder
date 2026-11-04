@@ -169,7 +169,7 @@ Only needed when the submodule version changes (`git submodule update` or a bump
 
 Pages load the `web-styles-library` CSS bundles from unpkg at a **pinned version**, and that pin must match the `packages/styles` version inside the current submodule pin. The two move together — a submodule bump is not finished until the stylesheet links are repointed.
 
-Do not leave the links unversioned. An unpinned `unpkg.com/@universityofmaryland/web-styles-library/css/...` URL floats to whatever npm publishes as `latest`, so page CSS changes with no commit, `critical.css` gets audited against a version no page is guaranteed to load, and visual regressions appear with nothing in the history to explain them.
+Do not leave the links unversioned. An unpinned `unpkg.com/@universityofmaryland/web-styles-library/dist/css/...` URL floats to whatever npm publishes as `latest`, so page CSS changes with no commit, `critical.css` gets audited against a version no page is guaranteed to load, and visual regressions appear with nothing in the history to explain them.
 
 **On every submodule bump:**
 
@@ -179,14 +179,16 @@ grep -m1 '"version"' design-system/packages/styles/package.json
 
 # 2. Repoint every stylesheet link to it (TEMPLATE.html + test/ + qa/)
 OLD=2.1.0; NEW=<version from step 1>
-# Match the URL path form (@VER/css/), never the bare token — prose comments
+# Match the URL path form (@VER/dist/css/), never the bare token — prose comments
 # cite versions historically and must not be rewritten. See the note below.
-grep -rl "web-styles-library@$OLD/css/" TEMPLATE.html test qa \
-  | xargs sed -i '' "s|web-styles-library@$OLD/css/|web-styles-library@$NEW/css/|g"
+grep -rl "web-styles-library@$OLD/dist/css/" TEMPLATE.html test qa \
+  | xargs sed -i '' "s|web-styles-library@$OLD/dist/css/|web-styles-library@$NEW/dist/css/|g"
 
 # 3. Confirm none were missed — this must print nothing
-grep -rn "web-styles-library/css/" TEMPLATE.html test qa
+grep -rnE "web-styles-library(@[0-9.]+)?/css/|web-styles-library/dist/css/" TEMPLATE.html test qa
 ```
+
+Link `dist/css/` directly. Since 2.1.0 the bundles live there, and `/css/` answers with a 301 to `dist/css/`, so the old path still renders but costs a redirect on each of the nine stylesheets.
 
 Then run the `critical.css` audit below against that same version, and update the version stamp in the `styles/critical.css` header.
 

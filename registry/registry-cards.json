@@ -270,7 +270,7 @@
       "landing",
       "interior"
     ],
-    "notes": "The image variant cuts slot=\"text\" at 280 characters and appends \" ...\"; CSS cannot restore it. The color variant has no limit (RULES.md \u00a716). When used as a feature card \u2014 e.g., in the sticky column slot of umd-element-sticky-columns \u2014 always add class=\"size-large\" to the element. CRITICAL \u2014 cdn.js never injects the UA custom styles for host elements into the document, so the size-large min-height rule must be defined manually in the page <style> block. Additionally, min-height alone does not work \u2014 the shadow DOM inner container uses height: 100% which only cascades when the host has an explicit height. Use height: 320px (mobile) and height: 560px (tablet+) on the host element. Without .size-large + the manual CSS rule, the card uses the internal default of 360px (mobile) and 424px (tablet).",
+    "notes": "The image variant cuts slot=\"text\" at 280 characters and appends \" ...\"; CSS cannot restore it. The color variant has no limit (RULES.md \u00a716). REQUIRED: any feature overlay card \u2014 the span-2 card in a feature grid (umd-layout-grid-child-size-double), the card in the sticky column slot of umd-element-sticky-columns, or a lone overlay leading its section \u2014 always gets class=\"size-large\" (RULES.md \"A feature overlay card always gets .size-large\"). Its parent must be a grid (e.g. umd-layout-grid-gap-stacked) or the card renders 424px inside a 560px box. CRITICAL \u2014 cdn.js never injects the UA custom styles for host elements into the document, so the size-large min-height rule must be defined manually in the page <style> block. Additionally, min-height alone does not work \u2014 the shadow DOM inner container uses height: 100% which only cascades when the host has an explicit height. Use height: 320px (mobile) and height: 560px (tablet+) on the host element. Without .size-large + the manual CSS rule, the card uses the internal default of 360px (mobile) and 424px (tablet).",
     "example": "<umd-element-card-overlay type=\"image\">\n  <img slot=\"image\" src=\"/image.jpg\" alt=\"\" />\n  <p slot=\"eyebrow\">Research</p>\n  <h3 slot=\"headline\"><a href=\"/article\">Article Title</a></h3>\n  <p slot=\"text\">Brief description.</p>\n  <div slot=\"actions\"><umd-element-call-to-action data-display=\"primary\"><a href=\"/article\">Learn More</a></umd-element-call-to-action></div>\n</umd-element-card-overlay>",
     "source": "npm",
     "priority": 2,
@@ -975,14 +975,19 @@
         "description": "List layout (horizontal). Omit for default block layout."
       },
       {
-        "name": "data-visual",
-        "type": "enum",
-        "values": [
-          "transparent",
-          "aligned",
-          "bordered"
-        ],
-        "description": "Visual treatment."
+        "name": "data-visual-image-aligned",
+        "type": "boolean",
+        "description": "Force consistent aspect ratio on images across a group of cards. MUST be written data-visual-image-aligned=\"true\" \u2014 the check is isAttributeTrue against the literal string \"true\", so a bare attribute is inert. Deprecated old name: aligned=\"true\". There is no \"data-aligned\" attribute; it matches nothing and fails silently."
+      },
+      {
+        "name": "data-visual-bordered",
+        "type": "boolean",
+        "description": "Adds a 1px #E6E6E6 border around the card body (.layout-block-stacked-container). MUST be written data-visual-bordered=\"true\" \u2014 a bare attribute is inert. Deprecated old name: border=\"true\". Read by packages/components/source/web-components/card/_model.ts via Attributes.isVisual.bordered. Use for standard cards in a plain column grid where the cells need definition; do NOT reach for umd-layout-grid-border-* instead, which is the person-directory grid."
+      },
+      {
+        "name": "data-visual-transparent",
+        "type": "boolean",
+        "description": "Removes the card background. MUST be written data-visual-transparent=\"true\" \u2014 a bare attribute is inert. Deprecated old name: transparent=\"true\". Note: there is no data-visual enum on this component \u2014 the JSDoc in card/article.ts lists data-visual=\"transparent|aligned|bordered\", but the card model reads the three boolean attributes above (Attributes.isVisual.*), so data-visual matches nothing and fails silently."
       }
     ],
     "configurable": true,
@@ -990,7 +995,7 @@
       "landing",
       "interior"
     ],
-    "notes": "Functionally close to card-standard. Prefer article for news/editorial contexts and card-standard for generic content cards.",
+    "notes": "Functionally close to card-standard. Prefer article for news/editorial contexts and card-standard for generic content cards. Use data-visual-image-aligned=\"true\" in card grids so all images crop to the same aspect ratio (verified 2026-11-09 on qa/news-external-mixed.html: mixed portrait/landscape images all render 4:3).",
     "source": "npm",
     "priority": 2
   },

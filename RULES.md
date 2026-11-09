@@ -981,6 +981,31 @@ do nothing. Verified against 1.19.5.
 
 Note: This uses the deprecated `type` attribute, not `data-type`. The attribute name is confirmed from cdn.js source.
 
+### A feature overlay card always gets `.size-large`
+
+Whenever `umd-element-card-overlay` is used as a **feature**, add
+`class="size-large"`. This is required, not a judgment call. A feature is any
+overlay card that a section promotes above the items around it:
+
+- the span-2 card in a feature grid (`umd-layout-grid-child-size-double`)
+- the card in a sticky column (`slot="sticky-column"`) paired with a list
+- a lone overlay card that leads its section
+
+Without it the card uses the internal default height (360px → 424px), which
+crops the image too tightly and gives the feature no more height than the cards
+beside it. This holds for the text-only variant (no `type="image"`) too. It also
+needs a grid parent to fill its height, as the next section explains.
+
+```html
+<!-- ✓ Feature in a 2+1+1 grid -->
+<umd-element-card-overlay type="image" class="umd-layout-grid-child-size-double size-large">…</umd-element-card-overlay>
+
+<!-- ✓ Feature in a sticky column -->
+<div slot="sticky-column" class="umd-layout-grid-gap-stacked">
+  <umd-element-card-overlay type="image" class="size-large">…</umd-element-card-overlay>
+</div>
+```
+
 ### `.size-large` needs a grid parent — in a block container the card renders 424px
 
 `.size-large` sets `min-height: 560px` on the **host** (768px+), and the card's

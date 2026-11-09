@@ -97,6 +97,12 @@
       "tags": ["campus", "people", "students"],
       "default": false
     },
+    "small/default/shell.png": {
+      "alt": "",
+      "tags": ["placeholder"],
+      "default": false,
+      "notes": "Neutral Testudo-shell placeholder (600x315). Fallback for standard/article cards whose content has no image, e.g. external news without a thumbnail. Decorative, so alt=\"\". Not a random default: use only where a missing image needs a placeholder."
+    },
     "small/default/testudo-square.jpg": {
       "alt": "Testudo statue on the University of Maryland campus",
       "tags": ["campus"],

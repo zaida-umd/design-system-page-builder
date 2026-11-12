@@ -386,8 +386,8 @@
       {
         "name": "content",
         "required": true,
-        "description": "Text and content panel displayed above the expanding image. Text must be white \u2014 use UMD typography classes (umd-sans-larger, umd-sans-large, etc.) plus the text-white utility class on headings, and umd-text-rich-simple-large-dark for body paragraphs. Do NOT use inline font-family, font-size, font-weight, line-height, or margin styles \u2014 those duplicate the design system and are the primary source of styling regressions here.",
-        "example": "<div slot=\"content\"><div><h2 class=\"umd-sans-larger text-white mb-md\">Section Heading</h2><div class=\"umd-text-rich-simple-large-dark mb-md\"><p>Supporting text.</p></div></div></div>"
+        "description": "Text and content panel displayed above the expanding image. Canonical shape (RULES.md \u00a717): class=\"block max-w-[480px] w-full mr-auto\" (or ml-auto) on the slot element itself \u2014 never max-w-[800px], which is the interior content-column width and renders too wide; an inner <div> wrapping the stack; the h2 takes umd-sans-largest-uppercase text-white mb-md umd-text-line-adjustent (the red line \u2014 required; umd-adjacent-line-text is its deprecated alias). Body copy uses umd-text-rich-advanced-dark. Do NOT use inline font-family, font-size, font-weight, line-height, or margin styles \u2014 those duplicate the design system and are the primary source of styling regressions here.",
+        "example": "<div slot=\"content\" class=\"block max-w-[480px] w-full mr-auto\"><div><h2 class=\"umd-sans-largest-uppercase text-white mb-md umd-text-line-adjustent\">Section Heading</h2><div class=\"umd-text-rich-advanced-dark mb-sm\"><p>Supporting text.</p></div></div></div>"
       },
       {
         "name": "image",
@@ -415,7 +415,7 @@
         "attrs": {}
       }
     },
-    "example": "<section class=\"umd-layout-vertical-landing\">\n  <umd-layout-image-expand>\n    <div slot=\"content\" class=\"block max-w-[480px] w-full ml-auto\">\n      <div>\n        <h2 class=\"umd-sans-largest-uppercase text-white mb-md\">Our Research Impact</h2>\n        <div class=\"umd-text-rich-advanced-dark mb-sm\"><p>Supporting description of the section.</p></div>\n        <div class=\"umd-layout-grid-inline-tablet-rows\">\n          <umd-element-call-to-action data-display=\"primary\" data-theme=\"dark\"><a href=\"/learn-more\">Learn More</a></umd-element-call-to-action>\n        </div>\n      </div>\n    </div>\n    <img slot=\"image\" src=\"/feature.jpg\" alt=\"Research at Maryland\" />\n  </umd-layout-image-expand>\n</section>",
+    "example": "<section class=\"umd-layout-vertical-landing\">\n  <umd-layout-image-expand>\n    <div slot=\"content\" class=\"block max-w-[480px] w-full ml-auto\">\n      <div>\n        <h2 class=\"umd-sans-largest-uppercase text-white mb-md umd-text-line-adjustent\">Our Research Impact</h2>\n        <div class=\"umd-text-rich-advanced-dark mb-sm\"><p>Supporting description of the section.</p></div>\n        <div class=\"umd-layout-grid-inline-tablet-rows\">\n          <umd-element-call-to-action data-display=\"primary\" data-theme=\"dark\"><a href=\"/learn-more\">Learn More</a></umd-element-call-to-action>\n        </div>\n      </div>\n    </div>\n    <img slot=\"image\" src=\"/feature.jpg\" alt=\"Research at Maryland\" />\n  </umd-layout-image-expand>\n</section>",
     "page_types": [
       "landing"
     ],

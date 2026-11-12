@@ -1101,21 +1101,41 @@ The image-expand component does **not** support `data-theme`. It has no internal
 
 **When placing raw HTML in the `content` slot, use UMD typography classes for headings and the dark rich-text class for body copy.** Do NOT use inline `font-family`, `font-size`, `font-weight`, `line-height`, or `margin` — those duplicate the design system and are the primary source of styling regressions in this component.
 
+**The content slot has one canonical shape — copy it, don't compose it.** Three things in it are not optional, and pages that improvised them have shipped wrong:
+
+| Piece | Why |
+|---|---|
+| `class="block max-w-[480px] w-full mr-auto"` on `div[slot="content"]` (or `ml-auto` to sit right) | The shadow text-lock is full-width. Without a cap the heading runs across the whole image; `max-w-[800px]` is the *interior content column* width and is wrong here — it was used once and read as "too wide". |
+| `umd-text-line-adjustent` on the `h2` | Draws the 2px red bar 24px left of the heading. It is the design's signature for this component; leaving it off is the other half of "looks off". `umd-adjacent-line-text` is the deprecated alias of the same rule — don't use it in new pages. |
+| An inner `<div>` wrapping the heading, copy and actions | Keeps the stack one flex item inside the text-lock. |
+
+The red bar ships upstream in `element.min.css` (`element.text.line.adjustent`) and is also mirrored in `styles/critical.css` §9, so no page CSS is needed — only the class.
+
+A heading on its own is fine — drop the rich text and actions, keep the width, wrapper and line.
+
 ```html
-<!-- ✓ Correct — UMD typography classes, dark rich text class -->
+<!-- ✓ Correct — capped width, red line, UMD typography, dark rich text -->
 <umd-layout-image-expand>
-  <div slot="content">
+  <div slot="content" class="block max-w-[480px] w-full mr-auto">
     <div>
-      <h2 class="umd-sans-larger text-white mb-md">Section Heading</h2>
-      <div class="umd-text-rich-simple-large-dark mb-md">
+      <h2 class="umd-sans-largest-uppercase text-white mb-md umd-text-line-adjustent">Section Heading</h2>
+      <div class="umd-text-rich-advanced-dark mb-sm">
         <p>Supporting text for this section.</p>
       </div>
-      <div>
+      <div class="umd-layout-grid-inline-tablet-rows">
         <umd-element-call-to-action data-display="primary" data-theme="dark">
           <a href="/learn-more">Learn More</a>
         </umd-element-call-to-action>
       </div>
     </div>
+  </div>
+  <img slot="image" src="/feature.jpg" alt="" />
+</umd-layout-image-expand>
+
+<!-- ✗ Wrong — interior-column width and no red line (renders too wide, unadorned) -->
+<umd-layout-image-expand>
+  <div slot="content" class="block max-w-[800px] w-full mr-auto">
+    <h2 class="umd-sans-largest-uppercase text-white">Section Heading</h2>
   </div>
   <img slot="image" src="/feature.jpg" alt="" />
 </umd-layout-image-expand>
@@ -1143,13 +1163,13 @@ The image-expand component does **not** support `data-theme`. It has no internal
 </umd-layout-image-expand>
 ```
 
-Available heading scale classes (from `typography.min.css`): `umd-sans-smaller`, `umd-sans-small`, `umd-sans-medium`, `umd-sans-large`, `umd-sans-larger`, `umd-sans-largest`, `umd-sans-largest-uppercase`. Pair with `text-white` and spacing utilities (`mb-md` = 24px, `mb-sm` = 16px) — these are defined in `styles/critical.css`.
+Available heading scale classes (from `typography.min.css`): `umd-sans-smaller`, `umd-sans-small`, `umd-sans-medium`, `umd-sans-large`, `umd-sans-larger`, `umd-sans-largest`, `umd-sans-largest-uppercase`. Pair with `text-white` and spacing utilities (`mb-md` = 24px, `mb-sm` = 16px) — these are defined in `styles/critical.css`. Body copy takes `umd-text-rich-advanced-dark` (or `umd-text-rich-simple-large-dark` for a single large paragraph).
 
 ### Placing a quote inside image-expand — use `data-visual-transparent="true"`
 
 When `umd-element-quote` is placed in the `content` slot, add `data-visual-transparent="true"` to the quote component. This removes the quote's opaque background card so the image shows through. The quote's `data-theme="dark"` then handles all text color internally — no `color: white` inline styles needed on the slot content.
 
-Also constrain the quote panel width and align it using utility classes directly on `div[slot="content"]` — the shadow DOM's text-lock is full-width by default. Use these classes on the slot element itself (not a child wrapper). The utility classes (`.max-w-[480px]`, `.w-full`, `.block`, `.mr-auto`) are defined in `styles/critical.css` — section 12 and already included in the TEMPLATE.html `<style>` block.
+Also constrain the quote panel width and align it using utility classes directly on `div[slot="content"]` — the shadow DOM's text-lock is full-width by default. Use these classes on the slot element itself (not a child wrapper). The utility classes (`.max-w-[480px]`, `.w-full`, `.block`, `.mr-auto`) are defined in `styles/critical.css` — section 9 and already included in the TEMPLATE.html `<style>` block.
 
 ```html
 <!-- ✓ Correct — transparent quote, constrained and left-aligned -->

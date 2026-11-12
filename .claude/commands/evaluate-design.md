@@ -71,6 +71,7 @@ Walk the plan against these design-judgment checks. Each is a *mistake to catch*
 ### Component-context judgment
 
 - **`umd-layout-image-expand` background context.** Wrap in a dark section (`background:#000` or `umd-layout-background-full-dark`) only when image-expand sits between other dark sections. On a predominantly light page, the built-in dark overlay is sufficient — adding a dark wrapper creates an isolated dark island. (For text-color rules inside the content slot, see `RULES.md §17`.)
+- **`umd-layout-image-expand` content shape.** The plan must specify the content slot as the canonical shape in `RULES.md §17`, not leave it to be composed at build time: `block max-w-[480px] w-full mr-auto` (or `ml-auto`) on `div[slot="content"]`, and a heading carrying `umd-text-line-adjustent` — the red line — unless the slot holds a transparent quote instead. Flag `max-w-[800px]` (the interior content-column width; reads as too wide on the image) and a heading with no red line. A long sentence set in `umd-sans-largest-uppercase` at 480px wraps to many lines — flag it and suggest a shorter headline with the rest moved to `umd-text-rich-advanced-dark` body copy.
 - **Hero variant fit.** `data-display="standard"` is the default. `data-display="overlay"` is a specific design choice for a composited overlay panel — flag it if it's been chosen by default rather than for the overlay effect. (See `RULES.md §22`.)
 - **Hero size: home vs landing.** A full-height standard hero belongs on the site home page only. On any other landing (department, program, sub-section), use `data-layout-height="small"` — a full-height hero on a non-home landing reads as a homepage and over-emphasizes the section. Flag full-height heroes on non-home landings.
 - **Hero variant by page role, not just height.** `umd-element-hero-minimal` is built for interior pages and section headers; a home page that opens on it reads as a subpage. Home pages take the background hero (`umd-element-hero data-display="standard"`) — full height when the imagery earns it, `data-layout-height="small"` when there is only one usable image. Flag `hero-minimal` on any home page.
@@ -107,7 +108,7 @@ Any component-specific rule that fails silently or produces broken output is a h
 - `umd-element-event` `display` vs `data-display` — `RULES.md §26`
 - `umd-element-quote data-display="featured"` actions slot wrapper — `RULES.md §28`
 - `umd-element-card-overlay type="image"` requirement for image backgrounds — `RULES.md §16`
-- `umd-layout-image-expand` text color and quote transparency — `RULES.md §17`
+- `umd-layout-image-expand` content-slot shape (480px cap, `umd-text-line-adjustent` red line), text color and quote transparency — `RULES.md §17`
 - Rich-text eyebrow/header color — the `umd-sans-*` classes set no color, so a header inherits the DS `#454545` gray and reads muddy, not black. Needs `text-black` (light) / `text-white` (dark) — `RULES.md §18`
 - Footer visual variant non-empty `alt` — `RULES.md §29`
 - Standard card `data-visual-image-aligned="true"` default — `RULES.md §30`

@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "components_version": "2.1.0",
     "source_package": "@universityofmaryland/web-components-library",
-    "last_verified": "2026-11-03",
+    "last_verified": "2026-11-16",
     "cdn_base": "https://unpkg.com/@universityofmaryland/web-components-library@2.1.0/dist",
     "notes": "Verified from design-system submodule source.",
     "category": "alerts",
@@ -49,8 +49,8 @@
       {
         "name": "data-visual-icon",
         "type": "enum",
-        "values": ["show"],
-        "description": "Show the warning/alert icon indicator."
+        "values": ["true"],
+        "description": "Show the warning/alert icon indicator. Must be the literal \"true\" — the source doc comment's \"show\" is inert (checks.ts showIcon)."
       }
     ],
     "configurable": true,
@@ -140,10 +140,10 @@
         "description": "Dark (black) background. Omit for default gold."
       },
       {
-        "name": "data-visual-icon",
+        "name": "data-visual-icon-seal",
         "type": "enum",
-        "values": ["seal"],
-        "description": "Show the UMD seal icon (positioned absolutely on the right; 20% opacity on dark theme)."
+        "values": ["true"],
+        "description": "Show the UMD seal icon (positioned absolutely on the right; 20% opacity on dark theme). The source doc comment's data-visual-icon=\"seal\" is inert — checks.ts icon_seal reads data-visual-icon-seal=\"true\"."
       }
     ],
     "configurable": true,

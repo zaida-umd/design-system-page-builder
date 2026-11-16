@@ -145,6 +145,23 @@ corrupts the globe. When no dark variant is published, fall back to
 `primary-logo-dark.svg` above and keep the reversed original alongside for
 reference.
 
+### An SVG logo with no `width`/`height` renders at 0px
+
+The header and footer size their logo box to its content, and the slotted
+`<img>` is `width: 100%` of that box. An SVG whose root has a `viewBox` but no
+`width`/`height` has no intrinsic size to break that circle, so the box and the
+image both collapse to zero. It loads with a 200, `onerror` never fires, and the
+logo is simply absent, the same symptom as the reversed logo above. Illustrator
+exports often omit the attributes. Check the root tag before using a downloaded logo:
+
+```bash
+grep -o '<svg[^>]*>' logo.svg   # needs width= and height=, not just viewBox=
+```
+
+Fix it by copying the `viewBox` dimensions onto the root as `width` and
+`height`. After editing, reload with a cache-busting query; the browser keeps
+serving the zero-size version otherwise.
+
 If the source site has no logo *image* at all — some sites set their brand as
 styled text — the `slot="logo"` anchor accepts text, and that is a better
 recreation than inventing a logo.

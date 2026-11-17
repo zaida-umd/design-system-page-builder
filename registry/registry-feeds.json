@@ -84,7 +84,7 @@
       {"name": "data-token", "type": "string", "required": true},
       {"name": "data-filter-group-ids", "type": "string"},
       {"name": "data-layout-column-count", "type": "number", "description": "1\u20134. Default: 3."},
-      {"name": "data-layout-row-count", "type": "number", "description": "1\u20132. Default: 1."},
+      {"name": "data-layout-row-count", "type": "number", "description": "1\u20132. Default: 1. House default: leave at 1 \u2014 the CMS offers one row of news plus load more, so a second row cannot be built there. Use 2 only when a page explicitly overrides this."},
       {"name": "data-theme", "type": "enum", "values": ["dark"]},
       {"name": "data-display", "type": "enum", "values": ["overlay"], "description": "Use overlay card style instead of default."},
       {"name": "data-visual-transparent", "type": "boolean"},
@@ -95,7 +95,8 @@
     "configurable": true,
     "page_types": ["landing", "interior"],
     "source": "npm",
-    "priority": 2
+    "priority": 2,
+    "notes": "Build news feeds as one row plus load more (`data-layout-row-count=\"1\"`, `data-lazy-load=\"true\"`). That is all the CMS can author, and it is the default we stick to. A second row is a case-by-case override: note the reason in the page and log it in the project's OVERRIDES.md."
   },
   "feed-news-grid": {
     "tag": "umd-feed-news-grid",

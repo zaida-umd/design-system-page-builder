@@ -42,7 +42,7 @@ Two-column staggered layout. Odd children are offset upward, even children are p
 
 **Not only full-width sections.** Masonry is a plain two-column grid underneath, so it also works inside a narrower container — notably the `static-column` of `umd-element-sticky-columns`, where the headline and intro copy stay pinned while the cards stagger past them. Verified at a 629px static column (two 294px columns, 40px gap) on a 1440px viewport.
 
-**When NOT to use:** Mixed content types, lists, or cards where visual hierarchy matters — use `umd-layout-grid-gap-two` for plain two-column grids.
+**When NOT to use:** Mixed content types, lists, or cards where visual hierarchy matters — use `umd-layout-grid-gap-two` for plain two-column grids. Not for block stats (`umd-element-stat data-display="block"`) — they break the stagger; use `umd-layout-grid-offset-three` (see "Stat Card Grid").
 
 ```html
 <!-- 4 overlay cards in staggered masonry -->
@@ -431,26 +431,28 @@ Two things that follow from it:
 
 **Slot names:**
 - `slot="stat"` — the number (`<span>` recommended)
-- `slot="text"` — the descriptive label (this is the named default slot — a plain `<p>` with no slot attribute will not render)
-- `slot="sub-text"` — optional source/citation line
+- `slot="text"` — the descriptive label, **wrapped in a `<div>`**: `<div slot="text"><p>…</p></div>`. A bare `<p slot="text">` is silently dropped, and so is a plain `<p>` with no slot (`RULES.md §11`, registry `umd-element-stat`)
+- `slot="sub-text"` — optional source/citation line, also wrapped in a `<div>`
 
 ```html
 <div class="umd-layout-grid-gap-three">
   <umd-element-stat data-display="block" class="umd-layout-grid-child-fill-height">
     <span slot="stat">100+</span>
-    <p slot="text">Undergraduate Majors</p>
+    <div slot="text"><p>Undergraduate majors</p></div>
   </umd-element-stat>
   <umd-element-stat data-display="block" class="umd-layout-grid-child-fill-height">
     <span slot="stat">18:1</span>
-    <p slot="text">Student-to-Faculty Ratio</p>
+    <div slot="text"><p>Student-to-faculty ratio</p></div>
   </umd-element-stat>
   <umd-element-stat data-display="block" class="umd-layout-grid-child-fill-height">
     <span slot="stat">69</span>
-    <p slot="text">Colleges, schools and programs ranked in the top 25 nationwide</p>
-    <p slot="sub-text">2025 U.S. News &amp; World Report</p>
+    <div slot="text"><p>Colleges, schools and programs ranked in the top 25 nationwide</p></div>
+    <div slot="sub-text"><p>2025 U.S. News &amp; World Report</p></div>
   </umd-element-stat>
 </div>
 ```
+
+**Staggered stat cards → offset-three, never masonry.** For a staggered look, use `umd-layout-grid-offset-three` + `umd-animation-grid` (see "Three-Column Offset Grid"), the umd.edu/admissions pattern. Do not put block stats in `umd-layout-grid-masonry`: with `umd-layout-grid-child-fill-height` the card's 100% height includes the masonry offset, so the cards stretch and close the row gap; without it, a `min-height` on the stat does not reach the inner card face, so rowmates end up different heights.
 
 **When to choose card grid vs. sticky-columns vs. plain stat grid:**
 - **Card grid (block)** — homogenous stats, no editorial framing column needed, want strong visual presence.

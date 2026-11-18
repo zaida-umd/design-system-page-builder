@@ -972,10 +972,9 @@ Black background with vertical padding that scales with viewport. Replaces manua
 @media (min-width: 768px) {
   .umd-layout-background-full-dark { padding: 80px 0; }
 }
-@media (min-width: 1200px) {
-  .umd-layout-background-full-dark { padding: 104px 0; }
-}
 ```
+
+There is no 104px desktop step: the CMS tops out at 80px (see `styles/critical.css` §4), so two stacked dark sections meet 160px apart.
 
 ### `umd-layout-space-vertical-headline-large` — headline bottom spacing
 
@@ -1473,7 +1472,7 @@ A `umd-element-pathway` placed directly above a card grid section serves as both
 </section>
 ```
 
-**Note on `umd-layout-background-full-dark` spacing:** Each section with this class has built-in `padding: 48px 0` (80px tablet, 104px highDef). Do NOT add an additional inner `umd-layout-vertical-landing` wrapper div inside the dark section to inflate the gap — keep each logical component in its own `umd-layout-background-full-dark` section and let the section padding do the work.
+**Note on `umd-layout-background-full-dark` spacing:** Each section with this class has built-in `padding: 48px 0` (80px from tablet up — no larger desktop step, matching the CMS). Two stacked dark sections therefore put 160px (80 + 80) between their content; that doubled padding is the intended dark-to-dark gap, unlike light sections, which use the single 120px `umd-layout-vertical-landing` margin. Do NOT add an additional inner `umd-layout-vertical-landing` wrapper div inside the dark section to inflate the gap — keep each logical component in its own `umd-layout-background-full-dark` section and let the section padding do the work.
 
 ---
 

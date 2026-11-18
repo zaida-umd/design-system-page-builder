@@ -125,12 +125,13 @@
 
 
     /* ============================================================
-       4. BACKGROUND-FULL-DARK BUG FIX
+       4. BACKGROUND-FULL-DARK — MATCH THE CMS (80px MAX)
        layout.min.css serializes the highDef breakpoint as
        @media([object Object]) — ignored by browsers — because
        background/full.ts:42 uses media.queries.highDef (the whole
-       object) instead of media.queries.highDef.min. This rule
-       cascades over the broken upstream with the correct breakpoint.
+       object) instead of media.queries.highDef.min. Production
+       therefore never reaches the 104px step, and this rule now
+       mirrors what production renders: 48px mobile, 80px tablet+.
        ============================================================ */
     .umd-layout-background-full-dark {
       background-color: #000000;
@@ -139,9 +140,11 @@
     @media (min-width: 768px) {
       .umd-layout-background-full-dark { padding: 80px 0; }
     }
-    @media (min-width: 1200px) {
-      .umd-layout-background-full-dark { padding: 104px 0; }
-    }
+    /* No highDef step. Upstream's 104px highDef rule is the broken one above,
+       so the CMS never applies it: dark sections top out at 80px there, and two
+       stacked dark sections meet with 160px (80 + 80) between their content.
+       Restoring the 104px step here would make every page roomier than the CMS
+       it mocks up. Matched against QA components/pathways, Overlay: White Theme. */
 
 
     /* ============================================================

@@ -2198,6 +2198,8 @@ When `.umd-layout-background-full-dark` is immediately followed by a standard (l
 
 The rule is conditional — a dark section followed by another dark section gets no extra gap (the selector only matches when the following sibling lacks the dark class). Do not add manual `margin-top` or `padding-top` to achieve this gap; the CSS rule handles it.
 
+**Dark → dark is 160px, from padding alone.** Dark sections space themselves differently from light ones. A light section's gap is the single 120px `umd-layout-vertical-landing` margin; a dark section's room is its own `padding: 80px 0` (48px on mobile), and there is **no** larger desktop step — the CMS never applies one (`styles/critical.css` §4). So two stacked `umd-layout-background-full-dark` sections put 160px (80 + 80) between their content, which is the intended gap. The QA reference is `components/pathways`, "Overlay: White Theme": the white overlay pathway alone in one dark section, the following rich text in a second. Do not merge the two into one section with a `umd-layout-vertical-landing-child` wrapper to tighten or loosen the gap, and do not add padding to reach 120.
+
 ## 37. Checkbox / radio choice labels — bold by default
 
 `base.min.css` sets a **global element rule** `label { font-weight: 700 }` (font-size 18px). So a bare `<label>` wrapping a checkbox/radio — e.g. a filter option row — renders its text **bold**, which reads as a heading and flattens the visual hierarchy between the group heading and its options.

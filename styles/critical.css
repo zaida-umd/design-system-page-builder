@@ -13,9 +13,9 @@
  *   - css/typography.min.css     → .umd-sans-* / .umd-campaign-* utilities
  *   - css/layout.min.css         → layout grids, spacing, background utilities
  *                                  (Note: @media([object Object]) bug in
- *                                  background/full.ts:42 affects the
+ *                                  background/full.ts:42 drops the
  *                                  umd-layout-background-full-dark highDef
- *                                  breakpoint — fixed by section 4 below.)
+ *                                  step — section 4 below matches it.)
  *   - css/web-components.min.css → :defined / container-type rules for
  *                                  most umd-element-* custom elements,
  *                                  plus host-level rules like
@@ -45,11 +45,12 @@
  *     none currently. (umd-element-carousel* landed upstream in v1.8.14;
  *     umd-element-utility-header turned out not to be a real tag at all —
  *     see both §1 tombstones.)
- *   - Bug fix: umd-layout-background-full-dark — upstream layout.min.css
+ *   - umd-layout-background-full-dark — upstream layout.min.css
  *     serializes the highDef breakpoint as @media([object Object]) because
  *     background/full.ts:42 passes the whole media.queries.highDef object
- *     instead of media.queries.highDef.min. Our rule cascades over the
- *     broken upstream with the correct @media (min-width: 1200px).
+ *     instead of media.queries.highDef.min, so the CMS never applies its
+ *     104px step. Our rule matches what the CMS renders: 80px max, so two
+ *     stacked dark sections meet 160px apart.
  *   - Augmentations for upstream layout classes:
  *     - .umd-layout-space-horizontal-larger: adds position/container/isolation
  *       for watermark z-index stacking and section-intro-wide @container query.
@@ -189,12 +190,13 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 
 
 /* ============================================================
-   4. BACKGROUND-FULL-DARK BUG FIX
+   4. BACKGROUND-FULL-DARK — MATCH THE CMS (80px MAX)
    layout.min.css serializes the highDef breakpoint as
    @media([object Object]) — ignored by browsers — because
    background/full.ts:42 uses media.queries.highDef (the whole
-   object) instead of media.queries.highDef.min. This rule
-   cascades over the broken upstream with the correct breakpoint.
+   object) instead of media.queries.highDef.min. Production
+   therefore never reaches the 104px step, and this rule now
+   mirrors what production renders: 48px mobile, 80px tablet+.
    ============================================================ */
 .umd-layout-background-full-dark {
   background-color: #000000;
@@ -203,9 +205,11 @@ umd-element-breadcrumb:defined { margin-top: 16px; }
 @media (min-width: 768px) {
   .umd-layout-background-full-dark { padding: 80px 0; }
 }
-@media (min-width: 1200px) {
-  .umd-layout-background-full-dark { padding: 104px 0; }
-}
+/* No highDef step. Upstream's 104px highDef rule is the broken one above,
+   so the CMS never applies it: dark sections top out at 80px there, and two
+   stacked dark sections meet with 160px (80 + 80) between their content.
+   Restoring the 104px step here would make every page roomier than the CMS
+   it mocks up. Matched against QA components/pathways, Overlay: White Theme. */
 
 
 /* ============================================================

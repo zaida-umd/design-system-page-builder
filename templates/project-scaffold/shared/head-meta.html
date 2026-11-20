@@ -22,3 +22,8 @@
   ============================================================ -->
   <meta name="robots" content="noindex, nofollow">
   <meta name="googlebot" content="noindex, nofollow">
+  <!-- Send no Referer on outbound requests. Keeps the prototype's URL
+       out of other sites' logs, and lets hotlinked UMD-domain assets
+       load (many 403 a foreign Referer but allow an empty one). Unlike
+       the noindex pair, this can stay when the site goes live. -->
+  <meta name="referrer" content="no-referrer">

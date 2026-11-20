@@ -6,3 +6,6 @@
 
 # Claude local settings (machine-specific permission approvals, not for version control)
 .claude/settings.local.json
+
+# Claude preview servers (absolute paths to local repos, machine-specific)
+.claude/launch.json
